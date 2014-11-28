@@ -1,0 +1,102 @@
+<?php
+
+class CobActaconteoPersonaFacturacion extends \Phalcon\Mvc\Model
+{
+
+    /**
+     *
+     * @var integer
+     */
+    public $id_periodo;
+
+    /**
+     *
+     * @var integer
+     */
+    public $id_sede_contrato;
+
+    /**
+     *
+     * @var integer
+     */
+    public $id_contrato;
+
+    /**
+     *
+     * @var integer
+     */
+    public $id_sede;
+
+    /**
+     *
+     * @var integer
+     */
+    public $id_persona;
+
+    /**
+     *
+     * @var string
+     */
+    public $numDocumento;
+
+    /**
+     *
+     * @var string
+     */
+    public $nombre;
+
+    /**
+     *
+     * @var integer
+     */
+    public $id_grupo;
+
+    /**
+     *
+     * @var string
+     */
+    public $grupo;
+
+    /**
+     *
+     * @var string
+     */
+    public $fechaInicioAtencion;
+
+    /**
+     *
+     * @var string
+     */
+    public $fechaRegistro;
+
+    /**
+     *
+     * @var string
+     */
+    public $fechaRetiro;
+
+    /**
+     *
+     * @var string
+     */
+    public $fechaNacimiento;
+
+    /**
+     *
+     * @var string
+     */
+    public $peso;
+
+    /**
+     *
+     * @var string
+     */
+    public $estatura;
+
+    /**
+     *
+     * @var string
+     */
+    public $fechaControl;
+
+}

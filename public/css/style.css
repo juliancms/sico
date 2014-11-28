@@ -1,0 +1,57 @@
+@CHARSET "UTF-8";
+footer { text-align: center; color: #666; }
+footer p { padding-top: 5px; }
+
+/* Inicio Sesión Login */
+ .form-container-login {
+  background-color: #eeeeee;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 5px;
+  padding-bottom: 30px;
+  border-radius: 6px;
+  padding: 30px;
+  margin: 0 auto;
+  max-width: 380px;
+ }
+ .form-container-login h2 { margin-top: 0px !important; }
+.form-container-login .checkbox {
+  margin-bottom: 10px;
+  font-weight: normal;
+}
+.form-container-login .form-control {
+  position: relative;
+  font-size: 16px;
+  height: auto;
+  padding: 10px;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+.form-container-login .form-control:focus {
+  z-index: 2;
+}
+.form-container-login input[type="text"] {
+  margin-bottom: -1px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.form-container-login input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+/* Fin: Sesión Login */
+
+ .form-container {
+  background-color: #eeeeee;
+  padding-right: 30px;
+  padding-left: 30px;
+  padding-top: 30px;
+  padding-bottom: 15px;
+  border-radius: 6px;
+ }
+ 
+ .menu-tab {
+  margin-bottom: 5px;
+ }
