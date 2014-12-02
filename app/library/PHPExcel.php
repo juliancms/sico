@@ -1,7 +1,5 @@
 <?php
 
-use Phalcon\Mvc\User\Component;
-
 /**
  * PHPExcel
  *
@@ -31,7 +29,7 @@ use Phalcon\Mvc\User\Component;
 
 /** PHPExcel root directory */
 if (!defined('PHPEXCEL_ROOT')) {
-    define('PHPEXCEL_ROOT', APP_PATH . $config->application->libraryDir . '/');
+    define('PHPEXCEL_ROOT', APP_PATH . $config->application->libraryDir . '/PHPExcel/');
     require(PHPEXCEL_ROOT . 'PHPExcel/Autoloader.php');
 }
 
@@ -43,7 +41,7 @@ if (!defined('PHPEXCEL_ROOT')) {
  * @package    PHPExcel
  * @copyright  Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
  */
-class PHPExcel extends Component
+class PHPExcel
 {
     /**
      * Unique ID

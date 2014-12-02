@@ -95,6 +95,28 @@ class BcCargaController extends ControllerBase
     			));
     	}
     }
+    
+    /**
+     * Generar Actas
+     *
+     *
+     * @param string $id_carga
+     */
+    public function generarAction($id_carga)
+    {
+    
+    	$bc_carga = BcCarga::findFirstByid_carga($id_carga);
+    	if (!$bc_carga) {
+    		$this->flash->error("Esta carga no fue encontrada");
+    
+    		return $this->dispatcher->forward(array(
+    				"controller" => "bc_carga",
+    				"action" => "index"
+    		));
+    	}  	
+    	$inputFileName = 'files/bc_bd/MAT_INTERVENTORIA_20140901_0757.xlsx';
+    	$objPHPExcel = $this->phpexcel->load($inputFileName);
+    }
 
     /**
      * Elimina una carga
