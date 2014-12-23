@@ -24,6 +24,9 @@ class Conversiones extends Component
 	 * @author Julián Camilo Marín Sánchez
 	 */
 	public function fecha($tipo_formato, $fecha) {
+		if(!$fecha || $fecha == NULL || $fecha == "00/00/0000" || $fecha == "0000-00-00"){
+			return "";
+		}
 		$dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sábado");
 		$siglas_meses = array("EN","FE","MR","AB","MY","JN","JL","AG","SE","OC","NO","DI");
 		$meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
@@ -53,5 +56,97 @@ class Conversiones extends Component
 			$parts = explode('-', $fecha);
 			return strtoupper($siglas_meses[$parts[1]-1]);
 		}
+	}
+	
+	/**
+	 * array_fechas
+	 *
+	 * @return string
+	 * @author Julián Camilo Marín Sánchez
+	 */
+	public function array_fechas($tipo_formato, $fechas) {
+		$nuevas_fechas = array();
+		foreach($fechas as $row){
+			$nuevas_fechas[] = $this->fecha($tipo_formato, $row);
+		}
+		return $nuevas_fechas;
+	}
+	
+	
+	/**
+	 * multipleupdate
+	 * @param $tabla String
+	 * @param $elementos Array of Arrays
+	 * @param $id_columna 
+	 * 
+	 * El array $elementos debe de tener el siguiente formato:
+	 * $elementos = array ("id_columna" => array (id1, id2, id3...), "nombre_col2" => array(elemento1, elemento2, elemento3...));
+	 * NOTA: Todas las columnas deben de tener la misma cantidad de elementos
+	 * @return string
+	 * Produce un string similar a este:
+	 * UPDATE categories SET
+		    	display_order = CASE id
+		    	WHEN 1 THEN 32
+		    	WHEN 2 THEN 33
+		    	WHEN 3 THEN 34
+		    	END,
+		    	title = CASE id
+		    	WHEN 1 THEN 'New Title 1'
+		    	WHEN 2 THEN 'New Title 2'
+		    	WHEN 3 THEN 'New Title 3'
+		    	END
+		    	WHERE id IN (1,2,3)
+	 * @author Julián Camilo Marín Sánchez
+	 */
+	
+	public function multipleupdate($tabla, $elementos, $id_columna){
+		$sql = "";
+		$sql .= "UPDATE $tabla SET ";
+		for($i = 1; $i < count($elementos); $i++){
+			$sql .= array_keys($elementos)[$i] . " = CASE " . $id_columna;
+			$j = 0;
+			foreach($elementos[array_keys($elementos)[$i]] as $row){
+				$sql .= " WHEN " . $elementos[array_keys($elementos)[0]][$j] . " THEN '" . $row . "'";
+				$j++;
+			}
+			$sql .= " END, ";
+		}
+		//Eliminamos la última coma
+		$sql = substr($sql, 0, -2);
+		$sql .= " WHERE " . $id_columna . " IN (" . implode(',', $elementos[array_keys($elementos)[0]]) . ")";
+		return $sql;
+	}
+	
+	/**
+	 * multipleinsert
+	 * @param $tabla String
+	 * @param $columnas String (valores separados por coma)
+	 * @param $filas Array
+	 *
+	 * El orden de las columnas debe de corresponder al de las filas
+	 * @return string
+	 * Produce un string similar a este:
+	 * 	INSERT INTO example
+		  (example_id, name, value, other_value)
+		VALUES
+		  (100, 'Name 1', 'Value 1', 'Other 1'),
+		  (101, 'Name 2', 'Value 2', 'Other 2'),
+		  (102, 'Name 3', 'Value 3', 'Other 3'),
+		  (103, 'Name 4', 'Value 4', 'Other 4');
+	 * @author Julián Camilo Marín Sánchez
+	 */
+	
+	public function multipleinsert($tabla, $elementos){
+		$sql = "REPLACE INTO $tabla (".implode(",", array_keys($elementos)).") VALUES ";
+		$i = 0;
+		foreach($elementos[array_keys($elementos)[0]] as $row){
+			$array = array();
+			foreach(array_keys($elementos) as $row){
+				$array[] = "'".$elementos[$row][$i]."'";
+			}
+			$sql .= "(".implode(",", $array)."),";
+			$i++;
+		}
+		return substr($sql, 0, -1);
 	}
 }

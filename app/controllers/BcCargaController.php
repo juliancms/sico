@@ -29,7 +29,7 @@ class BcCargaController extends ControllerBase
      */
     public function nuevoAction()
     {
-    	$this->view->meses = array("Enero" => "Enero", "Febrero" => "Febrero", "Marzo" => "Marzo", "Abril" => "Abril", "Mayo" => "Mayo", "Junio" => "Junio", "Agosto" => "Agosto", "Septiembre" => "Septiembre", "Octubre" => "Octubre", "Noviembre" => "Noviembre", "Diciembre" => "Diciembre");
+    	$this->view->meses = $this->elements->getSelect("meses");
     }
     
     /**
@@ -96,28 +96,6 @@ class BcCargaController extends ControllerBase
     	}
     }
     
-    /**
-     * Generar Actas
-     *
-     *
-     * @param string $id_carga
-     */
-    public function generarAction($id_carga)
-    {
-    
-    	$bc_carga = BcCarga::findFirstByid_carga($id_carga);
-    	if (!$bc_carga) {
-    		$this->flash->error("Esta carga no fue encontrada");
-    
-    		return $this->dispatcher->forward(array(
-    				"controller" => "bc_carga",
-    				"action" => "index"
-    		));
-    	}  	
-    	$inputFileName = 'files/bc_bd/MAT_INTERVENTORIA_20140901_0757.xlsx';
-    	$objPHPExcel = $this->phpexcel->load($inputFileName);
-    }
-
     /**
      * Elimina una carga
      * 

@@ -46,10 +46,6 @@ class BcOferente extends \Phalcon\Mvc\Model
      * @var integer
      */
     public $estado;
-
-    /**
-     * Validations and business logic
-     */
     public function validation()
     {
 

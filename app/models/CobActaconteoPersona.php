@@ -31,7 +31,25 @@ class CobActaconteoPersona extends \Phalcon\Mvc\Model
      *
      * @var string
      */
-    public $nombre;
+    public $primerNombre;
+
+    /**
+     *
+     * @var string
+     */
+    public $segundoNombre;
+
+    /**
+     *
+     * @var string
+     */
+    public $primerApellido;
+
+    /**
+     *
+     * @var string
+     */
+    public $segundoApellido;
 
     /**
      *
@@ -62,5 +80,13 @@ class CobActaconteoPersona extends \Phalcon\Mvc\Model
      * @var integer
      */
     public $asistencia;
+    
+    //Virtual Foreign Key para poder acceder a la fecha de corte del acta
+    public function initialize()
+    {
+    	$this->belongsTo('id_actaconteo_persona', 'CobActaconteoPersonaExcusa', 'id_actaconteo_persona', array(
+    			'reusable' => true
+    	));
+    }
 
 }

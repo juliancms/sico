@@ -45,6 +45,8 @@ class Elements extends Component
             'any' => false
         )
     );
+    
+    
 
     /**
      * Builds header menu with left and right items
@@ -101,5 +103,41 @@ class Elements extends Component
             }
         }
         echo '</ul>';
+    }
+    
+    /**
+     * Returns a select
+     */
+    public function getSelect($select)
+    {
+    	switch ($select) {
+    		case "asistencia":
+    			return array (
+    			'1' => '1',
+    			'2' => '2',
+    			'3' => '3',
+    			'4' => '4',
+    			'5' => '5',
+    			'6' => '6',
+    			'7' => '7',
+    			'8' => '8',
+    			'9' => '9',
+    			'10' => '10');
+    			break;
+    		case "datos_valla":
+    			return array (
+    			'1' => 'Si cuenta con valla, según manual del Programa Buen Comienzo',
+    			'2' => 'No cuenta con valla, según manual del Programa Buen Comienzo',
+    			'3' => 'No cuenta con ningún tipo de valla de identificación');
+    			break;
+    		case "meses":
+    			return array("Enero" => "Enero", "Febrero" => "Febrero", "Marzo" => "Marzo", "Abril" => "Abril", "Mayo" => "Mayo", "Junio" => "Junio", "Agosto" => "Agosto", "Septiembre" => "Septiembre", "Octubre" => "Octubre", "Noviembre" => "Noviembre", "Diciembre" => "Diciembre");
+    			break;
+    		case "sino":
+    			return array("1" => "Sí", "2" => "No");
+    			break;
+    		default:
+    			return array();
+    	}
     }
 }

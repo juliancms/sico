@@ -18,7 +18,7 @@ class SessionController extends ControllerBase
     }
 
     /**
-     * Registra el usuario autenticado en los datos de la sesión (sesion)
+     * Registra el usuario autenticado en los datos de la sesión (session)
      *
      * @param IbcUsuario $user
      */
@@ -42,14 +42,13 @@ class SessionController extends ControllerBase
     	if ($this->request->isPost()) {
             $usuario = $this->request->getPost('usuario');
             $password = $this->request->getPost('password');
-            $user = IbcUsuario::findFirst(array(
-                "(email = :usuario: OR usuario = :usuario:) AND password = :password: AND estado = '1'",
-                'bind' => array('usuario' => $usuario, 'password' => sha1($password))
-            ));
-            if ($user != false) {
-                $this->_registerSession($user);
+            $user = IbcUsuario::findFirst(array("email='$usuario' OR usuario = '$usuario'"));
+            if ($user) {            	
+            	if ($this->security->checkHash($password, $user->password)) {
+            		$this->_registerSession($user);
                 $this->flash->success('Welcome ' . $user->nombre);
                 return $this->response->redirect('index/index');
+            	}
             }
             $this->flash->error('Contraseña o usuario inválido');
         }

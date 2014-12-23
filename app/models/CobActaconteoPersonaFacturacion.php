@@ -43,7 +43,25 @@ class CobActaconteoPersonaFacturacion extends \Phalcon\Mvc\Model
      *
      * @var string
      */
-    public $nombre;
+    public $primerNombre;
+
+    /**
+     *
+     * @var string
+     */
+    public $segundoNombre;
+
+    /**
+     *
+     * @var string
+     */
+    public $primerApellido;
+
+    /**
+     *
+     * @var string
+     */
+    public $segundoApellido;
 
     /**
      *

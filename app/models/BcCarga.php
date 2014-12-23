@@ -13,7 +13,13 @@ class BcCarga extends \Phalcon\Mvc\Model
      *
      * @var string
      */
-    public $nombre;
+    public $nombreMat;
+
+    /**
+     *
+     * @var string
+     */
+    public $nombreSedes;
 
     /**
      *

@@ -1,7 +1,9 @@
 @CHARSET "UTF-8";
 footer { text-align: center; color: #666; }
 footer p { padding-top: 5px; }
-
+.clear {
+	clear: both;
+}
 /* Inicio Sesión Login */
  .form-container-login {
   background-color: #eeeeee;
@@ -55,3 +57,28 @@ footer p { padding-top: 5px; }
  .menu-tab {
   margin-bottom: 5px;
  }
+ 
+ .fileinput-button {
+  position: relative;
+  overflow: hidden;
+}
+.fileinput-button input {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  opacity: 0;
+  -ms-filter: 'alpha(opacity=0)';
+  font-size: 200px;
+  direction: ltr;
+  cursor: pointer;
+}
+
+/* Fixes for IE < 8 */
+@media screen\9 {
+  .fileinput-button input {
+    filter: alpha(opacity=0);
+    font-size: 100%;
+    height: 100%;
+  }
+}

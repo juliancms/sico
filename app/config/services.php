@@ -66,7 +66,8 @@ $di->set('db', function() use ($config) {
 		"host"     => $config->database->host,
 		"username" => $config->database->username,
 		"password" => $config->database->password,
-		"dbname"   => $config->database->dbname
+		"dbname"   => $config->database->dbname,
+		"charset"  => $config->database->charset
 	));
 });
 
@@ -78,7 +79,7 @@ $di->set('modelsMetadata', function() {
 });
 
 /**
- * Inicia la sesión con la primera vez que un componente solicita el serfvicio de sesión (session)
+ * Inicia la sesión con la primera vez que un componente solicita el servicio de sesión (session)
  */
 $di->set('session', function() {
 	$session = new SessionAdapter();
