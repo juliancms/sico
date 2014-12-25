@@ -120,10 +120,8 @@ class Conversiones extends Component
 	/**
 	 * multipleinsert
 	 * @param $tabla String
-	 * @param $columnas String (valores separados por coma)
-	 * @param $filas Array
+	 * @param $elementos Array in Array
 	 *
-	 * El orden de las columnas debe de corresponder al de las filas
 	 * @return string
 	 * Produce un string similar a este:
 	 * 	INSERT INTO example
@@ -142,7 +140,12 @@ class Conversiones extends Component
 		foreach($elementos[array_keys($elementos)[0]] as $row){
 			$array = array();
 			foreach(array_keys($elementos) as $row){
-				$array[] = "'".$elementos[$row][$i]."'";
+				if(is_array($elementos[$row])){
+					$array[] = "'".$elementos[$row][$i]."'";
+				} else {
+					$array[] = "'".$elementos[$row]."'";
+				}
+				
 			}
 			$sql .= "(".implode(",", $array)."),";
 			$i++;
