@@ -152,4 +152,19 @@ class Conversiones extends Component
 		}
 		return substr($sql, 0, -1);
 	}
+	
+	/**
+	 * multipledelete
+	 * @param $tabla String
+	 * @param id_columna String
+	 * @param $elementos Array
+	 *
+	 * El parámetro $elementoso debe de enviarse en string separado por comas
+	 * @return string
+	 * @author Julián Camilo Marín Sánchez
+	 */
+	
+	public function multipledelete($tabla, $id_columna, $elementos){
+		return "DELETE FROM $tabla WHERE $id_columna IN (" . $elementos . ")";
+	}
 }

@@ -46,25 +46,27 @@
     </thead>
     <tbody>
     {% for adicional in adicionales %}
+    <?php $fecha = $this->conversiones->fecha(2, $adicional->fechaInterventoria); ?>
     	<tr>
-        	<td><span class="number"><?php echo $i; ?></span></td>
-        	<td>{{ text_field("num_documento[]", "disabled" : "disabled", "placeholder" : "Número de documento", "class" : "num_documento form-control required") }}<div class="error_documento"></div></td>
-        	<td>{{ text_field("primerNombre[]", "disabled" : "disabled", "placeholder" : "Primer nombre", "class" : "form-control required") }}</td>
-        	<td>{{ text_field("segundoNombre[]", "disabled" : "disabled", "placeholder" : "Segundo nombre", "class" : "form-control") }}</td>
-        	<td>{{ text_field("primerApellido[]", "disabled" : "disabled", "placeholder" : "Primer apellido", "class" : "form-control required") }}</td>
-        	<td>{{ text_field("segundoApellido[]", "disabled" : "disabled", "placeholder" : "Segundo apellido", "class" : "form-control required") }}</td>
-            <td>{{ text_field("grupo[]", "disabled" : "disabled", "placeholder" : "Grupo", "class" : "form-control required") }}</td>
-            <td>{{ select("asistencia[]", "disabled" : "disabled", asistencia, "class" : "form-control asistencia required") }}</td>                      
-            {% if acta.id_modalidad == 3 or acta.id_modalidad == 5 or acta.id_modalidad == 7 %}<td>{{ text_field("fecha[]", "disabled" : "disabled", "type" : "date", "class" : "form-control tipo-fecha required fecha", "placeholder" : "dd/mm/aaaa", "parsley-type" : "dateIso", "data-date-format" : "dd/mm/yyyy") }}</td>{% endif %}
+        	<td><span class="number"></span></td>
+        	<td>{{ text_field("num_documento[]", "value" : adicional.numDocumento, "disabled" : "disabled", "placeholder" : "Número de documento", "class" : "num_documento form-control required") }}<div class="error_documento"></div></td>
+        	<td>{{ text_field("primerNombre[]", "value" : adicional.primerNombre, "disabled" : "disabled", "placeholder" : "Primer nombre", "class" : "form-control required") }}</td>
+        	<td>{{ text_field("segundoNombre[]", "value" : adicional.segundoNombre, "disabled" : "disabled", "placeholder" : "Segundo nombre", "class" : "form-control") }}</td>
+        	<td>{{ text_field("primerApellido[]", "value" : adicional.primerApellido, "disabled" : "disabled", "placeholder" : "Primer apellido", "class" : "form-control required") }}</td>
+        	<td>{{ text_field("segundoApellido[]", "value" : adicional.segundoApellido, "disabled" : "disabled", "placeholder" : "Segundo apellido", "class" : "form-control required") }}</td>
+            <td>{{ text_field("grupo[]", "value" : adicional.grupo, "disabled" : "disabled", "placeholder" : "Grupo", "class" : "form-control required") }}</td>
+            <td>{{ select("asistencia[]", "value" : adicional.asistencia, "disabled" : "disabled", asistencia, "class" : "form-control asistencia required") }}</td>                      
+            {% if acta.id_modalidad == 3 or acta.id_modalidad == 5 or acta.id_modalidad == 7 %}<td>{{ text_field("fecha[]", "value" : fecha, "disabled" : "disabled", "type" : "date", "class" : "form-control tipo-fecha required fecha", "placeholder" : "dd/mm/aaaa", "parsley-type" : "dateIso", "data-date-format" : "dd/mm/yyyy") }}</td>{% endif %}
             <td class="imagen_imppnt">
 				<input disabled="disabled" class="fileupload filestyle" data-input="false" data-badge="false" type="file" name="adicional[]" multiple>
 			    <div id="progress" class="progress" style="margin: 0 !important;">
 			        <div class="progress-bar progress-bar-success"></div>
 			    </div>
+			    <p><a class="captura" target="_blank" href="/sico/files/adicionales/{{ adicional.urlAdicional }}">{% if adicional.urlAdicional %}Clic para ver{% endif %}</a></p>
 			    <input disabled="disabled" type='hidden' class='urlAdicional' name='urlAdicional[]' value=''>
 			</td>
-            <td>{{ text_area("observacion[]", "disabled" : "disabled", "rows" : "3", "class" : "form-control") }}</td>
-            <td style="text-align:center;"><a class='btn btn-default eliminar_valor'><i class='glyphicon glyphicon-remove'></i></a></td>
+            <td>{{ text_area("observacion[]", "value" : adicional.observacionAdicional, "disabled" : "disabled", "rows" : "3", "class" : "form-control") }}</td>
+            <td style="text-align:center;"><a id='{{ adicional.id_actaconteo_persona }}' class='btn btn-default eliminar_guardado'><i class='glyphicon glyphicon-remove'></i></a><br><a class='btn btn-default editar_guardado'><i class='glyphicon glyphicon-edit'></i></a></td>
         </tr>
     {% endfor %}  
 	{% set nombre = {beneficiario.primerNombre, beneficiario.segundoNombre, beneficiario.primerApellido, beneficiario.segundoApellido} %}
@@ -99,6 +101,7 @@
 </div>
 <div class="row container alert alert-danger alerta_lote" style="margin-top: 10px; display: none;"></div>    
 <div class="row container" style="padding-top: 10px;">
+	<input type="hidden" name="eliminar_adicionales" id="eliminar_adicionales">
   	<a class="btn btn-default pull-right submit_adicionales">Guardar</a>
 </div>
 </form>

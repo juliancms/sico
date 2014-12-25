@@ -209,32 +209,39 @@ class CobActaconteoController extends ControllerBase
     				"action" => "index"
     		));
     	}
-    	$persona = new CobActaconteoPersona();
-    	$elementos = array(
-    			'numDocumento' => $this->request->getPost("num_documento"),
-    			'primerNombre' => $this->request->getPost("primerNombre"),
-    			'segundoNombre' => $this->request->getPost("segundoNombre"),
-    			'primerApellido' => $this->request->getPost("primerApellido"),
-    			'segundoApellido' => $this->request->getPost("segundoApellido"),
-    			'grupo' => $this->request->getPost("grupo"),
-    			'asistencia' => $this->request->getPost("asistencia"),
-    			'urlAdicional' => $this->request->getPost("urlAdicional"),
-    			'observacionAdicional' => $this->request->getPost("observacion"),
-    			'tipoPersona' => '1',
-    			'id_actaconteo' => $id_actaconteo
-    	);
-    	$fechas = $this->request->getPost("fecha");
-    	if(count($fechas) > 0) {
-    		$fechas = $this->conversiones->array_fechas(1, $fechas);
-    		$elementos['fechaInterventoria'] = $fechas;
+    	$eliminar_adicionales = $this->request->getPost("eliminar_adicionales");
+    	if($eliminar_adicionales){
+	    	$sql = $this->conversiones->multipledelete("cob_actaconteo_persona", "id_actaconteo_persona", $eliminar_adicionales);
+	    	$query = $db->query($sql);
     	}
-    	$sql = $this->conversiones->multipleinsert("cob_actaconteo_persona", $elementos);
-    	$query = $db->query($sql);
-    	if (!$query) {
-    		foreach ($query->getMessages() as $message) {
-    			$this->flash->error($message);
+    	if($this->request->getPost("num_documento")){
+    		$persona = new CobActaconteoPersona();
+    		$elementos = array(
+    				'numDocumento' => $this->request->getPost("num_documento"),
+    				'primerNombre' => $this->request->getPost("primerNombre"),
+    				'segundoNombre' => $this->request->getPost("segundoNombre"),
+    				'primerApellido' => $this->request->getPost("primerApellido"),
+    				'segundoApellido' => $this->request->getPost("segundoApellido"),
+    				'grupo' => $this->request->getPost("grupo"),
+    				'asistencia' => $this->request->getPost("asistencia"),
+    				'urlAdicional' => $this->request->getPost("urlAdicional"),
+    				'observacionAdicional' => $this->request->getPost("observacion"),
+    				'tipoPersona' => '1',
+    				'id_actaconteo' => $id_actaconteo
+    		);
+    		$fechas = $this->request->getPost("fecha");
+    		if(count($fechas) > 0) {
+    			$fechas = $this->conversiones->array_fechas(1, $fechas);
+    			$elementos['fechaInterventoria'] = $fechas;
     		}
-    		return $this->response->redirect("cob_actaconteo/adicionales/$id_actaconteo");
+    		$sql = $this->conversiones->multipleinsert("cob_actaconteo_persona", $elementos);
+    		$query = $db->query($sql);
+    		if (!$query) {
+    			foreach ($query->getMessages() as $message) {
+    				$this->flash->error($message);
+    			}
+    			return $this->response->redirect("cob_actaconteo/adicionales/$id_actaconteo");
+    		}
     	}
     	$this->flash->success("Los adicionales fueron actualizados exitosamente");
     	return $this->response->redirect("cob_actaconteo/adicionales/$id_actaconteo");
@@ -304,7 +311,7 @@ class CobActaconteoController extends ControllerBase
     		->addJs('js/parsley.extend.js')
     		->addJs('js/jquery.autoNumeric.js')
     		->addJs('js/adicionales.js');
-    		$ninos = $acta->getCobActaconteoPersona(['order' => 'grupo asc']);
+    		$ninos = $acta->getCobActaconteoPersona(['tipoPersona = 0', 'order' => 'grupo asc']);
     		$array_ninos = array();
     		foreach($ninos as $row){
     			$array_ninos[] = $row->numDocumento;

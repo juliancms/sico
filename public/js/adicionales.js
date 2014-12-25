@@ -18,9 +18,9 @@ $('#duplicar_grupo').click(function() {
     	$(this).val(grupo);
     });
 });
-$(".eliminar_adicional").click (
+$(".eliminar_guardado").click (
 	function(){
-		eliminar_adicional($(this));        	
+		eliminar_guardado($(this));        	
 });
 $("#btn_varios_items").click (
 	function() {
@@ -60,32 +60,22 @@ $(document).ready(function(){
         	eliminar_valor($(this));
         }
     );
-	$(".restablecer_adicional").click(
-		function(){
-			$(this).parent().parent().find("input").val("");
-			$(this).parent().parent().find("textarea").val("");
-			$(this).parent().parent().find("select").prop('selectedIndex',0);
-			$(this).parent().parent().find(".urlAdicional").val("");
-			$(this).parent().parent().find('#progress .progress-bar').css(
-		            "width", "0%"
-		        );
-			$( '#adicionales_form' ).parsley( 'destroy' );
-			$( '#adicionales_form' ).parsley();
-		}
-    );
 });
-$(".editar_adicional").click(
+$(".editar_guardado").click(
     function(){
-    	editar_adicional($(this));
+    	var id = $(this).parent().find(".eliminar_guardado").attr("id");
+    	var adicionales_eliminar = $("#eliminar_adicionales").val();
+    	if(adicionales_eliminar.length > 0){
+    	$("#eliminar_adicionales").val(adicionales_eliminar+","+id);
+    	} else { $("#eliminar_adicionales").val(id); }
+    	$(this).parent().parent().find("input").removeAttr("disabled");
+    	$(this).parent().parent().find("textarea").removeAttr("disabled");
+    	$(this).parent().parent().find("select").removeAttr("disabled");
+    	$( '#adicionales_form' ).parsley( 'destroy' );
+    	$( '#adicionales_form' ).parsley();
+    	reasignar_keys();
     }
 );
-function editar_adicional(elemento){
-	$(this).parent().parent().find("input").removeAttr("disabled");
-	$(this).parent().parent().find("textarea").removeAttr("disabled");
-	$(this).parent().parent().find("select").removeAttr("disabled");
-	$( '#adicionales_form' ).parsley( 'destroy' );
-	$( '#adicionales_form' ).parsley();
-}
 function si_no_na(val){
 	if(val == "Sí"){
 		return 1;
@@ -102,20 +92,13 @@ function reasignar_keys(){
     	i++;
 	});
 }
-function eliminar_adicional(elemento){
-	var id = $(elemento).parent().parent().find($(".id_adicional")).val();
+function eliminar_guardado(elemento){
+	var id = $(elemento).attr("id");
 	var adicionales_eliminar = $("#eliminar_adicionales").val();
 	if(adicionales_eliminar.length > 0){
 	$("#eliminar_adicionales").val(adicionales_eliminar+","+id);
 	} else { $("#eliminar_adicionales").val(id); }
 	$(elemento).parent().parent().remove();
-}
-function editar_adicional_eliminar(elemento){
-	var id = $(elemento).parent().parent().find($(".id_adicional")).val();
-	var adicionales_eliminar = $("#eliminar_adicionales").val();
-	if(adicionales_eliminar.length > 0){
-	$("#eliminar_adicionales").val(adicionales_eliminar+","+id);
-	} else { $("#eliminar_adicionales").val(id); }
 }
 function agregar_item(valor) {
 	var n_filas = $( ".num_documento[disabled!='disabled']" ).size();
@@ -168,6 +151,8 @@ $(".fileupload").change(function() {
 	    		  $(archivo).parent().find('#progress .progress-bar').css(
   	                "width", "100%"
   	            );
+	    		  $(archivo).parent().find(".captura").html("Clic para ver");
+	    		  $(archivo).parent().find("href").html(window.location.protocol + "//" + window.location.host + "/sico/files/adicionales/" + data);
   				  $(archivo).parent().find(".urlAdicional").val(data);
   		        }
 	    	  }
@@ -187,18 +172,14 @@ function submit_adicionales() {
 	$("table").find(".error_id_contrato_sibc").html("");
 	var error = 0;
 	$(".num_documento[disabled!='disabled']").each(function() {
-    	if($(this).parent().parent().find(".num_documento_guardado").html() !== undefined){
-        	var tr = $(this).parent().parent().parent();
-    	} else {
-    		var tr = $(this).parent().parent();
-    	}
+		var tr = $(this).parent();
     	var encontrados = 0;
     	var num_documento = $(this).val();
     	if(jQuery.inArray(num_documento, arr_ninos) > -1){
     		tr.find(".error_documento").html("<ul class='parsley-error-list'><li class='required' style='display: list-item;'>Este nuip se encuentra en el listado de asistencia de niños.</li></ul>");
     		error = 1;
     	};
-    	$('.num_documento').each(function() {
+    	$(".num_documento[disabled!='disabled']").each(function() {
         	var num_documento2 = $(this).val();
         	if(num_documento == num_documento2){
 				encontrados = encontrados + 1;
