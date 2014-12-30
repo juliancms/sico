@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 25-12-2014 a las 13:24:53
+-- Tiempo de generación: 30-12-2014 a las 12:19:00
 -- Versión del servidor: 5.5.35
 -- Versión de PHP: 5.4.35-0+deb7u2
 
@@ -185,7 +185,7 @@ CREATE TABLE IF NOT EXISTS `cob_actaconteo` (
   KEY `id_sede_contrato` (`id_sede_contrato`),
   KEY `id_usuario` (`id_usuario`),
   KEY `id_carga` (`id_carga`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=148478 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=192411 ;
 
 -- --------------------------------------------------------
 
@@ -256,6 +256,9 @@ CREATE TABLE IF NOT EXISTS `cob_actaconteo_empleado` (
 CREATE TABLE IF NOT EXISTS `cob_actaconteo_persona` (
   `id_actaconteo_persona` bigint(20) NOT NULL AUTO_INCREMENT,
   `id_actaconteo` int(11) NOT NULL,
+  `id_periodo` int(11) NOT NULL,
+  `recorrido` tinyint(4) NOT NULL,
+  `id_contrato` bigint(20) NOT NULL,
   `id_persona` bigint(20) NOT NULL,
   `numDocumento` varchar(100) NOT NULL,
   `primerNombre` varchar(20) NOT NULL,
@@ -269,12 +272,11 @@ CREATE TABLE IF NOT EXISTS `cob_actaconteo_persona` (
   `tipoPersona` tinyint(4) NOT NULL COMMENT '0: General; 1: Adicional',
   `urlAdicional` varchar(80) NOT NULL,
   `observacionAdicional` longtext,
-  `certificacion` tinyint(4) NOT NULL,
   PRIMARY KEY (`id_actaconteo_persona`),
   UNIQUE KEY `id_actaconteo_2` (`id_actaconteo`,`numDocumento`),
   UNIQUE KEY `id_actaconteo_3` (`id_actaconteo`,`numDocumento`,`tipoPersona`),
   KEY `id_actaconteo` (`id_actaconteo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1277956 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5158609 ;
 
 -- --------------------------------------------------------
 
@@ -298,6 +300,7 @@ CREATE TABLE IF NOT EXISTS `cob_actaconteo_persona_excusa` (
 --
 
 CREATE TABLE IF NOT EXISTS `cob_actaconteo_persona_facturacion` (
+  `id_actaconteo_persona_facturacion` bigint(20) NOT NULL AUTO_INCREMENT,
   `id_periodo` int(11) NOT NULL,
   `id_sede_contrato` bigint(20) NOT NULL,
   `id_contrato` bigint(20) NOT NULL,
@@ -312,15 +315,16 @@ CREATE TABLE IF NOT EXISTS `cob_actaconteo_persona_facturacion` (
   `grupo` varchar(80) NOT NULL,
   `fechaInicioAtencion` date NOT NULL,
   `fechaRegistro` date NOT NULL,
-  `fechaRetiro` date NOT NULL,
+  `fechaRetiro` date DEFAULT NULL,
   `fechaNacimiento` date NOT NULL,
   `peso` varchar(10) NOT NULL,
   `estatura` varchar(10) NOT NULL,
   `fechaControl` date NOT NULL,
-  `certificacion` tinyint(4) NOT NULL,
-  UNIQUE KEY `id_periodo_2` (`id_periodo`,`id_sede_contrato`),
+  `certificacion` tinyint(4) NOT NULL COMMENT '0: Pendiente de Certificación; 1: Certificar Atención; 2: No certificar atención',
+  PRIMARY KEY (`id_actaconteo_persona_facturacion`),
+  UNIQUE KEY `id_periodo_2` (`id_periodo`,`id_contrato`,`numDocumento`),
   KEY `id_periodo` (`id_periodo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=65 ;
 
 -- --------------------------------------------------------
 
@@ -404,6 +408,19 @@ CREATE TABLE IF NOT EXISTS `cob_actadocumentacion_persona` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `cob_ajuste`
+--
+
+CREATE TABLE IF NOT EXISTS `cob_ajuste` (
+  `id_actaconteo_persona_facturacion` bigint(20) NOT NULL,
+  `certificar` tinyint(4) NOT NULL,
+  `observacion` longtext NOT NULL,
+  `datetime` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `cob_documentacion`
 --
 
@@ -425,8 +442,9 @@ CREATE TABLE IF NOT EXISTS `cob_documentacion` (
 CREATE TABLE IF NOT EXISTS `cob_periodo` (
   `id_periodo` int(11) NOT NULL AUTO_INCREMENT,
   `fecha` date NOT NULL,
+  `id_carga_facturacion` int(11) DEFAULT NULL,
   PRIMARY KEY (`id_periodo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=49 ;
 
 -- --------------------------------------------------------
 
@@ -624,10 +642,10 @@ ALTER TABLE `bc_permiso`
 -- Filtros para la tabla `cob_actaconteo`
 --
 ALTER TABLE `cob_actaconteo`
-  ADD CONSTRAINT `cob_actaconteo_ibfk_4` FOREIGN KEY (`id_carga`) REFERENCES `bc_carga` (`id_carga`) ON UPDATE NO ACTION,
   ADD CONSTRAINT `cob_actaconteo_ibfk_1` FOREIGN KEY (`id_periodo`) REFERENCES `cob_periodo` (`id_periodo`) ON DELETE CASCADE,
   ADD CONSTRAINT `cob_actaconteo_ibfk_2` FOREIGN KEY (`id_contrato`) REFERENCES `bc_contrato` (`id_contrato`),
-  ADD CONSTRAINT `cob_actaconteo_ibfk_3` FOREIGN KEY (`id_usuario`) REFERENCES `ibc_usuario` (`id_usuario`);
+  ADD CONSTRAINT `cob_actaconteo_ibfk_3` FOREIGN KEY (`id_usuario`) REFERENCES `ibc_usuario` (`id_usuario`),
+  ADD CONSTRAINT `cob_actaconteo_ibfk_4` FOREIGN KEY (`id_carga`) REFERENCES `bc_carga` (`id_carga`) ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `cob_actaconteo_cronograma`
