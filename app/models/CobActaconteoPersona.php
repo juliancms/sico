@@ -87,6 +87,9 @@ class CobActaconteoPersona extends \Phalcon\Mvc\Model
     	$this->belongsTo('id_actaconteo_persona', 'CobActaconteoPersonaExcusa', 'id_actaconteo_persona', array(
     			'reusable' => true
     	));
+    	$this->belongsTo('id_actaconteo', 'CobActaconteo', 'id_actaconteo', array(
+    			'reusable' => true
+    	));
     }
 
 }

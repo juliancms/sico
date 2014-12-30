@@ -71,6 +71,10 @@ $di->set('db', function() use ($config) {
 	));
 });
 
+$di->set('modelsManager', function() {
+	return new Phalcon\Mvc\Model\Manager();
+});
+
 /**
  * Se activa si está especificado en la configuración utilizar el adaptador metadata
  */

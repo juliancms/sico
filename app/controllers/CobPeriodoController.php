@@ -69,8 +69,7 @@ class CobPeriodoController extends ControllerBase
     {
     	$cob_periodo = CobPeriodo::findFirstByid_periodo($id_periodo);
     	$recorrido = CobActaconteo::find(array(
-    			"id_periodo = $id_periodo",
-    			"recorrido = $recorrido",
+    			"id_periodo = $id_periodo AND recorrido = $recorrido",
     			"group" => "id_actaconteo"
     	));
     	if (!$cob_periodo) {
@@ -93,6 +92,40 @@ class CobPeriodoController extends ControllerBase
     	$this->view->actas = $recorrido;
     }
     
+    /**
+     * nuevorecorrido
+     *
+     * @param int $id_periodo
+     */
+    public function nuevorecorridoAction($id_periodo)
+    {
+    	$cob_periodo = CobPeriodo::findFirstByid_periodo($id_periodo);
+    	if (!$cob_periodo) {
+    		$this->flash->error("El periodo no fue encontrado");
+    		return $this->dispatcher->forward(array(
+    				"controller" => "cob_periodo",
+    				"action" => "index"
+    		));
+    	}
+    	$recorridos = CobActaconteo::find(array(
+    			"id_periodo = $id_periodo",
+    			"group" => "recorrido"
+    	));
+    	$facturacion = CobActaconteoPersonaFacturacion::findFirstByid_periodo($id_periodo);
+    	if($facturacion){
+    		$recorrido_anterior = count($recorridos);
+    		$actas = CobActaconteo::generarActasFacturacion($cob_periodo, $recorrido_anterior);
+    		if($actas){
+    			$this->flash->success("Se generaron exitosamente las actas");
+    		}
+    		return $this->forward("cob_periodo/ver/$id_periodo");
+    	}
+    	$this->view->id_periodo = $cob_periodo->id_periodo;
+    	$this->view->fecha_corte = $this->conversiones->fecha(3, $cob_periodo->fecha);
+    	$this->view->recorrido = count($recorridos) + 1;
+    	$this->view->cargas = BcCarga::find(['order' => 'fecha DESC']);
+    }
+        
     /**
      * nuevorecorrido1
      *
@@ -121,10 +154,9 @@ class CobPeriodoController extends ControllerBase
     	} else {
     		$this->view->recorridos = $recorridos;
     	}
-    	$this->dispatcher->setParams(array("id_periodo" => $id_periodo));
     	$modalidades = BcModalidad::find();
     	$this->view->modalidades = $modalidades;
-    	$this->view->cargas = BcCarga::find();
+    	$this->view->cargas = BcCarga::find(['order' => 'fecha DESC']);
     }
 
     /**
@@ -216,6 +248,43 @@ class CobPeriodoController extends ControllerBase
         	$this->flash->success("Se generaron exitosamente las actas");
         }
         return $this->forward("cob_periodo/ver/$id_periodo");
+    }
+    
+    /**
+     * Generar un nuevo recorrido
+     */
+    public function generarrecorridoAction($id_periodo){
+    	if (!$this->request->isPost() || !$id_periodo) {
+    		return $this->dispatcher->forward(array(
+    				"controller" => "cob_periodo",
+    				"action" => "index"
+    		));
+    	}
+    	$cob_periodo = CobPeriodo::findFirstByid_periodo($id_periodo);
+    	if (!$cob_periodo) {
+    		$this->flash->error("El periodo no existe");
+    
+    		return $this->dispatcher->forward(array(
+    				"controller" => "cob_periodo",
+    				"action" => "index"
+    		));
+    	}
+    	$id_carga = $this->request->getPost("carga");
+    	$facturacion = $this->request->getPost("facturacion");
+    	$carga = BcCarga::findFirstByid_carga($id_carga);
+    	if (!carga) {
+    		$this->flash->error("La carga no existe");
+    		return $this->forward("cob_periodo/nuevorecorrido/$id_periodo");
+    	}
+    	$recorridos = CobActaconteo::find(array(
+    			"id_periodo = $id_periodo",
+    			"group" => "recorrido"
+    	));
+    	$actas = CobActaconteo::generarActasRcarga($cob_periodo, $carga, $facturacion, count($recorridos));
+    	if($actas){
+    		$this->flash->success("Se generaron exitosamente las actas");
+    	}
+    	return $this->forward("cob_periodo/ver/$id_periodo");
     }
     
  
