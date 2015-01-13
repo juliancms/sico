@@ -7,6 +7,10 @@ class BcCargaController extends ControllerBase
     public function initialize()
     {
         $this->tag->setTitle("Carga");
+        $auth = $this->session->get('auth');
+        if (!$auth || $auth->nivel > 1) {
+        	return $this->response->redirect('session/index');
+        }
         parent::initialize();
     }
 

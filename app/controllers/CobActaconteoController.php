@@ -40,6 +40,7 @@ class CobActaconteoController extends ControllerBase
     	}
     	$this->view->acta_html = $acta['html'];
     	$this->view->acta_datos = $acta['datos'];
+    	$this->view->acta = $acta['datos'];
     }
 
     /**
@@ -77,7 +78,8 @@ class CobActaconteoController extends ControllerBase
             	$this->tag->setDefault("mosaicoDigital", $acta->CobActaconteoDatos->mosaicoDigital);
             	$this->tag->setDefault("observacionEncargado", $acta->CobActaconteoDatos->observacionEncargado);
             	$this->tag->setDefault("observacionUsuario", $acta->CobActaconteoDatos->observacionUsuario);
-            }           
+            }
+            $this->view->acta = $acta;           
         }
     }
     
@@ -278,6 +280,7 @@ class CobActaconteoController extends ControllerBase
     		$this->view->grupos = $grupos;
     		$this->view->id_actaconteo = $id_actaconteo;
     		$this->view->asistencia = $this->elements->getSelect("asistencia");
+    		$this->view->acta = $acta;
     	}
     }
     
@@ -321,6 +324,7 @@ class CobActaconteoController extends ControllerBase
     		$this->view->acta = $acta;
     		$this->view->id_actaconteo = $id_actaconteo;
     		$this->view->asistencia = $this->elements->getSelect("asistencia");
+    		$this->view->acta = $acta;
     	}
     }
     

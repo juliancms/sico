@@ -1,4 +1,5 @@
 {{ content() }}
+{{ elements.getActamenu(acta) }}
 <!-- Modal -->
 	<div class="modal fade" id="agregar_items" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	  <div class="modal-dialog">

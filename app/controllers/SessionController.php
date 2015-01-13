@@ -15,6 +15,12 @@ class SessionController extends ControllerBase
 
     public function indexAction()
     {
+    	$this->assets
+    	->addCss('css/bootstrap-select.min.css')
+    	->addJs('js/bootstrap-select.min.js')
+    	->addJs('js/iniciar_sesion.js');
+    	$oferentes = BcOferente::find();
+    	$this->view->oferentes = $oferentes;
     }
 
     /**
@@ -22,14 +28,25 @@ class SessionController extends ControllerBase
      *
      * @param IbcUsuario $user
      */
-    private function _registerSession($user)
+    private function _registerSession($user, $tipo_usuario)
     {
-        $this->session->set('auth', array(
-            'id' => $user->id_usuario,
-        	'usuario' => $user->usuario,
-        	'email' => $user->email,
-            'nombre' => $user->nombre
-        ));
+    	//Si es oferente
+    	if($tipo_usuario == 1){
+    		$this->session->set('auth', array(
+    				'id' => $user->id_oferente,
+    				'abreviacion' => $user->abreviacion,
+    				'email' => $user->email,
+    				'nombre' => $user->nombre
+    		));
+    	} else {
+    		$this->session->set('auth', array(
+    				'id' => $user->id_usuario,
+    				'usuario' => $user->usuario,
+    				'email' => $user->email,
+    				'nombre' => $user->nombre,
+    				'nivel' => $user->IbcUsuarioCargo->nivelPermiso
+    		));
+    	}
     }
 
     /**
@@ -40,16 +57,29 @@ class SessionController extends ControllerBase
     public function startAction()
     {
     	if ($this->request->isPost()) {
-            $usuario = $this->request->getPost('usuario');
-            $password = $this->request->getPost('password');
-            $user = IbcUsuario::findFirst(array("email='$usuario' OR usuario = '$usuario'"));
-            if ($user) {            	
-            	if ($this->security->checkHash($password, $user->password)) {
-            		$this->_registerSession($user);
-                $this->flash->success('Welcome ' . $user->nombre);
-                return $this->response->redirect('index/index');
-            	}
-            }
+    		$tipo_usuario = $this->request->getPost('tipo_usuario');
+    		$password = $this->request->getPost('password');
+    		if($tipo_usuario == 1){
+    			$usuario = $this->request->getPost('id_oferente');
+    			$user = BcOferente::findFirstByid_oferente($usuario);
+    			if ($user) {
+    				if ($this->security->checkHash($password, $user->password)) {
+    					$this->_registerSession($user, $tipo_usuario);
+    					$this->flash->success('Bienvenido ' . $user->nombre);
+    					return $this->response->redirect('index/index');
+    				}
+    			}
+    		} else {
+    			$usuario = $this->request->getPost('usuario');
+    			$user = IbcUsuario::findFirst(array("email='$usuario' OR usuario = '$usuario'"));
+    			if ($user) {
+    				if ($this->security->checkHash($password, $user->password)) {
+    					$this->_registerSession($user, $tipo_usuario);
+    					$this->flash->success('Bienvenido ' . $user->nombre);
+    					return $this->response->redirect('index/index');
+    				}
+    			}
+    		}
             $this->flash->error('Contraseña o usuario inválido');
         }
         return $this->response->redirect('session/index');

@@ -25,6 +25,13 @@ $di->set('url', function() use ($config){
 });
 
 /**
+ * El componente config
+ */
+$di->set('config', function() use ($config){
+	return $config;
+});
+
+/**
  * Generación de vistas con plantillas volt
  */
 $di->set('view', function() use ($config) {

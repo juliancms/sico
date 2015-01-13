@@ -1,4 +1,5 @@
 {{ content() }}
+{{ elements.getActamenu(acta) }}
 {{ form("cob_actaconteo/guardardatos/"~id_actaconteo, "method":"post", "class":"form-container form-horizontal", "parsley-validate" : "", "enctype" : "multipart/form-data") }}
     <div class="form-group">
         <label class="col-sm-2 control-label" for="fecha">* Fecha Interventoría</label>

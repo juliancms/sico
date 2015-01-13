@@ -1,6 +1,8 @@
 <?php
 
 use Phalcon\Mvc\Model\Validator\Email as Email;
+use Phalcon\Mvc\Model\Validator\Email as EmailValidator;
+use Phalcon\Mvc\Model\Validator\Uniqueness as UniquenessValidator;
 
 class IbcUsuario extends \Phalcon\Mvc\Model
 {
@@ -49,9 +51,9 @@ class IbcUsuario extends \Phalcon\Mvc\Model
 
     /**
      *
-     * @var string
+     * @var integer
      */
-    public $cargo;
+    public $id_usuario_cargo;
 
     /**
      *
@@ -70,6 +72,14 @@ class IbcUsuario extends \Phalcon\Mvc\Model
      * @var integer
      */
     public $estado;
+    
+    public function initialize()
+    {
+    	$this->belongsTo('id_usuario_cargo', 'IbcUsuarioCargo', 'id_usuario_cargo', array(
+    			'reusable' => true
+    	));
+    }
+    
     public function validation()
     {
         $this->validate(new EmailValidator(array(
