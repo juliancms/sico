@@ -7,7 +7,7 @@ $('.asistencia').each(function() {
 		$(this).parent().parent().find(".excusa").addClass("required");
 	} else {
 		$(this).parent().parent().find(".excusa").addClass("hidden");
-		$(this).parent().parent().find(".excusa").addAttr("disabled", "disabled");
+		$(this).parent().parent().find(".excusa").attr("disabled", "disabled");
 		$(this).parent().parent().find(".excusa").removeClass("required");
 	}
 });
@@ -37,8 +37,11 @@ $("#boton_duplicar").click(function() {
 		var id_grupo = $(this).val();
 		$('.id_grupo').each(function(){
 			if(id_grupo == $(this).html()){
-				$(this).parent().find(".tipo-fecha").val(fecha);
+				$(this).parent().parent().find(".tipo-fecha").val(fecha);
 			}
 		});
 	});
+});
+$(".sel-todos").click(function() {
+	$('.modal-body input:checkbox').attr('checked', true); 
 });

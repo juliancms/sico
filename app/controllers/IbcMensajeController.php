@@ -3,7 +3,7 @@
 use Phalcon\Mvc\Model\Criteria;
 use Phalcon\Paginator\Adapter\Model as Paginator;
 
-class CobPeriodoController extends ControllerBase
+class IbcMensajeController extends ControllerBase
 {    
     public function initialize()
     {
@@ -17,12 +17,12 @@ class CobPeriodoController extends ControllerBase
     public function indexAction()
     {
         $this->persistent->parameters = null;
-        $cob_periodo = CobPeriodo::find();
-        if (count($cob_periodo) == 0) {
-            $this->flash->notice("No se ha agregado ningún periodo hasta el momento");
-            $cob_periodo = null;
+        $ibc_mensaje = IbcMensaje::find();
+        if (count($ibc_mensajes) == 0) {
+            //$this->flash->notice("No se ha agregado ningún mensaje hasta el momento");
+            $ibc_mensaje = null;
         }
-        $this->view->cob_periodo = $cob_periodo;
+        $this->view->ibc_mensaje = $ibc_mensaje;
     }
 
     /**

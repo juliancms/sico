@@ -133,6 +133,7 @@ class Elements extends Component
      */
     public function getActamenu($acta)
     {
+    	$user = $this->session->get('auth');
     	$actionName = $this->view->getActionName();
     	echo "<div class='no-imprimir'><h1>".ucfirst($actionName)." <small><span style='cursor:pointer;' data-toggle='collapse' data-target='#info_acta'>Acta No. $acta->id_actaconteo <b class='caret'></b></span></small></h1>";
     	echo "<div id='info_acta' class='collapse'>";
@@ -153,7 +154,7 @@ class Elements extends Component
     	echo "<td>".$acta->id_usuario."</td>";
     	echo "</tr></tbody></table>";
     	echo "</div>";
-    	echo "<a href='/sico/cob_periodo/recorrido/$acta->id_periodo/$acta->recorrido' class='btn btn-primary menu-tab'><i class='glyphicon glyphicon-chevron-left'></i> Regresar</a>";
+    	echo "<a href='/sico/cob_periodo/recorrido/$acta->id_periodo/$acta->recorrido' class='btn btn-primary regresar'><i class='glyphicon glyphicon-chevron-left'></i> Regresar</a>";
     	//Si no es el recorrido 1 quita el menú de adicionales
     	if($acta->recorrido > 1){
     		unset($this->_actaMenu['adicionales']);
@@ -168,7 +169,15 @@ class Elements extends Component
     			echo "<a href='/sico/cob_actaconteo/$action/$acta->id_actaconteo' class='btn btn-primary menu-tab'><i class='glyphicon $icon'></i> $caption</a>";
     		}
     	}
-		echo "</div>";
+    	$uri = str_replace($this->url->getBaseUri(), '', str_replace($_SERVER["SCRIPT_NAME"], '', $_SERVER["REQUEST_URI"]));
+    	//SI el acta pertenece al interventor o auxiliar y no está cerrada
+    	if($acta->id_usuario != 0 && (($acta->id_usuario == $user['id_usuario'] && $acta->estado < 2) || ($acta->IbcUsuario->id_usuario_lider == $user['id_usuario'] && $acta->estado < 3))){
+    		echo "<form class='menu-tab' action='/sico/cob_actaconteo/cerrar/$acta->id_actaconteo' method='post'><input type='hidden' name='uri' value='$uri'><input type='submit' class='btn btn-danger' value='Cerrar Acta'></form>";
+    	}
+    	if($acta->estado == 2 && $acta->IbcUsuario->id_usuario_lider == $user['id_usuario']){
+    		echo "<form class='menu-tab' action='/sico/cob_actaconteo/abrir/$acta->id_actaconteo' method='post'><input type='hidden' name='uri' value='$uri'><input type='submit' class='btn btn-info' value='Abrir Acta'></form>";
+    	}
+		echo "</div><div class='clear'></clear>";
     }
     
     /**

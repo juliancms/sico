@@ -12,15 +12,16 @@
       		<div class="form-group">
 		        <label class="col-sm-2 control-label" for="fecha">Fecha</label>
 		        <div class="col-sm-10">
-		                {{ text_field("fecha", "type" : "date", "class" : "form-control fecha_duplicar", "placeholder" : "dd/mm/aaaa", "data-date-format" : "dd/mm/yyyy") }}
+		                {{ text_field("fecha", "type" : "date", "class" : "form-control fecha_duplicar"~acta_cerrada, "placeholder" : "dd/mm/aaaa", "data-date-format" : "dd/mm/yyyy") }}
 		        </div>
 		    </div>	    
       		<div class="form-group">
 		        <label class="col-sm-2 control-label" for="modalidad">Grupos</label>
 		        <div class="col-sm-10">
+		        	<div class='btn btn-primary sel-todos form-control'>Seleccionar Todos</div><div style='margin-bottom: 3px;' class='clear'></div>
 		        		{% for grupo in grupos %}
 		        			<label class="btn btn-primary active">
-		        			<input type="checkbox" class="grupo" value="{{ grupo['id_grupo'] }}" autocomplete="off"> {{ grupo['nombre_grupo'] }}
+		        			<input type="checkbox" class="grupo"~acta_cerrada value="{{ grupo['id_grupo'] }}" autocomplete="off"> {{ grupo['nombre_grupo'] }}
 		        			</label>
 		        		{% endfor  %}
 		        </div>
@@ -56,29 +57,29 @@
         	<td>{{ loop.index }}</td>
         	<td>{{ beneficiario.numDocumento }}</td>
             <td>{{ nombre|join(' ') }}</td>
-            <td>{{ beneficiario.grupo }}</td>
-            <td><input type="hidden" name="id_actaconteo_persona[]" value="{{ beneficiario.id_actaconteo_persona }}">{{ select("asistencia[]", asistencia, "value" : beneficiario.asistencia, "class" : "form-control asistencia required") }}</td>
+            <td><div class='hide id_grupo'>{{ beneficiario.id_grupo }}</div>{{ beneficiario.grupo }}</td>
+            <td><input type="hidden" name="id_actaconteo_persona[]" value="{{ beneficiario.id_actaconteo_persona }}">{{ select("asistencia[]", asistencia, "value" : beneficiario.asistencia, "class" : "form-control asistencia required"~acta_cerrada) }}</td>
             <td>
             <?php if($beneficiario->asistencia == 2 || $beneficiario->asistencia == 3){ ?>
             	<?php $fecha_excusa = $this->conversiones->fecha(2, $beneficiario->CobActaconteoPersonaExcusa->fecha); ?>
             	<input type="hidden" class="excusa" name="id_actaconteo_persona2[]" value="{{ beneficiario.id_actaconteo_persona }}">
-            	{{ text_field("motivo[]", "placeholder" : "Motivo", "class" : "form-control excusa", "value" : beneficiario.CobActaconteoPersonaExcusa.motivo) }}
-            	{{ text_field("fecha_excusa[]", "type" : "date", "class" : "form-control tipo-fecha excusa", "placeholder" : "Fecha: dd/mm/aaaa", "parsley-type" : "dateIso", "data-date-format" : "dd/mm/yyyy", "value" : fecha_excusa) }}
-            	{{ text_field("acudiente[]", "placeholder" : "Acudiente", "class" : "form-control excusa", "value" : beneficiario.CobActaconteoPersonaExcusa.acudiente) }}
-            	{{ text_field("telefono[]", "placeholder" : "Teléfono", "class" : "form-control excusa", "value" : beneficiario.CobActaconteoPersonaExcusa.telefono) }}
+            	{{ text_field("motivo[]", "placeholder" : "Motivo", "class" : "form-control excusa"~acta_cerrada, "value" : beneficiario.CobActaconteoPersonaExcusa.motivo) }}
+            	{{ text_field("fecha_excusa[]", "type" : "date", "class" : "form-control tipo-fecha excusa"~acta_cerrada, "placeholder" : "Fecha: dd/mm/aaaa", "parsley-type" : "dateIso", "data-date-format" : "dd/mm/yyyy", "value" : fecha_excusa) }}
+            	{{ text_field("acudiente[]", "placeholder" : "Acudiente", "class" : "form-control excusa"~acta_cerrada, "value" : beneficiario.CobActaconteoPersonaExcusa.acudiente) }}
+            	{{ text_field("telefono[]", "placeholder" : "Teléfono", "class" : "form-control excusa"~acta_cerrada, "value" : beneficiario.CobActaconteoPersonaExcusa.telefono) }}
            	<?php } else { ?>
            		<input type="hidden" class="excusa" disabled="disabled" name="id_actaconteo_persona2[]" value="{{ beneficiario.id_actaconteo_persona }}">
-            	{{ text_field("motivo[]", "placeholder" : "Motivo", "class" : "form-control hidden excusa", "disabled" : "disabled") }}
-            	{{ text_field("fecha_excusa[]", "type" : "date", "class" : "form-control tipo-fecha hidden excusa", "placeholder" : "Fecha: dd/mm/aaaa", "parsley-type" : "dateIso", "data-date-format" : "dd/mm/yyyy", "disabled" : "disabled") }}
-            	{{ text_field("acudiente[]", "placeholder" : "Acudiente", "class" : "form-control hidden excusa", "disabled" : "disabled") }}
-            	{{ text_field("telefono[]", "placeholder" : "Teléfono", "class" : "form-control hidden excusa", "disabled" : "disabled") }}
+            	{{ text_field("motivo[]", "placeholder" : "Motivo", "class" : "form-control hidden excusa"~acta_cerrada, "disabled" : "disabled") }}
+            	{{ text_field("fecha_excusa[]", "type" : "date", "class" : "form-control tipo-fecha hidden excusa"~acta_cerrada, "placeholder" : "Fecha: dd/mm/aaaa", "parsley-type" : "dateIso", "data-date-format" : "dd/mm/yyyy", "disabled" : "disabled") }}
+            	{{ text_field("acudiente[]", "placeholder" : "Acudiente", "class" : "form-control hidden excusa"~acta_cerrada, "disabled" : "disabled") }}
+            	{{ text_field("telefono[]", "placeholder" : "Teléfono", "class" : "form-control hidden excusa"~acta_cerrada, "disabled" : "disabled") }}
            	<?php } ?>
             </td>
-            <td>{{ text_field("fecha[]", "type" : "date", "class" : "form-control tipo-fecha required fecha", "placeholder" : "dd/mm/aaaa", "parsley-type" : "dateIso", "data-date-format" : "dd/mm/yyyy", "value" : fecha) }}</td>
+            <td>{{ text_field("fecha[]", "type" : "date", "class" : "form-control tipo-fecha required fecha"~acta_cerrada, "placeholder" : "dd/mm/aaaa", "parsley-type" : "dateIso", "data-date-format" : "dd/mm/yyyy", "value" : fecha) }}</td>
         </tr>
     {% endfor %}
     </tbody>
 </table>
-{{ submit_button("Guardar", "class" : "btn btn-default pull-right") }}
+{{ submit_button("Guardar", "class" : "btn btn-default pull-right"~acta_cerrada) }}
 </form>
 <div class='clear'></div>

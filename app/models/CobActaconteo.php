@@ -122,6 +122,12 @@ class CobActaconteo extends \Phalcon\Mvc\Model
 		$this->belongsTo('id_actaconteo', 'CobActaconteoDatos', 'id_actaconteo', array(
 				'reusable' => true
 		));
+		$this->belongsTo('id_usuario', 'IbcUsuario', 'id_usuario', array(
+				'reusable' => true
+		));
+		$this->belongsTo('estado', 'IbcReferencia', 'id_referencia', array(
+				'reusable' => true
+		));
 		$this->hasMany('id_actaconteo', 'CobActaconteoPersona', 'id_actaconteo', array(
 				'foreignKey' => array(
 						'message' => 'El acta no puede ser eliminada porque existen beneficiarios asociados a ésta'

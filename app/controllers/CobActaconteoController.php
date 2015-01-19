@@ -4,9 +4,13 @@ use Phalcon\Mvc\Model\Criteria;
 
 class CobActaconteoController extends ControllerBase
 {    
+	public $user;
+	
     public function initialize()
     {
         $this->tag->setTitle("Acta de Conteo");
+        $this->user = $this->session->get('auth');
+        //$this->view->last_url = str_replace($_SERVER["SCRIPT_NAME"], '', $_SERVER["REQUEST_URI"]);
         parent::initialize();
     }
 
@@ -33,10 +37,7 @@ class CobActaconteoController extends ControllerBase
     	$acta = CobActaconteo::generarActa($id_actaconteo);
     	if (!$acta) {
     		$this->flash->error("El acta no fue encontrada");
-    		return $this->dispatcher->forward(array(
-    				"controller" => "cob_periodo",
-    				"action" => "index"
-    		));
+    		return $this->response->redirect("cob_periodo/");
     	}
     	$this->view->acta_html = $acta['html'];
     	$this->view->acta_datos = $acta['datos'];
@@ -56,10 +57,7 @@ class CobActaconteoController extends ControllerBase
             if (!$acta) {
                 $this->flash->error("El acta no fue encontrada");
 
-                return $this->dispatcher->forward(array(
-                    "controller" => "cob_periodo",
-                    "action" => "index"
-                ));
+                return $this->response->redirect("cob_periodo/");
             }
             $this->assets
             ->addJs('js/parsley.min.js')
@@ -79,7 +77,8 @@ class CobActaconteoController extends ControllerBase
             	$this->tag->setDefault("observacionEncargado", $acta->CobActaconteoDatos->observacionEncargado);
             	$this->tag->setDefault("observacionUsuario", $acta->CobActaconteoDatos->observacionUsuario);
             }
-            $this->view->acta = $acta;           
+            $this->view->acta = $acta;
+            $this->view->acta_cerrada = $this->actaCerrada($acta, $this->user['nivel']);
         }
     }
     
@@ -90,18 +89,12 @@ class CobActaconteoController extends ControllerBase
     public function guardardatosAction($id_actaconteo)
     {
     	if (!$this->request->isPost()) {
-            return $this->dispatcher->forward(array(
-                "controller" => "cob_periodo",
-                "action" => "index"
-            ));
+            return $this->response->redirect("cob_periodo/");
         }
         $acta = CobActaconteo::findFirstByid_actaconteo($id_actaconteo);
         if (!$acta) {
             $this->flash->error("El acta $id_actaconteo no existe ");
-            return $this->dispatcher->forward(array(
-                "controller" => "cob_periodo",
-                "action" => "index"
-            ));
+            return $this->response->redirect("cob_periodo/");
         }
         $dato = new CobActaconteoDatos();
         $dato->id_actaconteo = $id_actaconteo;
@@ -133,19 +126,13 @@ class CobActaconteoController extends ControllerBase
     public function guardarbeneficiariosAction($id_actaconteo)
     {
     	if (!$this->request->isPost()) {
-    		return $this->dispatcher->forward(array(
-    				"controller" => "cob_periodo",
-    				"action" => "index"
-    		));
+    		return $this->response->redirect("cob_periodo/");
     	}
     	$db = $this->getDI()->getDb();
     	$acta = CobActaconteo::findFirstByid_actaconteo($id_actaconteo);
     	if (!$acta) {
     		$this->flash->error("El acta $id_actaconteo no existe");
-    		return $this->dispatcher->forward(array(
-    				"controller" => "cob_periodo",
-    				"action" => "index"
-    		));
+    		return $this->response->redirect("cob_periodo/");
     	}
     	$persona = new CobActaconteoPersona();
     	$i = 0;
@@ -197,19 +184,13 @@ class CobActaconteoController extends ControllerBase
     public function guardaradicionalesAction($id_actaconteo)
     {
     	if (!$this->request->isPost()) {
-    		return $this->dispatcher->forward(array(
-    				"controller" => "cob_periodo",
-    				"action" => "index"
-    		));
+    		return $this->response->redirect("cob_periodo/");
     	}
     	$db = $this->getDI()->getDb();
     	$acta = CobActaconteo::findFirstByid_actaconteo($id_actaconteo);
     	if (!$acta) {
     		$this->flash->error("El acta $id_actaconteo no existe");
-    		return $this->dispatcher->forward(array(
-    				"controller" => "cob_periodo",
-    				"action" => "index"
-    		));
+    		return $this->response->redirect("cob_periodo/");
     	}
     	$eliminar_adicionales = $this->request->getPost("eliminar_adicionales");
     	if($eliminar_adicionales){
@@ -259,11 +240,7 @@ class CobActaconteoController extends ControllerBase
     		$acta = CobActaconteo::findFirstByid_actaconteo($id_actaconteo);
     		if (!$acta) {
     			$this->flash->error("El acta no fue encontrada");
-    
-    			return $this->dispatcher->forward(array(
-    					"controller" => "cob_periodo",
-    					"action" => "index"
-    			));
+    			return $this->response->redirect("cob_periodo/");
     		}
     		$this->assets
     		->addJs('js/parsley.min.js')
@@ -281,6 +258,7 @@ class CobActaconteoController extends ControllerBase
     		$this->view->id_actaconteo = $id_actaconteo;
     		$this->view->asistencia = $this->elements->getSelect("asistencia");
     		$this->view->acta = $acta;
+    		$this->view->acta_cerrada = $this->actaCerrada($acta, $this->user['nivel']);
     	}
     }
     
@@ -294,11 +272,7 @@ class CobActaconteoController extends ControllerBase
     		$acta = CobActaconteo::findFirstByid_actaconteo($id_actaconteo);
     		if (!$acta) {
     			$this->flash->error("El acta no fue encontrada");
-    
-    			return $this->dispatcher->forward(array(
-    					"controller" => "cob_periodo",
-    					"action" => "index"
-    			));
+    			return $this->response->redirect("cob_periodo/");
     		}
     		$this->assets
 //     		->addJs('js/fileupload/jquery.ui.widget.js')
@@ -358,94 +332,124 @@ class CobActaconteoController extends ControllerBase
     		}
         }
     }
- 
+
     /**
-     * Guarda el cob_periodo editado
+     * Elimina un acta
      *
+     * @param int $id_actaconteo
      */
-    public function guardarAction()
+    public function eliminarAction($id_actaconteo)
     {
 
-        if (!$this->request->isPost()) {
-            return $this->dispatcher->forward(array(
-                "controller" => "cob_periodo",
-                "action" => "index"
-            ));
+        $acta = CobActaconteo::findFirstByid_actaconteo($id_actaconteo);
+        if (!$acta) {
+            $this->flash->error("El acta no fue encontrada");
+            return $this->response->redirect("cob_actaconteo/");
         }
-
-        $id_periodo = $this->request->getPost("id_periodo");
-
-        $cob_periodo = CobPeriodo::findFirstByid_periodo($id_periodo);
-        if (!$cob_periodo) {
-            $this->flash->error("cob_periodo no existe " . $id_periodo);
-
-            return $this->dispatcher->forward(array(
-                "controller" => "cob_periodo",
-                "action" => "index"
-            ));
-        }
-
-        $cob_periodo->fecha = $this->conversiones->fecha(1, $this->request->getPost("fecha"));
-        
-
-        if (!$cob_periodo->save()) {
-
-            foreach ($cob_periodo->getMessages() as $message) {
+        if (!$acta->delete()) {
+            foreach ($acta->getMessages() as $message) {
                 $this->flash->error($message);
             }
-
-            return $this->dispatcher->forward(array(
-                "controller" => "cob_periodo",
-                "action" => "editar",
-                "params" => array($cob_periodo->id_periodo)
-            ));
+            return $this->response->redirect("cob_periodo/");
         }
-
-        $this->flash->success("cob_periodo fue actualizado exitosamente");
-
-        return $this->dispatcher->forward(array(
-            "controller" => "cob_periodo",
-            "action" => "index"
-        ));
-
+        $this->flash->success("El acta fue eliminada correctamente");
+        return $this->response->redirect("cob_actaconteo/");
     }
-
+    
     /**
-     * Elimina un cob_periodo
+     * Cierra un acta
      *
-     * @param int $id_periodo
+     * @param int $id_actaconteo
      */
-    public function eliminarAction($id_periodo)
+    public function cerrarAction($id_actaconteo)
     {
-
-        $cob_periodo = CobPeriodo::findFirstByid_periodo($id_periodo);
-        if (!$cob_periodo) {
-            $this->flash->error("cob_periodo no fue encontrado");
-
-            return $this->dispatcher->forward(array(
-                "controller" => "cob_periodo",
-                "action" => "index"
-            ));
+    	if (!$this->request->isPost()) {
+    		return $this->response->redirect("cob_actaconteo/ver/$id_actaconteo");
+    	}
+        $acta = CobActaconteo::findFirstByid_actaconteo($id_actaconteo);
+        if (!$acta) {
+            $this->flash->error("El acta no fue encontrada");
+            return $this->response->redirect("cob_actaconteo/");
         }
-
-        if (!$cob_periodo->delete()) {
-
-            foreach ($cob_periodo->getMessages() as $message) {
-                $this->flash->error($message);
-            }
-
-            return $this->dispatcher->forward(array(
-                "controller" => "cob_periodo",
-                "action" => "index"
-            ));
+        $uri = $this->request->getPost("uri");
+        $error = 0;
+        if(!($acta->CobActaconteoDatos->fecha)){
+        	$this->flash->notice("<i class='glyphicon glyphicon-exclamation-sign'></i> El acta no puede ser cerrada debido a que:");
+        	$this->flash->error("No han sido digitados los datos del acta.");
+        	$error = 1;
         }
-
-        $this->flash->success("El periodo fue eliminado correctamente");
-
-        return $this->dispatcher->forward(array(
-            "controller" => "cob_periodo",
-            "action" => "index"
-        ));
+        if($acta->CobActaconteoPersona[0]->asistencia == 0){
+        	if($error == 0)
+        		$this->flash->notice("<i class='glyphicon glyphicon-exclamation-sign'></i> El acta no puede ser cerrada debido a que:");
+        	$this->flash->error("No han sido digitados los beneficiarios del acta.");
+        	$error = 1;
+        }
+        if($error > 0){
+        	return $this->response->redirect($uri);
+        } else {
+        	//Si es interventor
+        	if($this->user['id_usuario_cargo'] == 3){
+        		$acta->estado = 2;
+        	}
+        	//Si es auxiliar administrativo
+        	else if($this->user['id_usuario_cargo'] == 5) {
+        		$acta->estado = 3;
+        	}
+        	if (!$acta->save()) {
+        		foreach ($acta->getMessages() as $message) {
+        			$this->flash->error($message);
+        		}
+        		return $this->response->redirect($uri);
+        	}
+        	$this->flash->success("El acta fue cerrada exitosamente");
+        	return $this->response->redirect($uri);        }
+    }
+    /**
+     * Abre un acta
+     *
+     * @param int $id_actaconteo
+     */
+    public function abrirAction($id_actaconteo)
+    {
+    	if (!$this->request->isPost()) {
+    		return $this->response->redirect("cob_actaconteo/ver/$id_actaconteo");
+    	}
+    	$acta = CobActaconteo::findFirstByid_actaconteo($id_actaconteo);
+    	if (!$acta) {
+    		$this->flash->error("El acta no fue encontrada");
+    		return $this->response->redirect("cob_actaconteo/");
+    	}
+    	$uri = $this->request->getPost("uri");
+    	//Si es interventor
+    	if($this->user['id_usuario_cargo'] !== "5" || $acta->estado !== "2"){
+    		$this->flash->error("El acta no puede ser abierta");
+    		return $this->response->redirect($uri);
+    	}
+    	$acta->estado = 1;
+    	if (!$acta->save()) {
+    		foreach ($acta->getMessages() as $message) {
+    			$this->flash->error($message);
+    		}
+    		return $this->response->redirect($uri);
+    	}
+    	$this->flash->success("El acta fue abierta exitosamente para el interventor");
+    	return $this->response->redirect($uri);
+    }
+    private function actaCerrada($acta, $nivel){
+    	if($acta->estado > 3){
+    		$this->flash->notice("<i class='glyphicon glyphicon-exclamation-sign'></i> El acta ya ha sido consolidada, por lo tanto no puede ser modificada.");
+    		return " disabled-field";
+    	} else if($acta->estado > 2 && $nivel > 1){
+    		$estado = $acta->IbcReferencia->nombre;
+    		$this->flash->notice("<i class='glyphicon glyphicon-exclamation-sign'></i> El acta se encuentra en estado <b>$estado</b>, por lo tanto no puede modificarla. Si necesita realizar algún cambio contacte con su coordinador.");
+    		return " disabled-field";
+    	} else if($acta->estado > 1 && $nivel > 2){
+    		$estado = $acta->IbcReferencia->nombre;
+    		$this->flash->notice("<i class='glyphicon glyphicon-exclamation-sign'></i> El acta se encuentra en estado <b>$estado</b>, por lo tanto no puede modificarla. Si necesita realizar algún cambio contacte con su auxiliar administrativo.");
+    		return " disabled-field";
+    	} else {
+    		return "";
+    	}
     }
 
 }

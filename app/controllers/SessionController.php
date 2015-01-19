@@ -33,17 +33,18 @@ class SessionController extends ControllerBase
     	//Si es oferente
     	if($tipo_usuario == 1){
     		$this->session->set('auth', array(
-    				'id' => $user->id_oferente,
+    				'id_oferente' => $user->id_oferente,
     				'abreviacion' => $user->abreviacion,
     				'email' => $user->email,
     				'nombre' => $user->nombre
     		));
     	} else {
     		$this->session->set('auth', array(
-    				'id' => $user->id_usuario,
+    				'id_usuario' => $user->id_usuario,
     				'usuario' => $user->usuario,
     				'email' => $user->email,
     				'nombre' => $user->nombre,
+    				'id_usuario_cargo' => $user->id_usuario_cargo,
     				'nivel' => $user->IbcUsuarioCargo->nivelPermiso
     		));
     	}

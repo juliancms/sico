@@ -1,7 +1,8 @@
 
 {{ content() }}
-<h1>Actas de Conteo</h1>
-{{ link_to("cob_periodo/ver/"~id_periodo, '<i class="glyphicon glyphicon-chevron-left"></i> Regresar', "class": "btn btn-primary menu-tab") }}
+<h1>Usuarios</h1>
+{{ link_to("ibc_usuario/nuevo", '<i class="glyphicon glyphicon-plus"></i> Nuevo usuario', "class": "btn btn-primary menu-tab") }}
+{% if (not(usuarios is empty)) %}
 <!-- Modal -->
 <div class="modal fade" id="eliminar_elemento" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -23,30 +24,26 @@
 </div><!-- /.modal -->
 <table class="table table-bordered table-hover">
     <thead>
-        <tr><th>#</th>
-            <th>Acciones</th>
-            <th>No. Acta</th>
-            <th>No. Contrato</th>
-            <th>Prestador</th>
-            <th>Sede</th>
-            <th>Modalidad</th>
-            <th>Interventor</th>
-            <th>Estado</th>
+        <tr><th>Acciones</th>
+            <th>Usuario</th>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Celular</th>
+            <th>Teléfono</th>
          </tr>
     </thead>
     <tbody>
-    {% for acta in actas %}
+    {% for usuario in usuarios %}
         <tr>
-        	<td>{{ loop.index }}</td>
-        	<td>{{ link_to("cob_actaconteo/ver/"~acta.id_actaconteo, '<i class="glyphicon glyphicon-list-alt"></i> ', "rel": "tooltip", "title":"Ver") }}{{ link_to("cob_actaconteo/editar/"~acta.id_actaconteo, '<i class="glyphicon glyphicon-pencil"></i> ', "rel": "tooltip", "title":"Editar") }}</td>
-            <td>{{ acta.id_actaconteo }}</td>
-            <td>{{ acta.id_contrato }}</td>
-            <td>{{ acta.oferente_nombre }}</td>
-            <td>{{ acta.id_sede }} - {{ acta.sede_nombre }}</td>
-            <td>{{ acta.modalidad_nombre }}</td>
-            <td>{{ acta.IbcUsuario.usuario }}</td>
-            <td>{{ acta.IbcReferencia.nombre }}</td>            
+        <td>{{ link_to("ibc_usuario/ver/"~usuario.id_usuario, '<i class="glyphicon glyphicon-list-alt"></i> ', "rel": "tooltip", "title":"Ver") }}{{ link_to("ibc_usuario/editar/"~usuario.id_usuario, '<i class="glyphicon glyphicon-pencil"></i> ', "rel": "tooltip", "title":"Editar") }}
+<a href="#eliminar_elemento" rel="tooltip" title="Eliminar" class="eliminar_fila" data-toggle = "modal" id="{{ url("ibc_usuario/eliminar/"~usuario.id_usuario) }}"><i class="glyphicon glyphicon-trash"></i></a></td>
+            <td>{{ usuario.usuario }}</td>
+            <td>{{ usuario.nombre }}</td>
+            <td>{{ usuario.email }}</td>
+            <td>{{ usuario.celular }}</td>
+            <td>{{ usuario.telefono }}</td>
         </tr>
     {% endfor %}
     </tbody>
 </table>
+{% endif %}
