@@ -4,6 +4,12 @@ footer p { padding-top: 5px; }
 .clear {
 	clear: both;
 }
+.navbar-right .foto {
+	border: 1px solid #545454;
+	 border-radius: 4px;
+	 -webkit-transition: all 0.2s ease-in-out;
+	         transition: all 0.2s ease-in-out;
+}
 /* Inicio Sesión Login */
  .form-container-login {
   background-color: #eeeeee;
@@ -54,12 +60,14 @@ footer p { padding-top: 5px; }
   border-radius: 6px;
  }
   
-  .menu-tab, .regresar {
+ .menu-tab {
   margin-bottom: 5px;
+ }
+  .no-imprimir .menu-tab, .regresar {
   float: left;
  }
  
- .menu-tab {
+ .no-imprimir .menu-tab {
   margin-left: 3px;
  }
  

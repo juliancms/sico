@@ -63,9 +63,24 @@
                {{ password_field("password_confirm", "class" : "form-control", "id" : "password_confirm", "parsley-equalto" : "#password") }}
         </div>
     </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label" for="email">Foto de perfil</label>
+        <div class="col-sm-10">
+               	<div class="image-editor">
+			        <input type="file" class="cropit-image-input">
+			        <div class="cropit-image-preview cropit-image-loaded"></div>
+			        <div class="image-size-label">
+			          Redimensionar imagen
+			        </div>
+			        <input type="range" class="cropit-image-zoom-input">
+			        <input type="hidden" name="image-data" class="hidden-image-data" />
+			        {{ hidden_field("foto") }}
+			    </div>
+        </div>
+    </div>
 <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
-          {{ submit_button("Guardar", "class" : "btn btn-default") }}
+          <a class="btn btn-default submit">Guardar</a>
     </div>
 </div>
 </form>

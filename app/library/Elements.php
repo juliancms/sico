@@ -31,11 +31,21 @@ class Elements extends Component
 				'icon' => 'glyphicon-open'
 		),
 	);
+	private $_mensajeMenu = array(
+			'anuncios' => array(
+					'caption' => 'Anuncios',
+					'action' => 'anuncios'
+			),
+			'mensajes' => array(
+					'caption' => 'Mensajes',
+					'action' => 'mensajes'
+			)
+			
+	);
     private $_headerMenu = array(
-        'navbar-left' => array(
-            'index' => array(
-                'caption' => 'Inicio',
-                'action' => 'index'
+            'ibc_mensaje' => array(
+                'caption' => 'Comunicaciones',
+                'action' => 'anuncios'
             ),
             'cob_periodo' => array(
                 'caption' => 'Periodos',
@@ -45,13 +55,10 @@ class Elements extends Component
                 'caption' => 'Cargas',
                 'action' => 'index'
             ),
-        ),
-        'navbar-right' => array(
-            'session' => array(
-                'caption' => 'Iniciar Sesión',
-                'action' => 'index'
-            ),
-        )
+        	'ibc_usuario' => array(
+        		'caption' => 'Usuarios',
+        		'action' => 'index'
+        	)
     );
 
     private $_tabs = array(
@@ -67,7 +74,6 @@ class Elements extends Component
         )
     );
     
-    
 
     /**
      * Builds header menu with left and right items
@@ -76,32 +82,48 @@ class Elements extends Component
      */
     public function getMenu()
     {
-
-        $auth = $this->session->get('auth');
-        if ($auth) {
-            $this->_headerMenu['navbar-right']['session'] = array(
-                'caption' => 'Log Out',
-                'action' => 'end'
-            );
-        } else {
-            //unset($this->_headerMenu['navbar-left']['controller']);
-        }
-
-        $controllerName = $this->view->getControllerName();
-        foreach ($this->_headerMenu as $position => $menu) {
+        $user = $this->session->get('auth');
+        if ($user) {
+//             $this->_headerMenu['navbar-right']['session'] = array(
+//                 'caption' => 'Cerrar Sesión',
+//                 'action' => 'end'
+//             );
+            $controllerName = $this->view->getControllerName();
             echo '<div class="nav-collapse">';
-            echo '<ul class="nav navbar-nav ', $position, '">';
-            foreach ($menu as $controller => $option) {
-                if ($controllerName == $controller) {
-                    echo '<li class="active">';
-                } else {
-                    echo '<li>';
-                }
-                echo $this->tag->linkTo($controller . '/' . $option['action'], $option['caption']);
-                echo '</li>';
+            echo '<ul class="nav navbar-nav navbar-left">';
+            foreach ($this->_headerMenu as $controller => $option) {
+            	if ($controllerName == $controller) {
+            		echo '<li class="active">';
+            	} else {
+            		echo '<li>';
+            	}
+            	echo $this->tag->linkTo($controller . '/' . $option['action'], $option['caption']);
+            	echo '</li>';
             }
             echo '</ul>';
             echo '</div>';
+            echo '<div class="nav-collapse">';
+            echo '<ul class="nav navbar-nav navbar-right">';
+            echo '<li>';
+            echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="glyphicon glyphicon-globe"></b></a>';
+            echo '</li>';
+	        echo '<li class="dropdown usuario">';
+	        echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding-top: 10px !important; padding-bottom: 10px !important;"><img class="foto" src="'.$user['foto'].'" width="30px" height="30px"> '.explode(" ", $user['nombre'])[0].' <b class="caret"></b></a>';
+	        echo '<ul class="dropdown-menu">';
+	            echo '<li><a href="http://190.248.150.222:347/sico/index.php/usuario/editar_perfil">Editar Perfil</a></li>';
+	            echo '<li><a href="http://190.248.150.222:347/sico/index.php/usuario/cambiar_contrasenia">Cambiar Contraseña</a></li>';
+	            echo '<li role="presentation" class="divider"></li>';
+	            echo '<li><a target="_blank" href="http://www.asesoriayconsultoria.pascualbravo.org/index.php?option=com_content&amp;view=article&amp;id=314&amp;Itemid=183">Reporte de Pago</a></li>';
+	            echo '<li><a target="_blank" href="http://www.interventoriabuencomienzo.org:2095">Correo Institucional</a></li>';
+	            echo '<li><a target="_blank" href="http://190.248.150.222:347/owncloud">Owncloud</a></li>';
+	            echo '<li role="presentation" class="divider"></li>';
+	            echo '<li>'.$this->tag->linkTo("session/end", "Cerrar Sesión");
+	        echo '</ul>';
+	        echo '</li>';
+            echo '</ul>';
+            echo '</div>';
+        } else {
+            //unset($this->_headerMenu['navbar-left']['controller']);
         }
 
     }
@@ -124,6 +146,28 @@ class Elements extends Component
             }
         }
         echo '</ul>';
+    }
+    
+    /**
+     * Construye el menú superior de las actas
+     *
+     * @return string
+     */
+    public function getMensajeMenu()
+    {
+    	$user = $this->session->get('auth');
+    	$actionName = $this->view->getActionName();
+    	echo "<ul style='margin-bottom: 10px;' class='nav nav-tabs' role='tablist'>";
+    	foreach ($this->_mensajeMenu as $menu) {
+        	$action = $menu['action'];
+        	$caption = $menu['caption'];
+    		if($actionName == $menu['action']){
+    			echo "<li role='presentation' class='active'><a>$caption</a></li>";
+    		} else {
+    			echo "<li role='presentation'><a href='/sico/ibc_mensaje/$action/'>$caption</a></li>";
+    		}
+    	}
+    	echo "</ul>";
     }
     
     /**

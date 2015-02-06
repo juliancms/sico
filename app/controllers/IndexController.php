@@ -1,17 +1,23 @@
 <?php
 
+use Phalcon\Mvc\Model\Criteria;
+
 class IndexController extends ControllerBase
 {
+	public $user;
+	
     public function initialize()
     {
-        $this->tag->setTitle('Bienvenido(a)');
+        $this->user = $this->session->get('auth');
+        if (!$this->user) {
+        	return $this->response->redirect('session/index');
+        }
+        return $this->response->redirect('ibc_mensaje/index');
         parent::initialize();
     }
 
     public function indexAction()
     {
-        if (!$this->request->isPost()) {
-            $this->flash->notice('Los datos aquí presentados son a manera de ejemplo, y actualmente esta versión de SICO no ha sido publicada.');
-        }
+    	$this->persistent->parameters = null;
     }
 }

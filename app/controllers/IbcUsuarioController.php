@@ -32,6 +32,8 @@ class IbcUsuarioController extends ControllerBase
     	$this->assets
     	->addJs('js/parsley.min.js')
     	->addJs('js/parsley.extend.js')
+    	->addJs('js/jquery.cropit.min.js')
+    	->addCss('css/cropit.css')
     	->addJs('js/nuevo_usuario.js');
     	$componentes = IbcComponente::find();
     	$this->view->componentes = $componentes;
@@ -73,6 +75,8 @@ class IbcUsuarioController extends ControllerBase
             $this->assets
 	    	->addJs('js/parsley.min.js')
 	    	->addJs('js/parsley.extend.js')
+	    	->addJs('js/jquery.cropit.min.js')
+	    	->addCss('css/cropit.css')
 	    	->addJs('js/nuevo_usuario.js');
 	    	$componentes_get = IbcComponente::find();
 	    	$componentes = array();
@@ -98,6 +102,7 @@ class IbcUsuarioController extends ControllerBase
             $this->tag->setDefault("email", $usuario->email);
             $this->tag->setDefault("telefono", $usuario->telefono);
             $this->tag->setDefault("celular", $usuario->celular);
+            $this->tag->setDefault("foto", $usuario->foto);
             $this->tag->setDefault("id_componente", $usuario->id_componente);
             $this->tag->setDefault("id_usuario_cargo", $usuario->id_usuario_cargo);
             $this->tag->setDefault("id_usuario_lider", $usuario->id_usuario_lider);
@@ -113,6 +118,9 @@ class IbcUsuarioController extends ControllerBase
     		return $this->response->redirect("ibc_usuario/");
     	}
     	$usuario = new IbcUsuario();
+    	if($this->request->getPost("image-data")){
+    		$usuario->foto = $this->request->getPost("image-data");
+    	}
     	$usuario->id_componente = $this->request->getPost("id_componente");
     	$usuario->usuario = $this->request->getPost("usuario");
     	$usuario->nombre = $this->request->getPost("nombre");
@@ -149,6 +157,9 @@ class IbcUsuarioController extends ControllerBase
         	$this->flash->error("El usuario no fue encontrado");
         	return $this->response->redirect("ibc_usuario/");
         }
+    	if($this->request->getPost("image-data")){
+    		$usuario->foto = $this->request->getPost("image-data");
+    	}
        	$usuario->id_componente = $this->request->getPost("id_componente");
     	$usuario->usuario = $this->request->getPost("usuario");
     	$usuario->nombre = $this->request->getPost("nombre");

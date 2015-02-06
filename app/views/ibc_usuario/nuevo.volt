@@ -2,7 +2,7 @@
 {{ content() }}
 <h1>Nuevo Usuario</h1>
 {{ link_to("ibc_usuario/", '<i class="glyphicon glyphicon-chevron-left"></i> Regresar', "class": "btn btn-primary menu-tab") }}
-{{ form("ibc_usuario/crear", "method":"post", "class":"form-container form-horizontal", "id":"nuevo_form", "parsley-validate" : "") }}
+{{ form("ibc_usuario/crear", "method":"post", "class":"form-container form-horizontal", "id":"nuevo_form", "parsley-validate" : "", "enctype" : "multipart/form-data") }}
     <div class="form-group">
         <label class="col-sm-2 control-label" for="email">* Email</label>
         <div class="col-sm-10">
@@ -75,9 +75,23 @@
                {{ password_field("password_confirm", "class" : "form-control required", "id" : "password_confirm", "parsley-equalto" : "#password") }}
         </div>
     </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label" for="email">Foto de perfil</label>
+        <div class="col-sm-10">
+               	<div class="image-editor">
+			        <input type="file" class="cropit-image-input">
+			        <div class="cropit-image-preview"></div>
+			        <div class="image-size-label">
+			          Redimensionar imagen
+			        </div>
+			        <input type="range" class="cropit-image-zoom-input">
+			        <input type="hidden" name="image-data" class="hidden-image-data" />
+			    </div>
+        </div>
+    </div>
 <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
-          {{ submit_button("Guardar", "class" : "btn btn-default") }}
+    	<a class="btn btn-default submit">Guardar</a>
     </div>
 </div>
 </form>
