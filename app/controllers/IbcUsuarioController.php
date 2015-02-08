@@ -5,9 +5,11 @@ use Phalcon\Paginator\Adapter\Model as Paginator;
 
 class IbcUsuarioController extends ControllerBase
 {    
+	public $user;
     public function initialize()
     {
         $this->tag->setTitle("Usuarios");
+        $this->user = $this->session->get('auth');
         parent::initialize();
     }
 
@@ -22,6 +24,7 @@ class IbcUsuarioController extends ControllerBase
     		$usuarios = null;
     	}
     	$this->view->usuarios = $usuarios;
+    	$this->view->nivel = $this->user['nivel'];
     }
 
     /**
@@ -110,6 +113,35 @@ class IbcUsuarioController extends ControllerBase
     }
     
     /**
+     * Editar Usuario
+     *
+     * @param int $id_usuario
+     */
+    public function editarperfilAction()
+    {
+    	if (!$this->request->isPost()) {
+    
+    		$usuario = IbcUsuario::findFirstByid_usuario($this->user['id_usuario']);
+    		if (!$usuario) {
+    			$this->flash->error("El usuario no fue encontrado");
+    			return $this->response->redirect("ibc_mensaje");
+    		}
+    		$this->assets
+    		->addJs('js/parsley.min.js')
+    		->addJs('js/parsley.extend.js')
+    		->addJs('js/jquery.cropit.min.js')
+    		->addCss('css/cropit.css')
+    		->addJs('js/nuevo_usuario.js');
+    		$this->view->usuario = $usuario;
+    		$this->tag->setDefault("nombre", $usuario->nombre);
+    		$this->tag->setDefault("email", $usuario->email);
+    		$this->tag->setDefault("telefono", $usuario->telefono);
+    		$this->tag->setDefault("celular", $usuario->celular);
+    		$this->tag->setDefault("foto", $usuario->foto);
+    	}
+    }
+    
+    /**
      * Creación de un nuevo usuario
      */
     public function crearAction()
@@ -160,7 +192,7 @@ class IbcUsuarioController extends ControllerBase
     	if($this->request->getPost("image-data")){
     		$usuario->foto = $this->request->getPost("image-data");
     	}
-       	$usuario->id_componente = $this->request->getPost("id_componente");
+    	$usuario->id_componente = $this->request->getPost("id_componente");
     	$usuario->usuario = $this->request->getPost("usuario");
     	$usuario->nombre = $this->request->getPost("nombre");
     	$usuario->telefono = $this->request->getPost("telefono");
@@ -180,6 +212,43 @@ class IbcUsuarioController extends ControllerBase
     	$this->flash->success("El usuario fue actualizado exitosamente.");
     	return $this->response->redirect("ibc_usuario/editar/$id_usuario");
 
+    }
+    
+    /**
+     * Guarda el usuario editado
+     *
+     */
+    public function guardarperfilAction()
+    {
+    
+    	if (!$this->request->isPost()) {
+    		return $this->response->redirect("ibc_usuario");
+    	}
+    
+    	$usuario = IbcUsuario::findFirstByid_usuario($this->user['id_usuario']);
+    	if (!$usuario) {
+    		$this->flash->error("El usuario no fue encontrado");
+    		return $this->response->redirect("ibc_mensaje/");
+    	}
+    	if($this->request->getPost("image-data")){
+    		$usuario->foto = $this->request->getPost("image-data");
+    	}
+    	$usuario->nombre = $this->request->getPost("nombre");
+    	$usuario->telefono = $this->request->getPost("telefono");
+    	$usuario->celular = $this->request->getPost("celular");
+    	$usuario->email = $this->request->getPost("email");
+    	if($this->request->getPost("password")){
+    		$usuario->password = $this->security->hash($this->request->getPost("password"));
+    	}
+    	if (!$usuario->save()) {
+    		foreach ($usuario->getMessages() as $message) {
+    			$this->flash->error($message);
+    		}
+    		return $this->response->redirect("ibc_usuario/editarperfil");
+    	}
+    	$this->flash->success("El usuario fue actualizado exitosamente.");
+    	return $this->response->redirect("ibc_usuario/editarperfil");
+    
     }
 
     /**

@@ -110,14 +110,13 @@ class Elements extends Component
 	        echo '<li class="dropdown usuario">';
 	        echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding-top: 10px !important; padding-bottom: 10px !important;"><img class="foto" src="'.$user['foto'].'" width="30px" height="30px"> '.explode(" ", $user['nombre'])[0].' <b class="caret"></b></a>';
 	        echo '<ul class="dropdown-menu">';
-	            echo '<li><a href="http://190.248.150.222:347/sico/index.php/usuario/editar_perfil">Editar Perfil</a></li>';
-	            echo '<li><a href="http://190.248.150.222:347/sico/index.php/usuario/cambiar_contrasenia">Cambiar Contraseña</a></li>';
+	            echo '<li>'.$this->tag->linkTo("ibc_usuario/editarperfil", "Editar Perfil").'</li>';
 	            echo '<li role="presentation" class="divider"></li>';
 	            echo '<li><a target="_blank" href="http://www.asesoriayconsultoria.pascualbravo.org/index.php?option=com_content&amp;view=article&amp;id=314&amp;Itemid=183">Reporte de Pago</a></li>';
 	            echo '<li><a target="_blank" href="http://www.interventoriabuencomienzo.org:2095">Correo Institucional</a></li>';
 	            echo '<li><a target="_blank" href="http://190.248.150.222:347/owncloud">Owncloud</a></li>';
 	            echo '<li role="presentation" class="divider"></li>';
-	            echo '<li>'.$this->tag->linkTo("session/end", "Cerrar Sesión");
+	            echo '<li>'.$this->tag->linkTo("session/end", "Cerrar Sesión").'</li>';
 	        echo '</ul>';
 	        echo '</li>';
             echo '</ul>';

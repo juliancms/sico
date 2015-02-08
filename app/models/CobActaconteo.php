@@ -231,16 +231,17 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     	if(!$acta || $acta == NULL){
     		return FALSE;
     	}
+    	$acta_id = "ACO-03-". date("Y") . sprintf('%05d', $acta->id_actaconteo);
     	$encabezado = "<div class='seccion encabezado'>
     		<div class='fila center'><div>ACTA DE CONTEO VERIFICACIÓN FÍSICA DE LA ATENCIÓN DEL 100% DE LOS BENEFICIARIOS REPORTADOS EN EL SIBC<br>INTERVENTORÍA BUEN COMIENZO - <em>FECHA DE CORTE ".$acta->CobPeriodo->fecha." (RECORRIDO $acta->recorrido)</em></div></div>
-    		<div class='fila col3 center'><div>Código: F-ITBC-GC-001</div><div>Versión: 03</div><div>Fecha de Aprobación: 23/02/12</div></div>
+    		<div class='fila col3 center'><div>Código: F-ITBC-GC-001</div><div></div><div></div></div>
     		<div class='fila col3e'>
-    			<div>NÚMERO DE ACTA: <span style='font-weight: normal;'>$acta->id_actaconteo</span></div>
+    			<div>ACTA: <span style='font-weight: normal;'>$acta_id</span></div>
     			<div class='col2da'>NÚMERO DE CONTRATO: <span style='font-weight: normal;'>$acta->id_contrato</span></div>
     			<div>MODALIDAD: <span style='font-weight: normal;'>$acta->modalidad_nombre</span></div>
     		</div>
     		<div class='fila col3e'>
-    			<div>RUTA: <span style='font-weight: normal;'></span></div>
+    			<div>RUTA: <span style='font-weight: normal;'>".$acta->IbcUsuario->usuario."</span></div>
     			<div class='col2da'>PRESTADOR: <span style='font-weight: normal;'>".substr($acta->oferente_nombre, 0, 35)."</span></div>
     			<div>SEDE: <span style='font-weight: normal;'>$acta->sede_nombre</span></div>
     		</div>
@@ -254,7 +255,6 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     	$pie_pagina = "<div id='pie_pagina'>
 	    	<div class='pull-left' style='padding-left: 60px; width: 300px; text-align: center; float: left;'>________________________________________________<br>FIRMA PERSONA ENCARGADA DE LA SEDE</div>
 	    	<div class='pull-right' style='padding-right: 60px; width: 300px; text-align: center; float: left;'>________________________________________________<br>FIRMA PERSONA ENCARGADA DE INTERVENTORÍA<br></div>
-	    	<div style='width: 100%; text-align: center; float: left; padding-top: 5px'>No olvide anexar al acta de conteo el formato diligenciado de relación de excusas de niños y niñas ausentes</div>
     		<div class='clear'></div>
     	</div>";
     	$totalizacion_asistencia = "<div class='seccion' id='totalizacion_asistencia'>
@@ -279,7 +279,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     	$html .= "
     	<div class='seccion' id='datos_generales'>
     		<div class='fila center bold'><div style='border:none; width: 100%'>2. DATOS GENERALES</div></div>
-	    	<div class='fila col3'><div>2.1 FECHA:</div><div>2.2 HORA INICIO:</div><div>2.3 HORA FIN:</div></div>
+	    	<div class='fila col3'><div>2.1 FECHA INTERVENTORÍA:</div><div>2.2 HORA INICIO INTERVENTORÍA:</div><div>2.3 HORA FIN INTERVENTORÍA:</div></div>
     		<div class='clear'></div>
     	</div>";
     	$html .= $pie_pagina;
@@ -291,16 +291,16 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     	<div class='seccion' id='datos_generales'>
     		<div class='fila center bold'><div style='border:none; width: 100%'>2. DATOS GENERALES</div></div>
 	    	<div class='fila col3'>
-    			<div>2.1 FECHA:</div>
-    			<div>2.2 HORA INICIO:</div>
-    			<div>2.3 HORA FIN:</div>
+    			<div>2.1 FECHA INTERVENTORÍA:</div>
+    			<div>2.2 HORA INICIO INTERVENTORÍA:</div>
+    			<div>2.3 HORA FIN INTERVENTORÍA:</div>
     		</div>
     		<div class='fila col2'>
     			<div>2.4 NOMBRE ENCARGADO DE LA SEDE:</div>
     			<div>2.5 NOMBRE INTERVENTOR:</div>
     		</div>
     		<div class='fila col2'>
-    			<div>2.6 VALLA DE IDENTIFICACIÓN:</div>
+    			<div>2.6 CUENTA CON VALLA DE IDENTIFICACIÓN:</div>
     			<div>2.7 CORRECCIÓN DIRECCIÓN:</div>
     		</div>
     		<div class='fila col2'>

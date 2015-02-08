@@ -5,9 +5,12 @@ use Phalcon\Paginator\Adapter\Model as Paginator;
 
 class CobPeriodoController extends ControllerBase
 {    
+	public $user;
     public function initialize()
     {
         $this->tag->setTitle("Periodos");
+        $this->user = $this->session->get('auth');
+        $this->id_usuario = $this->user['id_usuario'];
         parent::initialize();
     }
 
@@ -22,6 +25,7 @@ class CobPeriodoController extends ControllerBase
             $this->flash->notice("No se ha agregado ningún periodo hasta el momento");
             $cob_periodo = null;
         }
+        $this->view->nivel = $this->user['nivel'];
         $this->view->cob_periodo = $cob_periodo;
     }
 
@@ -53,6 +57,7 @@ class CobPeriodoController extends ControllerBase
     	));
     	$this->view->recorridos = $recorridos;
     	$this->view->crear_recorrido = count($recorridos) + 1;
+    	$this->view->nivel = $this->user['nivel'];
     }
     
     /**
@@ -64,7 +69,7 @@ class CobPeriodoController extends ControllerBase
     public function recorridoAction($id_periodo, $recorrido)
     {
     	$cob_periodo = CobPeriodo::findFirstByid_periodo($id_periodo);
-    	$recorrido = CobActaconteo::find(array(
+    	$actas_recorrido = CobActaconteo::find(array(
     			"id_periodo = $id_periodo AND recorrido = $recorrido",
     			"group" => "id_actaconteo"
     	));
@@ -77,8 +82,11 @@ class CobPeriodoController extends ControllerBase
     		return $this->response->redirect("cob_periodo/");
     	}
     	$this->view->id_periodo = $cob_periodo->id_periodo;
+    	$this->view->id_usuario = $this->id_usuario;
+    	$this->view->recorrido = $recorrido;
     	$this->view->fecha_periodo = $cob_periodo->id_periodo;
-    	$this->view->actas = $recorrido;
+    	$this->view->actas = $actas_recorrido;
+    	$this->view->nivel = $this->user['nivel'];
     }
     
     /**

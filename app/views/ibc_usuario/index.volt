@@ -1,7 +1,9 @@
 
 {{ content() }}
 <h1>Usuarios</h1>
+{% if (nivel <= 2) %}
 {{ link_to("ibc_usuario/nuevo", '<i class="glyphicon glyphicon-plus"></i> Nuevo usuario', "class": "btn btn-primary menu-tab") }}
+{% endif %}
 {% if (not(usuarios is empty)) %}
 <!-- Modal -->
 <div class="modal fade" id="eliminar_elemento" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -24,7 +26,7 @@
 </div><!-- /.modal -->
 <table class="table table-bordered table-hover">
     <thead>
-        <tr><th>Acciones</th>
+        <tr>{% if (nivel <= 1) %}<th>Acciones</th>{% endif %}
             <th>Usuario</th>
             <th>Nombre</th>
             <th>Email</th>
@@ -35,8 +37,9 @@
     <tbody>
     {% for usuario in usuarios %}
         <tr>
-        <td>{{ link_to("ibc_usuario/ver/"~usuario.id_usuario, '<i class="glyphicon glyphicon-list-alt"></i> ', "rel": "tooltip", "title":"Ver") }}{{ link_to("ibc_usuario/editar/"~usuario.id_usuario, '<i class="glyphicon glyphicon-pencil"></i> ', "rel": "tooltip", "title":"Editar") }}
-<a href="#eliminar_elemento" rel="tooltip" title="Eliminar" class="eliminar_fila" data-toggle = "modal" id="{{ url("ibc_usuario/eliminar/"~usuario.id_usuario) }}"><i class="glyphicon glyphicon-trash"></i></a></td>
+        	{% if (nivel <= 2) %}
+        	<td>{{ link_to("ibc_usuario/editar/"~usuario.id_usuario, '<i class="glyphicon glyphicon-pencil"></i> ', "rel": "tooltip", "title":"Editar") }}<a href="#eliminar_elemento" rel="tooltip" title="Eliminar" class="eliminar_fila" data-toggle = "modal" id="{{ url("ibc_usuario/eliminar/"~usuario.id_usuario) }}"><i class="glyphicon glyphicon-trash"></i></a></td>
+        	{% endif %}
             <td>{{ usuario.usuario }}</td>
             <td>{{ usuario.nombre }}</td>
             <td>{{ usuario.email }}</td>

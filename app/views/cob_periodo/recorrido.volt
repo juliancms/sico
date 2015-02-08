@@ -2,6 +2,9 @@
 {{ content() }}
 <h1>Actas de Conteo</h1>
 {{ link_to("cob_periodo/ver/"~id_periodo, '<i class="glyphicon glyphicon-chevron-left"></i> Regresar', "class": "btn btn-primary menu-tab") }}
+{% if (nivel <= 1) %}
+{{ link_to("cob_periodo/rutear/"~id_periodo~"/"~recorrido, '<i class="glyphicon glyphicon-road"></i> Rutear', "class": "btn btn-primary menu-tab") }}
+{% endif %}
 <!-- Modal -->
 <div class="modal fade" id="eliminar_elemento" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -24,7 +27,6 @@
 <table class="table table-bordered table-hover">
     <thead>
         <tr><th>#</th>
-            <th>Acciones</th>
             <th>No. Acta</th>
             <th>No. Contrato</th>
             <th>Prestador</th>
@@ -36,10 +38,11 @@
     </thead>
     <tbody>
     {% for acta in actas %}
+    	<?php $id_acta = "ACO-03-". date("Y") . sprintf('%05d', $acta->id_actaconteo); ?>
+    	{% if (nivel <= 1 or (acta.id_usuario == id_usuario or acta.IbcUsuario.id_usuario_lider == id_usuario)) %}
         <tr>
         	<td>{{ loop.index }}</td>
-        	<td>{{ link_to("cob_actaconteo/ver/"~acta.id_actaconteo, '<i class="glyphicon glyphicon-list-alt"></i> ', "rel": "tooltip", "title":"Ver") }}{{ link_to("cob_actaconteo/editar/"~acta.id_actaconteo, '<i class="glyphicon glyphicon-pencil"></i> ', "rel": "tooltip", "title":"Editar") }}</td>
-            <td>{{ acta.id_actaconteo }}</td>
+            <td>{{ link_to("cob_actaconteo/ver/"~acta.id_actaconteo, id_acta) }}</td>
             <td>{{ acta.id_contrato }}</td>
             <td>{{ acta.oferente_nombre }}</td>
             <td>{{ acta.id_sede }} - {{ acta.sede_nombre }}</td>
@@ -47,6 +50,7 @@
             <td>{{ acta.IbcUsuario.usuario }}</td>
             <td>{{ acta.IbcReferencia.nombre }}</td>            
         </tr>
+        {% endif %}
     {% endfor %}
     </tbody>
 </table>

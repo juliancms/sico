@@ -67,7 +67,7 @@
 	<div class="mensaje">
    		<div class="header">
 		  <div class="foto">
-		    <a href="ibc_usuario/ver/{{ mensaje.IbcUsuario.id_usuario }}"><img src="{{ mensaje.IbcUsuario.foto }}" width="40px" height="40px"></a>
+		    <a href="/sico/ibc_usuario/ver/{{ mensaje.IbcUsuario.id_usuario }}"><img src="{{ mensaje.IbcUsuario.foto }}" width="40px" height="40px"></a>
 		  </div>
 		  <div>
 		  	<h3 style="margin: 0px;">{{ mensaje.IbcUsuario.nombre }}</h3>
@@ -84,8 +84,8 @@
 		<div class="collapse" id="comentarios{{ mensaje.id_mensaje }}">
 			{% for comentario in mensaje.IbcMensajeComentario %}
 	   		<div class="comentario">
-	   			<div class="foto"><a href="ibc_usuario/ver/{{ comentario.IbcUsuario.id_usuario }}"><img src="{{ comentario.IbcUsuario.foto }}" width="25px" height="25px"></a></div>
-	   			<div class="texto"><a href="ibc_usuario/ver/{{ comentario.IbcUsuario.id_usuario }}">{{ comentario.IbcUsuario.nombre }}:</a> {{ comentario.comentario }}<div class='fecha'><?php $date = date_create($mensaje->fecha); ?><?php echo date_format($date, 'd/m/Y'); ?> <?php echo date_format($date, 'G:ia'); ?></div></div>
+	   			<div class="foto"><a href="/sico/ibc_usuario/ver/{{ comentario.IbcUsuario.id_usuario }}"><img src="{{ comentario.IbcUsuario.foto }}" width="25px" height="25px"></a></div>
+	   			<div class="texto"><a href="/sico/ibc_usuario/ver/{{ comentario.IbcUsuario.id_usuario }}">{{ comentario.IbcUsuario.nombre }}:</a> {{ comentario.comentario }}<div class='fecha'><?php $date = date_create($mensaje->fecha); ?><?php echo date_format($date, 'd/m/Y'); ?> <?php echo date_format($date, 'G:ia'); ?></div></div>
 	   		</div>
 	   		{% endfor %}
 		</div>

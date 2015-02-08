@@ -1,4 +1,5 @@
 <?php
+use Phalcon\Mvc\Model\Criteria;
 
 class ErroresController extends ControllerBase
 {
@@ -10,16 +11,19 @@ class ErroresController extends ControllerBase
 
     public function error404Action()
     {
+    	$this->persistent->parameters = null;
 
     }
 
     public function error401Action()
     {
+    	$this->persistent->parameters = null;
 
     }
 
     public function error500Action()
     {
+    	$this->persistent->parameters = null;
 
     }
 }

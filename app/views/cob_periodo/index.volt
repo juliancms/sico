@@ -1,7 +1,9 @@
 
 {{ content() }}
 <h1>Periodos</h1>
+{% if (nivel <= 1) %}
 {{ link_to("cob_periodo/nuevo", '<i class="glyphicon glyphicon-plus"></i> Nuevo periodo', "class": "btn btn-primary menu-tab") }}
+{% endif %}
 {% if (not(cob_periodo is empty)) %}
 <!-- Modal -->
 <div class="modal fade" id="eliminar_elemento" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -24,18 +26,17 @@
 </div><!-- /.modal -->
 <table class="table table-bordered table-hover">
     <thead>
-        <tr><th>Acciones</th>
-            <th>Id Of Periodo</th>
-            <th>Fecha</th>
+        <tr>{% if (nivel <= 1) %}<th>Acciones</th>{% endif %}
+            <th>Fecha de corte</th>
          </tr>
     </thead>
     <tbody>
     {% for cob_periodo in cob_periodo %}
         <tr>
-        <td>{{ link_to("cob_periodo/ver/"~cob_periodo.id_periodo, '<i class="glyphicon glyphicon-list-alt"></i> ', "rel": "tooltip", "title":"Ver") }}{{ link_to("cob_periodo/editar/"~cob_periodo.id_periodo, '<i class="glyphicon glyphicon-pencil"></i> ', "rel": "tooltip", "title":"Editar") }}
-<a href="#eliminar_elemento" rel="tooltip" title="Eliminar" class="eliminar_fila" data-toggle = "modal" id="{{ url("cob_periodo/eliminar/"~cob_periodo.id_periodo) }}"><i class="glyphicon glyphicon-trash"></i></a></td>
-            <td>{{ cob_periodo.id_periodo }}</td>
-            <td>{{ cob_periodo.fecha }}</td>
+        {% if (nivel <= 1) %}
+        <td>{{ link_to("cob_periodo/ver/"~cob_periodo.id_periodo, '<i class="glyphicon glyphicon-list-alt"></i> ', "rel": "tooltip", "title":"Ver") }}{{ link_to("cob_periodo/editar/"~cob_periodo.id_periodo, '<i class="glyphicon glyphicon-pencil"></i> ', "rel": "tooltip", "title":"Editar") }}<a href="#eliminar_elemento" rel="tooltip" title="Eliminar" class="eliminar_fila" data-toggle = "modal" id="{{ url("cob_periodo/eliminar/"~cob_periodo.id_periodo) }}"><i class="glyphicon glyphicon-trash"></i></a></td>
+		{% endif %}
+            <td>{{ link_to("cob_periodo/ver/"~cob_periodo.id_periodo, cob_periodo.fecha) }}</td>
                         
         </tr>
     {% endfor %}

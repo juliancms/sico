@@ -7,8 +7,10 @@
 {{ link_to("cob_periodo/recorrido/"~id_periodo~"/"~recorrido.recorrido, "Recorrido "~recorrido.recorrido, "class": "btn btn-default btn-lg btn-block") }}
 {% endfor %}
 {% endif %}
+{% if (nivel <= 1) %}
 {% if crear_recorrido == 1 %}
 {{ link_to("cob_periodo/nuevorecorrido1/"~id_periodo, "Generar Recorrido 1", "class": "btn btn-primary btn-lg btn-block") }}
 {% else %}
 {{ link_to("cob_periodo/nuevorecorrido/"~id_periodo,  "Generar Recorrido "~crear_recorrido, "class": "btn btn-primary btn-lg btn-block") }}
+{% endif %}
 {% endif %}
