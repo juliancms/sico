@@ -244,9 +244,9 @@ class Elements extends Component
     			break;
     		case "datos_valla":
     			return array (
-    			'1' => 'Si cuenta con valla, según manual del Programa Buen Comienzo',
-    			'2' => 'No cuenta con valla, según manual del Programa Buen Comienzo',
-    			'3' => 'No cuenta con ningún tipo de valla de identificación');
+    			'1' => '1. Si cuenta con valla, según manual del Programa Buen Comienzo',
+    			'2' => '2. No cuenta con valla, según manual del Programa Buen Comienzo',
+    			'3' => '3. No cuenta con ningún tipo de valla de identificación');
     			break;
     		case "meses":
     			return array("Enero" => "Enero", "Febrero" => "Febrero", "Marzo" => "Marzo", "Abril" => "Abril", "Mayo" => "Mayo", "Junio" => "Junio", "Agosto" => "Agosto", "Septiembre" => "Septiembre", "Octubre" => "Octubre", "Noviembre" => "Noviembre", "Diciembre" => "Diciembre");
