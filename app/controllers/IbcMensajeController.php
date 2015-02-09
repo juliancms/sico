@@ -55,6 +55,7 @@ class IbcMensajeController extends ControllerBase
     		});
     	}
     	$destinatarios = array();
+    	$this->view->anuncio = "";
     	$destinatarios['1'] = $this->user['componente'];
     	if($this->user['nivel'] < 2){
     		$destinatarios['0'] = "Todos";
@@ -100,6 +101,7 @@ class IbcMensajeController extends ControllerBase
     		});
     	}
     	$destinatarios = array();
+    	$this->view->anuncio = "";
     	$destinatarios['1'] = $this->user['componente'];
     	if($this->user['nivel'] < 2){
     		$destinatarios['0'] = "Todos";
