@@ -59,6 +59,7 @@ class CobActaconteoController extends ControllerBase
 
                 return $this->response->redirect("cob_periodo/");
             }
+            $this->view->asiste1 = $asiste1;
             $this->assets
             ->addJs('js/parsley.min.js')
             ->addJs('js/parsley.extend.js');
@@ -324,6 +325,7 @@ class CobActaconteoController extends ControllerBase
 	    			}
 	    		}
 	    		if($isUploaded){
+	    			chmod($path, 0755);
 	    			echo $nombre;
 	    			
 	    		} else {

@@ -1,4 +1,4 @@
-var url = window.location.protocol + "//" + window.location.host + "/sico/" + "cob_actaconteo/subiradicional/" + $("table").attr("id");
+var url = window.location.protocol + "//" + window.location.host + "/sico/" + "cob_actaconteo/subiradicional/" + $("#adicionales_form table").attr("id");
 $('#adicionales_form tbody tr:hidden:first').find("input").removeAttr("disabled");
 $('#adicionales_form tbody tr:hidden:first').find("select").removeAttr("disabled");
 $('#adicionales_form tbody tr:hidden:first').find("textarea").removeAttr("disabled");
