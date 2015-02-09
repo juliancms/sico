@@ -1,5 +1,49 @@
 {{ content() }}
 {{ elements.getActamenu(acta) }}
+<table class="table table-bordered table-striped">
+		<tbody>
+			<tr>
+				<td>1. TOTAL DE NIÑOS Y NIÑAS QUE EFECTIVAMENTE ASISTIERON</td>
+				<td>{{ asiste1 }}</td>
+			</tr>
+			<tr>
+				<td>2. TOTAL DE NIÑOS Y NIÑAS AUSENTES CON EXCUSA FISICA VALIDA</td>
+				<td>{{ asiste2 }}</td>
+			</tr>
+			<tr>
+				<td>3. TOTAL DE NIÑOS Y NIÑAS AUSENTES CON EXCUSA TELEFONICA VALIDA</td>
+				<td>{{ asiste3 }}</td>
+			</tr>
+			<tr>
+				<td>4. TOTAL DE NIÑOS Y NIÑAS RETIRADOS ANTES DEL DIA DE CORTE DE PERIODO</td>
+				<td>{{ asiste4 }}</td>
+			</tr>
+			<tr>
+				<td>5. TOTAL DE NIÑOS Y NIÑAS RETIRADOS DESPUES DEL DIA DE CORTE DE PERIODO</td>
+				<td>{{ asiste5 }}</td>
+			</tr>
+			<tr>
+				<td>6. TOTAL DE NIÑOS Y NIÑAS AUSENTES QUE NO PRESENTAN EXCUSA EL DIA DEL REPORTE</td>
+				<td>{{ asiste6 }}</td>
+			</tr>
+			<tr>
+				<td>7. TOTAL DE NIÑOS Y NIÑAS CON EXCUSA MEDICA MAYOR O IGUAL A 15 DÍAS</td>
+				<td>{{ asiste7 }}</td>
+			</tr>
+			<tr>
+				<td>8. TOTAL DE NIÑOS Y NIÑAS CON EXCUSA MEDICA MENOR A 15 DÍAS</td>
+				<td>{{ asiste8 }}</td>
+			</tr>
+			<tr>
+				<td><strong>TOTAL LISTADO DE NIÑOS Y NIÑAS REPORTADOS EN EL SIBC</strong></td>
+				<td>{{ asistetotal }}</td>
+			</tr>
+			<tr>
+				<td><strong>TOTAL NIÑOS ADICIONALES INGRESADOS</strong></td>
+				<td>{{ asisteadicionales }}</td>
+			</tr>
+		</tbody>
+	</table>
 {{ form("cob_actaconteo/guardardatos/"~id_actaconteo, "method":"post", "class":"form-container form-horizontal", "parsley-validate" : "", "enctype" : "multipart/form-data") }}
     <div class="form-group">
         <label class="col-sm-2 control-label" for="fecha">* Fecha Interventoría</label>

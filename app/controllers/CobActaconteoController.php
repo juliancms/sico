@@ -59,7 +59,26 @@ class CobActaconteoController extends ControllerBase
 
                 return $this->response->redirect("cob_periodo/");
             }
-            $this->view->asiste1 = $asiste1;
+            $asiste1 = $acta->getCobActaconteoPersona(['tipoPersona = 0 AND asistencia = 1']);
+            $asiste2 = $acta->getCobActaconteoPersona(['tipoPersona = 0 AND asistencia = 2']);
+            $asiste3 = $acta->getCobActaconteoPersona(['tipoPersona = 0 AND asistencia = 3']);
+            $asiste4 = $acta->getCobActaconteoPersona(['tipoPersona = 0 AND asistencia = 4']);
+            $asiste5 = $acta->getCobActaconteoPersona(['tipoPersona = 0 AND asistencia = 5']);
+            $asiste6 = $acta->getCobActaconteoPersona(['tipoPersona = 0 AND asistencia = 6']);
+            $asiste7 = $acta->getCobActaconteoPersona(['tipoPersona = 0 AND asistencia = 7']);
+            $asiste8 = $acta->getCobActaconteoPersona(['tipoPersona = 0 AND asistencia = 8']);
+            $asistetotal = $acta->getCobActaconteoPersona(['tipoPersona = 0']);
+            $asisteadicionales = $acta->getCobActaconteoPersona(['tipoPersona = 1']);
+            $this->view->asiste1 = count($asiste1);
+            $this->view->asiste2 = count($asiste2);
+            $this->view->asiste3 = count($asiste3);
+            $this->view->asiste4 = count($asiste4);
+            $this->view->asiste5 = count($asiste5);
+            $this->view->asiste6 = count($asiste6);
+            $this->view->asiste7 = count($asiste7);
+            $this->view->asiste8 = count($asiste8);
+            $this->view->asistetotal = count($asistetotal);
+            $this->view->asisteadicionales = count($asisteadicionales);
             $this->assets
             ->addJs('js/parsley.min.js')
             ->addJs('js/parsley.extend.js');
