@@ -50,15 +50,15 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="col-sm-2 control-label" for="fecha">* Observación Encargado Sede</label>
+        <label class="col-sm-2 control-label" for="fecha">Observación Encargado Sede</label>
         <div class="col-sm-10">
-                {{ text_area("observacionEncargado", "rows" : "4", "class" : "form-control required"~acta_cerrada) }}
+                {{ text_area("observacionEncargado", "rows" : "4", "class" : "form-control"~acta_cerrada) }}
         </div>
     </div>
     <div class="form-group">
-        <label class="col-sm-2 control-label" for="fecha">* Observación Interventor</label>
+        <label class="col-sm-2 control-label" for="fecha">Observación Interventor</label>
         <div class="col-sm-10">
-                {{ text_area("observacionUsuario", "rows" : "4", "class" : "form-control required"~acta_cerrada) }}
+                {{ text_area("observacionUsuario", "rows" : "4", "class" : "form-control"~acta_cerrada) }}
         </div>
     </div>
 <div class="form-group">
