@@ -344,7 +344,7 @@ class CobActaconteoController extends ControllerBase
 	    			}
 	    		}
 	    		if($isUploaded){
-	    			chmod($path, 0755);
+	    			chmod($path, 0777);
 	    			echo $nombre;
 	    			
 	    		} else {
