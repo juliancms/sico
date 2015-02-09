@@ -324,7 +324,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
   		 * Si el acta está en la modalidad Entorno Comunitario, Entorno Familiar o Jardines Infantiles
   		 * se imprimen las actas con la casilla de fecha de visita, de lo contrario la fecha se omite
   		 */ 
-  		$fecha = "";
+  		$fecha_lista = "";
   		if($acta->id_modalidad == 3 || $acta->id_modalidad == 5 || $acta->id_modalidad == 7){
   			$fecha_encabezado = "<div>4.5 FECHA VISITA</div>";
   			$fecha_encabezado2 = "<div>5.5 FECHA VISITA</div>";
