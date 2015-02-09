@@ -1,7 +1,7 @@
 $(document).ready(function () {
 $('.asistencia').each(function() {
 	var asistencia = $(this).val();
-	if(asistencia == 7){
+	if(asistencia == 7 || asistencia == 8){
 		$(this).parent().parent().find(".excusa").removeClass("hidden");
 		$(this).parent().parent().find(".excusa").removeAttr("disabled");
 		$(this).parent().parent().find(".excusa").addClass("required");
@@ -19,7 +19,7 @@ if($(".fecha_visita_header").html() == null){
 }
 $('.asistencia').change(function() {
 	var asistencia = $(this).val();
-	if(asistencia == 7){
+	if(asistencia == 7 || asistencia == 8){
 		$(this).parent().parent().find(".excusa").removeClass("hidden").addClass("required");
 		$(this).parent().parent().find(".excusa").removeAttr("disabled");
 	} else {
