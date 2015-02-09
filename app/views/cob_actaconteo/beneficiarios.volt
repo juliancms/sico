@@ -60,19 +60,19 @@
             <td><div class='hide id_grupo'>{{ beneficiario.id_grupo }}</div>{{ beneficiario.grupo }}</td>
             <td><input type="hidden" name="id_actaconteo_persona[]" value="{{ beneficiario.id_actaconteo_persona }}">{{ select("asistencia[]", asistencia, "value" : beneficiario.asistencia, "class" : "form-control asistencia required"~acta_cerrada) }}</td>
             <td>
-            <?php if($beneficiario->asistencia == 2 || $beneficiario->asistencia == 3){ ?>
+            <?php if($beneficiario->asistencia == 7){ ?>
             	<?php $fecha_excusa = $this->conversiones->fecha(2, $beneficiario->CobActaconteoPersonaExcusa->fecha); ?>
             	<input type="hidden" class="excusa" name="id_actaconteo_persona2[]" value="{{ beneficiario.id_actaconteo_persona }}">
             	{{ text_field("motivo[]", "placeholder" : "Motivo", "class" : "form-control excusa"~acta_cerrada, "value" : beneficiario.CobActaconteoPersonaExcusa.motivo) }}
             	{{ text_field("fecha_excusa[]", "type" : "date", "class" : "form-control tipo-fecha excusa"~acta_cerrada, "placeholder" : "Fecha: dd/mm/aaaa", "parsley-type" : "dateIso", "data-date-format" : "dd/mm/yyyy", "value" : fecha_excusa) }}
-            	{{ text_field("acudiente[]", "placeholder" : "Acudiente", "class" : "form-control excusa"~acta_cerrada, "value" : beneficiario.CobActaconteoPersonaExcusa.acudiente) }}
-            	{{ text_field("telefono[]", "placeholder" : "Teléfono", "class" : "form-control excusa"~acta_cerrada, "value" : beneficiario.CobActaconteoPersonaExcusa.telefono) }}
+            	{{ text_field("profesional[]", "placeholder" : "Profesional", "class" : "form-control excusa"~acta_cerrada, "value" : beneficiario.CobActaconteoPersonaExcusa.profesional) }}
+            	{{ text_field("telefono[]", "placeholder" : "Teléfono", "class" : "form-control excusa"~acta_cerrada, "parsley-type" : "number", "value" : beneficiario.CobActaconteoPersonaExcusa.telefono) }}
            	<?php } else { ?>
            		<input type="hidden" class="excusa" disabled="disabled" name="id_actaconteo_persona2[]" value="{{ beneficiario.id_actaconteo_persona }}">
             	{{ text_field("motivo[]", "placeholder" : "Motivo", "class" : "form-control hidden excusa"~acta_cerrada, "disabled" : "disabled") }}
             	{{ text_field("fecha_excusa[]", "type" : "date", "class" : "form-control tipo-fecha hidden excusa"~acta_cerrada, "placeholder" : "Fecha: dd/mm/aaaa", "parsley-type" : "dateIso", "data-date-format" : "dd/mm/yyyy", "disabled" : "disabled") }}
-            	{{ text_field("acudiente[]", "placeholder" : "Acudiente", "class" : "form-control hidden excusa"~acta_cerrada, "disabled" : "disabled") }}
-            	{{ text_field("telefono[]", "placeholder" : "Teléfono", "class" : "form-control hidden excusa"~acta_cerrada, "disabled" : "disabled") }}
+            	{{ text_field("profesional[]", "placeholder" : "Profesional", "class" : "form-control hidden excusa"~acta_cerrada, "disabled" : "disabled") }}
+            	{{ text_field("telefono[]", "placeholder" : "Teléfono", "class" : "form-control hidden excusa"~acta_cerrada, "parsley-type" : "number", "disabled" : "disabled") }}
            	<?php } ?>
             </td>
             <td>{{ text_field("fecha[]", "type" : "date", "class" : "form-control tipo-fecha required fecha"~acta_cerrada, "placeholder" : "dd/mm/aaaa", "parsley-type" : "dateIso", "data-date-format" : "dd/mm/yyyy", "value" : fecha) }}</td>

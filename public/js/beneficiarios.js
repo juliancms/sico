@@ -1,7 +1,7 @@
 $(document).ready(function () {
 $('.asistencia').each(function() {
 	var asistencia = $(this).val();
-	if(asistencia == 2 || asistencia == 3){
+	if(asistencia == 7){
 		$(this).parent().parent().find(".excusa").removeClass("hidden");
 		$(this).parent().parent().find(".excusa").removeAttr("disabled");
 		$(this).parent().parent().find(".excusa").addClass("required");
@@ -19,17 +19,14 @@ if($(".fecha_visita_header").html() == null){
 }
 $('.asistencia').change(function() {
 	var asistencia = $(this).val();
-	if(asistencia == 2 || asistencia == 3){
-		$(this).parent().parent().find(".excusa").removeClass("hidden");
+	if(asistencia == 7){
+		$(this).parent().parent().find(".excusa").removeClass("hidden").addClass("required");
 		$(this).parent().parent().find(".excusa").removeAttr("disabled");
-		$(this).parent().parent().find(".excusa").addClass("required");
 	} else {
-		$(this).parent().parent().find(".excusa").addClass("hidden");
-		$(this).parent().parent().find(".excusa").addAttr("disabled", "disabled");
-		$(this).parent().parent().find(".excusa").removeClass("required");
+		$(this).parent().parent().find(".excusa").attr("disabled", "disabled");
+		$(this).parent().parent().find(".excusa").removeClass("required").addClass("hidden");
 	}
-	$( '#beneficiarios_form' ).parsley( 'destroy' );
-	$( '#beneficiarios_form' ).parsley();
+	
 });
 $("#boton_duplicar").click(function() {
 	var fecha = $(".fecha_duplicar").val();

@@ -25,7 +25,7 @@ class CobActaconteoPersonaExcusa extends \Phalcon\Mvc\Model
      *
      * @var string
      */
-    public $acudiente;
+    public $profesional;
 
     /**
      *
