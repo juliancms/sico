@@ -69,9 +69,7 @@
             <td>{{ text_area("observacion[]", "value" : adicional.observacionAdicional, "disabled" : "disabled", "rows" : "3", "class" : "form-control") }}</td>
             <td style="text-align:center;"><a id='{{ adicional.id_actaconteo_persona }}' class='btn btn-default eliminar_guardado'><i class='glyphicon glyphicon-remove'></i></a><br><a class='btn btn-default editar_guardado'><i class='glyphicon glyphicon-edit'></i></a></td>
         </tr>
-    {% endfor %}  
-	{% set nombre = {beneficiario.primerNombre, beneficiario.segundoNombre, beneficiario.primerApellido, beneficiario.segundoApellido} %}
-	<?php $fecha = $this->conversiones->fecha(2, $beneficiario->fechaInterventoria); ?>
+    {% endfor %}
 	<?php for ($i = 1; $i <= 20; $i++) { ?>
         <tr style='display: none;'>
         	<td><span class="number"><?php echo $i; ?></span></td>
