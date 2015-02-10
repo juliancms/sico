@@ -135,7 +135,7 @@ $(".fileupload").change(function() {
 	$(archivo).parent().find('#progress .progress-bar').css(
             "width", "0%"
         );																														
-	var formData = new FormData($('form')[0]);
+	var formData = new FormData($('#adicionales_form')[0]);
 	    $.ajax( {
 	      url: url,
 	      type: 'POST',

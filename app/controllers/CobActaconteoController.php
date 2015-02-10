@@ -322,6 +322,7 @@ class CobActaconteoController extends ControllerBase
     	$this->view->disable();
     	$tipos = array("image/png", "image/jpeg", "image/jpg", "image/bmp", "image/gif");
     	if ($this->request->isPost()) {
+    		if ($this->request->hasFiles() == true) {
 	    		$uploads = $this->request->getUploadedFiles();
 	    		$isUploaded = false;
 	    		foreach($uploads as $upload){
@@ -341,10 +342,10 @@ class CobActaconteoController extends ControllerBase
 	    		} else {
 	    			echo "Error";
 	    		}
-    		
-        } else {
-    		return "Error";
-    	}
+    		}else {
+    			return "Error";
+    		}
+        }
     }
 
     /**
