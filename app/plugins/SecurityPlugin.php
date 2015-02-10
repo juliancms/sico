@@ -153,7 +153,7 @@ class SecurityPlugin extends Plugin
     				'nivelPermiso' => '3'
     		),
     		'subiradicional' => array(
-    				'nivelPermiso' => '3'
+    				'nivelPermiso' => '-2'
     		),
     		'cerrar' => array(
     				'nivelPermiso' => '3'
