@@ -130,25 +130,35 @@ class SecurityPlugin extends Plugin
     	'cob_actaconteo' => array(
     		'index' => array(
     				'nivelPermiso' => '3'
-    		),'ver' => array(
+    		),
+    		'ver' => array(
     				'nivelPermiso' => '3'
-    		),'datos' => array(
+    		),
+    		'datos' => array(
     				'nivelPermiso' => '3'
-    		),'guardardatos' => array(
+    		),
+    		'guardardatos' => array(
     				'nivelPermiso' => '3'
-    		),'guardarbeneficiarios' => array(
+    		),
+    		'guardarbeneficiarios' => array(
     				'nivelPermiso' => '3'
-    		),'guardaradicionales' => array(
+    		),
+    		'guardaradicionales' => array(
     				'nivelPermiso' => '3'
-    		),'beneficiarios' => array(
+    		),
+    		'beneficiarios' => array(
     				'nivelPermiso' => '3'
-    		),'adicionales' => array(
+    		),
+    		'adicionales' => array(
     				'nivelPermiso' => '3'
-    		),'subiradicional' => array(
+    		),
+    		'subiradicional' => array(
     				'nivelPermiso' => '3'
-    		),'cerrar' => array(
+    		),
+    		'cerrar' => array(
     				'nivelPermiso' => '3'
-    		),'abrir' => array(
+    		),
+    		'abrir' => array(
     				'nivelPermiso' => '2'
     		)
     			
