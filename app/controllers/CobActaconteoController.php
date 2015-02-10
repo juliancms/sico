@@ -321,32 +321,30 @@ class CobActaconteoController extends ControllerBase
     public function subiradicionalAction($id_actaconteo) {
     	$this->view->disable();
     	$tipos = array("image/png", "image/jpeg", "image/jpg", "image/bmp", "image/gif");
-    	if ($this->request->isPost()) {
-    		if ($this->request->hasFiles() == true) {
-    			echo "Tipo";
-	    		$uploads = $this->request->getUploadedFiles();
-	    		$isUploaded = false;
-	    		foreach($uploads as $upload){
-	    			if(in_array($upload->gettype(), $tipos)){
-	    				$nombre = $id_actaconteo.date("ymdHis").".".$upload->getextension ();
-		    			$path = "files/adicionales/".$nombre;
-		    			($upload->moveTo($path)) ? $isUploaded = true : $isUploaded = false;
-	    			} else {
-	    				echo "Tipo";
-	    				exit;
-	    			}
-	    		}
-	    		if($isUploaded){
-	    			chmod($path, 0777);
-	    			echo $nombre;
-	    			
-	    		} else {
-	    			echo "Error";
-	    		}
-    		}else {
-    			return "Error";
+    	if ($this->request->hasFiles() == true) {
+    		echo "Tipo";
+    		$uploads = $this->request->getUploadedFiles();
+    		$isUploaded = false;
+    		foreach($uploads as $upload){
+    			if(in_array($upload->gettype(), $tipos)){
+    				$nombre = $id_actaconteo.date("ymdHis").".".$upload->getextension ();
+    				$path = "files/adicionales/".$nombre;
+    				($upload->moveTo($path)) ? $isUploaded = true : $isUploaded = false;
+    			} else {
+    				echo "Tipo";
+    				exit;
+    			}
     		}
-        }
+    		if($isUploaded){
+    			chmod($path, 0777);
+    			echo $nombre;
+    		
+    		} else {
+    			echo "Error";
+    		}
+    	} else {
+    		return "Error";
+    	}
     }
 
     /**
