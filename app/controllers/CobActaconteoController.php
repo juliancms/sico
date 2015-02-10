@@ -323,7 +323,7 @@ class CobActaconteoController extends ControllerBase
     	$tipos = array("image/png", "image/jpeg", "image/jpg", "image/bmp", "image/gif");
     	if ($this->request->isPost()) {
     		if ($this->request->hasFiles() == true) {
-    			echo "Hola";
+    			echo "Error";
 	    		$uploads = $this->request->getUploadedFiles();
 	    		$isUploaded = false;
 	    		foreach($uploads as $upload){
