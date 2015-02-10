@@ -24,7 +24,7 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<table class="table table-bordered table-hover">
+<table class="table table-bordered table-hover" id="recorrido">
     <thead>
         <tr><th>#</th>
             <th>No. Acta</th>

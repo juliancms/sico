@@ -81,6 +81,10 @@ class CobPeriodoController extends ControllerBase
     		$this->flash->error("El recorrido no fue encontrado");
     		return $this->response->redirect("cob_periodo/");
     	}
+    	$this->assets
+    	->addJs('js/jquery.tablesorter.min.js')
+    	->addJs('js/jquery.tablesorter.widgets.js')
+    	->addJs('js/recorrido.js');
     	$this->view->id_periodo = $cob_periodo->id_periodo;
     	$this->view->id_usuario = $this->id_usuario;
     	$this->view->recorrido = $recorrido;
