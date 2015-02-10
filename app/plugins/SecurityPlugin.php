@@ -158,6 +158,15 @@ class SecurityPlugin extends Plugin
     	'session' => array(
     		'start' => array(
     				'nivelPermiso' => '-2'
+    		),'end' => array(
+    				'nivelPermiso' => '-2'
+    		)
+    	),
+    	'index' => array(
+    		'index' => array(
+    				'nivelPermiso' => '-2'
+    		),'end' => array(
+    				'nivelPermiso' => '-2'
     		)
     	)
     );
