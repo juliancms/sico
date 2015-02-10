@@ -295,14 +295,6 @@ class CobActaconteoController extends ControllerBase
     			return $this->response->redirect("cob_periodo/");
     		}
     		$this->assets
-//     		->addJs('js/fileupload/jquery.ui.widget.js')
-//     		->addJs('js/fileupload/load-image.all.min.js')
-//     		->addJs('js/fileupload/canvas-to-blob.min.js')
-//     		->addJs('js/fileupload/jquery.iframe-transport.js')
-//     		->addJs('js/fileupload/jquery.fileupload.js')
-//     		->addJs('js/fileupload/jquery.fileupload-process.js')
-//     		->addJs('js/fileupload/jquery.fileupload-image.js')
-//     		->addJs('js/fileupload/jquery.fileupload-validate.js')
     		->addJs('js/bootstrap-filestyle.min.js')
     		->addJs('js/parsley.min.js')
     		->addJs('js/parsley.extend.js')
