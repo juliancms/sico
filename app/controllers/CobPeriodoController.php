@@ -77,7 +77,7 @@ class CobPeriodoController extends ControllerBase
     		$this->flash->error("El periodo no fue encontrado");
     		return $this->response->redirect("cob_periodo/");
     	}
-    	if (!recorrido) {
+    	if (!$recorrido) {
     		$this->flash->error("El recorrido no fue encontrado");
     		return $this->response->redirect("cob_periodo/");
     	}

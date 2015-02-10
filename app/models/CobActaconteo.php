@@ -226,7 +226,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     	return TRUE;
     }
     
-    public function generarActa($id_actaconteo, $cob_periodo){
+    public function generarActa($id_actaconteo){
     	$acta = CobActaconteo::findFirstByid_actaconteo($id_actaconteo);
     	if(!$acta || $acta == NULL){
     		return FALSE;
@@ -325,6 +325,8 @@ class CobActaconteo extends \Phalcon\Mvc\Model
   		 * se imprimen las actas con la casilla de fecha de visita, de lo contrario la fecha se omite
   		 */ 
   		$fecha_lista = "";
+  		$fecha_encabezado = "";
+  		$fecha_encabezado2 = "";
   		if($acta->id_modalidad == 3 || $acta->id_modalidad == 5 || $acta->id_modalidad == 7){
   			$fecha_encabezado = "<div>4.5 FECHA VISITA</div>";
   			$fecha_encabezado2 = "<div>5.5 FECHA VISITA</div>";

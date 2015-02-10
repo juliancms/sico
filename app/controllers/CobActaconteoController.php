@@ -118,7 +118,7 @@ class CobActaconteoController extends ControllerBase
         }
         $dato = new CobActaconteoDatos();
         $dato->id_actaconteo = $id_actaconteo;
-        $dato->id_usuario = $this->session->auth['id'];
+        $dato->id_usuario = $this->session->auth['id_usuario'];
         $dato->fecha = $this->conversiones->fecha(1, $this->request->getPost("fecha"));
         $dato->horaInicio = $this->request->getPost("horaInicio");
         $dato->horaFin = $this->request->getPost("horaFin");
