@@ -136,8 +136,6 @@ class SecurityPlugin extends Plugin
     				'nivelPermiso' => '3'
     		),'guardardatos' => array(
     				'nivelPermiso' => '3'
-    		),'guardardatos' => array(
-    				'nivelPermiso' => '3'
     		),'guardarbeneficiarios' => array(
     				'nivelPermiso' => '3'
     		),'guardaradicionales' => array(
