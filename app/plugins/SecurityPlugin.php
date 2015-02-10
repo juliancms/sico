@@ -153,7 +153,7 @@ class SecurityPlugin extends Plugin
     				'nivelPermiso' => '3'
     		),
     		'subiradicional' => array(
-    				'nivelPermiso' => '-2'
+    				'nivelPermiso' => '3'
     		),
     		'cerrar' => array(
     				'nivelPermiso' => '3'
@@ -191,6 +191,9 @@ class SecurityPlugin extends Plugin
     	$accion = $dispatcher->getActionName();
         $user = $this->session->get('auth');
         if ($user) {
+        	if(!$controlador || !$accion){
+        		return TRUE;
+        	}
             if($user['nivel'] <= $this->_permiso[$controlador][$accion]['nivelPermiso'] || $this->_permiso[$controlador][$accion]['nivelPermiso'] == -2){
             	return TRUE;
             } else {
