@@ -320,6 +320,7 @@ class CobActaconteoController extends ControllerBase
      */
     public function subiradicionalAction($id_actaconteo) {
     	$this->view->disable();
+    	echo "Error";
     	$tipos = array("image/png", "image/jpeg", "image/jpg", "image/bmp", "image/gif");
     	if ($this->request->isPost()) {
     		if ($this->request->hasFiles() == true) {
