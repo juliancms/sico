@@ -193,7 +193,7 @@ class CobActaconteoController extends ControllerBase
 	    	}
     	}
     	//Eliminar las excusas que ya no tienen clasificación de excusa
-    	$db->query("DELETE FROM cob_actaconteo_persona_excusa WHERE id_actaconteo_persona IN (SELECT id_actaconteo_persona FROM cob_actaconteo_persona WHERE asistencia != 7)");
+    	$db->query("DELETE FROM cob_actaconteo_persona_excusa WHERE id_actaconteo_persona IN (SELECT id_actaconteo_persona FROM cob_actaconteo_persona WHERE asistencia != 7 AND asistencia != 8)");
     	$this->flash->success("Los beneficiarios fueron actualizados exitosamente");
     	return $this->response->redirect("cob_actaconteo/beneficiarios/$id_actaconteo");
     }
