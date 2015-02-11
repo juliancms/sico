@@ -114,7 +114,7 @@ class Elements extends Component
 	            echo '<li role="presentation" class="divider"></li>';
 	            echo '<li><a target="_blank" href="http://www.asesoriayconsultoria.pascualbravo.org/index.php?option=com_content&amp;view=article&amp;id=314&amp;Itemid=183">Reporte de Pago</a></li>';
 	            echo '<li><a target="_blank" href="http://www.interventoriabuencomienzo.org:2095">Correo Institucional</a></li>';
-	            echo '<li><a target="_blank" href="http://190.248.150.222:347/owncloud">Owncloud</a></li>';
+	            echo '<li><a target="_blank" href="http://interventoriabuencomienzo.org/redirect_owncloud.php">Owncloud</a></li>';
 	            echo '<li role="presentation" class="divider"></li>';
 	            echo '<li>'.$this->tag->linkTo("session/end", "Cerrar Sesión").'</li>';
 	        echo '</ul>';

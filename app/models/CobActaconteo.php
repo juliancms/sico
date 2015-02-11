@@ -159,7 +159,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
         	$db->query("UPDATE cob_periodo SET id_carga_facturacion = $carga->id_carga WHERE id_periodo = $cob_periodo->id_periodo");
         }
         $db->query("DELETE FROM $tabla_mat WHERE fechaRetiro > 0000-00-00");
-        $eliminar = CobActaconteoPersona::find(["id_periodo = $cob_periodo->id_periodo AND recorrido < $recorrido AND (asistencia = 1 OR asistencia = 7 OR asistencia = 9 OR asistencia = 10 OR asistencia = 4 OR asistencia = 5 OR asistencia = 0)"]);
+        $eliminar = CobActaconteoPersona::find(["id_periodo = $cob_periodo->id_periodo AND recorrido < $recorrido AND (asistencia = 1 OR asistencia = 7 OR asistencia = 9 OR asistencia = 10)"]);
         if(count($eliminar) > 0){
         	$sql = "DELETE FROM $tabla_mat WHERE CONCAT_WS('-',id_contrato,numDocumento) IN (";
         	foreach($eliminar as $row){

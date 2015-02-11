@@ -417,7 +417,8 @@ class CobActaconteoController extends ControllerBase
         		return $this->response->redirect($uri);
         	}
         	$this->flash->success("El acta fue cerrada exitosamente");
-        	return $this->response->redirect($uri);        }
+        	return $this->response->redirect($uri);        
+        }
     }
     /**
      * Abre un acta
