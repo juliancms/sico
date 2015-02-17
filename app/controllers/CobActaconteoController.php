@@ -98,7 +98,10 @@ class CobActaconteoController extends ControllerBase
             	$this->tag->setDefault("observacionUsuario", $acta->CobActaconteoDatos->observacionUsuario);
             }
             $this->view->acta = $acta;
-            $this->view->acta_cerrada = $this->actaCerrada($acta, $this->user['nivel']);
+            if($this->actaCerrada($acta) == TRUE){
+            	$this->assets
+            	->addJs('js/acta_cerrada.js');
+            }
         }
     }
     
@@ -115,6 +118,10 @@ class CobActaconteoController extends ControllerBase
         if (!$acta) {
             $this->flash->error("El acta $id_actaconteo no existe ");
             return $this->response->redirect("cob_periodo/");
+        }
+        if($this->actaCerrada($acta) == TRUE){
+        	$this->flash->error("El acta no puede ser modificada porque se encuentra cerrada");
+            return $this->response->redirect("cob_actaconteo/datos/$id_actaconteo");
         }
         $dato = new CobActaconteoDatos();
         $dato->id_actaconteo = $id_actaconteo;
@@ -153,6 +160,10 @@ class CobActaconteoController extends ControllerBase
     	if (!$acta) {
     		$this->flash->error("El acta $id_actaconteo no existe");
     		return $this->response->redirect("cob_periodo/");
+    	}
+    	if($this->actaCerrada($acta) == TRUE){
+    		$this->flash->error("El acta no puede ser modificada porque se encuentra cerrada");
+    		return $this->response->redirect("cob_actaconteo/datos/$id_actaconteo");
     	}
     	$persona = new CobActaconteoPersona();
     	$i = 0;
@@ -211,6 +222,10 @@ class CobActaconteoController extends ControllerBase
     	if (!$acta) {
     		$this->flash->error("El acta $id_actaconteo no existe");
     		return $this->response->redirect("cob_periodo/");
+    	}
+    	if($this->actaCerrada($acta) == TRUE){
+    		$this->flash->error("El acta no puede ser modificada porque se encuentra cerrada");
+    		return $this->response->redirect("cob_actaconteo/datos/$id_actaconteo");
     	}
     	$eliminar_adicionales = $this->request->getPost("eliminar_adicionales");
     	if($eliminar_adicionales){
@@ -278,7 +293,10 @@ class CobActaconteoController extends ControllerBase
     		$this->view->id_actaconteo = $id_actaconteo;
     		$this->view->asistencia = $this->elements->getSelect("asistencia");
     		$this->view->acta = $acta;
-    		$this->view->acta_cerrada = $this->actaCerrada($acta, $this->user['nivel']);
+    		if($this->actaCerrada($acta) == TRUE){
+            	$this->assets
+            	->addJs('js/acta_cerrada.js');
+            }
     	}
     }
     
@@ -311,6 +329,10 @@ class CobActaconteoController extends ControllerBase
     		$this->view->id_actaconteo = $id_actaconteo;
     		$this->view->asistencia = $this->elements->getSelect("asistencia");
     		$this->view->acta = $acta;
+    		if($this->actaCerrada($acta) == TRUE){
+    			$this->assets
+    			->addJs('js/acta_cerrada.js');
+    		}
     	}
     }
     
@@ -451,20 +473,20 @@ class CobActaconteoController extends ControllerBase
     	$this->flash->success("El acta fue abierta exitosamente para el interventor");
     	return $this->response->redirect($uri);
     }
-    private function actaCerrada($acta, $nivel){
+    private function actaCerrada($acta){
     	if($acta->estado > 3){
     		$this->flash->notice("<i class='glyphicon glyphicon-exclamation-sign'></i> El acta ya ha sido consolidada, por lo tanto no puede ser modificada.");
-    		return " disabled-field";
-    	} else if($acta->estado > 2 && $nivel > 1){
+    		return TRUE;
+    	} else if($acta->estado > 2){
     		$estado = $acta->IbcReferencia->nombre;
     		$this->flash->notice("<i class='glyphicon glyphicon-exclamation-sign'></i> El acta se encuentra en estado <b>$estado</b>, por lo tanto no puede modificarla. Si necesita realizar algún cambio contacte con su coordinador.");
-    		return " disabled-field";
-    	} else if($acta->estado > 1 && $nivel > 2){
+    		return TRUE;
+    	} else if($acta->estado > 1){
     		$estado = $acta->IbcReferencia->nombre;
     		$this->flash->notice("<i class='glyphicon glyphicon-exclamation-sign'></i> El acta se encuentra en estado <b>$estado</b>, por lo tanto no puede modificarla. Si necesita realizar algún cambio contacte con su auxiliar administrativo.");
-    		return " disabled-field";
+    		return TRUE;
     	} else {
-    		return "";
+    		return FALSE;
     	}
     }
 
