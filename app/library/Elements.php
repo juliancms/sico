@@ -112,6 +112,7 @@ class Elements extends Component
 	        echo '<ul class="dropdown-menu">';
 	            echo '<li>'.$this->tag->linkTo("ibc_usuario/editarperfil", "Editar Perfil").'</li>';
 	            echo '<li role="presentation" class="divider"></li>';
+	            echo '<li><a target="_blank" href="http://interventoriabuencomienzo.org/redirect_server2.php?sico">Permisos</a></li>';
 	            echo '<li><a target="_blank" href="http://www.asesoriayconsultoria.pascualbravo.org/index.php?option=com_content&amp;view=article&amp;id=314&amp;Itemid=183">Reporte de Pago</a></li>';
 	            echo '<li><a target="_blank" href="http://www.interventoriabuencomienzo.org:2095">Correo Institucional</a></li>';
 	            echo '<li><a target="_blank" href="http://interventoriabuencomienzo.org/redirect_owncloud.php">Owncloud</a></li>';
