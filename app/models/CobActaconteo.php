@@ -204,6 +204,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     	return TRUE;
     }
     
+    //Verificar este proceso
     public function generarActasFacturacion($cob_periodo, $recorrido_anterior) {
     	$recorrido = $recorrido_anterior + 1;
     	$carga = BcCarga::findFirstByid_carga($cob_periodo->id_carga_facturacion);
@@ -211,7 +212,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     	$timestamp = new DateTime();
     	$tabla_mat = "m" . $timestamp->getTimestamp();
     	$db->query("CREATE TEMPORARY TABLE $tabla_mat (fechaInicioAtencion DATE, fechaRetiro DATE, fechaRegistro DATE, id_sede_contrato BIGINT, id_contrato BIGINT, id_modalidad INT, modalidad_nombre VARCHAR(50), id_sede INT, sede_nombre VARCHAR(80), sede_barrio VARCHAR(80), sede_direccion VARCHAR(80), sede_telefono VARCHAR(80), id_oferente INT, oferente_nombre VARCHAR(100), id_persona INT, numDocumento VARCHAR(100), primerNombre VARCHAR(20), segundoNombre VARCHAR(20), primerApellido VARCHAR(20), segundoApellido VARCHAR(20), id_grupo BIGINT, grupo VARCHAR(80), fechaNacimiento DATE, peso VARCHAR(10), estatura VARCHAR(10), fechaControl DATE) CHARACTER SET utf8 COLLATE utf8_bin");
-    	$rows = CobActaconteoPersona::find(["id_periodo = $cob_periodo->id_periodo AND recorrido = $recorrido_anterior AND (asistencia = 2 OR asistencia = 3 OR asistencia = 6 OR asistencia = 8)"]);
+    	$rows = CobActaconteoPersona::find(["id_periodo = $cob_periodo->id_periodo AND recorrido = $recorrido_anterior AND (asistencia = 2 OR asistencia = 3 OR asistencia = 4 OR asistencia = 6 OR asistencia = 8)"]);
     	if(count($rows) > 0){
     	$sql = "INSERT INTO $tabla_mat (id_sede_contrato,id_contrato,id_modalidad,modalidad_nombre,id_sede,sede_nombre,sede_barrio,sede_direccion,sede_telefono,id_oferente,oferente_nombre,id_persona,numDocumento,primerNombre,segundoNombre,primerApellido,segundoApellido,id_grupo,grupo) VALUES ";
     		foreach ($rows as $row) {

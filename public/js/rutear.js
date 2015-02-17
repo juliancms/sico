@@ -1,11 +1,11 @@
 $("#ruteo").tablesorter({sortList: [[0,0]], headers: { 1:{sorter: false}, 2:{sorter: true}, 3:{sorter: true}, 4:{sorter: true}, 5:{sorter: true}, 6:{sorter: true}, 7:{sorter: true}, 8:{sorter: true}, 9:{sorter: true}}});
 var actas_checkeadas = [];
-$('.conteo_select').click(function() {
-	var id_conteo = $(this).parent().parent().find(".id_conteo").attr('id');
-	var num_conteo = $(this).parent().parent().find(".num_conteo").attr('id');
-	$(".ruteo_id_conteo").val(id_conteo);
-	$(".ruteo_num_conteo").val(num_conteo);
-	document.ruteo.submit();
+$('.periodo_select').click(function() {
+	var id_periodo = $(this).parent().parent().find(".id_periodo").attr('id');
+	var recorrido = $(this).parent().parent().find(".recorrido").attr('id');
+	$(".ruteo_id_periodo").val(id_periodo);
+	$(".ruteo_recorrido").val(recorrido);
+	document.ruteodesdeotro.submit();
 });
 $(".acta_check").click (
 	function(){

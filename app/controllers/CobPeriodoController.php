@@ -118,6 +118,7 @@ class CobPeriodoController extends ControllerBase
     	->addJs('js/jquery.tablesorter.min.js')
     	->addJs('js/jquery.tablesorter.widgets.js')
     	->addJs('js/rutear.js');
+    	$this->view->periodos = CobActaconteo::find(['group' => 'id_periodo, recorrido']);
     	$this->view->id_periodo = $cob_periodo->id_periodo;
     	$this->view->recorrido = $recorrido;
     	$this->view->fecha_periodo = $cob_periodo->id_periodo;
@@ -168,6 +169,42 @@ class CobPeriodoController extends ControllerBase
 	    			$this->flash->error($message);
 	    		}
     		return $this->response->redirect("cob_periodo/rutear/$id_periodo/$recorrido");
+    	}
+    	$this->flash->success("El ruteo fue actualizado exitosamente");
+    	return $this->response->redirect("cob_periodo/rutear/$id_periodo/$recorrido");
+    }
+    
+    /**
+     * Rutea desde otro recorrido
+     *
+     */
+    public function ruteodesdeotroguardarAction($id_periodo, $recorrido)
+    {
+    
+    	if (!$this->request->isPost()) {
+    		return $this->response->redirect("rutear/$id_periodo/$recorrido");
+    	}
+    	$id_periodo_actualizar = $this->request->getPost("id_periodo_actualizar");
+    	$recorrido_actualizar = $this->request->getPost("recorrido_actualizar");
+    	$cob_periodo = CobPeriodo::findFirstByid_periodo($id_periodo_actualizar);
+    	$actas = CobActaconteo::find(array(
+    			"id_periodo = $id_periodo_actualizar AND recorrido = $recorrido_actualizar",
+    			"group" => "id_actaconteo"
+    	));
+    	if (!$cob_periodo) {
+    		$this->flash->error("El periodo no fue encontrado");
+    		return $this->response->redirect("cob_periodo/");
+    	}
+    	if (!$actas) {
+    		$this->flash->error("El recorrido no fue encontrado");
+    		return $this->response->redirect("cob_periodo/");
+    	}
+    	$db = $this->getDI()->getDb();
+    	foreach($actas as $row){
+    		$id_usuario = $row->id_usuario;
+    		$id_contrato = $row->id_contrato;
+    		$id_sede = $row->id_sede;
+    		$query = $db->execute("UPDATE cob_actaconteo SET id_usuario = $id_usuario WHERE id_periodo = $id_periodo_actualizar AND recorrido = $recorrido_actualizar AND id_contrato = $id_contrato AND id_sede = $id_sede");
     	}
     	$this->flash->success("El ruteo fue actualizado exitosamente");
     	return $this->response->redirect("cob_periodo/rutear/$id_periodo/$recorrido");
