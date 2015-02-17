@@ -204,7 +204,7 @@ class CobPeriodoController extends ControllerBase
     		$id_usuario = $row->id_usuario;
     		$id_contrato = $row->id_contrato;
     		$id_sede = $row->id_sede;
-    		$query = $db->execute("UPDATE cob_actaconteo SET id_usuario = $id_usuario WHERE id_periodo = $id_periodo_actualizar AND recorrido = $recorrido_actualizar AND id_contrato = $id_contrato AND id_sede = $id_sede");
+    		$query = $db->execute("UPDATE cob_actaconteo SET id_usuario = $id_usuario WHERE id_periodo = $id_periodo AND recorrido = $recorrido AND id_contrato = $id_contrato AND id_sede = $id_sede");
     	}
     	$this->flash->success("El ruteo fue actualizado exitosamente");
     	return $this->response->redirect("cob_periodo/rutear/$id_periodo/$recorrido");
