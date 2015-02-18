@@ -176,6 +176,13 @@ class SecurityPlugin extends Plugin
     		),'end' => array(
     				'nivelPermiso' => '-2'
     		)
+    	),
+    	'cob_ajuste' => array(
+    		'index' => array(
+    				'nivelPermiso' => '2'
+    		),'end' => array(
+    				'nivelPermiso' => '2'
+    		)
     	)
     );
 
