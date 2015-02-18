@@ -55,6 +55,10 @@ class Elements extends Component
                 'caption' => 'Cargas',
                 'action' => 'index'
             ),
+    		'cob_ajuste' => array(
+    				'caption' => 'Ajustes',
+    				'action' => 'index'
+    		),
         	'ibc_usuario' => array(
         		'caption' => 'Usuarios',
         		'action' => 'index'

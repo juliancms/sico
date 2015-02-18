@@ -10,6 +10,7 @@
             <th>Prestador</th>
             <th>Contrato</th>
             <th>Sede</th>
+            <th>Fecha Corte</th>
          </tr>
     </thead>
     <tbody>
@@ -19,6 +20,7 @@
     	<td>{{ acta.oferente_nombre }}</td>
     	<td>{{ beneficiario.id_contrato }}</td>
     	<td>{{ acta.sede_nombre }}</td>
+    	<td>{{ fecha_corte }}</td>
     </tr>
     </tbody>
 </table>

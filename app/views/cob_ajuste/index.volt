@@ -1,8 +1,8 @@
 
 {{ content() }}
-<h1>Periodos</h1>
-{{ link_to("cob_periodo/nuevo", '<i class="glyphicon glyphicon-plus"></i> Nuevo periodo', "class": "btn btn-primary menu-tab") }}
-{% if (not(cob_periodo is empty)) %}
+<h1>Ajustes</h1>
+{{ link_to("cob_ajuste/buscar", '<i class="glyphicon glyphicon-plus"></i> Nuevo ajuste', "class": "btn btn-primary menu-tab") }}
+{% if (not(cob_ajuste is empty)) %}
 <!-- Modal -->
 <div class="modal fade" id="eliminar_elemento" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -24,19 +24,30 @@
 </div><!-- /.modal -->
 <table class="table table-bordered table-hover">
     <thead>
-        <tr><th>Acciones</th>
-            <th>Id Of Periodo</th>
+        <tr>{% if (nivel <= 1) %}<th>Acciones</th>{% endif %}
+            <th>Contrato</th>
+            <th>Documento</th>
+            <th>Nombre</th>
+            <th>Certificar</th>
+            <th>Observación</th>
             <th>Fecha</th>
+            <th>Usuario</th>
          </tr>
     </thead>
     <tbody>
-    {% for cob_periodo in cob_periodo %}
+    {% for cob_ajuste in cob_ajuste %}
+    	{% set nombre = {cob_ajuste.CobActaconteoPersonaFacturacion.primerNombre, cob_ajuste.CobActaconteoPersonaFacturacion.segundoNombre, cob_ajuste.CobActaconteoPersonaFacturacion.primerApellido, cob_ajuste.CobActaconteoPersonaFacturacion.segundoApellido} %}
         <tr>
-        <td>{{ link_to("cob_periodo/ver/"~cob_periodo.id_periodo, '<i class="glyphicon glyphicon-list-alt"></i> ', "rel": "tooltip", "title":"Ver") }}{{ link_to("cob_periodo/editar/"~cob_periodo.id_periodo, '<i class="glyphicon glyphicon-pencil"></i> ', "rel": "tooltip", "title":"Editar") }}
-<a href="#eliminar_elemento" rel="tooltip" title="Eliminar" class="eliminar_fila" data-toggle = "modal" id="{{ url("cob_periodo/eliminar/"~cob_periodo.id_periodo) }}"><i class="glyphicon glyphicon-trash"></i></a></td>
-            <td>{{ cob_periodo.id_periodo }}</td>
-            <td>{{ cob_periodo.fecha }}</td>
-                        
+        {% if (nivel <= 1) %}
+        <td><a href="#eliminar_elemento" rel="tooltip" title="Eliminar" class="eliminar_fila" data-toggle = "modal" id="{{ url("cob_ajuste/eliminar/"~cob_ajuste.id_ajuste) }}"><i class="glyphicon glyphicon-trash"></i></a></td>
+		{% endif %}
+        <td>{{ cob_ajuste.CobActaconteoPersonaFacturacion.id_contrato }}</td>
+        <td>{{ cob_ajuste.CobActaconteoPersonaFacturacion.numDocumento }}</td>
+        <td>{{ nombre|join(' ') }}</td>
+        <td>{{ cob_ajuste.getCertificarDetail() }}</td>
+        <td>{{ cob_ajuste.observacion }}</td>
+        <td>{{ cob_ajuste.datetime }}</td>
+        <td>{{ cob_ajuste.IbcUsuario.usuario }}</td>
         </tr>
     {% endfor %}
     </tbody>
