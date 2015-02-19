@@ -98,10 +98,7 @@ class CobActaconteoController extends ControllerBase
             	$this->tag->setDefault("observacionUsuario", $acta->CobActaconteoDatos->observacionUsuario);
             }
             $this->view->acta = $acta;
-            if($this->actaCerrada($acta) == TRUE){
-            	$this->assets
-            	->addJs('js/acta_cerrada.js');
-            }
+            $this->actaCerrada($acta, $this->user['nivel']);
         }
     }
     
@@ -119,10 +116,7 @@ class CobActaconteoController extends ControllerBase
             $this->flash->error("El acta $id_actaconteo no existe ");
             return $this->response->redirect("cob_periodo/");
         }
-        if($this->actaCerrada($acta) == TRUE){
-        	$this->flash->error("El acta no puede ser modificada porque se encuentra cerrada");
-            return $this->response->redirect("cob_actaconteo/datos/$id_actaconteo");
-        }
+        $this->guardarActaCerrada($acta, $this->user['nivel']);
         $dato = new CobActaconteoDatos();
         $dato->id_actaconteo = $id_actaconteo;
         $dato->id_usuario = $this->session->auth['id_usuario'];
@@ -161,10 +155,7 @@ class CobActaconteoController extends ControllerBase
     		$this->flash->error("El acta $id_actaconteo no existe");
     		return $this->response->redirect("cob_periodo/");
     	}
-    	if($this->actaCerrada($acta) == TRUE){
-    		$this->flash->error("El acta no puede ser modificada porque se encuentra cerrada");
-    		return $this->response->redirect("cob_actaconteo/datos/$id_actaconteo");
-    	}
+    	$this->guardarActaCerrada($acta, $this->user['nivel']);
     	$persona = new CobActaconteoPersona();
     	$i = 0;
     	$elementos = array(
@@ -225,10 +216,7 @@ class CobActaconteoController extends ControllerBase
     		$this->flash->error("El acta $id_actaconteo no existe");
     		return $this->response->redirect("cob_periodo/");
     	}
-    	if($this->actaCerrada($acta) == TRUE){
-    		$this->flash->error("El acta no puede ser modificada porque se encuentra cerrada");
-    		return $this->response->redirect("cob_actaconteo/datos/$id_actaconteo");
-    	}
+    	$this->guardarActaCerrada($acta, $this->user['nivel']);
     	$eliminar_adicionales = $this->request->getPost("eliminar_adicionales");
     	if($eliminar_adicionales){
 	    	$sql = $this->conversiones->multipledelete("cob_actaconteo_persona", "id_actaconteo_persona", $eliminar_adicionales);
@@ -298,10 +286,7 @@ class CobActaconteoController extends ControllerBase
     		$this->view->id_actaconteo = $id_actaconteo;
     		$this->view->asistencia = $this->elements->getSelect("asistencia");
     		$this->view->acta = $acta;
-    		if($this->actaCerrada($acta) == TRUE){
-            	$this->assets
-            	->addJs('js/acta_cerrada.js');
-            }
+    		$this->actaCerrada($acta, $this->user['nivel']);
     	}
     }
     
@@ -334,10 +319,7 @@ class CobActaconteoController extends ControllerBase
     		$this->view->id_actaconteo = $id_actaconteo;
     		$this->view->asistencia = $this->elements->getSelect("asistencia");
     		$this->view->acta = $acta;
-    		if($this->actaCerrada($acta) == TRUE){
-    			$this->assets
-    			->addJs('js/acta_cerrada.js');
-    		}
+    		$this->actaCerrada($acta, $this->user['nivel']);
     	}
     }
     
@@ -478,18 +460,43 @@ class CobActaconteoController extends ControllerBase
     	$this->flash->success("El acta fue abierta exitosamente para el interventor");
     	return $this->response->redirect($uri);
     }
-    private function actaCerrada($acta){
+    private function actaCerrada($acta, $nivel){
     	if($acta->estado > 3){
     		$this->flash->notice("<i class='glyphicon glyphicon-exclamation-sign'></i> El acta ya ha sido consolidada, por lo tanto no puede ser modificada.");
-    		return TRUE;
+    		$this->assets
+    		->addJs('js/acta_cerrada.js');
+    		return 3;
     	} else if($acta->estado > 2){
     		$estado = $acta->IbcReferencia->nombre;
     		$this->flash->notice("<i class='glyphicon glyphicon-exclamation-sign'></i> El acta se encuentra en estado <b>$estado</b>, por lo tanto no puede modificarla. Si necesita realizar algún cambio contacte con su coordinador.");
-    		return TRUE;
+    		$this->assets
+    		->addJs('js/acta_cerrada.js');
+    		return 2;
     	} else if($acta->estado > 1){
     		$estado = $acta->IbcReferencia->nombre;
-    		$this->flash->notice("<i class='glyphicon glyphicon-exclamation-sign'></i> El acta se encuentra en estado <b>$estado</b>, por lo tanto no puede modificarla. Si necesita realizar algún cambio contacte con su auxiliar administrativo.");
-    		return TRUE;
+    		$this->flash->notice("<i class='glyphicon glyphicon-exclamation-sign'></i> El acta se encuentra en estado <b>$estado</b>, por lo tanto no puede modificarla a menos que sea un auxiliar o administrador. Si necesita realizar algún cambio contacte con su auxiliar administrativo.");
+    		if($nivel == 3){
+    			$this->assets
+    			->addJs('js/acta_cerrada.js');
+    		}
+    		return 1;
+    	} else {
+    		return FALSE;
+    	}
+    }
+    private function guardarActaCerrada($acta, $nivel){
+    	if($acta->estado > 3){
+    		$this->flash->error("<i class='glyphicon glyphicon-exclamation-sign'></i> El acta no puede ser guardada porque ya ha sido consolidada, si necesita modificar una asistencia realice un ajuste.");
+    		return $this->response->redirect("cob_actaconteo/datos/$acta->id_actaconteo");
+    	} else if($acta->estado > 2){
+    		$this->flash->error("<i class='glyphicon glyphicon-exclamation-sign'></i> El acta se encuentra en estado <b>Cerrada por Auxiliar</b>, si realizar un cambio contacte con su coordinador.");
+    		return $this->response->redirect("cob_actaconteo/datos/$acta->id_actaconteo");
+    	} else if($acta->estado > 1){
+    		if($nivel == 3){
+    			$this->flash->error("<i class='glyphicon glyphicon-exclamation-sign'></i> El acta se encuentra en estado <b>Cerrada por Interventor</b>, si realizar un cambio contacte con su coordinador.");
+    			return $this->response->redirect("cob_actaconteo/datos/$acta->id_actaconteo");
+    		}
+    		return FALSE;
     	} else {
     		return FALSE;
     	}
