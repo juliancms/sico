@@ -128,6 +128,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
 		$this->belongsTo('estado', 'IbcReferencia', 'id_referencia', array(
 				'reusable' => true
 		));
+		$this->hasMany("id_sede_contrato", "CobActaconteoPersonaFacturacion", "id_sede_contrato");
 		$this->hasMany('id_actaconteo', 'CobActaconteoPersona', 'id_actaconteo', array(
 				'foreignKey' => array(
 						'message' => 'El acta no puede ser eliminada porque existen beneficiarios asociados a ésta'
@@ -235,6 +236,22 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     	$tabla_mat = "m" . $timestamp->getTimestamp();
     	$db->query("CREATE TEMPORARY TABLE $tabla_mat (fechaInicioAtencion DATE, fechaRetiro DATE, fechaRegistro DATE, id_sede_contrato BIGINT, id_contrato BIGINT, id_modalidad INT, modalidad_nombre VARCHAR(50), id_sede INT, sede_nombre VARCHAR(80), sede_barrio VARCHAR(80), sede_direccion VARCHAR(80), sede_telefono VARCHAR(80), id_oferente INT, oferente_nombre VARCHAR(100), id_persona INT, numDocumento VARCHAR(100), primerNombre VARCHAR(20), segundoNombre VARCHAR(20), primerApellido VARCHAR(20), segundoApellido VARCHAR(20), id_grupo BIGINT, grupo VARCHAR(80), fechaNacimiento DATE, peso VARCHAR(10), estatura VARCHAR(10), fechaControl DATE) CHARACTER SET utf8 COLLATE utf8_bin");
     	$rows = CobActaconteoPersona::find(["id_actaconteo = $acta->id_actaconteo AND tipoPersona = 0 AND (asistencia = 2 OR asistencia = 3 OR asistencia = 4 OR asistencia = 5 OR asistencia = 6 OR asistencia = 8)"]);
+    	if(count($rows) > 0){
+    		$sql = "INSERT INTO $tabla_mat (id_sede_contrato,id_contrato,id_modalidad,modalidad_nombre,id_sede,sede_nombre,sede_barrio,sede_direccion,sede_telefono,id_oferente,oferente_nombre,id_persona,numDocumento,primerNombre,segundoNombre,primerApellido,segundoApellido,id_grupo,grupo) VALUES ";
+    		foreach ($rows as $row) {
+    			$sql .= "(\"". $row->CobActaconteo->id_sede_contrato. "\",\"".$row->CobActaconteo->id_contrato."\",\"".$row->CobActaconteo->id_modalidad."\",\"".$row->CobActaconteo->modalidad_nombre."\",\"".$row->CobActaconteo->id_sede."\",\"".$row->CobActaconteo->sede_nombre."\",\"".$row->CobActaconteo->sede_barrio."\",\"".$row->CobActaconteo->sede_direccion."\",\"".$row->CobActaconteo->sede_telefono."\",\"".$row->CobActaconteo->id_oferente."\",\"".$row->CobActaconteo->oferente_nombre."\",\"".$row->id_persona."\",\"".$row->numDocumento."\",\"".$row->primerNombre."\",\"".$row->segundoNombre."\",\"".$row->primerApellido."\",\"".$row->segundoApellido."\",\"".$row->id_grupo."\",\"".$row->grupo."\"),";
+    		}
+    		$sql = substr($sql, 0, -1);
+    		$db->query($sql);
+    	}
+    	$db->query("INSERT IGNORE INTO cob_actaconteo (id_periodo, id_carga, recorrido, id_sede_contrato, id_contrato, id_modalidad, modalidad_nombre, id_sede, sede_nombre, sede_barrio, sede_direccion, sede_telefono, id_oferente, oferente_nombre) SELECT $cob_periodo->id_periodo, $carga->id_carga, $recorrido, id_sede_contrato, id_contrato, id_modalidad, modalidad_nombre, id_sede, sede_nombre, sede_barrio, sede_direccion, sede_telefono, id_oferente, oferente_nombre FROM $tabla_mat");
+    	$db->query("INSERT IGNORE INTO cob_actaconteo_persona (id_actaconteo, id_periodo, recorrido, id_contrato, id_persona, numDocumento, primerNombre, segundoNombre, primerApellido, segundoApellido, id_grupo, grupo) SELECT (SELECT id_actaconteo FROM cob_actaconteo WHERE cob_actaconteo.id_sede_contrato = $tabla_mat.id_sede_contrato AND cob_actaconteo.id_periodo = $cob_periodo->id_periodo AND cob_actaconteo.recorrido = $recorrido), $cob_periodo->id_periodo, $recorrido, id_contrato, id_persona, numDocumento, primerNombre, segundoNombre, primerApellido, segundoApellido, id_grupo, grupo FROM $tabla_mat");
+    	$db->query("DROP TABLE $tabla_mat");
+    	return TRUE;
+    }
+    
+    public function cerrarPeriodo($id_periodo) {
+    	$rows = CobActaconteoPersona::find(["id_periodo = $id_periodo AND (asistencia = 1 OR asistencia = 7)"]);
     	if(count($rows) > 0){
     		$sql = "INSERT INTO $tabla_mat (id_sede_contrato,id_contrato,id_modalidad,modalidad_nombre,id_sede,sede_nombre,sede_barrio,sede_direccion,sede_telefono,id_oferente,oferente_nombre,id_persona,numDocumento,primerNombre,segundoNombre,primerApellido,segundoApellido,id_grupo,grupo) VALUES ";
     		foreach ($rows as $row) {
@@ -396,4 +413,37 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     	$datos_acta['html'] = $html; 
     	return $datos_acta;
     }
+    
+    /**
+     * Returns a human representation of 'estado'
+     *
+     * @return string
+     */
+    public function getestadoDetail()
+    {
+    	switch ($this->estado) {
+    		case 0:
+    			return "Inactiva";
+    			break;
+    		case 1:
+    			return "Activa";
+    			break;
+    		case 2:
+    			return "Cerrada por Interventor";
+    			break;
+    		case 3:
+    			return "Cerrada por Auxiliar";
+    			break;
+    		case 4:
+    			return "Consolidada";
+    			break;
+    	}
+    	if ($this->estado == 0) {
+    		return 'Pendiente de Certificación';
+    	} else if($this->certificar == 1) {
+    		return 'Certificar Atención';
+    	}
+    	return 'No certificar Atención';
+    }
+    
 }

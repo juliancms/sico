@@ -496,17 +496,15 @@ class CobActaconteoController extends ControllerBase
     	if (!$id_periodo) {
     		return $this->response->redirect("cob_actaconteo/ver/$id_actaconteo");
     	}
-    	$rows = CobActaconteoPersonaFacturacion::find(["id_periodo = $id_periodo AND certificacion = 0"]);
-    	$i = 0;
-    	if(count($rows) > 0){
-    		foreach ($rows as $row) {
-    			$nino = CobActaconteoPersona::find(["numDocumento = $row->numDocumento AND id_contrato = $row->id_contrato AND (asistencia = 1 OR asistencia = 7)"]);
-    			if($nino){
-    				$i++;
+    	$ninos = CobActaconteoPersona::find(["id_periodo = $id_periodo AND (asistencia = 1 OR asistencia = 7)"]);
+    	$ninos = $ninos->filter(function($nino){
+    		foreach($nino->CobActaconteoPersonaFacturacion as $row){
+    			if($row->id_usuario == $this->id_usuario) {
+    				return $mensaje;
     			}
     		}
-			echo $i;    		
-    	}
+    	});
+    	echo count($ninos);
     }
     
     private function actaCerrada($acta, $nivel){
