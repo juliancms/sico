@@ -160,6 +160,9 @@ class SecurityPlugin extends Plugin
     		),
     		'abrir' => array(
     				'nivelPermiso' => '2'
+    		),
+    		'totalcertificar' => array(
+    				'nivelPermiso' => '1'
     		)
     			
     	),
