@@ -489,6 +489,26 @@ class CobActaconteoController extends ControllerBase
     	return $this->response->redirect("cob_actaconteo/ver/$id_actaconteo");
     }
     
+    /**
+     * Duplicar una acta
+     */
+    public function totalcertificarAction($id_periodo){
+    	if (!$id_periodo) {
+    		return $this->response->redirect("cob_actaconteo/ver/$id_actaconteo");
+    	}
+    	$rows = CobActaconteoPersonaFacturacion::find(["id_periodo = $id_periodo AND certificacion = 0"]);
+    	$i = 0;
+    	if(count($rows) > 0){
+    		foreach ($rows as $row) {
+    			$nino = CobActaconteoPersona::find(["numDocumento = $row->numDocumento AND id_contrato = $row->id_contrato AND (asistencia = 1 OR asistencia = 7)"]);
+    			if($nino){
+    				$i++;
+    			}
+    		}
+			echo $i;    		
+    	}
+    }
+    
     private function actaCerrada($acta, $nivel){
     	if($acta->estado > 3){
     		$this->flash->notice("<i class='glyphicon glyphicon-exclamation-sign'></i> El acta ya ha sido consolidada, por lo tanto no puede ser modificada.");
