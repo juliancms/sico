@@ -60,6 +60,7 @@ class CobAjusteController extends ControllerBase
     		$this->flash->error("El beneficiario con número de documento <strong>$numDocumento</strong> no fue encontrado en el contrato <strong>$id_contrato</strong> para el periodo <strong>$cob_periodo->fecha</strong>");
     		return $this->response->redirect("cob_ajuste/buscar");
     	}
+    	$this->flash->notice("<i class='glyphicon glyphicon-exclamation-sign'></i> Por favor, antes de ingresar la información verifique que el ajuste corresponde al periodo y la información del beneficiario.");
     	$acta = CobActaconteo::findFirst(array("id_periodo = $id_periodo AND id_sede_contrato = $beneficiario->id_sede_contrato"));
     	$this->view->sino = $this->elements->getSelect("sino");
     	$this->view->acta = $acta;

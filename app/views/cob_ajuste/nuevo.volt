@@ -3,6 +3,11 @@
 {% set nombre = {beneficiario.primerNombre, beneficiario.segundoNombre, beneficiario.primerApellido, beneficiario.segundoApellido} %}
 <h1>Nuevo Ajuste</h1>
 <table class="table table-bordered table-hover">
+	<thead>
+        <tr>
+            <th colspan="6" style="text-align: center; background-color: #F8F8F8;">Información del beneficiario</th>
+        </tr>
+    </thead>
     <thead>
         <tr>
             <th>Documento</th>
@@ -10,7 +15,7 @@
             <th>Prestador</th>
             <th>Contrato</th>
             <th>Sede</th>
-            <th>Fecha Corte</th>
+            <th>Periodo</th>
          </tr>
     </thead>
     <tbody>
@@ -27,9 +32,15 @@
 {{ link_to("cob_ajuste/", '<i class="glyphicon glyphicon-chevron-left"></i> Regresar', "class": "btn btn-primary menu-tab") }}
 {{ form("cob_ajuste/guardar/"~beneficiario.id_actaconteo_persona_facturacion, "method":"post", "class":"form-container form-horizontal", "parsley-validate" : "") }}
 	<div class="form-group">
-        <label class="col-sm-2 control-label" for="certificar">¿Certificar? *</label>
+        <label class="col-sm-2 control-label" for="certificar">* ¿Certificar?</label>
         <div class="col-sm-10">
                 {{ select("certificar", sino, "class" : "form-control required") }}
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label" for="radicado">Número de radicado</label>
+        <div class="col-sm-10">
+               {{ text_field("radicado", "class" : "form-control required") }}
         </div>
     </div>
     <div class="form-group">

@@ -39,6 +39,8 @@ class CobActaconteoController extends ControllerBase
     		$this->flash->error("El acta no fue encontrada");
     		return $this->response->redirect("cob_periodo/");
     	}
+    	$this->view->recorridos = CobActaconteo::maximum(array("column" => "recorrido"));
+    	$this->view->nivel = $this->user['nivel'];
     	$this->view->acta_html = $acta['html'];
     	$this->view->acta_datos = $acta['datos'];
     	$this->view->acta = $acta['datos'];
@@ -460,6 +462,33 @@ class CobActaconteoController extends ControllerBase
     	$this->flash->success("El acta fue abierta exitosamente para el interventor");
     	return $this->response->redirect($uri);
     }
+    
+    /**
+     * Duplicar una acta
+     */
+    public function duplicaractaAction($id_actaconteo){
+    	if (!$id_actaconteo) {
+    		return $this->response->redirect("cob_actaconteo/ver/$id_actaconteo");
+    	}
+    	$acta = CobActaconteo::findFirstByid_actaconteo($id_actaconteo);
+    	if (!$acta) {
+    		$this->flash->error("El acta no fue encontrada");
+    		return $this->response->redirect("cob_actaconteo/ver/$id_actaconteo");
+    	}
+    	$cob_periodo = CobPeriodo::findFirstByid_periodo($acta->id_periodo);
+    	if (!$cob_periodo) {
+    		$this->flash->error("El periodo no existe");
+    		return $this->response->redirect("cob_actaconteo/ver/$id_actaconteo");
+    	}
+    	$duplicar = CobActaconteo::duplicarActa($acta, $cob_periodo);
+    	if($duplicar){
+    		$this->flash->success("Se duplicó exitosamente el acta");
+    	} else {
+    		$this->flash->error("No se duplicó el acta");
+    	}
+    	return $this->response->redirect("cob_actaconteo/ver/$id_actaconteo");
+    }
+    
     private function actaCerrada($acta, $nivel){
     	if($acta->estado > 3){
     		$this->flash->notice("<i class='glyphicon glyphicon-exclamation-sign'></i> El acta ya ha sido consolidada, por lo tanto no puede ser modificada.");
