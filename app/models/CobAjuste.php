@@ -59,9 +59,17 @@ class CobAjuste extends \Phalcon\Mvc\Model
     	if ($this->certificar == 0) {
     		return 'Pendiente de Certificación';
     	} else if($this->certificar == 1) {
-    		return 'Certificar Atención';
+    		return 'Certificar Atención del periodo por ajuste';
     	}
-    	return 'No certificar Atención';
+    	return 'Descontar Atención del periodo por ajuste';
+    }
+    
+    /**
+     * Returns a select
+     */
+    public function CertificarSelect()
+    {
+    	return array("1" => "Certificar Atención del periodo por ajuste", "3" => "Descontar Atención del periodo por ajuste");
     }
 
 }
