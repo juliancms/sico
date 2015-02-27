@@ -63,7 +63,7 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="col-sm-2 control-label" for="fecha">* Observación</label>
+        <label class="col-sm-2 control-label" for="observacion">* Observación</label>
         <div class="col-sm-10">
                 {{ text_area("observacion", "rows" : "4", "class" : "form-control required") }}
         </div>
