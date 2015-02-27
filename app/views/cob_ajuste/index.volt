@@ -25,14 +25,14 @@
 <table class="table table-bordered table-hover">
     <thead>
         <tr>{% if (nivel <= 1) %}<th>Acciones</th>{% endif %}
-            <th>Periodo</th>
-            <th>Contrato</th>
-            <th>Documento</th>
-            <th>Nombre</th>
-            <th>Certificar</th>
-            <th>Observación</th>
-            <th>Fecha</th>
-            <th>Usuario</th>
+            <th>Periodo<input autocomplete='off' class='filter form-control input-sm' name='periodo' data-col='periodo'/></th>
+            <th>Contrato<input autocomplete='off' class='filter form-control input-sm' name='contrato' data-col='contrato'/></th>
+            <th>Documento<input autocomplete='off' class='filter form-control input-sm' name='documento' data-col='documento'/></th>
+            <th>Nombre<input autocomplete='off' class='filter form-control input-sm' name='nombre' data-col='nombre'/></th>
+            <th>Certificar<input autocomplete='off' class='filter form-control input-sm' name='certificar' data-col='certificar'/></th>
+            <th>Observación<input autocomplete='off' class='filter form-control input-sm' name='observacion' data-col='observacion'/></th>
+            <th>Fecha<input autocomplete='off' class='filter form-control input-sm' name='fecha' data-col='fecha'/></th>
+            <th>Usuario<input autocomplete='off' class='filter form-control input-sm' name='usuario' data-col='usuario'/></th>
          </tr>
     </thead>
     <tbody>

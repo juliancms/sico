@@ -24,6 +24,8 @@ class CobAjusteController extends ControllerBase
             $this->flash->notice("No se ha agregado ningún ajuste hasta el momento");
             $cob_ajuste = null;
         }
+        $this->assets
+        ->addJs('js/multifilter.min.js');
         $this->view->nivel = $this->user['nivel'];
         $this->view->cob_ajuste = $cob_ajuste;
     }
