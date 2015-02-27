@@ -25,6 +25,7 @@
 <table class="table table-bordered table-hover">
     <thead>
         <tr>{% if (nivel <= 1) %}<th>Acciones</th>{% endif %}
+            <th>Periodo</th>
             <th>Contrato</th>
             <th>Documento</th>
             <th>Nombre</th>
@@ -41,6 +42,7 @@
         {% if (nivel <= 1) %}
         <td><a href="#eliminar_elemento" rel="tooltip" title="Eliminar" class="eliminar_fila" data-toggle = "modal" id="{{ url("cob_ajuste/eliminar/"~cob_ajuste.id_ajuste) }}"><i class="glyphicon glyphicon-trash"></i></a></td>
 		{% endif %}
+		<td><?php echo $this->conversiones->fecha(5, $cob_ajuste->CobPeriodo->fecha); ?></td>
         <td>{{ cob_ajuste.CobActaconteoPersonaFacturacion.id_contrato }}</td>
         <td>{{ cob_ajuste.CobActaconteoPersonaFacturacion.numDocumento }}</td>
         <td>{{ nombre|join(' ') }}</td>

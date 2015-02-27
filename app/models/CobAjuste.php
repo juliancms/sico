@@ -44,6 +44,9 @@ class CobAjuste extends \Phalcon\Mvc\Model
     	$this->belongsTo('id_usuario', 'IbcUsuario', 'id_usuario', array(
     			'reusable' => true
     	));
+    	$this->belongsTo('id_periodo', 'CobPeriodo', 'id_periodo', array(
+    			'reusable' => true
+    	));
     	$this->belongsTo('id_actaconteo_persona_facturacion', 'CobActaconteoPersonaFacturacion', 'id_actaconteo_persona_facturacion', array(
     			'reusable' => true
     	));

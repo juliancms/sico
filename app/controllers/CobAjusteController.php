@@ -88,6 +88,7 @@ class CobAjusteController extends ControllerBase
     		return $this->response->redirect("cob_ajuste/buscar");
     	}
     	$ajuste = new CobAjuste();
+    	$ajuste->id_periodo = $beneficiario->id_periodo;
     	$ajuste->id_actaconteo_persona_facturacion = $id_actaconteo_persona_facturacion;
     	$ajuste->certificar = $this->request->getPost("certificar");
     	$ajuste->datetime = date('Y-m-d H:i:s');
