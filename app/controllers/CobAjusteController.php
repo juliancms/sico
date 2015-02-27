@@ -61,10 +61,14 @@ class CobAjusteController extends ControllerBase
     		return $this->response->redirect("cob_ajuste/buscar");
     	}
     	$this->flash->notice("<i class='glyphicon glyphicon-exclamation-sign'></i> Por favor, antes de ingresar la información verifique que el ajuste corresponde al periodo y la información del beneficiario.");
+    	$this->assets
+    	->addJs('js/ajuste.js')
+    	->addJs('js/parsley.min.js')
+    	->addJs('js/parsley.extend.js');
     	$acta = CobActaconteo::findFirst(array("id_periodo = $id_periodo AND id_sede_contrato = $beneficiario->id_sede_contrato"));
     	$this->view->sino = CobAjuste::CertificarSelect();
     	$this->view->acta = $acta;
-    	$this->view->fecha_corte = $cob_periodo->fecha;
+    	$this->view->periodo = $this->conversiones->fecha(5, $cob_periodo->fecha);
     	$this->view->beneficiario = $beneficiario;
 
     }

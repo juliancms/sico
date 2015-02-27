@@ -8,7 +8,7 @@
         <div class="col-sm-10">
         	<select id="id_periodo" name="id_periodo" class="form-control">
 			{% for periodo in periodos %}
-					<option value="{{ periodo.id_periodo }}">{{ periodo.fecha }}</option>
+					<option value="{{ periodo.id_periodo }}">{{ periodo.getFechaDetail() }}</option>
         	{% endfor  %}
 			</select>
         </div>

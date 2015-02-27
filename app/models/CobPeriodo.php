@@ -1,5 +1,5 @@
 <?php
-
+use Phalcon\DI\FactoryDefault;
 class CobPeriodo extends \Phalcon\Mvc\Model
 {
 
@@ -23,4 +23,16 @@ class CobPeriodo extends \Phalcon\Mvc\Model
     			)
     	));
     }
+    
+    /**
+     * Returns a human representation of 'fecha'
+     *
+     * @return string
+     */
+    public function getFechaDetail()
+    {
+    	$conversiones = $this->getDI()->getConversiones();
+    	return $conversiones->fecha(5, $this->fecha);
+    }
+    
 }

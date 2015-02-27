@@ -443,5 +443,19 @@ class CobPeriodoController extends ControllerBase
 
         return $this->response->redirect("cob_periodo/");
     }
+    
+    /**
+     * Duplicar una acta
+     */
+    public function cerrarAction($id_periodo){
+    	if (!$id_periodo) {
+    		return $this->response->redirect("cob_actaconteo/ver/$id_actaconteo");
+    	}
+    	$ninos = CobActaconteoPersona::find(["id_periodo = $id_periodo AND (asistencia = 1 OR asistencia = 7)"]);
+    	foreach($ninos as $row){
+    		echo $row->CobActaconteoPersonaFacturacion->numDocumento . " - ";
+    	}
+    	break;
+    }
 
 }
