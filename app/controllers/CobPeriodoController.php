@@ -99,6 +99,39 @@ class CobPeriodoController extends ControllerBase
      * @param int $id_periodo
      * @param int $recorrido
      */
+    public function gdocumentalAction($id_periodo, $recorrido)
+    {
+    	$cob_periodo = CobPeriodo::findFirstByid_periodo($id_periodo);
+    	$actas_recorrido = CobActaconteo::find(array(
+    			"id_periodo = $id_periodo AND recorrido = $recorrido",
+    			"group" => "id_actaconteo"
+    	));
+    	if (!$cob_periodo) {
+    		$this->flash->error("El periodo no fue encontrado");
+    		return $this->response->redirect("cob_periodo/");
+    	}
+    	if (!$recorrido) {
+    		$this->flash->error("El recorrido no fue encontrado");
+    		return $this->response->redirect("cob_periodo/");
+    	}
+    	$this->assets
+    	->addJs('js/jquery.tablesorter.min.js')
+    	->addJs('js/jquery.tablesorter.widgets.js')
+    	->addJs('js/recorrido.js');
+    	$this->view->id_periodo = $cob_periodo->id_periodo;
+    	$this->view->id_usuario = $this->id_usuario;
+    	$this->view->recorrido = $recorrido;
+    	$this->view->fecha_periodo = $cob_periodo->fecha;
+    	$this->view->actas = $actas_recorrido;
+    	$this->view->nivel = $this->user['nivel'];
+    }
+    
+    /**
+     * Recorrido
+     *
+     * @param int $id_periodo
+     * @param int $recorrido
+     */
     public function rutearAction($id_periodo, $recorrido)
     {
     	$cob_periodo = CobPeriodo::findFirstByid_periodo($id_periodo);
@@ -422,25 +455,19 @@ class CobPeriodoController extends ControllerBase
      */
     public function eliminarAction($id_periodo)
     {
-
         $cob_periodo = CobPeriodo::findFirstByid_periodo($id_periodo);
         if (!$cob_periodo) {
             $this->flash->error("cob_periodo no fue encontrado");
 
             return $this->response->redirect("cob_periodo/");
         }
-
         if (!$cob_periodo->delete()) {
-
             foreach ($cob_periodo->getMessages() as $message) {
                 $this->flash->error($message);
             }
-
            	return $this->response->redirect("cob_periodo/");
         }
-
         $this->flash->success("El periodo fue eliminado correctamente");
-
         return $this->response->redirect("cob_periodo/");
     }
     
@@ -451,9 +478,14 @@ class CobPeriodoController extends ControllerBase
     	if (!$id_periodo) {
     		return $this->response->redirect("cob_actaconteo/ver/$id_actaconteo");
     	}
+    	$actas = CobActaconteo::find(["id_periodo = $id_periodo"]);
+    	$actas->estado = 4; 
+    	$actas->save(); break;
     	$ninos = CobActaconteoPersona::find(["id_periodo = $id_periodo AND (asistencia = 1 OR asistencia = 7)"]);
+    	$i = 1;
     	foreach($ninos as $row){
-    		echo $row->CobActaconteoPersonaFacturacion->numDocumento . " - ";
+    		echo "(" . $i . ")" .  $row->CobActaconteoPersonaFacturacion->numDocumento . " - ";
+    		$i++;
     	}
     	break;
     }

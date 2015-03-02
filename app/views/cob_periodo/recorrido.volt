@@ -5,6 +5,7 @@
 {% if (nivel <= 1) %}
 {{ link_to("cob_periodo/rutear/"~id_periodo~"/"~recorrido, '<i class="glyphicon glyphicon-road"></i> Rutear', "class": "btn btn-primary menu-tab") }}
 {% endif %}
+{{ link_to("cob_periodo/gdocumental/"~id_periodo~"/"~recorrido, '<i class="glyphicon glyphicon-file"></i> Gestión Documental', "class": "btn btn-primary menu-tab") }}
 <!-- Modal -->
 <div class="modal fade" id="eliminar_elemento" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -48,7 +49,7 @@
             <td>{{ acta.id_sede }} - {{ acta.sede_nombre }}</td>
             <td>{{ acta.modalidad_nombre }}</td>
             <td>{{ acta.IbcUsuario.usuario }}</td>
-            <td>{{ acta.IbcReferencia.nombre }}</td>            
+            <td>{{ acta.getEstadoDetail }}</td>            
         </tr>
         {% endif %}
     {% endfor %}

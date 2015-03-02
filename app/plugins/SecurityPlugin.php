@@ -42,6 +42,9 @@ class SecurityPlugin extends Plugin
     		'recorrido' => array(
     				'nivelPermiso' => '3'
     		),
+    		'gdocumental' => array(
+    				'nivelPermiso' => '2'
+    		),
     		'rutear' => array(
     				'nivelPermiso' => '1'
     		),
@@ -98,7 +101,7 @@ class SecurityPlugin extends Plugin
     				'nivelPermiso' => '1'
     		),
     		'editar' => array(
-    				'nivelPermiso' => '2'
+    				'nivelPermiso' => '1'
     		),
     		'crear' => array(
     				'nivelPermiso' => '2'
