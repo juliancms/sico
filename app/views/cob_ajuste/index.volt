@@ -28,6 +28,7 @@
             <th>Periodo<input autocomplete='off' class='filter form-control input-sm' name='periodo' data-col='periodo'/></th>
             <th>Contrato<input autocomplete='off' class='filter form-control input-sm' name='contrato' data-col='contrato'/></th>
             <th>Documento<input autocomplete='off' class='filter form-control input-sm' name='documento' data-col='documento'/></th>
+            <th>Oficio<input autocomplete='off' class='filter form-control input-sm' name='of' data-col='oficio'/></th>
             <th>Nombre<input autocomplete='off' class='filter form-control input-sm' name='nombre' data-col='nombre'/></th>
             <th>Certificar<input autocomplete='off' class='filter form-control input-sm' name='certificar' data-col='certificar'/></th>
             <th>Observacion<input autocomplete='off' class='filter form-control input-sm' name='observacion' data-col='observacion'/></th>
@@ -45,6 +46,7 @@
 		<td><?php echo $this->conversiones->fecha(5, $cob_ajuste->CobPeriodo->fecha); ?></td>
         <td>{{ cob_ajuste.CobActaconteoPersonaFacturacion.id_contrato }}</td>
         <td>{{ cob_ajuste.CobActaconteoPersonaFacturacion.numDocumento }}</td>
+        <td>{{ cob_ajuste.radicado }}</td>
         <td>{{ nombre|join(' ') }}</td>
         <td>{{ cob_ajuste.getCertificarDetail() }}</td>
         <td>{{ cob_ajuste.observacion }}</td>

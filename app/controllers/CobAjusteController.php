@@ -95,6 +95,7 @@ class CobAjusteController extends ControllerBase
     	$ajuste->certificar = $this->request->getPost("certificar");
     	$ajuste->datetime = date('Y-m-d H:i:s');
     	$ajuste->observacion = $this->request->getPost("observacion");
+    	$ajuste->radicado = $this->request->getPost("radicado");
     	$ajuste->id_usuario = $this->user['id_usuario'];	
     	if (!$ajuste->save()) {
     		foreach ($ajuste->getMessages() as $message) {
