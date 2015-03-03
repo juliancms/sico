@@ -21,9 +21,9 @@ class IbcGestionInstitucionalController extends ControllerBase
         $this->persistent->parameters = null;
         $menu = GinOferenteMenu::findFirstByid_usuario($this->id_usuario);
         if ($this->conversiones->get_client_ip() == "190.248.150.222"){
-        	$this->view->url = "http://190.248.150.222:347/owncloud/" . $menu->menu;
-        } else {
         	$this->view->url = "http://192.168.2.79/owncloud/" . $menu->menu;
+        } else {
+        	$this->view->url = "http://190.248.150.222:347/owncloud/" . $menu->menu;
         }
     }
 
