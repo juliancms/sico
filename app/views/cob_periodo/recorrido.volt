@@ -49,7 +49,7 @@
             <td>{{ acta.id_sede }} - {{ acta.sede_nombre }}</td>
             <td>{{ acta.modalidad_nombre }}</td>
             <td>{{ acta.IbcUsuario.usuario }}</td>
-            <td>{{ acta.getEstadoDetail }}</td>            
+            <td>{{ acta.getEstadoDetail() }}</td>            
         </tr>
         {% endif %}
     {% endfor %}

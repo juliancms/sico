@@ -53,7 +53,7 @@
     {% for beneficiario in beneficiarios %}  
 	{% set nombre = {beneficiario.primerNombre, beneficiario.segundoNombre, beneficiario.primerApellido, beneficiario.segundoApellido} %}
 	<?php $fecha = $this->conversiones->fecha(2, $beneficiario->fechaInterventoria); ?>
-        <tr<?php echo $beneficiario->getAsistenciaDetail); ?>>
+        <tr<?php echo $beneficiario->getAsistenciaDetail(); ?>>
         	<td>{{ loop.index }}</td>
         	<td>{{ beneficiario.numDocumento }}</td>
             <td>{{ nombre|join(' ') }}</td>
