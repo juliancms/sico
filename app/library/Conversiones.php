@@ -176,7 +176,7 @@ class Conversiones extends Component
 	 * @author Julián Camilo Marín Sánchez
 	 */
 	
-	function get_client_ip() {
+	public function get_client_ip() {
 		$ipaddress = '';
 		if ($_SERVER['HTTP_CLIENT_IP'])
 			$ipaddress = $_SERVER['HTTP_CLIENT_IP'];
