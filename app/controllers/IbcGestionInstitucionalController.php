@@ -19,12 +19,11 @@ class IbcGestionInstitucionalController extends ControllerBase
     public function indexAction()
     {
         $this->persistent->parameters = null;
-        echo $this->conversiones->get_client_ip(); break;
         $menu = GinOferenteMenu::findFirstByid_usuario($this->id_usuario);
-        if ($_SERVER["REMOTE_ADDR"] == "http://190.248.150.222"){
-        	$this->view->url = "http://190.248.150.222:347/owncloud/" . $menu->menu;
-        } else {
+        if (if($this->conversiones->get_client_ip(), 0, 7) == "192.168"){
         	$this->view->url = "http://192.168.2.79/owncloud/" . $menu->menu;
+        } else {
+        	$this->view->url = "http://190.248.150.222:347/owncloud/" . $menu->menu;
         }
     }
 
