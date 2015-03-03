@@ -64,6 +64,17 @@ class Elements extends Component
         		'action' => 'index'
         	)
     );
+    
+    private $_headerMenuOferente = array(
+    		'ibc_mensaje' => array(
+    				'caption' => 'Comunicaciones',
+    				'action' => 'anuncios'
+    		),
+    		'ibc_gestion_institucional' => array(
+    				'caption' => 'Gestión Institucional',
+    				'action' => 'index'
+    		)
+    );
 
     private $_tabs = array(
         'Periodos' => array(
@@ -95,7 +106,12 @@ class Elements extends Component
             $controllerName = $this->view->getControllerName();
             echo '<div class="nav-collapse">';
             echo '<ul class="nav navbar-nav navbar-left">';
-            foreach ($this->_headerMenu as $controller => $option) {
+            if($user['id_usuario_cargo'] == 6){
+            	$menu = $this->_headerMenuOferente;
+            } else {
+            	$menu = $this->_headerMenu;
+            }
+            foreach ($menu as $controller => $option) {
             	if ($controllerName == $controller) {
             		echo '<li class="active">';
             	} else {

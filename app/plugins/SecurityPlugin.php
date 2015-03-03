@@ -14,19 +14,19 @@ class SecurityPlugin extends Plugin
     private $_permiso = array(
         'ibc_mensaje' => array(
             'index' => array(
-                'nivelPermiso' => '3'
+                'nivelPermiso' => '4'
             ),
             'mensajes' => array(
-                'nivelPermiso' => '3'
+                'nivelPermiso' => '4'
             ),
         	'anuncios' => array(
-        		'nivelPermiso' => '3'
+        		'nivelPermiso' => '4'
         	),
             'crear' => array(
-                'nivelPermiso' => '3'
+                'nivelPermiso' => '4'
             ),
         	'comentario' => array(
-        		'nivelPermiso' => '3'
+        		'nivelPermiso' => '4'
         	)
         ),
     	'cob_periodo' => array(
@@ -190,6 +190,11 @@ class SecurityPlugin extends Plugin
     				'nivelPermiso' => '2'
     		),'buscar' => array(
     				'nivelPermiso' => '2'
+    		)
+    	),
+    	'ibc_gestion_institucional' => array(
+    		'index' => array(
+    				'nivelPermiso' => '4'
     		)
     	)
     );
