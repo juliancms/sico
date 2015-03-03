@@ -419,7 +419,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
      *
      * @return string
      */
-    public function getestadoDetail()
+    public function getEstadoDetail()
     {
     	switch ($this->estado) {
     		case 0:
@@ -437,13 +437,10 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     		case 4:
     			return "Consolidada";
     			break;
+    		case 5:
+    			return "Periodo cerrado";
+    			break;
     	}
-    	if ($this->estado == 0) {
-    		return 'Pendiente de Certificación';
-    	} else if($this->certificar == 1) {
-    		return 'Certificar Atención';
-    	}
-    	return 'No certificar Atención';
     }
     
 }
