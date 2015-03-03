@@ -84,6 +84,9 @@ class CobActaconteoPersona extends \Phalcon\Mvc\Model
     //Virtual Foreign Key para poder acceder a la fecha de corte del acta
     public function initialize()
     {
+    	$this->belongsTo('id_actaconteo_persona', 'CobActaconteoPersonaExcusa', 'id_actaconteo_persona', array(
+    			'reusable' => true
+    	));
     	$this->belongsTo('id_actaconteo_persona', 'CobActaconteoPersonaFacturacion', 'id_actaconteo_persona', array(
     			'reusable' => true
     	));
