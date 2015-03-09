@@ -8,16 +8,37 @@ class IndexController extends ControllerBase
 	
     public function initialize()
     {
-        $this->user = $this->session->get('auth');
-        if (!$this->user) {
-        	return $this->response->redirect('session/index');
-        }
-        return $this->response->redirect('ibc_mensaje/index');
+        $this->user = $this->session->get('auth');        
         parent::initialize();
+        $this->view->setTemplateAfter('mainindex');
     }
 
     public function indexAction()
     {
     	$this->persistent->parameters = null;
+    	$this->assets
+    	->addCss('css/carousel.css');
+    }
+    
+    public function quienessomosAction()
+    {
+    }
+    
+    public function componentesAction($componente)
+    {
+    }
+    
+    public function directorioAction()
+    {
+    }
+    
+    public function contactoAction()
+    {
+    	$this->assets
+    	->addJs('http://maps.googleapis.com/maps/api/js?sensor=false&extension=.js&output=embed')
+    	->addJs('js/parsley.min.js')
+    	->addJs('js/contacto.js');
+    	$this->assets
+    	->addCss('css/contacto.css');
     }
 }

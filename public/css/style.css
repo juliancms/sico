@@ -1,6 +1,6 @@
 @CHARSET "UTF-8";
-footer { text-align: center; color: #666; }
-footer p { padding-top: 5px; }
+footer { text-align: center; color: #777; }
+footer p { padding-top: 10px; font-size: 13px; olor:  }
 .clear {
 	clear: both;
 }
@@ -9,6 +9,10 @@ footer p { padding-top: 5px; }
 	 border-radius: 4px;
 	 -webkit-transition: all 0.2s ease-in-out;
 	         transition: all 0.2s ease-in-out;
+}
+.navbar-header .dropdown-menu {
+	margin: 0px !important;
+	padding: 0px !important;
 }
 /* Inicio Sesión Login */
  .form-container-login {

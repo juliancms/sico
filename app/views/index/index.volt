@@ -1,23 +1,35 @@
-
 {{ content() }}
-
-<div class="jumbotron">
-    <h1>Bienvenido(a) a SICO</h1>
-    <p>SICO es el Sistema de Información donde encontrará la información de manera oportuna y sincronizada con el trabajo de campo y los diferentes procesos del Componente de Cobertura de la Interventoría Buen Comienzo.</p>
-    <p>{{ link_to('session', 'Iniciar Sesión &raquo;', 'class': 'btn btn-primary btn-large btn-success') }}</p>
-</div>
-
 <div class="row">
-    <div class="col-md-4">
-        <h2>Consulte las actas escaneadas</h2>
-        <p>Podrá consultar en línea la información de las actas escaneadas. </p>
-    </div>
-    <div class="col-md-4">
-        <h2>Obtenga reportes en línea</h2>
-        <p>Puede consultar la información de la certificación a medida que se realizan los recorridos..</p>
-    </div>
-    <div class="col-md-4">
-        <h2>Esté al tanto de las comunicaciones</h2>
-        <p>Aquí podrá consultar las comunicaciones enviadas por parte del componente de cobertura, viendo así el histórico de cada una de ellas. </p>
-    </div>
-</div>
+	<div id="carousel-inicio" class="carousel slide" data-ride="carousel">
+	  <!-- Botones inferiores -->
+	  <ol class="carousel-indicators">
+	    <li data-target="#carousel-inicio" data-slide-to="0" class="active"></li>
+	    <li data-target="#carousel-inicio" data-slide-to="1"></li>
+	    <li data-target="#carousel-inicio" data-slide-to="2"></li>
+	  </ol>
+	  <!-- Contenido de los slides -->
+	  <div class="carousel-inner" role="listbox">
+	    <div class="item active">
+	      {{ image("img/index/01.jpg", "alt": "Buen Comienzo") }}
+	    </div>
+	    <div class="item">
+	      {{ image("img/index/02.jpg", "alt": "Buen Comienzo") }}
+	    </div>
+	    <div class="item">
+	      {{ image("img/index/03.jpg", "alt": "Buen Comienzo") }}
+	    </div>
+	  </div>
+	  <!-- Controles -->
+	  <a class="left carousel-control" href="#carousel-inicio" role="button" data-slide="prev">
+	    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+	    <span class="sr-only">Previous</span>
+	  </a>
+	  <a class="right carousel-control" href="#carousel-inicio" role="button" data-slide="next">
+	    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+	    <span class="sr-only">Next</span>
+	  </a>
+	</div>
+    <h1>Interventoría Buen Comienzo</h1>
+    <p class="text-justify">La Interventoría Buen Comienzo es la entidad encargada de realizar la supervisión, vigilancia y control a la prestación del servicio de Atención Integral a la Primera Infancia que brinda el Programa Buen Comienzo de la Secretaría de Medellín, realizando un seguimiento al cumplimiento de la obligaciones de cada uno de los contratos suscritos y los compromisos asumidos en los convenios de asociación e igualmente verificando las condiciones en términos de calidad en las que se está prestando el servicio de Atención Integral a la Primera Infancia de Medellín.</p>
+    <p><a class="btn btn-primary" href="quienessomos" role="button">Leer más »</a></p>
+</div><!--/row-->

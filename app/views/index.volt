@@ -7,8 +7,8 @@
         {{ stylesheet_link('css/style.css') }}
         {{ assets.outputCss() }}
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="Sistema de Información de Cobertura">
-        <meta name="author" content="Julián C. Marín S.">
+        <meta name="description" content="Sistema de Información de la Interventoría Buen Comienzo">
+        <meta name="author" content="Julián Camilo Marín Sánchez">
     </head>
     <body>
         {{ content() }}

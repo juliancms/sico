@@ -176,13 +176,6 @@ class SecurityPlugin extends Plugin
     				'nivelPermiso' => '-2'
     		)
     	),
-    	'index' => array(
-    		'index' => array(
-    				'nivelPermiso' => '-2'
-    		),'end' => array(
-    				'nivelPermiso' => '-2'
-    		)
-    	),
     	'cob_ajuste' => array(
     		'index' => array(
     				'nivelPermiso' => '2'
@@ -192,7 +185,12 @@ class SecurityPlugin extends Plugin
     				'nivelPermiso' => '2'
     		)
     	),
-    	'ibc_gestion_institucional' => array(
+    	'ibc_archivo_digital' => array(
+    		'index' => array(
+    				'nivelPermiso' => '4'
+    		)
+    	),
+    	'ibc_instrumentos' => array(
     		'index' => array(
     				'nivelPermiso' => '4'
     		)
@@ -210,7 +208,7 @@ class SecurityPlugin extends Plugin
     	$controlador = $dispatcher->getControllerName();
     	$accion = $dispatcher->getActionName();
         $user = $this->session->get('auth');
-        if ($user) {
+        if ($user && $controlador !== "index") {
         	if(!$controlador || !$accion){
         		return TRUE;
         	}
@@ -219,36 +217,12 @@ class SecurityPlugin extends Plugin
             } else {
             	return $this->response->redirect('errores/error401');
             }
-        } else if($controlador !== "session") {
+        } else if($this->_permiso[$controlador][$accion]['nivelPermiso'] == -2) {
+    		return TRUE;
+    	} else if($controlador !== "session" && $controlador !== "index") {
         	return $this->response->redirect('session/index');
         } else {
         	return TRUE;
         }
-    }
-    /**
-     * This action is executed before execute any action in the application
-     *
-     * @param Event $event
-     * @param Dispatcher $dispatcher
-     */
-    public function permiso($controlador = NULL)
-    {
-    	return TRUE;
-    	if($controlador == NULL){
-    		$controlador = $dispatcher->getControllerName();
-    	}
-    	$accion = $dispatcher->getActionName();
-    	$user = $this->session->get('auth');
-    	if ($user) {
-    		if($user['nivel'] >= $this->_permiso[$controlador][$accion]['nivelPermiso']){
-    			return TRUE;
-    		} else {
-    			return $this->response->redirect('errores/error401');
-    		}
-    	} else if($controlador !== "session") {
-    		return $this->response->redirect('session/index');
-    	} else {
-    		return TRUE;
-    	}
     }
 }

@@ -70,8 +70,12 @@ class Elements extends Component
     				'caption' => 'Comunicaciones',
     				'action' => 'anuncios'
     		),
-    		'ibc_gestion_institucional' => array(
-    				'caption' => 'Gestión Institucional',
+    		'ibc_archivo_digital' => array(
+    				'caption' => 'Archivo Digital',
+    				'action' => 'index'
+    		),
+    		'ibc_instrumentos' => array(
+    				'caption' => 'Instrumentos',
     				'action' => 'index'
     		)
     );
@@ -89,6 +93,24 @@ class Elements extends Component
         )
     );
     
+    private $_MenuInicio = array(
+    		'index' => array(
+    				'caption' => 'Inicio',
+    				'controller' => 'index'
+    		),
+    		'quienessomos' => array(
+    				'caption' => 'Quiénes Somos',
+    				'controller' => 'index'
+    		),
+    		'directorio' => array(
+    				'caption' => 'Directorio Telefónico',
+    				'controller' => 'index'
+    		),
+    		'contacto' => array(
+    				'caption' => 'Contacto',
+    				'controller' => 'index'
+    		)
+    );
 
     /**
      * Builds header menu with left and right items
@@ -99,17 +121,20 @@ class Elements extends Component
     {
         $user = $this->session->get('auth');
         if ($user) {
-//             $this->_headerMenu['navbar-right']['session'] = array(
-//                 'caption' => 'Cerrar Sesión',
-//                 'action' => 'end'
-//             );
+        	$menu_usuario = "";
             $controllerName = $this->view->getControllerName();
             echo '<div class="nav-collapse">';
             echo '<ul class="nav navbar-nav navbar-left">';
             if($user['id_usuario_cargo'] == 6){
             	$menu = $this->_headerMenuOferente;
+            	
             } else {
             	$menu = $this->_headerMenu;
+            	$menu_usuario .= '<li role="presentation" class="divider"></li>';
+            	$menu_usuario .= '<li><a target="_blank" href="http://interventoriabuencomienzo.org/redirect_server2.php?sico">Permisos</a></li>';
+            	$menu_usuario .= '<li><a target="_blank" href="http://www.asesoriayconsultoria.pascualbravo.org/index.php?option=com_content&amp;view=article&amp;id=314&amp;Itemid=183">Reporte de Pago</a></li>';
+            	$menu_usuario .= '<li><a target="_blank" href="http://www.interventoriabuencomienzo.org:2095">Correo Institucional</a></li>';
+            	$menu_usuario .= '<li><a target="_blank" href="http://interventoriabuencomienzo.org/redirect_owncloud.php">Owncloud</a></li>';
             }
             foreach ($menu as $controller => $option) {
             	if ($controllerName == $controller) {
@@ -131,11 +156,7 @@ class Elements extends Component
 	        echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding-top: 10px !important; padding-bottom: 10px !important;"><img class="foto" src="'.$user['foto'].'" width="30px" height="30px"> '.explode(" ", $user['nombre'])[0].' <b class="caret"></b></a>';
 	        echo '<ul class="dropdown-menu">';
 	            echo '<li>'.$this->tag->linkTo("ibc_usuario/editarperfil", "Editar Perfil").'</li>';
-	            echo '<li role="presentation" class="divider"></li>';
-	            echo '<li><a target="_blank" href="http://interventoriabuencomienzo.org/redirect_server2.php?sico">Permisos</a></li>';
-	            echo '<li><a target="_blank" href="http://www.asesoriayconsultoria.pascualbravo.org/index.php?option=com_content&amp;view=article&amp;id=314&amp;Itemid=183">Reporte de Pago</a></li>';
-	            echo '<li><a target="_blank" href="http://www.interventoriabuencomienzo.org:2095">Correo Institucional</a></li>';
-	            echo '<li><a target="_blank" href="http://interventoriabuencomienzo.org/redirect_owncloud.php">Owncloud</a></li>';
+	            echo $menu_usuario;
 	            echo '<li role="presentation" class="divider"></li>';
 	            echo '<li>'.$this->tag->linkTo("session/end", "Cerrar Sesión").'</li>';
 	        echo '</ul>';
@@ -143,9 +164,35 @@ class Elements extends Component
             echo '</ul>';
             echo '</div>';
         } else {
-            //unset($this->_headerMenu['navbar-left']['controller']);
+            echo '<form action="/sico/session/start" class="navbar-form navbar-right" role="form" method="post">
+	        <div class="form-group">
+	          <input type="text" name="usuario" placeholder="Usuario o Email" class="form-control">
+	        </div>
+	        <div class="form-group">
+	          <input type="password" name="password" placeholder="Contraseña" class="form-control">
+	        </div>
+	        <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+      		</form>';
         }
 
+    }
+    
+    /**
+     * Builds header menu with left and right items
+     *
+     * @return string
+     */
+    public function getMenuInicio()
+    {
+   		$controllerName = $this->view->getControllerName();
+   		$actionName = $this->view->getActionName();
+   		foreach ($this->_MenuInicio as $action => $option) {
+   			if ($actionName == $action) {
+   				echo $this->tag->linkTo(array($option['controller'] . '/' . $action, $option['caption'], 'class' => 'list-group-item active'));
+   			} else {
+   				echo $this->tag->linkTo(array($option['controller'] . '/' . $action, $option['caption'], 'class' => 'list-group-item'));
+   			}
+   		}    		
     }
 
     /**

@@ -2,7 +2,7 @@
  
 use Phalcon\Mvc\Model\Criteria;
 
-class IbcGestionInstitucionalController extends ControllerBase
+class IbcInstrumentosController extends ControllerBase
 {    
 	public $user;
     public function initialize()
@@ -19,11 +19,10 @@ class IbcGestionInstitucionalController extends ControllerBase
     public function indexAction()
     {
         $this->persistent->parameters = null;
-        $menu = GinOferenteMenu::findFirstByid_usuario($this->id_usuario);
         if (substr($this->conversiones->get_client_ip(), 0, 7) == "192.168"){
-        	$this->view->url = "http://192.168.2.79/owncloud/" . $menu->menu;
+        	$this->view->url = "http://192.168.2.79/owncloud/public.php?service=files&t=74c4f9e9e6fd060752681184b4d0fa32";
         } else {
-        	$this->view->url = "http://190.248.150.222:347/owncloud/" . $menu->menu;
+        	$this->view->url = "http://190.248.150.222:347/owncloud/public.php?service=files&t=74c4f9e9e6fd060752681184b4d0fa32";
         }
     }
 

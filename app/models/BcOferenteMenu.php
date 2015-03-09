@@ -1,6 +1,6 @@
 <?php
 
-class GinOferenteMenu extends \Phalcon\Mvc\Model
+class BcOferenteMenu extends \Phalcon\Mvc\Model
 {
 
     /**
