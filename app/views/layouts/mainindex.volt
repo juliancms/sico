@@ -7,7 +7,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand dropdown-toggle" data-toggle="dropdown" aria-expanded="false" href="#">IBC <span class="caret"></span></a>
+            <a class="navbar-brand dropdown-toggle" data-toggle="dropdown" aria-expanded="false" href="#">{{ image("img/logo_pascual.png", "alt": "Interventoría Buen Comienzo") }} <span class="caret"></span></a>
 			<div class="dropdown-menu list-group" role="menu">
 				{{ elements.getMenuInicio() }}
 			</div>
@@ -40,7 +40,6 @@
 	</div>
     <hr>
     <footer>
-    	{{ image("img/footer_logos.jpg", "alt": "Buen Comienzo") }}
         <p>Interventoría Buen Comienzo<br>Calle 52 (av. La Playa) # 49-27, edificio Santa Elena piso 14, Medellín (Antioquia)<br>Horario: lunes a viernes 8:00 am - 11:45 am; 1:30 pm - 4:30 pm<br> PBX: (4) 5121233. Email: info@interventoriabuencomienzo.org</p>
     </footer>
 </div>
