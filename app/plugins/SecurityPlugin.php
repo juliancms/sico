@@ -116,7 +116,7 @@ class SecurityPlugin extends Plugin
     				'nivelPermiso' => '1'
     		),
     		'editarperfil' => array(
-    				'nivelPermiso' => '3'
+    				'nivelPermiso' => '4'
     		)	
     	),
     	'errores' => array(
