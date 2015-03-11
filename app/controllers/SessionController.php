@@ -50,6 +50,7 @@ class SessionController extends ControllerBase
     				'nombre' => $user->nombre,
     				'id_usuario_cargo' => $user->id_usuario_cargo,
     				'foto' => $user->foto,
+    				'estado' => $user->estado,
     				'nivel' => $user->IbcUsuarioCargo->nivelPermiso
     		));
     	}
@@ -72,7 +73,7 @@ class SessionController extends ControllerBase
     				if ($this->security->checkHash($password, $user->password)) {
     					$this->_registerSession($user, $tipo_usuario);
     					$this->flash->success('Bienvenido ' . $user->nombre);
-    					return $this->response->redirect('index/index');
+    					return $this->response->redirect('ibc_mensaje/anuncios');
     				}
     			}
     		} else {
@@ -82,7 +83,7 @@ class SessionController extends ControllerBase
     				if ($this->security->checkHash($password, $user->password)) {
     					$this->_registerSession($user, $tipo_usuario);
     					$this->flash->success('Bienvenido ' . $user->nombre);
-    					return $this->response->redirect('index/index');
+    					return $this->response->redirect('ibc_mensaje/anuncios');
     				}
     			}
     		}
