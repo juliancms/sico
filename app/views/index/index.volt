@@ -15,9 +15,6 @@
 	    <div class="item">
 	      {{ image("img/index/02.jpg", "alt": "Buen Comienzo") }}
 	    </div>
-	    <div class="item">
-	      {{ image("img/index/03.jpg", "alt": "Buen Comienzo") }}
-	    </div>
 	  </div>
 	  <!-- Controles -->
 	  <a class="left carousel-control" href="#carousel-inicio" role="button" data-slide="prev">
