@@ -194,6 +194,20 @@ class SecurityPlugin extends Plugin
     		'index' => array(
     				'nivelPermiso' => '4'
     		)
+    	),
+    	'index' => array(
+    		'index' => array(
+    				'nivelPermiso' => '-2'
+    		),
+    		'quienessomos' => array(
+    				'nivelPermiso' => '-2'
+    		),
+    		'directorio' => array(
+    				'nivelPermiso' => '-2'
+    		),
+    		'contacto' => array(
+    				'nivelPermiso' => '-2'
+    		)
     	)
     );
 

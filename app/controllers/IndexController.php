@@ -24,10 +24,6 @@ class IndexController extends ControllerBase
     {
     }
     
-    public function componentesAction($componente)
-    {
-    }
-    
     public function directorioAction()
     {
     }
