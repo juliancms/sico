@@ -90,6 +90,20 @@ class SecurityPlugin extends Plugin
     				'nivelPermiso' => '1'
     		)
     	),
+    	'mt_carga' => array(
+    		'index' => array(
+    				'nivelPermiso' => '1'
+    		),
+    		'nuevo' => array(
+    				'nivelPermiso' => '1'
+    		),
+    		'crear' => array(
+    				'nivelPermiso' => '1'
+    		),
+    		'eliminar' => array(
+    				'nivelPermiso' => '1'
+    		)
+    	),
     	'ibc_usuario' => array(
     		'index' => array(
     				'nivelPermiso' => '3'
@@ -116,6 +130,9 @@ class SecurityPlugin extends Plugin
     				'nivelPermiso' => '1'
     		),
     		'editarperfil' => array(
+    				'nivelPermiso' => '4'
+    		),
+    		'actualizardatos' => array(
     				'nivelPermiso' => '4'
     		)	
     	),
@@ -226,9 +243,8 @@ class SecurityPlugin extends Plugin
         	if(!$controlador || !$accion){
         		return TRUE;
         	}
-        	if($user['estado'] == 0 && "ibc_usuario/editarperfil" !== $controlador . "/" . $accion){
-        		$this->flash->error("<strong>Atención:</strong> Debes de actualizar tus datos antes de ingresar a esta sección.");
-        		return $this->response->redirect("ibc_usuario/editarperfil");
+        	if($user['estado'] == 0 && "ibc_usuario/actualizardatos" !== $controlador . "/" . $accion){
+        		return $this->response->redirect("ibc_usuario/actualizardatos");
         	}
             if($user['nivel'] <= $this->_permiso[$controlador][$accion]['nivelPermiso'] || $this->_permiso[$controlador][$accion]['nivelPermiso'] == -2){
             	return TRUE;

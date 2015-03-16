@@ -72,7 +72,6 @@ class IbcUsuarioController extends ControllerBase
             $usuario = IbcUsuario::findFirstByid_usuario($id_usuario);
             if (!$usuario) {
                 $this->flash->error("El usuario no fue encontrado");
-
                 return $this->response->redirect("ibc_usuario/");
             }
             $this->assets
@@ -133,6 +132,36 @@ class IbcUsuarioController extends ControllerBase
     		->addCss('css/cropit.css')
     		->addJs('js/nuevo_usuario.js');
     		$this->view->usuario = $usuario;
+    		$this->tag->setDefault("nombre", $usuario->nombre);
+    		$this->tag->setDefault("email", $usuario->email);
+    		$this->tag->setDefault("telefono", $usuario->telefono);
+    		$this->tag->setDefault("celular", $usuario->celular);
+    		$this->tag->setDefault("foto", $usuario->foto);
+    	}
+    }
+    
+    /**
+     * actualizardatos
+     *
+     * @param int $id_usuario
+     */
+    public function actualizardatosAction()
+    {
+    	if (!$this->request->isPost()) {
+    		$this->flash->error("<strong>Atención:</strong> Debes de actualizar tus datos antes de ingresar a las opciones del Sistema de Información.");
+    		$usuario = IbcUsuario::findFirstByid_usuario($this->user['id_usuario']);
+    		if (!$usuario) {
+    			$this->flash->error("El usuario no fue encontrado");
+    			return $this->response->redirect("ibc_mensaje");
+    		}
+    		$this->assets
+    		->addJs('js/parsley.min.js')
+    		->addJs('js/parsley.extend.js')
+    		->addJs('js/jquery.cropit.min.js')
+    		->addCss('css/cropit.css')
+    		->addJs('js/nuevo_usuario.js');
+    		$this->view->usuario = $usuario;
+    		$this->view->id_usuario_cargo = $this->user['id_usuario_cargo'];
     		$this->tag->setDefault("nombre", $usuario->nombre);
     		$this->tag->setDefault("email", $usuario->email);
     		$this->tag->setDefault("telefono", $usuario->telefono);
@@ -233,10 +262,13 @@ class IbcUsuarioController extends ControllerBase
     	if($this->request->getPost("image-data")){
     		$usuario->foto = $this->request->getPost("image-data");
     	}
-    	$usuario->nombre = $this->request->getPost("nombre");
+    	if($this->request->getPost("nombre")){
+    		$usuario->nombre = $this->request->getPost("nombre");
+    	}
     	$usuario->telefono = $this->request->getPost("telefono");
     	$usuario->celular = $this->request->getPost("celular");
     	$usuario->email = $this->request->getPost("email");
+    	$usuario->estado = 1;
     	if($this->request->getPost("password")){
     		$usuario->password = $this->security->hash($this->request->getPost("password"));
     	}
@@ -248,6 +280,47 @@ class IbcUsuarioController extends ControllerBase
     	}
     	$this->flash->success("El usuario fue actualizado exitosamente.");
     	return $this->response->redirect("ibc_usuario/editarperfil");
+    
+    }
+    
+    /**
+     * Guarda el usuario editado
+     *
+     */
+    public function guardaractualizardatosAction()
+    {
+    
+    	if (!$this->request->isPost()) {
+    		return $this->response->redirect("ibc_usuario");
+    	}
+    
+    	$usuario = IbcUsuario::findFirstByid_usuario($this->user['id_usuario']);
+    	if (!$usuario) {
+    		$this->flash->error("El usuario no fue encontrado");
+    		return $this->response->redirect("ibc_mensaje/");
+    	}
+    	if($this->request->getPost("image-data")){
+    		$usuario->foto = $this->request->getPost("image-data");
+    	}
+    	if($this->request->getPost("nombre")){
+    		$usuario->nombre = $this->request->getPost("nombre");
+    	}
+    	$usuario->telefono = $this->request->getPost("telefono");
+    	$usuario->celular = $this->request->getPost("celular");
+    	$usuario->email = $this->request->getPost("email");
+    	$usuario->estado = 1;
+    	if($this->request->getPost("password")){
+    		$usuario->password = $this->security->hash($this->request->getPost("password"));
+    	}
+    	if (!$usuario->save()) {
+    		foreach ($usuario->getMessages() as $message) {
+    			$this->flash->error($message);
+    		}
+    		return $this->response->redirect("ibc_usuario/actualizardatos");
+    	}
+    	$this->flash->success("El usuario fue actualizado exitosamente.");
+    	$id_usuario = $this->user['id_usuario'];
+    	return $this->response->redirect("session/restart/$id_usuario");
     
     }
 
@@ -262,7 +335,6 @@ class IbcUsuarioController extends ControllerBase
         $usuario = IbcUsuario::findFirstByid_usuario($id_usuario);
         if (!$usuario) {
             $this->flash->error("El usuario no fue encontrado");
-
             return $this->response->redirect("ibc_usuario/");
         }
 

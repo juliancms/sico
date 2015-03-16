@@ -91,6 +91,19 @@ class SessionController extends ControllerBase
         }
         return $this->response->redirect('session/index');
     }
+    
+    public function restartAction($id_usuario)
+    {
+    	$tipo_usuario = 2;
+    	$usuario = IbcUsuario::findFirstByid_usuario($id_usuario);
+    	if ($usuario) {
+    		$this->_registerSession($usuario, $tipo_usuario);
+    		return $this->response->redirect('ibc_mensaje/anuncios');
+    	} else {
+    		return $this->response->redirect('session/index');
+    	}
+    	return $this->response->redirect('session/index');
+    }
 
     /**
      * Finalización de la sesión redireccionando al inicio

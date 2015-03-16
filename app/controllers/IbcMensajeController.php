@@ -54,18 +54,30 @@ class IbcMensajeController extends ControllerBase
     			}
     		});
     	}
-    	$destinatarios = array();
+    $destinatarios = array();
     	$this->view->anuncio = "";
-    	$destinatarios['1'] = $this->user['componente'];
+    	if($this->user['id_usuario_cargo'] == 6){
+    		$destinatarios['155'] = "Cobertura";
+    		$destinatarios['160'] = "Gestión Institucional";
+    		$destinatarios['157'] = "Infraestructura";
+    		$destinatarios['162'] = "Nutrición";
+    		$destinatarios['161'] = "Pedagogía";
+    		$destinatarios['156'] = "Psicosocial";
+    		$destinatarios['158'] = "Salud";
+    		$destinatarios['159'] = "Verificación";
+    	}
     	if($this->user['nivel'] < 2){
+    		$destinatarios['1'] = $this->user['componente'];
     		$destinatarios['0'] = "Todos";
+    		$destinatarios['4'] = "Usuario(s)";
     	}
     	if($this->user['nivel'] < 3){
+    		$destinatarios['1'] = $this->user['componente'];
     		$this->view->anuncio = "<label class='btn btn-primary active input-group-addon'><input type='checkbox' name='anuncio' value='1' autocomplete='off'> Anuncio</label>";
     		$destinatarios['2'] = "Auxiliares";
     		$destinatarios['3'] = "Oferentes";
+    		$destinatarios['4'] = "Usuario(s)";
     	}
-    	$destinatarios['4'] = "Usuario(s)";
     	$this->view->usuarios = IbcUsuario::find();
     	$this->view->mensajes = $mensajes;
     	$this->view->destinatarios = $destinatarios;
@@ -102,16 +114,28 @@ class IbcMensajeController extends ControllerBase
     	}
     	$destinatarios = array();
     	$this->view->anuncio = "";
-    	$destinatarios['1'] = $this->user['componente'];
+    	if($this->user['id_usuario_cargo'] == 6){
+    		$destinatarios['155'] = "Cobertura";
+    		$destinatarios['160'] = "Gestión Institucional";
+    		$destinatarios['157'] = "Infraestructura";
+    		$destinatarios['162'] = "Nutrición";
+    		$destinatarios['161'] = "Pedagogía";
+    		$destinatarios['156'] = "Psicosocial";
+    		$destinatarios['158'] = "Salud";
+    		$destinatarios['159'] = "Verificación";
+    	}
     	if($this->user['nivel'] < 2){
+    		$destinatarios['1'] = $this->user['componente'];
     		$destinatarios['0'] = "Todos";
+    		$destinatarios['4'] = "Usuario(s)";
     	}
     	if($this->user['nivel'] < 3){
+    		$destinatarios['1'] = $this->user['componente'];
     		$this->view->anuncio = "<label class='btn btn-primary active input-group-addon'><input type='checkbox' name='anuncio' value='1' autocomplete='off'> Anuncio</label>";
     		$destinatarios['2'] = "Auxiliares";
     		$destinatarios['3'] = "Oferentes";
+    		$destinatarios['4'] = "Usuario(s)";
     	}
-    	$destinatarios['4'] = "Usuario(s)";
     	$this->view->usuarios = IbcUsuario::find();
     	$this->view->anuncios = $anuncios;
     	$this->view->destinatarios = $destinatarios;
@@ -181,6 +205,11 @@ class IbcMensajeController extends ControllerBase
     			);
     			$sql = $this->conversiones->multipleinsert("ibc_mensaje_usuario", $elementos);
     			$query = $db->query($sql);
+    			$this->flash->success("El mensaje fue creado exitosamente.");
+    			return $this->response->redirect("ibc_mensaje/");
+    			break;
+    		default:
+    			$usuarios = array("id_usuario" => $this->request->getPost("destinatario"));
     			$this->flash->success("El mensaje fue creado exitosamente.");
     			return $this->response->redirect("ibc_mensaje/");
     			break;
