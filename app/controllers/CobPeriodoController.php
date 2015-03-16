@@ -34,7 +34,7 @@ class CobPeriodoController extends ControllerBase
      */
     public function nuevoAction()
     {
-
+		
     }
     
     /**
@@ -338,6 +338,7 @@ class CobPeriodoController extends ControllerBase
     	}
     	$cob_periodo = new CobPeriodo();
     	$cob_periodo->fecha = $this->conversiones->fecha(1, $this->request->getPost("fecha"));
+    	$cob_periodo->tipo = $this->request->getPost("tipo");
     
     	if (!$cob_periodo->save()) {
     		foreach ($cob_periodo->getMessages() as $message) {
@@ -428,6 +429,7 @@ class CobPeriodoController extends ControllerBase
         }
 
         $cob_periodo->fecha = $this->conversiones->fecha(1, $this->request->getPost("fecha"));
+        $cob_periodo->tipo = $this->request->getPost("tipo");
         
 
         if (!$cob_periodo->save()) {
