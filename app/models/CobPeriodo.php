@@ -35,4 +35,18 @@ class CobPeriodo extends \Phalcon\Mvc\Model
     	return $conversiones->fecha(5, $this->fecha);
     }
     
+    /**
+     * Returns a human representation of 'fecha'
+     *
+     * @return string
+     */
+    public function getTipoperiodoDetail()
+    {
+    	if($this->tipo == 1) {
+    		return "Conteo";
+    	} else if($this->tipo == 2) {
+    		return "Muestreo";
+    	}
+    }
+    
 }
