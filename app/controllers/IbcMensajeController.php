@@ -29,7 +29,6 @@ class IbcMensajeController extends ControllerBase
      */
     public function mensajesAction()
     {
-    	 
     	$this->persistent->parameters = null;
     	$this->assets
     	->addJs('js/parsley.min.js')
