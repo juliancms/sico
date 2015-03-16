@@ -273,7 +273,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     	}
     	$acta_id = "ACO-03-". date("Y") . sprintf('%05d', $acta->id_actaconteo);
     	$encabezado = "<div class='seccion encabezado'>
-    		<div class='fila center'><div>ACTA DE CONTEO VERIFICACIÓN FÍSICA DE LA ATENCIÓN DEL 100% DE LOS BENEFICIARIOS REPORTADOS EN EL SIBC<br>INTERVENTORÍA BUEN COMIENZO - <em>FECHA DE CORTE ".$acta->CobPeriodo->fecha." (RECORRIDO $acta->recorrido)</em></div></div>
+    		<div class='fila center'><div>ACTA DE CONTEO VERIFICACIÓN FÍSICA DE LA ATENCIÓN DEL 100% DE LOS BENEFICIARIOS REPORTADOS EN EL SIBC<br>INTERVENTORÍA BUEN COMIENZO - <em>(RECORRIDO $acta->recorrido)</em></div></div>
     		<div class='fila col3 center'><div>Código: F-ITBC-GC-001</div><div></div><div></div></div>
     		<div class='fila col3e'>
     			<div>ACTA: <span style='font-weight: normal;'>$acta_id</span></div>
