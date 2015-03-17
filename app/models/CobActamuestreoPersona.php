@@ -1,19 +1,19 @@
 <?php
 
-class CobActaconteoPersona extends \Phalcon\Mvc\Model
+class CobActamuestreoPersona extends \Phalcon\Mvc\Model
 {
 
     /**
      *
      * @var integer
      */
-    public $id_actaconteo_persona;
+    public $id_actamuestreo_persona_facturacion;
 
     /**
      *
      * @var integer
      */
-    public $id_actaconteo;
+    public $id_actamuestreo;
     
     /**
      *
@@ -29,69 +29,27 @@ class CobActaconteoPersona extends \Phalcon\Mvc\Model
     
     /**
      *
-     * @var integer
+     * @var string
      */
-    public $id_contrato;
-
-    /**
-     *
-     * @var integer
-     */
-    public $id_persona;
-
+    public $fechaEncuentro;
+    
     /**
      *
      * @var string
      */
-    public $numDocumento;
-
-    /**
-     *
-     * @var string
-     */
-    public $primerNombre;
-
-    /**
-     *
-     * @var string
-     */
-    public $segundoNombre;
-
-    /**
-     *
-     * @var string
-     */
-    public $primerApellido;
-
-    /**
-     *
-     * @var string
-     */
-    public $segundoApellido;
-
+    public $horaEncuentro;
+    
     /**
      *
      * @var integer
      */
-    public $id_grupo;
-
-    /**
-     *
-     * @var string
-     */
-    public $grupo;
-
-    /**
-     *
-     * @var string
-     */
-    public $fechaInterventoria;
-
+    public $cicloVital;
+    
     /**
      *
      * @var integer
      */
-    public $tipoPersona;
+    public $complAlimentario;
 
     /**
      *
@@ -102,13 +60,10 @@ class CobActaconteoPersona extends \Phalcon\Mvc\Model
     //Virtual Foreign Key para poder acceder a la fecha de corte del acta
     public function initialize()
     {
-    	$this->belongsTo('id_actaconteo_persona', 'CobActaconteoPersonaExcusa', 'id_actaconteo_persona', array(
+    	$this->belongsTo('id_actamuestreo_persona', 'CobActamuestreoPersonaFacturacion', 'id_actamuestreo_persona', array(
     			'reusable' => true
     	));
-    	$this->belongsTo('id_actaconteo_persona', 'CobActaconteoPersonaFacturacion', 'id_actaconteo_persona', array(
-    			'reusable' => true
-    	));
-    	$this->belongsTo('id_actaconteo', 'CobActaconteo', 'id_actaconteo', array(
+    	$this->belongsTo('id_actamuestreo', 'CobActamuestreo', 'id_actamuestreo', array(
     			'reusable' => true
     	));
     }

@@ -27,7 +27,8 @@
 <table class="table table-bordered table-hover">
     <thead>
         <tr>{% if (nivel <= 1) %}<th>Acciones</th>{% endif %}
-            <th>Fecha de corte</th>
+            <th>Periodo</th>
+            <th>Tipo</th>
          </tr>
     </thead>
     <tbody>
@@ -36,8 +37,8 @@
         {% if (nivel <= 1) %}
         <td>{{ link_to("cob_periodo/ver/"~cob_periodo.id_periodo, '<i class="glyphicon glyphicon-list-alt"></i> ', "rel": "tooltip", "title":"Ver") }}{{ link_to("cob_periodo/editar/"~cob_periodo.id_periodo, '<i class="glyphicon glyphicon-pencil"></i> ', "rel": "tooltip", "title":"Editar") }}<a href="#eliminar_elemento" rel="tooltip" title="Eliminar" class="eliminar_fila" data-toggle = "modal" id="{{ url("cob_periodo/eliminar/"~cob_periodo.id_periodo) }}"><i class="glyphicon glyphicon-trash"></i></a></td>
 		{% endif %}
-            <td>{{ link_to("cob_periodo/ver/"~cob_periodo.id_periodo, cob_periodo.fecha) }}</td>
-                        
+            <td>{{ link_to("cob_periodo/ver/"~cob_periodo.id_periodo, cob_periodo.getFechaDetail()) }}</td>
+            <td>{{ cob_periodo.getTipoperiodoDetail() }}</td>
         </tr>
     {% endfor %}
     </tbody>

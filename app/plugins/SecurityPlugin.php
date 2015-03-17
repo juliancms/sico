@@ -185,6 +185,14 @@ class SecurityPlugin extends Plugin
     				'nivelPermiso' => '1'
     		)
     			
+    	),'cob_actamuestreo' => array(
+    		'index' => array(
+    				'nivelPermiso' => '3'
+    		),
+    		'ver' => array(
+    				'nivelPermiso' => '3'
+    		)
+    			
     	),
     	'session' => array(
     		'start' => array(

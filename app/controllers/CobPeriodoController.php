@@ -51,10 +51,17 @@ class CobPeriodoController extends ControllerBase
     	}
     	$this->view->id_periodo = $cob_periodo->id_periodo;
     	$this->view->fecha_periodo = $cob_periodo->id_periodo;
-    	$recorridos = CobActaconteo::find(array(
-    			"id_periodo = $id_periodo",
-    			"group" => "recorrido"
-    	));
+    	if($cob_periodo->tipo == 1){
+    		$recorridos = CobActaconteo::find(array(
+    				"id_periodo = $id_periodo",
+    				"group" => "recorrido"
+    		));
+    	} else if ($cob_periodo->tipo == 2){
+    		$recorridos = CobActamuestreo::find(array(
+    				"id_periodo = $id_periodo",
+    				"group" => "recorrido"
+    		));
+    	}
     	$this->view->recorridos = $recorridos;
     	$this->view->crear_recorrido = count($recorridos) + 1;
     	$this->view->nivel = $this->user['nivel'];
@@ -69,13 +76,22 @@ class CobPeriodoController extends ControllerBase
     public function recorridoAction($id_periodo, $recorrido)
     {
     	$cob_periodo = CobPeriodo::findFirstByid_periodo($id_periodo);
-    	$actas_recorrido = CobActaconteo::find(array(
-    			"id_periodo = $id_periodo AND recorrido = $recorrido",
-    			"group" => "id_actaconteo"
-    	));
     	if (!$cob_periodo) {
     		$this->flash->error("El periodo no fue encontrado");
     		return $this->response->redirect("cob_periodo/");
+    	}
+    	if($cob_periodo->tipo == 1){
+    		$actas_recorrido = CobActaconteo::find(array(
+    			"id_periodo = $id_periodo AND recorrido = $recorrido",
+    			"group" => "id_actaconteo"
+    		));
+    		$titulo = "Actas de Conteo <small><span class='label label-danger'>Recorrido $recorrido</span></small>";
+    	} else if ($cob_periodo->tipo == 2){
+    		$actas_recorrido = CobActamuestreo::find(array(
+    			"id_periodo = $id_periodo AND recorrido = $recorrido",
+    			"group" => "id_actamuestreo"
+    		));
+    		$titulo = "Actas de Muestreo <small><span class='label label-danger'>Recorrido $recorrido</span></small>";
     	}
     	if (!$recorrido) {
     		$this->flash->error("El recorrido no fue encontrado");
@@ -88,6 +104,7 @@ class CobPeriodoController extends ControllerBase
     	$this->view->id_periodo = $cob_periodo->id_periodo;
     	$this->view->id_usuario = $this->id_usuario;
     	$this->view->recorrido = $recorrido;
+    	$this->view->titulo = $titulo;
     	$this->view->fecha_periodo = $cob_periodo->id_periodo;
     	$this->view->actas = $actas_recorrido;
     	$this->view->nivel = $this->user['nivel'];

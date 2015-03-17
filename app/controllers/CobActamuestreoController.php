@@ -2,15 +2,14 @@
  
 use Phalcon\Mvc\Model\Criteria;
 
-class CobActaconteoController extends ControllerBase
+class CobActamuestreoController extends ControllerBase
 {    
 	public $user;
 	
     public function initialize()
     {
-        $this->tag->setTitle("Acta de Conteo");
+        $this->tag->setTitle("Acta de Muestreo");
         $this->user = $this->session->get('auth');
-        //$this->view->last_url = str_replace($_SERVER["SCRIPT_NAME"], '', $_SERVER["REQUEST_URI"]);
         parent::initialize();
     }
 
@@ -30,16 +29,16 @@ class CobActaconteoController extends ControllerBase
      *
      * @param int $id_periodo
      */
-    public function verAction($id_actaconteo)
+    public function verAction($id_actamuestreo)
     {
     	$this->assets
-    	->addCss('css/acta-impresion.css');
-    	$acta = CobActaconteo::generarActa($id_actaconteo);
+    	->addCss('css/acta-impresion-metrosalud.css');
+    	$acta = CobActamuestreo::generarActa($id_actamuestreo);
     	if (!$acta) {
     		$this->flash->error("El acta no fue encontrada");
     		return $this->response->redirect("cob_periodo/");
     	}
-    	$this->view->recorridos = CobActaconteo::maximum(array("column" => "recorrido"));
+    	$this->view->recorridos = CobActamuestreo::maximum(array("column" => "recorrido"));
     	$this->view->nivel = $this->user['nivel'];
     	$this->view->acta_html = $acta['html'];
     	$this->view->acta_datos = $acta['datos'];

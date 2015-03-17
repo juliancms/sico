@@ -2,11 +2,11 @@
  
 use Phalcon\Mvc\Model\Criteria;
 
-class BcCargaController extends ControllerBase
+class MtCargaController extends ControllerBase
 {    
     public function initialize()
     {
-        $this->tag->setTitle("Carga");
+        $this->tag->setTitle("Carga Metrosalud");
         $auth = $this->session->get('auth');
         parent::initialize();
     }
@@ -32,7 +32,7 @@ class BcCargaController extends ControllerBase
     }
 
     /**
-     * Formulario para la reación deuna carga
+     * Formulario para la adición de una carga
      */
     public function nuevoAction()
     {
@@ -45,46 +45,43 @@ class BcCargaController extends ControllerBase
     public function crearAction()
     {
     	if (!$this->request->isPost()) {
-    		return $this->response->redirect("bc_carga/");
+    		return $this->response->redirect("mt_carga/");
     	}
     	
-    	$bc_carga = new BcCarga();
-    	$bc_carga->mes = $this->request->getPost("mes");
+    	$mt_carga = new MtCarga();
+    	$mt_carga->mes = $this->request->getPost("mes");
     	$bc_carga->fecha = date('Y-m-d H:i:s');
-    	
+
     	if($this->request->hasFiles() == true){
     		$uploads = $this->request->getUploadedFiles();
     		$isUploaded = false;
-    		$i = 1;
+    		$doc = array("archivoNinos", "archivoMadres", "archivoProgramacion");
+    		$i = 0;
     		foreach($uploads as $upload){
     			$path = "files/bc_bd/".$upload->getname();
-    			if($i == 1){
-    				$bc_carga->nombreMat = $upload->getname();
-    			} else {
-    				$bc_carga->nombreSedes = $upload->getname();
-    			}
+    			$mt_carga->$doc[$i] = $upload->getname();
     			($upload->moveTo($path)) ? $isUploaded = true : $isUploaded = false;
     			$i++;
     		}
     		if($isUploaded){
-    			if (!$bc_carga->save()) {
-    				foreach ($bc_carga->getMessages() as $message) {
+    			if (!$mt_carga->save()) {
+    				foreach ($mt_carga->getMessages() as $message) {
     					$this->flash->error($message);
     				}
     			
-    				return $this->response->redirect("bc_carga/nuevo");
+    				return $this->response->redirect("mt_carga/nuevo");
     			}
     			
     			$this->flash->success("La carga fue realizada exitosamente.");
     			
-    			return $this->response->redirect("bc_carga/");
+    			return $this->response->redirect("mt_carga/");
     		} else {
     			$this->flash->error("Ocurrió un error al cargar los archivos");
-    			return $this->response->redirect("bc_carga/nuevo");
+    			return $this->response->redirect("mt_carga/nuevo");
     		}
     	}else{
     	    	$this->flash->error("Debes de seleccionar los archivos");
-    			return $this->response->redirect("bc_carga/nuevo");
+    			return $this->response->redirect("mt_carga/nuevo");
     	}
     }
     
@@ -97,22 +94,22 @@ class BcCargaController extends ControllerBase
     public function eliminarAction($id_carga)
     {
 
-        $bc_carga = BcCarga::findFirstByid_carga($id_carga);
-        if (!$bc_carga) {
+        $mt_carga = MtCarga::findFirstByid_carga($id_carga);
+        if (!$mt_carga) {
             $this->flash->error("Esta carga no fue encontrada");
-            return $this->response->redirect("bc_carga/");
+            return $this->response->redirect("mt_carga/");
         }
 
-        if (!$bc_carga->delete()) {
+        if (!$mt_carga->delete()) {
 
-            foreach ($bc_carga->getMessages() as $message) {
+            foreach ($mt_carga->getMessages() as $message) {
                 $this->flash->error($message);
             }
-            return $this->response->redirect("bc_carga/");
+            return $this->response->redirect("mt_carga/");
         }
 
         $this->flash->success("La carga fue eliminada exitosamente");
-        return $this->response->redirect("bc_carga/");
+        return $this->response->redirect("mt_carga/");
     }
 
 }

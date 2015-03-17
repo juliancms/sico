@@ -20,6 +20,7 @@ $(".acta_check").click (
         }
 	}
 );
+
 $(".uncheck").click (
 		function(){
 			$('input:checkbox').attr('checked', false);

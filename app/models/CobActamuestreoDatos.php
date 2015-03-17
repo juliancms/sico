@@ -1,13 +1,13 @@
 <?php
 
-class CobActaconteoDatos extends \Phalcon\Mvc\Model
+class CobActamuestreoDatos extends \Phalcon\Mvc\Model
 {
 
     /**
      *
      * @var integer
      */
-    public $id_actaconteo;
+    public $id_actamuestreo;
 
     /**
      *
@@ -17,9 +17,27 @@ class CobActaconteoDatos extends \Phalcon\Mvc\Model
 
     /**
      *
+     * @var string
+     */
+    public $direccionCorregida;
+
+    /**
+     *
      * @var integer
      */
-    public $vallaClasificacion;
+    public $pendonClasificacion;
+    
+    /**
+     *
+     * @var integer
+     */
+    public $instalacionesDomiciliarias;
+    
+    /**
+     *
+     * @var integer
+     */
+    public $condicionesSeguridad;
 
     /**
      *
@@ -38,18 +56,6 @@ class CobActaconteoDatos extends \Phalcon\Mvc\Model
      * @var string
      */
     public $observacionUsuario;
-
-    /**
-     *
-     * @var integer
-     */
-    public $mosaicoDigital;
-
-    /**
-     *
-     * @var integer
-     */
-    public $mosaicoFisico;
     
     /**
      *

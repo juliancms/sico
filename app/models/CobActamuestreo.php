@@ -1,14 +1,14 @@
 <?php
 use Phalcon\DI\FactoryDefault;
 
-class CobActaconteo extends \Phalcon\Mvc\Model
+class CobActamuestreo extends \Phalcon\Mvc\Model
 {
 
 	/**
      *
      * @var integer
      */
-    public $id_actaconteo;
+    public $id_actamuestreo;
 
     /**
      *
@@ -27,12 +27,6 @@ class CobActaconteo extends \Phalcon\Mvc\Model
      * @var integer
      */
     public $recorrido;
-
-    /**
-     *
-     * @var integer
-     */
-    public $id_sede_contrato;
 
     /**
      *
@@ -119,7 +113,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
 		$this->belongsTo('id_periodo', 'CobPeriodo', 'id_periodo', array(
 			'reusable' => true
 		));
-		$this->belongsTo('id_actaconteo', 'CobActaconteoDatos', 'id_actaconteo', array(
+		$this->belongsTo('id_actamuestreo', 'CobActamuestreoDatos', 'id_actamuestreo', array(
 				'reusable' => true
 		));
 		$this->belongsTo('id_usuario', 'IbcUsuario', 'id_usuario', array(
@@ -128,12 +122,32 @@ class CobActaconteo extends \Phalcon\Mvc\Model
 		$this->belongsTo('estado', 'IbcReferencia', 'id_referencia', array(
 				'reusable' => true
 		));
-		$this->hasMany("id_sede_contrato", "CobActaconteoPersonaFacturacion", "id_sede_contrato");
-		$this->hasMany('id_actaconteo', 'CobActaconteoPersona', 'id_actaconteo', array(
+		$this->hasMany('id_actamuestreo', 'CobActamuestreoPersona', 'id_actamuestreo', array(
 				'foreignKey' => array(
 						'message' => 'El acta no puede ser eliminada porque existen beneficiarios asociados a ésta'
 				)
 		));
+	}
+	
+	public function muestra($id_periodo){
+		/**Autores: Lina Hurtado y Julián Marín**/
+		// Población
+		$N = count(CobActamuestreoPersonaFacturacion::find(["id_periodo = $id_periodo"]));
+		// Nivel de confianza del 99%
+		$Z = 2.58;
+		// Porcentaje de error del 3%
+		$d = 0.03;
+		// Proporción de la variable p 50%
+		$p = 0.5;
+		// Proporción de la variable q 50%
+		$q = 0.5;
+		$muestra = ($N * ($Z * $Z) * $p * $q) / (($d * $d) * ($N - 1) + ($Z * $Z) * $p * $q);
+		$condicion_muestra = $muestra / $N;
+		if($condicion_muestra > 0.05){
+			$muestra2 = $muestra / (1 + ($muestra / $N));
+			return round($muestra2, 0);
+		}
+		return round($muestra, 0);
 	}
     
     public function generarActasRcarga($cob_periodo, $carga, $facturacion, $recorrido_anterior) {
@@ -266,17 +280,17 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     	return TRUE;
     }
     
-    public function generarActa($id_actaconteo){
-    	$acta = CobActaconteo::findFirstByid_actaconteo($id_actaconteo);
+    public function generarActa($id_actamuestreo){
+    	$acta = CobActamuestreo::findFirstByid_actamuestreo($id_actamuestreo);
     	if(!$acta || $acta == NULL){
     		return FALSE;
     	}
-    	$acta_id = "ACO-03-". date("Y") . sprintf('%05d', $acta->id_actaconteo);
+    	$conversiones = $this->getDI()->getConversiones();
     	$encabezado = "<div class='seccion encabezado'>
-    		<div class='fila center'><div>ACTA DE CONTEO VERIFICACIÓN FÍSICA DE LA ATENCIÓN DEL 100% DE LOS BENEFICIARIOS REPORTADOS EN EL SIBC<br>INTERVENTORÍA BUEN COMIENZO - <em>(RECORRIDO $acta->recorrido)</em></div></div>
+    		<div class='fila center'><div>ACTA DE MUESTREO DE VERIFICACIÓN FÍSICA DE LA ATENCIÓN DE LOS BENEFICIARIOS REPORTADOS EN EL SISTEMA DE INFORMACIÓN DE METROSALUD<br>INTERVENTORÍA BUEN COMIENZO - <em>FECHA DE REPORTE ".$conversiones->fecha(2, $acta->CobPeriodo->fecha)." (RECORRIDO $acta->recorrido)</em></div></div>
     		<div class='fila col3 center'><div>Código: F-ITBC-GC-001</div><div></div><div></div></div>
     		<div class='fila col3e'>
-    			<div>ACTA: <span style='font-weight: normal;'>$acta_id</span></div>
+    			<div>ACTA: <span style='font-weight: normal;'>".$acta->getIdDetail()."</span></div>
     			<div class='col2da'>NÚMERO DE CONTRATO: <span style='font-weight: normal;'>$acta->id_contrato</span></div>
     			<div>MODALIDAD: <span style='font-weight: normal;'>$acta->modalidad_nombre</span></div>
     		</div>
@@ -300,10 +314,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     	$totalizacion_asistencia = "<div class='seccion' id='totalizacion_asistencia'>
     		<div class='fila center bold'><div style='border:none; width: 100%'>1. TOTALIZACIÓN DE ASISTENCIA</div></div>
 	    	<div class='fila'><div>1.1 ASISTE</div></div>
-	    	<div class='fila'><div>1.2 AUSENTE CON EXCUSA FÍSICA</div></div>
-	    	<div class='fila'><div>1.3 AUSENTE CON EXCUSA TELEFÓNICA</div></div>
-	    	<div class='fila'><div>1.4 RETIRADO ANTES DEL DÍA DE CORTE DE PERIODO</div></div>
-	    	<div class='fila'><div>1.5 RETIRADO DESPUES DEL DÍA DE CORTE DE PERIODO</div></div>
+	    	<div class='fila'><div>1.4 RETIRADO</div></div>
 	    	<div class='fila'><div>1.6 AUSENTE QUE NO PRESENTA EXCUSA EL DÍA DEL REPORTE</div></div>
 	    	<div class='fila'><div>1.7 CON EXCUSA MÉDICA MAYOR O IGUAL A 15 DIAS</div></div>
 	    	<div class='fila'><div>1.8 CON EXCUSA MÉDICA MENOR A 15 DIAS</div></div>
@@ -340,18 +351,14 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     			<div>2.5 NOMBRE INTERVENTOR:</div>
     		</div>
     		<div class='fila col2'>
-    			<div>2.6 CUENTA CON VALLA DE IDENTIFICACIÓN:</div>
+    			<div>2.6 CUENTA CON PENDÓN DE IDENTIFICACIÓN:</div>
     			<div>2.7 CORRECCIÓN DIRECCIÓN:</div>
-    		</div>
-    		<div class='fila col2'>
-    			<div>2.8 CUENTA CON MOSAICO FÍSICO:</div>
-    			<div>2.9 CUENTA CON MOSAICO DIGITAL:</div>
     		</div>
     		<div class='clear'></div>
     	</div>
     	<div class='seccion' id='observaciones'>
     		<div class='fila center bold'><div style='border:none; width: 100%'>3. OBSERVACIONES AL MOMENTO DE LA INTERVENTORÍA</div></div>
-    		<div class='fila observacion'><div>3.1 OBSERVACIÓN DEL INTERVENTOR:</div></div>
+    		<div class='fila observacion'><div>3.1 OBSERVACIÓN DEL INTERVENTOR:<br>3.1.1 Cuenta con servicio sanitario, lavamanos, energía eléctrica y agua potable: __<br>3.1.2 Cuenta con las condiciones mínimas de seguridad de conformidad con el Plan de Ordenamiento Territorial (POT): __</div></div>
     		<div class='fila observacion'><div>3.2 OBSERVACIÓN DEL ENCARGADO DE LA SEDE:</div></div>
     		<div class='clear'></div>
     	</div>";
@@ -373,11 +380,11 @@ class CobActaconteo extends \Phalcon\Mvc\Model
   			$fecha_lista =  "<div></div>";
   		}
   		$encabezado_beneficiarios = "<div class='seccion' id='listado_beneficiarios'>
-    		<div class='fila center bold'><div style='border:none; width: 100%'>4. LISTADO DE BENEFICIARIOS REPORTADOS EN EL SISTEMA DE INFORMACIÓN DE BUEN COMIENZO</div></div>
-    		<div class='fila colb'><div style='width: 20px;'>#</div><div style='width: 80px;'>4.1 DOCUMENTO</div><div style='width: 200px'>4.2 NOMBRE COMPLETO</div><div style='width: 200px'>4.3 GRUPO</div><div style='width: 70px'>4.4 ASISTENCIA</div>$fecha_encabezado</div>";
+    		<div class='fila center bold'><div style='border:none; width: 100%'>4. LISTADO DE BENEFICIARIOS REPORTADOS EN EL SISTEMA DE INFORMACIÓN DE METROSALUD</div></div>
+    		<div class='fila colb2'><div style='width: 20px;'>#</div><div style='width: 80px;'>4.1 DOCUMENTO</div><div style='width: 180px'>4.2 NOMBRE COMPLETO</div><div style='width: 60px'>4.3 GRUPO</div><div style='width: 60px;'>4.4 FECHA ENCUENTRO</div><div style='width: 60px;'>4.5 HORA ENCUENTRO</div><div style='width: 70px'>4.6 CICLO VITAL</div><div style='width: 70px'>4.7 COMPL ALIMIENTARIO</div><div style='width: 70px'>4.8 ASISTENCIA</div></div>";
   		$html .= $encabezado;
   		$html .= $encabezado_beneficiarios;
-  		foreach($acta->getCobActaconteoPersona(['order' => 'id_grupo, primerNombre asc']) as $row){
+  		foreach($acta->getCobActamuestreoPersona(['order' => 'grupo, primerNombre asc']) as $row){
   			$nombre_completo = array($row->primerNombre, $row->segundoNombre, $row->primerApellido, $row->segundoApellido);
   			$nombre_completo = implode(" ", $nombre_completo);
   			$i = ($i<10) ? "0" .$i : $i;
@@ -389,26 +396,13 @@ class CobActaconteo extends \Phalcon\Mvc\Model
   				$html .= $encabezado;
   				$html .= $encabezado_beneficiarios;
   			}
-  		$html .="<div class='fila colb'><div style='width: 20px;'>$i</div><div style='width: 80px;'>$row->numDocumento</div><div style='width: 200px'>$nombre_completo</div><div style='width: 200px;'>$row->grupo</div><div style='width: 70px'></div>$fecha_lista</div>";
+  		$html .="<div class='fila colb'><div style='width: 20px;'>$i</div><div style='width: 80px;'>$row->numDocumento</div><div style='width: 180px'>$nombre_completo</div><div style='width: 60px;'>$row->grupo</div><div style='width: 60px;'>".$conversiones->fecha(2, $row->fechaEncuentro)."</div><div style='width: 60px;'>$row->horaEncuentro</div><div style='width: 70px'></div><div style='width: 70px'></div><div style='width: 70px'></div></div>";
   			$i++;
   			$j++;
   		}
   		$p++;
   		$html .= "<div class='clear'></div></div>" . $pie_pagina;
   		$html .= "<div class='paginacion'>PÁGINA $p</div>";
-  		//Si es el recorrido 1 se muestran los niños adicionales:
-  		if($acta->recorrido == 1){
-  			$html .= $encabezado;
-  			$html .= "<div class='seccion' id='listado_beneficiarios'>
-  			<div class='fila center bold'><div style='border:none; width: 100%'>5. LISTADO DE BENEFICIARIOS ADICIONALES A LOS REPORTADOS EN EL SISTEMA DE INFORMACIÓN DE BUEN COMIENZO</div></div>
-  			<div class='fila colb'><div style='width: 20px;'>#</div><div style='width: 120px;'>5.1 DOCUMENTO</div><div style='width: 200px'>5.2 NOMBRE COMPLETO</div><div style='width: 160px'>5.3 GRUPO</div><div style='width: 70px'>5.4 ASISTENCIA</div>$fecha_encabezado2</div>";
-  			for($i = 1; $i <= 30; $i++){
-  				$html .="<div class='fila colb'><div style='width: 20px;'>$i</div><div style='width: 120px;'></div><div style='width: 200px'></div><div style='width: 160px;'></div><div style='width: 70px'></div>$fecha_lista</div>";
-  			}
-  			$p++;
-  			$html .= "<div class='clear'></div></div>" . $pie_pagina;
-  			$html .= "<div class='paginacion'>PÁGINA $p</div>";
-  		}
   		$html .= "<div class='clear'></div>"; // </acta>
     	$datos_acta['html'] = $html; 
     	return $datos_acta;
@@ -444,13 +438,13 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     }
     
     /**
-     * Returns a human representation of 'id_actaconteo'
+     * Returns a human representation of 'id_actamuestreo'
      *
      * @return string
      */
     public function getIdDetail()
     {
-    	return "ACO-03-". date("Y") . sprintf('%05d', $this->id_actaconteo);
+    	return "AMU-03-". date("Y") . sprintf('%05d', $this->id_actamuestreo);
     }
     
     /**
@@ -460,7 +454,6 @@ class CobActaconteo extends \Phalcon\Mvc\Model
      */
     public function getUrlDetail()
     {
-    	return "cob_actaconteo/ver/$this->id_actaconteo";
+    	return "cob_actamuestreo/ver/$this->id_actamuestreo";
     }
-    
 }

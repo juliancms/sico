@@ -7,7 +7,7 @@
         <label class="col-sm-2 control-label" for="tipo">Tipo Periodo</label>
         <div class="col-sm-10">
         	<select id="tipo" name="tipo" class="form-control">
-					<option value="1">Conteo</option>
+					<option value="1">Conteo General</option>
 					<option value="2">Muestreo</option>
 			</select>
         </div>
