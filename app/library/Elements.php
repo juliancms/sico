@@ -31,6 +31,25 @@ class Elements extends Component
 				'icon' => 'glyphicon-open'
 		),
 	);
+	
+	private $_actametroMenu = array(
+			'acta' => array(
+					'caption' => 'Acta',
+					'action' => 'ver',
+					'icon' => 'glyphicon-list-alt'
+			),
+			'datos' => array(
+					'caption' => 'Datos',
+					'action' => 'datos',
+					'icon' => 'glyphicon-file'
+			),
+			'beneficiarios' => array(
+					'caption' => 'Beneficiarios',
+					'action' => 'beneficiarios',
+					'icon' => 'glyphicon-saved'
+			)
+	);
+	
 	private $_mensajeMenu = array(
 			'anuncios' => array(
 					'caption' => 'Anuncios',
@@ -292,6 +311,60 @@ class Elements extends Component
     }
     
     /**
+     * Construye el menú superior de las actas
+     *
+     * @return string
+     */
+    public function getActametrosaludmenu($acta)
+    {
+    	$user = $this->session->get('auth');
+    	$actionName = $this->view->getActionName();
+    	echo "<div class='no-imprimir'><h1>".ucfirst($actionName)." <small><span style='cursor:pointer;' data-toggle='collapse' data-target='#info_acta'>Acta No. $acta->id_actamuestreo <b class='caret'></b></span></small></h1>";
+    	echo "<div id='info_acta' class='collapse'>";
+    	echo "<table class='table table-bordered table-hover'>";
+    	echo "<thead><tr>";
+    	echo "<th>Prestador</th>";
+    	echo "<th>Modalidad</th>";
+    	echo "<th>Sede</th>";
+    	echo "<th>Dirección</th>";
+    	echo "<th>Teléfono</th>";
+    	echo "<th>Interventor</th>";
+    	echo "</tr></thead><tbody><tr>";
+    	echo "<td>".$acta->oferente_nombre."</td>";
+    	echo "<td>".$acta->modalidad_nombre."</td>";
+    	echo "<td>".$acta->sede_nombre."</td>";
+    	echo "<td>".$acta->sede_direccion."</td>";
+    	echo "<td>".$acta->sede_telefono."</td>";
+    	echo "<td>".$acta->id_usuario."</td>";
+    	echo "</tr></tbody></table>";
+    	echo "</div>";
+    	echo "<a href='/sico/cob_periodo/recorrido/$acta->id_periodo/$acta->recorrido' class='btn btn-primary regresar'><i class='glyphicon glyphicon-chevron-left'></i> Regresar</a>";
+    	//Si no es el recorrido 1 quita el menú de adicionales
+    	if($acta->recorrido > 1){
+    	unset($this->_actaMenu['adicionales']);
+    	}
+    	foreach ($this->_actametroMenu as $menu) {
+        	$action = $menu['action'];
+        	$caption = $menu['caption'];
+        	$icon = $menu['icon'];
+    	if($actionName == $menu['action']){
+    	echo "<a class='btn btn-primary menu-tab disabled'><i class='glyphicon $icon'></i> $caption</a>";
+    	} else {
+    	echo "<a href='/sico/cob_actamuestreo/$action/$acta->id_actamuestreo' class='btn btn-primary menu-tab'><i class='glyphicon $icon'></i> $caption</a>";
+    	}
+    	}
+    	$uri = str_replace($this->url->getBaseUri(), '', str_replace($_SERVER["SCRIPT_NAME"], '', $_SERVER["REQUEST_URI"]));
+    	//SI el acta pertenece al interventor o auxiliar y no está cerrada
+    	if($acta->id_usuario != 0 && (($acta->id_usuario == $user['id_usuario'] && $acta->estado < 2) || ($acta->IbcUsuario->id_usuario_lider == $user['id_usuario'] && $acta->estado < 3))){
+    	echo "<form class='menu-tab' action='/sico/cob_actaconteo/cerrar/$acta->id_actaconteo' method='post'><input type='hidden' name='uri' value='$uri'><input type='submit' class='btn btn-danger' value='Cerrar Acta'></form>";
+    	}
+    	if($acta->estado == 2 && $acta->IbcUsuario->id_usuario_lider == $user['id_usuario']){
+    	echo "<form class='menu-tab' action='/sico/cob_actamuestreo/abrir/$acta->id_actamuestreo' method='post'><input type='hidden' name='uri' value='$uri'><input type='submit' class='btn btn-info' value='Abrir Acta'></form>";
+    	}
+    	echo "</div><div class='clear'></clear>";
+    	}
+    
+    /**
      * Returns a select
      */
     public function getSelect($select)
@@ -321,6 +394,12 @@ class Elements extends Component
     			break;
     		case "sino":
     			return array("1" => "Sí", "2" => "No");
+    			break;
+    		case "sinona":
+    			return array("1" => "Sí", "2" => "No", "3" => "N/A");
+    			break;
+    		case "ciclovital":
+    			return array("1" => "G", "2" => "L", "3" => "GL", "4" => "N", "5" => "NM", "6" => "NC", "7" => "GLN");
     			break;
     		default:
     			return array();

@@ -191,6 +191,12 @@ class SecurityPlugin extends Plugin
     		),
     		'ver' => array(
     				'nivelPermiso' => '3'
+    		),
+    		'datos' => array(
+    				'nivelPermiso' => '3'
+    		),
+    		'beneficiarios' => array(
+    				'nivelPermiso' => '3'
     		)
     			
     	),
