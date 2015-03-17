@@ -146,3 +146,10 @@ $di->set('conversiones', function(){
 $di->set('phpexcel', function(){
 	return new PHPExcel();
 });
+
+/**
+ * Mail service
+ */
+$di->set('mail', function () {
+	return new Mail();
+});

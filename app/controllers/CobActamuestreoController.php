@@ -48,7 +48,7 @@ class CobActamuestreoController extends ControllerBase
     /**
      * Datos
      *
-     * @param int $id_actaconteo
+     * @param int $id_actamuestreo
      */
     public function datosAction($id_actamuestreo)
     {
@@ -172,7 +172,7 @@ class CobActamuestreoController extends ControllerBase
     /**
      * Beneficiarios
      *
-     * @param int $id_actaconteo
+     * @param int $id_actamuestreo
      */
     public function beneficiariosAction($id_actamuestreo) {
     	if (!$this->request->isPost()) {
@@ -223,7 +223,7 @@ class CobActamuestreoController extends ControllerBase
     /**
      * Cierra un acta
      *
-     * @param int $id_actaconteo
+     * @param int $id_actamuestreo
      */
     public function cerrarAction($id_actamuestreo)
     {
@@ -272,7 +272,7 @@ class CobActamuestreoController extends ControllerBase
     /**
      * Abre un acta
      *
-     * @param int $id_actaconteo
+     * @param int $id_actamuestreo
      */
     public function abrirAction($id_actamuestreo)
     {
@@ -282,7 +282,7 @@ class CobActamuestreoController extends ControllerBase
     	$acta = CobActamuestreo::findFirstByid_actamuestreo($id_actamuestreo);
     	if (!$acta) {
     		$this->flash->error("El acta no fue encontrada");
-    		return $this->response->redirect("cob_actaconteo/");
+    		return $this->response->redirect("cob_actamuestreo/");
     	}
     	$uri = $this->request->getPost("uri");
     	//Si es interventor

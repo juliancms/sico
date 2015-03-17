@@ -27,6 +27,25 @@ class IbcMensajeController extends ControllerBase
     /**
      * index action
      */
+    public function mensajeAction($id_mensaje)
+    {
+    	$ibc_mensaje = IbcMensaje::findFirstByid_mensaje($id_mensaje);
+    	if (!$ibc_mensaje) {
+    		$this->flash->error("El mensaje no fue encontrado, posiblemente fue eliminado");
+    		return $this->response->redirect("ibc_mensaje/");
+    	}
+    	$this->assets
+    	->addJs('js/parsley.min.js')
+    	->addJs('js/parsley.extend.js')
+    	->addJs('js/mensajes.js')
+    	->addJs('js/multifilter.min.js')
+    	->addCss('css/mensajes.css');
+    	$this->view->mensaje = $ibc_mensaje;
+    }
+    
+    /**
+     * index action
+     */
     public function mensajesAction()
     {
     	$this->persistent->parameters = null;
@@ -170,6 +189,7 @@ class IbcMensajeController extends ControllerBase
     		return $this->response->redirect("ibc_mensaje");
     	}
     	$db = $this->getDI()->getDb();
+    	$mail = $this->getDI()->getMail();
     	switch($this->request->getPost("destinatario")){
     		//Si es un mensaje para el componente
     		case 1:
@@ -195,6 +215,8 @@ class IbcMensajeController extends ControllerBase
     			$usuarios = $this->request->getPost("usuarios_agregados");
     			$usuarios_id = array();
     			foreach($usuarios as $row){
+    				$ibc_usuario = IbcUsuario::findFirstByid_usuario($row);
+    				$mail->send(array($ibc_usuario->email => $ibc_usuario->nombre), "Nuevo mensaje: Sistema de Información Interventoría Buen Comienzo", 'mensaje', array('remitente' => $ibc_usuario->nombre, 'email' => $ibc_usuario->email,'mensaje' => $mensaje->mensaje, 'id_mensaje' => $mensaje->id_mensaje));
     				$usuarios_id[] = $row;
     				$mensajes_id[] = $mensaje->id_mensaje;
     			}
@@ -215,6 +237,8 @@ class IbcMensajeController extends ControllerBase
     	}
     	$usuarios_id = array();
     	foreach($usuarios as $row){
+    		$ibc_usuario = IbcUsuario::findFirstByid_usuario($row->id_usuario);
+    		$mail->send(array($ibc_usuario->email => $ibc_usuario->nombre), "Nuevo mensaje: Sistema de Información Interventoría Buen Comienzo", 'mensaje', array('remitente' => $ibc_usuario->nombre, 'email' => $ibc_usuario->email,'mensaje' => $mensaje->mensaje, 'id_mensaje' => $mensaje->id_mensaje));
     		$usuarios_id[] = $row->id_usuario;
     		$mensajes_id[] = $mensaje->id_mensaje;
     	}
@@ -231,14 +255,14 @@ class IbcMensajeController extends ControllerBase
     /**
      * Creación de un nuevo usuario
      */
-    public function comentarioAction($id_mensaje)
+    public function comentarioAction($id_mensaje, $tipo = NULL)
     {
     	if (!$this->request->isPost()) {
     		return $this->response->redirect("ibc_mensaje/");
     	}
-    	$mensaje = IbcMensaje::findFirstByid_mensaje($id_mensaje);
-    	if (!$mensaje) {
-    		$this->flash->error("El mensaje no fue encontrado");
+   		$ibc_mensaje = IbcMensaje::findFirstByid_mensaje($id_mensaje);
+    	if (!$ibc_mensaje) {
+    		$this->flash->error("El mensaje no fue encontrado, posiblemente fue eliminado");
     		return $this->response->redirect("ibc_mensaje/");
     	}
     	$comentario = new IbcMensajeComentario();
@@ -250,9 +274,15 @@ class IbcMensajeController extends ControllerBase
     		foreach ($comentario->getMessages() as $message) {
     			$this->flash->error($message);
     		}
+    		if($tipo){
+    			return $this->response->redirect("ibc_mensaje/mensaje/$id_mensaje");
+    		}
     		return $this->response->redirect("ibc_mensaje");
     	}
     	$this->flash->success("El comentario fue guardado exitosamente.");
+    	if($tipo){
+    		return $this->response->redirect("ibc_mensaje/mensaje/$id_mensaje");
+    	}
     	return $this->response->redirect("ibc_mensaje/");
     }
 }

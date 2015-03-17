@@ -57,10 +57,7 @@ class CobPeriodoController extends ControllerBase
     				"group" => "recorrido"
     		));
     	} else if ($cob_periodo->tipo == 2){
-    		$recorridos = CobActamuestreo::find(array(
-    				"id_periodo = $id_periodo",
-    				"group" => "recorrido"
-    		));
+    		return $this->response->redirect("cob_periodo/recorrido/$id_periodo/1");
     	}
     	$this->view->recorridos = $recorridos;
     	$this->view->crear_recorrido = count($recorridos) + 1;

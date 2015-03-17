@@ -19,6 +19,9 @@ class SecurityPlugin extends Plugin
             'mensajes' => array(
                 'nivelPermiso' => '4'
             ),
+        	'mensaje' => array(
+                'nivelPermiso' => '4'
+            ),
         	'anuncios' => array(
         		'nivelPermiso' => '4'
         	),
@@ -268,6 +271,7 @@ class SecurityPlugin extends Plugin
         } else if($this->_permiso[$controlador][$accion]['nivelPermiso'] == -2) {
     		return TRUE;
     	} else if($controlador !== "session" && $controlador !== "index") {
+    		$this->session->set("last_url", str_replace('/sico/', '', $_SERVER["REQUEST_URI"]));
         	return $this->response->redirect('session/index');
         } else {
         	return TRUE;

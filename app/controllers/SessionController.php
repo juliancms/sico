@@ -82,7 +82,10 @@ class SessionController extends ControllerBase
     			if ($user) {
     				if ($this->security->checkHash($password, $user->password)) {
     					$this->_registerSession($user, $tipo_usuario);
-    					$this->flash->success('Bienvenido ' . $user->nombre);
+    					$this->flash->success('Bienvenido(a) ' . $user->nombre);
+    					if ($this->session->has("last_url")) {
+    						return $this->response->redirect($this->session->get("last_url"));
+    					}
     					return $this->response->redirect('ibc_mensaje/anuncios');
     				}
     			}
