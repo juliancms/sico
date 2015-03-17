@@ -75,7 +75,7 @@
             	{{ text_field("telefono[]", "placeholder" : "Teléfono", "class" : "form-control hidden excusa", "parsley-type" : "number", "disabled" : "disabled") }}
            	<?php } ?>
             </td>
-            <td>{{ text_field("fecha[]", "type" : "date", "class" : "form-control tipo-fecha required fecha", "placeholder" : "dd/mm/aaaa", "parsley-type" : "dateIso", "data-date-format" : "dd/mm/yyyy", "value" : fecha) }}</td>
+            <td>{{ text_field("fecha[]", "type" : "date", "class" : "form-control tipo-fecha fecha", "placeholder" : "dd/mm/aaaa", "parsley-type" : "dateIso", "data-date-format" : "dd/mm/yyyy", "value" : fecha) }}</td>
         </tr>
     {% endfor %}
     </tbody>
