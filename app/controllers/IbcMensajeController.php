@@ -160,7 +160,7 @@ class IbcMensajeController extends ControllerBase
     }
     
     /**
-     * Creación de un nuevo usuario
+     * Creación de un nuevo mensaje
      */
     public function crearAction()
     {
@@ -216,7 +216,7 @@ class IbcMensajeController extends ControllerBase
     			$usuarios_id = array();
     			foreach($usuarios as $row){
     				$ibc_usuario = IbcUsuario::findFirstByid_usuario($row);
-    				$mail->send(array($ibc_usuario->email => $ibc_usuario->nombre), "Nuevo mensaje: Sistema de Información Interventoría Buen Comienzo", 'mensaje', array('remitente' => $ibc_usuario->nombre, 'email' => $ibc_usuario->email,'mensaje' => $mensaje->mensaje, 'id_mensaje' => $mensaje->id_mensaje));
+    				$mail->send(array($ibc_usuario->email => $ibc_usuario->nombre), "Nuevo mensaje: Sistema de Información Interventoría Buen Comienzo", 'mensaje', array('remitente' => $this->user['nombre'], 'email' => $this->user['email'],'mensaje' => $mensaje->mensaje, 'id_mensaje' => $mensaje->id_mensaje));
     				$usuarios_id[] = $row;
     				$mensajes_id[] = $mensaje->id_mensaje;
     			}
@@ -231,15 +231,13 @@ class IbcMensajeController extends ControllerBase
     			break;
     		default:
     			$usuarios = array("id_usuario" => $this->request->getPost("destinatario"));
-    			$this->flash->success("El mensaje fue creado exitosamente.");
-    			return $this->response->redirect("ibc_mensaje/");
     			break;
     	}
     	$usuarios_id = array();
     	foreach($usuarios as $row){
-    		$ibc_usuario = IbcUsuario::findFirstByid_usuario($row->id_usuario);
-    		$mail->send(array($ibc_usuario->email => $ibc_usuario->nombre), "Nuevo mensaje: Sistema de Información Interventoría Buen Comienzo", 'mensaje', array('remitente' => $ibc_usuario->nombre, 'email' => $ibc_usuario->email,'mensaje' => $mensaje->mensaje, 'id_mensaje' => $mensaje->id_mensaje));
-    		$usuarios_id[] = $row->id_usuario;
+    		$ibc_usuario = IbcUsuario::findFirstByid_usuario($row);
+    		$mail->send(array($ibc_usuario->email => $ibc_usuario->nombre), "Nuevo mensaje: Sistema de Información Interventoría Buen Comienzo", 'mensaje', array('remitente' => $this->user['nombre'], 'email' => $this->user['email'],'mensaje' => $mensaje->mensaje, 'id_mensaje' => $mensaje->id_mensaje));
+    		$usuarios_id[] = $row;
     		$mensajes_id[] = $mensaje->id_mensaje;
     	}
     	$elementos = array(
@@ -253,7 +251,7 @@ class IbcMensajeController extends ControllerBase
     }
     
     /**
-     * Creación de un nuevo usuario
+     * Ver comentario
      */
     public function comentarioAction($id_mensaje, $tipo = NULL)
     {
