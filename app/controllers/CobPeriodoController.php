@@ -49,10 +49,17 @@ class CobPeriodoController extends ControllerBase
     		$this->flash->error("El periodo no fue encontrado");
     		return $this->response->redirect("cob_periodo/");
     	}
-    	$recorridos = CobActaconteo::find(array(
+    	if($cob_periodo->tipo == 1){
+    		$recorridos = CobActaconteo::find(array(
     				"id_periodo = $id_periodo",
     				"group" => "recorrido"
-    	));
+    		));
+    	} else if ($cob_periodo->tipo == 2){
+    		$recorridos = CobActamuestreo::find(array(
+    				"id_periodo = $id_periodo",
+    				"group" => "recorrido"
+    		));
+    	}
     	$this->view->id_periodo = $cob_periodo->id_periodo;
     	$this->view->fecha_periodo = $cob_periodo->getFechaDetail();
     	$this->view->fecha_cierre = $cob_periodo->fechaCierre;
