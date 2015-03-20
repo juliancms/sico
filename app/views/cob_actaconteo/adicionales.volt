@@ -64,7 +64,7 @@
 			        <div class="progress-bar progress-bar-success"></div>
 			    </div>
 			    <p><a class="captura" target="_blank" href="/sico/files/adicionales/{{ adicional.urlAdicional }}">{% if adicional.urlAdicional %}Clic para ver{% endif %}</a></p>
-			    <input disabled="disabled" type='hidden' class='urlAdicional' name='urlAdicional[]' value=''>
+			    <input disabled="disabled" type='hidden' class='urlAdicional' name='urlAdicional[]' value='{{ adicional.urlAdicional }}'>
 			</td>
             <td>{{ text_area("observacion[]", "value" : adicional.observacionAdicional, "disabled" : "disabled", "rows" : "3", "class" : "form-control") }}</td>
             <td style="text-align:center;"><a id='{{ adicional.id_actaconteo_persona }}' class='btn btn-default eliminar_guardado'><i class='glyphicon glyphicon-remove'></i></a><br><a class='btn btn-default editar_guardado'><i class='glyphicon glyphicon-edit'></i></a></td>
