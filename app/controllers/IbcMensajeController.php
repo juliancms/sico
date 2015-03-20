@@ -147,7 +147,7 @@ class IbcMensajeController extends ControllerBase
     		$destinatarios['159'] = "Verificación";
     	}
     	if($this->user['id_usuario_cargo'] == 7){
-    		$this->view->anuncio = "<label class='btn btn-primary active input-group-addon'><input type='checkbox' name='anuncio' value='1' autocomplete='off'> Anuncio</label>";
+    		$this->view->anuncio = "<input type='checkbox' name='anuncio' value='1' autocomplete='off' class='hide' checked>";
     		$destinatarios['3'] = "Oferentes";    		
     	}
     	if($this->user['nivel'] < 2){
