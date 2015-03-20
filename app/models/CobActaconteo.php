@@ -377,7 +377,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     		<div class='fila colb'><div style='width: 20px;'>#</div><div style='width: 80px;'>4.1 DOCUMENTO</div><div style='width: 200px'>4.2 NOMBRE COMPLETO</div><div style='width: 200px'>4.3 GRUPO</div><div style='width: 70px'>4.4 ASISTENCIA</div>$fecha_encabezado</div>";
   		$html .= $encabezado;
   		$html .= $encabezado_beneficiarios;
-  		foreach($acta->getCobActaconteoPersona(['order' => 'id_grupo, primerNombre asc']) as $row){
+  		foreach($acta->getCobActaconteoPersona(["tipoPersona = 0", 'order' => 'id_grupo, primerNombre asc']) as $row){
   			$nombre_completo = array($row->primerNombre, $row->segundoNombre, $row->primerApellido, $row->segundoApellido);
   			$nombre_completo = implode(" ", $nombre_completo);
   			$i = ($i<10) ? "0" .$i : $i;
