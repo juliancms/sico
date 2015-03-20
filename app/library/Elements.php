@@ -98,6 +98,13 @@ class Elements extends Component
     				'action' => 'index'
     		)
     );
+    
+    private $_headerMenuComponente = array(
+    		'ibc_mensaje' => array(
+    				'caption' => 'Comunicaciones',
+    				'action' => 'anuncios'
+    		)
+    );
 
     private $_tabs = array(
         'Periodos' => array(
@@ -147,6 +154,8 @@ class Elements extends Component
             if($user['id_usuario_cargo'] == 6){
             	$menu = $this->_headerMenuOferente;
             	
+            } else if($user['id_usuario_cargo'] == 7){
+            	$menu = $this->_headerMenuComponente;
             } else {
             	$menu = $this->_headerMenu;
             	$menu_usuario .= '<li role="presentation" class="divider"></li>';

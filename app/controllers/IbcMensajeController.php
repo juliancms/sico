@@ -74,7 +74,7 @@ class IbcMensajeController extends ControllerBase
     	}
     $destinatarios = array();
     	$this->view->anuncio = "";
-    	if($this->user['id_usuario_cargo'] == 6){
+    	if($this->user['id_usuario_cargo'] == 6 || $this->user['id_usuario_cargo'] > 5){
     		$destinatarios['155'] = "Cobertura";
     		$destinatarios['160'] = "Gestión Institucional";
     		$destinatarios['157'] = "Infraestructura";
@@ -83,6 +83,10 @@ class IbcMensajeController extends ControllerBase
     		$destinatarios['156'] = "Psicosocial";
     		$destinatarios['158'] = "Salud";
     		$destinatarios['159'] = "Verificación";
+    	}
+    	if($this->user['id_usuario_cargo'] == 7){
+    		$this->view->anuncio = "<label class='btn btn-primary active input-group-addon'><input type='checkbox' name='anuncio' value='1' autocomplete='off'> Anuncio</label>";
+    		$destinatarios['3'] = "Oferentes";    		
     	}
     	if($this->user['nivel'] < 2){
     		$destinatarios['1'] = $this->user['componente'];
@@ -132,7 +136,7 @@ class IbcMensajeController extends ControllerBase
     	}
     	$destinatarios = array();
     	$this->view->anuncio = "";
-    	if($this->user['id_usuario_cargo'] == 6){
+    	if($this->user['id_usuario_cargo'] == 6 || $this->user['id_usuario_cargo'] > 5){
     		$destinatarios['155'] = "Cobertura";
     		$destinatarios['160'] = "Gestión Institucional";
     		$destinatarios['157'] = "Infraestructura";
@@ -141,6 +145,10 @@ class IbcMensajeController extends ControllerBase
     		$destinatarios['156'] = "Psicosocial";
     		$destinatarios['158'] = "Salud";
     		$destinatarios['159'] = "Verificación";
+    	}
+    	if($this->user['id_usuario_cargo'] == 7){
+    		$this->view->anuncio = "<label class='btn btn-primary active input-group-addon'><input type='checkbox' name='anuncio' value='1' autocomplete='off'> Anuncio</label>";
+    		$destinatarios['3'] = "Oferentes";    		
     	}
     	if($this->user['nivel'] < 2){
     		$destinatarios['1'] = $this->user['componente'];
@@ -207,8 +215,7 @@ class IbcMensajeController extends ControllerBase
     			break;
     		//Si es para los oferentes
     		case 3:
-    			$this->flash->success("El mensaje fue creado exitosamente.");
-    			return $this->response->redirect("ibc_mensaje/");
+    			$usuarios = IbcUsuario::find(["id_usuario_cargo = 6"]);
     			break;
     		//Si es para unos usuarios determinados
     		case 4:
