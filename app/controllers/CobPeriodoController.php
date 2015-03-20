@@ -49,16 +49,13 @@ class CobPeriodoController extends ControllerBase
     		$this->flash->error("El periodo no fue encontrado");
     		return $this->response->redirect("cob_periodo/");
     	}
-    	$this->view->id_periodo = $cob_periodo->id_periodo;
-    	$this->view->fecha_periodo = $cob_periodo->id_periodo;
-    	if($cob_periodo->tipo == 1){
-    		$recorridos = CobActaconteo::find(array(
+    	$recorridos = CobActaconteo::find(array(
     				"id_periodo = $id_periodo",
     				"group" => "recorrido"
-    		));
-    	} else if ($cob_periodo->tipo == 2){
-    		return $this->response->redirect("cob_periodo/recorrido/$id_periodo/1");
-    	}
+    	));
+    	$this->view->id_periodo = $cob_periodo->id_periodo;
+    	$this->view->fecha_periodo = $cob_periodo->getFechaDetail();
+    	$this->view->fecha_cierre = $cob_periodo->fechaCierre;
     	$this->view->recorridos = $recorridos;
     	$this->view->crear_recorrido = count($recorridos) + 1;
     	$this->view->nivel = $this->user['nivel'];
@@ -149,10 +146,17 @@ class CobPeriodoController extends ControllerBase
     public function rutearAction($id_periodo, $recorrido)
     {
     	$cob_periodo = CobPeriodo::findFirstByid_periodo($id_periodo);
-    	$actas = CobActaconteo::find(array(
-    			"id_periodo = $id_periodo AND recorrido = $recorrido",
-    			"group" => "id_actaconteo"
-    	));
+    	if($cob_periodo->tipo == 2){
+    		$actas = CobActamuestreo::find(array(
+    				"id_periodo = $id_periodo AND recorrido = $recorrido",
+    				"group" => "id_actamuestreo"
+    		));
+    	} else {
+    		$actas = CobActaconteo::find(array(
+    				"id_periodo = $id_periodo AND recorrido = $recorrido",
+    				"group" => "id_actaconteo"
+    		));
+    	}
     	if (!$cob_periodo) {
     		$this->flash->error("El periodo no fue encontrado");
     		return $this->response->redirect("cob_periodo/");
@@ -184,10 +188,45 @@ class CobPeriodoController extends ControllerBase
     		 return $this->response->redirect("ibc_usuario/");
     	}
    	 	$cob_periodo = CobPeriodo::findFirstByid_periodo($id_periodo);
-    	$actas = CobActaconteo::find(array(
-    			"id_periodo = $id_periodo AND recorrido = $recorrido",
-    			"group" => "id_actaconteo"
-    	));
+   	 	if($cob_periodo->tipo == 2){
+   	 		$actas = CobActamuestreo::find(array(
+   	 				"id_periodo = $id_periodo AND recorrido = $recorrido",
+   	 				"group" => "id_actamuestreo"
+   	 		));
+   	 		$db = $this->getDI()->getDb();
+   	 		$estado = array();
+   	 		foreach($this->request->getPost("contador_asignado") as $row){
+   	 			if($row == "NULL")
+   	 				$estado[] = 0;
+   	 			else
+   	 				$estado[] = 1;
+   	 		}
+   	 		$elementos = array(
+   	 				'id_actamuestreo' => $this->request->getPost("id_acta"),
+   	 				'estado' => $estado,
+   	 				'id_usuario' => $this->request->getPost("contador_asignado")
+   	 		);
+   	 		$sql = $this->conversiones->multipleupdate("cob_actamuestreo", $elementos, "id_actamuestreo");
+   	 	} else {
+   	 		$actas = CobActaconteo::find(array(
+   	 				"id_periodo = $id_periodo AND recorrido = $recorrido",
+   	 				"group" => "id_actaconteo"
+   	 		));
+   	 		$db = $this->getDI()->getDb();
+   	 		$estado = array();
+   	 		foreach($this->request->getPost("contador_asignado") as $row){
+   	 			if($row == "NULL")
+   	 				$estado[] = 0;
+   	 			else
+   	 				$estado[] = 1;
+   	 		}
+   	 		$elementos = array(
+   	 				'id_actaconteo' => $this->request->getPost("id_acta"),
+   	 				'estado' => $estado,
+   	 				'id_usuario' => $this->request->getPost("contador_asignado")
+   	 		);
+   	 		$sql = $this->conversiones->multipleupdate("cob_actaconteo", $elementos, "id_actaconteo");
+   	 	}
     	if (!$cob_periodo) {
     		$this->flash->error("El periodo no fue encontrado");
     		return $this->response->redirect("cob_periodo/");
@@ -196,20 +235,6 @@ class CobPeriodoController extends ControllerBase
     		$this->flash->error("El recorrido no fue encontrado");
     		return $this->response->redirect("cob_periodo/");
     	}
-    	$db = $this->getDI()->getDb();
-    	$estado = array();
-    	foreach($this->request->getPost("contador_asignado") as $row){
-    		if($row == "NULL")
-    			$estado[] = 0;
-    		else
-    			$estado[] = 1;
-    	}
-    	$elementos = array(
-    			'id_actaconteo' => $this->request->getPost("id_acta"),
-    			'estado' => $estado,
-    			'id_usuario' => $this->request->getPost("contador_asignado")
-    	);
-    	$sql = $this->conversiones->multipleupdate("cob_actaconteo", $elementos, "id_actaconteo");
     	$query = $db->execute($sql);
     	if (!$query) {
 	    	foreach ($query->getMessages() as $message) {
@@ -234,10 +259,21 @@ class CobPeriodoController extends ControllerBase
     	$id_periodo_actualizar = $this->request->getPost("id_periodo_actualizar");
     	$recorrido_actualizar = $this->request->getPost("recorrido_actualizar");
     	$cob_periodo = CobPeriodo::findFirstByid_periodo($id_periodo_actualizar);
-    	$actas = CobActaconteo::find(array(
-    			"id_periodo = $id_periodo_actualizar AND recorrido = $recorrido_actualizar",
-    			"group" => "id_actaconteo"
-    	));
+    	if($cob_periodo->tipo == 2){
+    		$actas = CobActamuestreo::find(array(
+    				"id_periodo = $id_periodo_actualizar AND recorrido = $recorrido_actualizar",
+    				"group" => "id_actamuestreo"
+    		));
+    		$tabla_acta = "cob_actamuestreo";
+    	} else {
+    		$actas = CobActaconteo::find(array(
+    				"id_periodo = $id_periodo_actualizar AND recorrido = $recorrido_actualizar",
+    				"group" => "id_actaconteo"
+    		));
+    		$tabla_acta = "cob_actaconteo";
+    	}
+    	
+    	
     	if (!$cob_periodo) {
     		$this->flash->error("El periodo no fue encontrado");
     		return $this->response->redirect("cob_periodo/");
@@ -251,7 +287,7 @@ class CobPeriodoController extends ControllerBase
     		$id_usuario = $row->id_usuario;
     		$id_contrato = $row->id_contrato;
     		$id_sede = $row->id_sede;
-    		$query = $db->execute("UPDATE cob_actaconteo SET id_usuario = $id_usuario WHERE id_periodo = $id_periodo AND recorrido = $recorrido AND id_contrato = $id_contrato AND id_sede = $id_sede");
+    		$query = $db->execute("UPDATE $tabla_acta SET id_usuario = $id_usuario WHERE id_periodo = $id_periodo AND recorrido = $recorrido AND id_contrato = $id_contrato AND id_sede = $id_sede");
     	}
     	$this->flash->success("El ruteo fue actualizado exitosamente");
     	return $this->response->redirect("cob_periodo/rutear/$id_periodo/$recorrido");
@@ -451,11 +487,7 @@ class CobPeriodoController extends ControllerBase
             foreach ($cob_periodo->getMessages() as $message) {
                 $this->flash->error($message);
             }
-            return $this->dispatcher->forward(array(
-                "controller" => "cob_periodo",
-                "action" => "editar",
-                "params" => array($cob_periodo->id_periodo)
-            ));
+            return $this->response->redirect("cob_periodo/ver/$id_periodo");
         }
 
         $this->flash->success("cob_periodo fue actualizado exitosamente");
@@ -473,7 +505,7 @@ class CobPeriodoController extends ControllerBase
     {
         $cob_periodo = CobPeriodo::findFirstByid_periodo($id_periodo);
         if (!$cob_periodo) {
-            $this->flash->error("cob_periodo no fue encontrado");
+            $this->flash->error("El periodo no fue encontrado");
 
             return $this->response->redirect("cob_periodo/");
         }
@@ -481,7 +513,7 @@ class CobPeriodoController extends ControllerBase
             foreach ($cob_periodo->getMessages() as $message) {
                 $this->flash->error($message);
             }
-           	return $this->response->redirect("cob_periodo/");
+           	return $this->response->redirect("cob_periodo/ver/$id_periodo");
         }
         $this->flash->success("El periodo fue eliminado correctamente");
         return $this->response->redirect("cob_periodo/");
@@ -491,19 +523,36 @@ class CobPeriodoController extends ControllerBase
      * Duplicar una acta
      */
     public function cerrarAction($id_periodo){
-    	if (!$id_periodo) {
-    		return $this->response->redirect("cob_actaconteo/ver/$id_actaconteo");
+    	$cob_periodo = CobPeriodo::findFirstByid_periodo($id_periodo);
+    	if (!$cob_periodo) {
+    		$this->flash->error("El periodo no fue encontrado");
+    		return $this->response->redirect("cob_periodo");
     	}
-    	$actas = CobActaconteo::find(["id_periodo = $id_periodo"]);
-    	$actas->estado = 4; 
-    	$actas->save(); break;
-    	$ninos = CobActaconteoPersona::find(["id_periodo = $id_periodo AND (asistencia = 1 OR asistencia = 7)"]);
-    	$i = 1;
-    	foreach($ninos as $row){
-    		echo "(" . $i . ")" .  $row->CobActaconteoPersonaFacturacion->numDocumento . " - ";
-    		$i++;
+    	if ($cob_periodo->fechaCierre) {
+    		$this->flash->error("El periodo ya fue cerrado");
+    		return $this->response->redirect("cob_periodo/ver/$id_periodo");
     	}
-    	break;
+    	$db = $this->getDI()->getDb();
+    	$db->query("UPDATE cob_actaconteo_persona, cob_actaconteo_persona_facturacion SET cob_actaconteo_persona.id_actaconteo_persona_facturacion = cob_actaconteo_persona_facturacion.id_actaconteo_persona_facturacion WHERE cob_actaconteo_persona.id_contrato = cob_actaconteo_persona_facturacion.id_contrato AND cob_actaconteo_persona.numDocumento = cob_actaconteo_persona_facturacion.numDocumento AND cob_actaconteo_persona.id_periodo = $id_periodo AND cob_actaconteo_persona_facturacion.id_periodo = $id_periodo");
+    	$db->query("UPDATE cob_actaconteo SET estado = 4 WHERE cob_actaconteo.id_periodo = $id_periodo");
+    	$timestamp = new DateTime();
+    	$tabla_certificar = "m" . $timestamp->getTimestamp();
+    	$db->query("CREATE TEMPORARY TABLE $tabla_certificar (id_actaconteo_persona_facturacion BIGINT) CHARACTER SET utf8 COLLATE utf8_bin");
+    	$db->query("INSERT IGNORE INTO $tabla_certificar (id_actaconteo_persona_facturacion) SELECT id_actaconteo_persona_facturacion FROM cob_actaconteo_persona WHERE cob_actaconteo_persona.id_periodo = $id_periodo AND (cob_actaconteo_persona.asistencia = 1 OR cob_actaconteo_persona.asistencia = 7)");
+    	$db->query("DELETE FROM $tabla_certificar WHERE id_actaconteo_persona_facturacion = 0");
+    	$db->query("UPDATE cob_actaconteo_persona_facturacion SET cob_actaconteo_persona_facturacion.certificacion = 2 WHERE id_periodo = $id_periodo");
+    	$db->query("UPDATE cob_actaconteo_persona_facturacion, $tabla_certificar SET cob_actaconteo_persona_facturacion.certificacion = 1 WHERE cob_actaconteo_persona_facturacion.id_actaconteo_persona_facturacion = $tabla_certificar.id_actaconteo_persona_facturacion AND cob_actaconteo_persona_facturacion.id_periodo = $id_periodo");
+    	$db->query("DROP TABLE $tabla_certificar");
+    	$cob_periodo->fechaCierre = date('Y-m-d H:i:s');
+    	if (!$cob_periodo->save()) {
+    	
+    		foreach ($cob_periodo->getMessages() as $message) {
+    			$this->flash->error($message);
+    		}
+    		return $this->response->redirect("cob_periodo/ver/$id_periodo");
+    	}
+    	$this->flash->success("El periodo fue cerrado exitosamente");
+    	return $this->response->redirect("cob_periodo/ver/$id_periodo");
     }
 
 }

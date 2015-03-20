@@ -454,6 +454,26 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     }
     
     /**
+     * Returns a human representation of 'id_actamuestreo'
+     *
+     * @return string
+     */
+    public function getId()
+    {
+    	return $this->id_actaconteo;
+    }
+    
+    /**
+     * Contar beneficiarios
+     *
+     * @return string
+     */
+    public function countBeneficiarios()
+    {
+    	return count($this->CobActaconteoPersona);
+    }
+    
+    /**
      * Returns a human representation of 'url'
      *
      * @return string

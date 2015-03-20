@@ -40,6 +40,17 @@ class CobPeriodo extends \Phalcon\Mvc\Model
      *
      * @return string
      */
+    public function getFechacierreDetail()
+    {
+    	$conversiones = $this->getDI()->getConversiones();
+    	return $conversiones->fecha(3, $this->fechacierre);
+    }
+    
+    /**
+     * Returns a human representation of 'fecha'
+     *
+     * @return string
+     */
     public function getTipoperiodoDetail()
     {
     	if($this->tipo == 1) {

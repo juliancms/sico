@@ -63,12 +63,12 @@
    		{% if ((acta.id_usuario is empty)) %}
         <tr>
         	<td>{{ loop.index }}</td>
-        	<td><input type="checkbox" class="acta_check" id="{{ acta.id_actaconteo }}" value="{{ acta.id_actaconteo }}"><input type="hidden" name="id_acta[]" class="id_acta" value="{{ acta.id_actaconteo }}" disabled="disabled"><input type="hidden" name="contador_asignado[]" class="contador_asignado" disabled="disabled"></td>
+        	<td><input type="checkbox" class="acta_check" id="{{ acta.getId() }}" value="{{ acta.getId() }}"><input type="hidden" name="id_acta[]" class="id_acta" value="{{ acta.getId() }}" disabled="disabled"><input type="hidden" name="contador_asignado[]" class="contador_asignado" disabled="disabled"></td>
         	<td class='interventor'><span class="no_asignado">No asignado</span></td>
         	{% else %}
         <tr class="success">
         	<td>{{ loop.index }}</td>
-        	<td><input type="checkbox" class="acta_check" id="{{ acta.id_actaconteo }}" value="{{ acta.id_actaconteo }}"><input type="hidden" name="id_acta[]" class="id_acta" value="{{ acta.id_actaconteo }}" disabled="disabled"><input type="hidden" name="contador_asignado[]" class="contador_asignado" disabled="disabled"></td>
+        	<td><input type="checkbox" class="acta_check" id="{{ acta.getId() }}" value="{{ acta.getId() }}"><input type="hidden" name="id_acta[]" class="id_acta" value="{{ acta.getId() }}" disabled="disabled"><input type="hidden" name="contador_asignado[]" class="contador_asignado" disabled="disabled"></td>
         	<td class='interventor'><span class="asignado">{{ acta.IbcUsuario.usuario }}</span></td>
         	{% endif %}
             <td>{{ link_to("cob_actaconteo/ver/"~acta.id_actaconteo, '<span class="nombre_lista" id="'~acta.id_actaconteo~'">'~acta.id_actaconteo~'</span>') }}</td>
@@ -77,7 +77,7 @@
             <td>{{ acta.id_sede }} - {{ acta.sede_nombre }}</td>
             <td>{{ acta.sede_barrio }}</td>
             <td>{{ acta.sede_direccion }}</td>
-            <td><?php echo count($acta->getCobActaconteoPersona()); ?></td>
+            <td>{{ acta.countBeneficiarios() }}</td>
                       
         </tr>
     {% endfor %}

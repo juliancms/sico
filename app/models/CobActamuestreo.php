@@ -426,6 +426,26 @@ class CobActamuestreo extends \Phalcon\Mvc\Model
     }
     
     /**
+     * Returns a human representation of 'id_actamuestreo'
+     *
+     * @return string
+     */
+    public function getId()
+    {
+    	return $this->id_actamuestreo;
+    }
+    
+    /**
+     * Contar beneficiarios
+     *
+     * @return string
+     */
+    public function countBeneficiarios()
+    {
+    	return count($this->CobActamuestreoPersona);
+    }
+    
+    /**
      * Returns a human representation of 'cicloVital'
      *
      * @return string
