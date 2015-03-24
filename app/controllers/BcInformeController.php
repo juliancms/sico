@@ -30,9 +30,9 @@ class BcInformeController extends ControllerBase
     }
 
     /**
-     * Reporte general de Cobertura
+     * Reporte general de Cobertura de Contratos
      */
-    public function reporteAction($id_periodo)
+    public function reportecontratosAction($id_periodo)
     {
     	$cob_periodo = CobPeriodo::findFirstByid_periodo($id_periodo);
     	if (!$cob_periodo) {
@@ -40,6 +40,21 @@ class BcInformeController extends ControllerBase
     		return $this->response->redirect("bc_informe/");
     	}
     	$reporte_contratos = CobActaconteoPersonaFacturacion::find(array("id_periodo = $id_periodo", "group" => "id_contrato"));
+    	$this->view->contratos = $reporte_contratos;
+    }
+    
+    /**
+     * Reporte general de Cobertura de Sedes
+     */
+    public function reportesedesAction($id_periodo)
+    {
+    	$cob_periodo = CobPeriodo::findFirstByid_periodo($id_periodo);
+    	if (!$cob_periodo) {
+    		$this->flash->error("El periodo no fue encontrado");
+    		return $this->response->redirect("bc_informe/");
+    	}
+    	$reporte_sedes = CobActaconteoPersonaFacturacion::find(array("id_periodo = $id_periodo", "group" => "id_sede"));
+    	$this->view->sedes = $reporte_sedes;
     }
     
 }

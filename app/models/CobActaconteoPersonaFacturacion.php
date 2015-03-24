@@ -116,5 +116,10 @@ class CobActaconteoPersonaFacturacion extends \Phalcon\Mvc\Model
      * @var string
      */
     public $fechaControl;
+    
+    public function initialize()
+    {
+    	$this->hasMany("id_actaconteo_persona_facturacion", "CobActaconteoPersona", "id_actaconteo_persona_facturacion");
+    }
 
 }
