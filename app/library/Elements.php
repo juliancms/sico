@@ -382,15 +382,11 @@ class Elements extends Component
     		case "asistencia":
     			return array (
     			'1' => '1',
-    			'2' => '2',
-    			'3' => '3',
     			'4' => '4',
     			'5' => '5',
     			'6' => '6',
     			'7' => '7',
-    			'8' => '8',
-    			'9' => '9',
-    			'10' => '10');
+    			'8' => '8');
     			break;
     		case "datos_valla":
     			return array (
