@@ -498,8 +498,10 @@ class CobActaconteoController extends ControllerBase
     	} else if($acta->estado > 2){
     		$estado = $acta->IbcReferencia->nombre;
     		$this->flash->notice("<i class='glyphicon glyphicon-exclamation-sign'></i> El acta se encuentra en estado <b>$estado</b>, por lo tanto no puede modificarla. Si necesita realizar algún cambio contacte con su coordinador.");
-    		$this->assets
-    		->addJs('js/acta_cerrada.js');
+    		if($nivel == 3){
+    			$this->assets
+    			->addJs('js/acta_cerrada.js');
+    		}
     		return 2;
     	} else if($acta->estado > 1){
     		$estado = $acta->IbcReferencia->nombre;
