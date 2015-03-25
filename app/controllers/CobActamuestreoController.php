@@ -327,20 +327,15 @@ class CobActamuestreoController extends ControllerBase
     	return $this->response->redirect("cob_actamuestreo/ver/$id_actamuestreo");
     }
         
-    private function actaCerrada($acta, $nivel){
+	private function actaCerrada($acta, $nivel){
     	if($acta->estado > 3){
+    		$estado = $acta->getEstadoDetail();
     		$this->flash->notice("<i class='glyphicon glyphicon-exclamation-sign'></i> El acta ya ha sido consolidada, por lo tanto no puede ser modificada.");
     		$this->assets
     		->addJs('js/acta_cerrada.js');
-    		return 3;
-    	} else if($acta->estado > 2){
-    		$estado = $acta->IbcReferencia->nombre;
-    		$this->flash->notice("<i class='glyphicon glyphicon-exclamation-sign'></i> El acta se encuentra en estado <b>$estado</b>, por lo tanto no puede modificarla. Si necesita realizar algún cambio contacte con su coordinador.");
-    		$this->assets
-    		->addJs('js/acta_cerrada.js');
     		return 2;
-    	} else if($acta->estado > 1){
-    		$estado = $acta->IbcReferencia->nombre;
+    	} else if($acta->estado == 2 || $acta->estado == 3){
+    		$estado = $acta->getEstadoDetail();
     		$this->flash->notice("<i class='glyphicon glyphicon-exclamation-sign'></i> El acta se encuentra en estado <b>$estado</b>, por lo tanto no puede modificarla a menos que sea un auxiliar o administrador. Si necesita realizar algún cambio contacte con su auxiliar administrativo.");
     		if($nivel == 3){
     			$this->assets
