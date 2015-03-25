@@ -190,7 +190,7 @@ class CobActamuestreoController extends ControllerBase
     		$this->view->beneficiarios = $acta->getCobActamuestreoPersona(['order' => 'grupo, primerNombre asc']);
     		$this->view->id_actamuestreo = $id_actamuestreo;
     		$this->view->asistencia = $this->elements->getSelect("asistencia");
-    		$this->view->sino = $this->elements->getSelect("sino");
+    		$this->view->sinona = $this->elements->getSelect("sinona");
     		$this->view->ciclovital = $this->elements->getSelect("ciclovital");
     		$this->view->acta = $acta;
     		$this->actaCerrada($acta, $this->user['nivel']);
