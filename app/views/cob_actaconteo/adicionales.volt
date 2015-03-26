@@ -77,7 +77,7 @@
         	<td>{{ text_field("primerNombre[]", "disabled" : "disabled", "placeholder" : "Primer nombre", "class" : "form-control required") }}</td>
         	<td>{{ text_field("segundoNombre[]", "disabled" : "disabled", "placeholder" : "Segundo nombre", "class" : "form-control") }}</td>
         	<td>{{ text_field("primerApellido[]", "disabled" : "disabled", "placeholder" : "Primer apellido", "class" : "form-control required") }}</td>
-        	<td>{{ text_field("segundoApellido[]", "disabled" : "disabled", "placeholder" : "Segundo apellido", "class" : "form-control required") }}</td>
+        	<td>{{ text_field("segundoApellido[]", "disabled" : "disabled", "placeholder" : "Segundo apellido", "class" : "form-control") }}</td>
             <td>{{ text_field("grupo[]", "disabled" : "disabled", "placeholder" : "Grupo", "class" : "form-control required") }}</td>
             <td>{{ select("asistencia[]", "disabled" : "disabled", asistencia, "class" : "form-control asistencia required") }}</td>                      
             {% if acta.id_modalidad == 3 or acta.id_modalidad == 5 or acta.id_modalidad == 7 %}<td>{{ text_field("fecha[]", "disabled" : "disabled", "type" : "date", "class" : "form-control tipo-fecha required fecha", "placeholder" : "dd/mm/aaaa", "parsley-type" : "dateIso", "data-date-format" : "dd/mm/yyyy") }}</td>{% endif %}
