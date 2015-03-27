@@ -30,11 +30,7 @@
     <div class="form-group">
         <label class="col-sm-2 control-label" for="id_usuario_cargo">Auxiliar a cargo</label>
         <div class="col-sm-10">
-        	<select id="id_usuario_lider" name="id_usuario_lider" class="form-control required" disabled="disabled">
-			{% for index, usuario_lider in usuarios_lider %}
-					<option value="{{ index }}">{{ usuario_lider }}</option>
-	    	{% endfor  %}
-			</select>
+        	{{ select("id_usuario_lider", usuarios_lider, "class" : "form-control required") }}
 		</div>
     </div>
     <div class="form-group">

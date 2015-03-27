@@ -41,12 +41,6 @@ class IbcUsuarioController extends ControllerBase
     	$componentes = IbcComponente::find();
     	$this->view->componentes = $componentes;
     	$cargos = IbcUsuarioCargo::find();
-    	$usuarios_lider_get = IbcUsuario::find(['id_usuario_cargo = 5', 'order' => 'usuario asc']);
-    	$usuarios_lider = array();
-    	foreach($usuarios_lider_get as $row) {
-    		$usuarios_lider[$row->id_usuario] = $row->nombre;
-    	}
-    	$this->view->usuarios_lider = $usuarios_lider;
     	$this->view->cargos = $cargos;
     	$this->view->usuarios_lider = IbcUsuario::find(['id_usuario_cargo = 5', 'order' => 'usuario asc']);
     }
