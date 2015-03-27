@@ -49,7 +49,7 @@
     {% for adicional in adicionales %}
     <?php $fecha = $this->conversiones->fecha(2, $adicional->fechaInterventoria); ?>
     	<tr>
-        	<td><span class="number"></span></td>
+        	<td><span class="number">{{ loop.index }}</span></td>
         	<td>{{ text_field("num_documento[]", "value" : adicional.numDocumento, "disabled" : "disabled", "placeholder" : "Número de documento", "class" : "num_documento form-control required") }}<div class="error_documento"></div></td>
         	<td>{{ text_field("primerNombre[]", "value" : adicional.primerNombre, "disabled" : "disabled", "placeholder" : "Primer nombre", "class" : "form-control required") }}</td>
         	<td>{{ text_field("segundoNombre[]", "value" : adicional.segundoNombre, "disabled" : "disabled", "placeholder" : "Segundo nombre", "class" : "form-control") }}</td>

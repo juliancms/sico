@@ -39,6 +39,10 @@ class BcInformeController extends ControllerBase
     		$this->flash->error("El periodo no fue encontrado");
     		return $this->response->redirect("bc_informe/");
     	}
+    	$this->assets
+    	->addJs('js/jquery.table2excel.min.js')
+    	->addJs('js/reporte_exportar.js');
+    	$this->view->nombre_reporte = "Rpt_" . $cob_periodo->getPeriodoReporte . "_contratos_" . date("YmdHis") . ".xlsx";
     	$reporte_contratos = CobActaconteoPersonaFacturacion::find(array("id_periodo = $id_periodo", "group" => "id_contrato"));
     	$this->view->contratos = $reporte_contratos;
     }

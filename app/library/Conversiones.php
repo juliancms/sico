@@ -20,6 +20,7 @@ class Conversiones extends Component
 	 *  4 = aaaa-mm-dd -> Sábado 17 de Mayo de 2014
 	 *  5 = aaaa-mm-dd -> AGOSTO
 	 *  6 = aaaa-mm-dd -> AG
+	 *  7 = aaaa-mm-dd -> 02BC_Febrero
 	 * @return string
 	 * @author Julián Camilo Marín Sánchez
 	 */
@@ -30,15 +31,15 @@ class Conversiones extends Component
 		$dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sábado");
 		$siglas_meses = array("EN","FE","MR","AB","MY","JN","JL","AG","SE","OC","NO","DI");
 		$meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
-		if($tipo_formato == 1) { // Convertir de dd/mm/aaaa -> aaaa-mm-dd
+		if($tipo_formato == 1) { 
 			$parts = explode('/', $fecha);
 			$nueva_fecha = "$parts[2]-$parts[1]-$parts[0]";
-			return $nueva_fecha; //return aaaa-mm-dd (formato MySQL)
+			return $nueva_fecha;
 		}
-		elseif($tipo_formato == 2){ // Convertir de aaaa-mm-dd -> dd/mm/aaaa
+		elseif($tipo_formato == 2){
 			$parts = explode('-', $fecha);
 			$nueva_fecha = "$parts[2]/$parts[1]/$parts[0]";
-			return $nueva_fecha; //return dd/mm/aaa
+			return $nueva_fecha;
 		}
 		elseif($tipo_formato == 3){
 			$parts = explode('-', $fecha);
@@ -55,6 +56,10 @@ class Conversiones extends Component
 		elseif($tipo_formato == 6){
 			$parts = explode('-', $fecha);
 			return strtoupper($siglas_meses[$parts[1]-1]);
+		}
+		elseif($tipo_formato == 7){
+			$parts = explode('-', $fecha);
+			return $parts[1] . "BC_" . $meses[$parts[1]-1];
 		}
 	}
 	

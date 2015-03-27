@@ -10,7 +10,6 @@ class CobActaconteoController extends ControllerBase
     {
         $this->tag->setTitle("Acta de Conteo");
         $this->user = $this->session->get('auth');
-        //$this->view->last_url = str_replace($_SERVER["SCRIPT_NAME"], '', $_SERVER["REQUEST_URI"]);
         parent::initialize();
     }
 
@@ -261,6 +260,37 @@ class CobActaconteoController extends ControllerBase
     }
     
     /**
+     * Guardar Adicionales
+     *
+     */
+    public function guardaradicionalescapturasAction($id_actaconteo)
+    {
+    	if (!$this->request->isPost()) {
+    		return $this->response->redirect("cob_periodo/");
+    	}
+    	$db = $this->getDI()->getDb();
+    	$acta = CobActaconteo::findFirstByid_actaconteo($id_actaconteo);
+    	if (!$acta) {
+    		$this->flash->error("El acta $id_actaconteo no existe");
+    		return $this->response->redirect("cob_periodo/");
+    	}
+    	$elementos = array(
+    			'id_actaconteo_persona' => $this->request->getPost("id_actaconteo_persona"),
+    			'urlAdicional' => $this->request->getPost("urlAdicional")
+    	);
+    	$sql = $this->conversiones->multipleupdate("cob_actaconteo_persona", $elementos, "id_actaconteo_persona");
+    	$query = $db->query($sql);
+    	if (!$query) {
+    		foreach ($query->getMessages() as $message) {
+    			$this->flash->error($message);
+    		}
+    		return $this->response->redirect("cob_actaconteo/adicionalescapturas/$id_actaconteo");
+    	}
+    	$this->flash->success("Las capturas de los adicionales fueron actualizadas exitosamente");
+    	return $this->response->redirect("cob_actaconteo/adicionalescapturas/$id_actaconteo");
+    }
+    
+    /**
      * Beneficiarios
      *
      * @param int $id_actaconteo
@@ -322,6 +352,32 @@ class CobActaconteoController extends ControllerBase
     		$this->view->asistencia = $this->elements->getSelect("asistencia");
     		$this->view->acta = $acta;
     		$this->actaCerrada($acta, $this->user['nivel']);
+    	}
+    }
+    
+    /**
+     * Adicionales
+     *
+     * @param int $id_actaconteo
+     */
+    public function adicionalescapturasAction($id_actaconteo) {
+    	if (!$this->request->isPost()) {
+    		$acta = CobActaconteo::findFirstByid_actaconteo($id_actaconteo);
+    		if (!$acta) {
+    			$this->flash->error("El acta no fue encontrada");
+    			return $this->response->redirect("cob_periodo/");
+    		}
+    		$this->assets
+    		->addJs('js/bootstrap-filestyle.min.js')
+    		->addJs('js/parsley.min.js')
+    		->addJs('js/parsley.extend.js')
+    		->addJs('js/jquery.autoNumeric.js')
+    		->addJs('js/adicionales.js');
+    		$this->view->adicionales = $acta->getCobActaconteoPersona(['tipoPersona = 1', 'order' => 'grupo asc']);
+    		$this->view->acta = $acta;
+    		$this->view->id_actaconteo = $id_actaconteo;
+    		$this->view->asistencia = $this->elements->getSelect("asistencia");
+    		$this->view->acta = $acta;
     	}
     }
     

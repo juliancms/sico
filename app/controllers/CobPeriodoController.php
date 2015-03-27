@@ -544,15 +544,18 @@ class CobPeriodoController extends ControllerBase
     	$db->query("UPDATE cob_actaconteo SET estado = 4 WHERE cob_actaconteo.id_periodo = $id_periodo");
     	$timestamp = new DateTime();
     	$tabla_certificar = "m" . $timestamp->getTimestamp();
-    	$db->query("CREATE TEMPORARY TABLE $tabla_certificar (id_actaconteo_persona_facturacion BIGINT) CHARACTER SET utf8 COLLATE utf8_bin");
-    	$db->query("INSERT IGNORE INTO $tabla_certificar (id_actaconteo_persona_facturacion) SELECT id_actaconteo_persona_facturacion FROM cob_actaconteo_persona WHERE cob_actaconteo_persona.id_periodo = $id_periodo AND (cob_actaconteo_persona.asistencia = 1 OR cob_actaconteo_persona.asistencia = 7)");
+    	$db->query("CREATE TEMPORARY TABLE $tabla_certificar (id_actaconteo_persona_facturacion BIGINT, asistencia BIGINT) CHARACTER SET utf8 COLLATE utf8_bin");
+    	$db->query("INSERT IGNORE INTO $tabla_certificar (id_actaconteo_persona_facturacion, asistencia) SELECT id_actaconteo_persona_facturacion, asistencia FROM cob_actaconteo_persona WHERE cob_actaconteo_persona.id_periodo = $id_periodo");
     	$db->query("DELETE FROM $tabla_certificar WHERE id_actaconteo_persona_facturacion = 0");
-    	$db->query("UPDATE cob_actaconteo_persona_facturacion SET cob_actaconteo_persona_facturacion.certificacion = 2 WHERE id_periodo = $id_periodo");
-    	$db->query("UPDATE cob_actaconteo_persona_facturacion, $tabla_certificar SET cob_actaconteo_persona_facturacion.certificacion = 1 WHERE cob_actaconteo_persona_facturacion.id_actaconteo_persona_facturacion = $tabla_certificar.id_actaconteo_persona_facturacion AND cob_actaconteo_persona_facturacion.id_periodo = $id_periodo");
+    	$db->query("UPDATE cob_actaconteo_persona_facturacion, $tabla_certificar SET cob_actaconteo_persona_facturacion.certificacion = 2, cob_actaconteo_persona_facturacion.asistenciaFinal = 6 WHERE cob_actaconteo_persona_facturacion.id_actaconteo_persona_facturacion = $tabla_certificar.id_actaconteo_persona_facturacion AND cob_actaconteo_persona_facturacion.id_periodo = $id_periodo AND $tabla_certificar.asistencia = 6");
+    	$db->query("UPDATE cob_actaconteo_persona_facturacion, $tabla_certificar SET cob_actaconteo_persona_facturacion.certificacion = 2, cob_actaconteo_persona_facturacion.asistenciaFinal = 5 WHERE cob_actaconteo_persona_facturacion.id_actaconteo_persona_facturacion = $tabla_certificar.id_actaconteo_persona_facturacion AND cob_actaconteo_persona_facturacion.id_periodo = $id_periodo AND $tabla_certificar.asistencia = 5");
+    	$db->query("UPDATE cob_actaconteo_persona_facturacion, $tabla_certificar SET cob_actaconteo_persona_facturacion.certificacion = 2, cob_actaconteo_persona_facturacion.asistenciaFinal = 4 WHERE cob_actaconteo_persona_facturacion.id_actaconteo_persona_facturacion = $tabla_certificar.id_actaconteo_persona_facturacion AND cob_actaconteo_persona_facturacion.id_periodo = $id_periodo AND $tabla_certificar.asistencia = 4");
+    	$db->query("UPDATE cob_actaconteo_persona_facturacion, $tabla_certificar SET cob_actaconteo_persona_facturacion.certificacion = 2, cob_actaconteo_persona_facturacion.asistenciaFinal = 8 WHERE cob_actaconteo_persona_facturacion.id_actaconteo_persona_facturacion = $tabla_certificar.id_actaconteo_persona_facturacion AND cob_actaconteo_persona_facturacion.id_periodo = $id_periodo AND $tabla_certificar.asistencia = 8");
+    	$db->query("UPDATE cob_actaconteo_persona_facturacion, $tabla_certificar SET cob_actaconteo_persona_facturacion.certificacion = 1, cob_actaconteo_persona_facturacion.asistenciaFinal = 7 WHERE cob_actaconteo_persona_facturacion.id_actaconteo_persona_facturacion = $tabla_certificar.id_actaconteo_persona_facturacion AND cob_actaconteo_persona_facturacion.id_periodo = $id_periodo AND $tabla_certificar.asistencia = 7");
+    	$db->query("UPDATE cob_actaconteo_persona_facturacion, $tabla_certificar SET cob_actaconteo_persona_facturacion.certificacion = 1, cob_actaconteo_persona_facturacion.asistenciaFinal = 1 WHERE cob_actaconteo_persona_facturacion.id_actaconteo_persona_facturacion = $tabla_certificar.id_actaconteo_persona_facturacion AND cob_actaconteo_persona_facturacion.id_periodo = $id_periodo AND $tabla_certificar.asistencia = 1");
     	$db->query("DROP TABLE $tabla_certificar");
     	$cob_periodo->fechaCierre = date('Y-m-d H:i:s');
     	if (!$cob_periodo->save()) {
-    	
     		foreach ($cob_periodo->getMessages() as $message) {
     			$this->flash->error($message);
     		}

@@ -175,6 +175,9 @@ class SecurityPlugin extends Plugin
     		'adicionales' => array(
     				'nivelPermiso' => '3'
     		),
+    		'adicionalescapturas' => array(
+    				'nivelPermiso' => '3'
+    		),
     		'subiradicional' => array(
     				'nivelPermiso' => '3'
     		),
@@ -242,7 +245,15 @@ class SecurityPlugin extends Plugin
     		'contacto' => array(
     				'nivelPermiso' => '-2'
     		)
-    	)
+    	),
+    	'bc_informe' => array(
+    		'reportecontratos' => array(
+    				'nivelPermiso' => '1'
+    		),
+    		'reportesedes' => array(
+    				'nivelPermiso' => '1'
+    		)
+    	),
     );
 
     /**

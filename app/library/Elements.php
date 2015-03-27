@@ -30,6 +30,11 @@ class Elements extends Component
 				'action' => 'adicionales',
 				'icon' => 'glyphicon-open'
 		),
+		'adicionalescapturas' => array(
+				'caption' => 'Capturas Adicionales',
+				'action' => 'adicionalescapturas',
+				'icon' => 'glyphicon-upload'
+		),
 	);
 	
 	private $_actametroMenu = array(
