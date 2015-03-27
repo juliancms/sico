@@ -7,7 +7,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand dropdown-toggle" data-toggle="dropdown" aria-expanded="false" href="#" style="padding-top: 15px !important;">IBC <span class="caret"></span></a>
+            <a class="navbar-brand dropdown-toggle" data-toggle="dropdown" aria-expanded="false" href="#">{{ image("img/logo_pascual.png", "alt": "Interventoría Buen Comienzo") }} <span class="caret"></span></a>
 			<div class="dropdown-menu list-group" role="menu">
 				{{ elements.getMenuInicio() }}
 			</div>
