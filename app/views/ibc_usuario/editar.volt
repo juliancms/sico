@@ -30,7 +30,11 @@
     <div class="form-group">
         <label class="col-sm-2 control-label" for="id_usuario_cargo">Auxiliar a cargo</label>
         <div class="col-sm-10">
-        	{{ select("id_usuario_lider", usuarios_lider, "class" : "form-control required") }}
+        	<select id="id_usuario_lider" name="id_usuario_lider" class="form-control required" disabled="disabled">
+			{% for usuario_lider in usuarios_lider %}
+					<option value="{{ usuario_lider.id_usuario }}">{{ usuario_lider.nombre }}</option>
+	    	{% endfor  %}
+			</select>
 		</div>
     </div>
     <div class="form-group">
