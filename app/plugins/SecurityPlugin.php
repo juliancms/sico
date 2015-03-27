@@ -49,7 +49,7 @@ class SecurityPlugin extends Plugin
     				'nivelPermiso' => '2'
     		),
     		'rutear' => array(
-    				'nivelPermiso' => '1'
+    				'nivelPermiso' => '2'
     		),
     		'ruteoguardar' => array(
     				'nivelPermiso' => '1'

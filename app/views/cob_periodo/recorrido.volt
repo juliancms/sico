@@ -2,7 +2,7 @@
 {{ content() }}
 <h1>{{ titulo }}</h1>
 {{ link_to("cob_periodo/ver/"~id_periodo, '<i class="glyphicon glyphicon-chevron-left"></i> Regresar', "class": "btn btn-primary menu-tab") }}
-{% if (nivel <= 1) %}
+{% if (nivel <= 2) %}
 {{ link_to("cob_periodo/rutear/"~id_periodo~"/"~recorrido, '<i class="glyphicon glyphicon-road"></i> Rutear', "class": "btn btn-primary menu-tab") }}
 {% endif %}
 {{ link_to("cob_periodo/gdocumental/"~id_periodo~"/"~recorrido, '<i class="glyphicon glyphicon-file"></i> Gestión Documental', "class": "btn btn-primary menu-tab") }}

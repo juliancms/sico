@@ -40,7 +40,7 @@
 	    </div><!-- /.modal-content -->
 	  </div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
-{{ link_to("cob_periodo/ver/"~id_periodo, '<i class="glyphicon glyphicon-chevron-left"></i> Regresar', "class": "btn btn-primary menu-tab") }}
+{{ link_to("cob_periodo/recorrido/"~id_periodo~"/"~recorrido, '<i class="glyphicon glyphicon-chevron-left"></i> Regresar', "class": "btn btn-primary menu-tab") }}
 <a href="#rutear_recorrido" data-toggle="modal" class="btn btn-primary menu-tab"><i class="glyphicon glyphicon-road"></i> Rutear desde otro periodo</a>
 {{ form("cob_periodo/ruteoguardar/"~id_periodo~"/"~recorrido, "method":"post", "name":"ruteo") }}
 <table class="table table-bordered table-hover" id="ruteo">
