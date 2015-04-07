@@ -35,6 +35,11 @@ class Elements extends Component
 				'action' => 'adicionalescapturas',
 				'icon' => 'glyphicon-upload'
 		),
+		'empleados' => array(
+				'caption' => 'Empleados',
+				'action' => 'empleados',
+				'icon' => 'glyphicon-briefcase'
+		)
 	);
 	
 	private $_actametroMenu = array(
@@ -302,6 +307,8 @@ class Elements extends Component
     	//Si no es el recorrido 1 quita el menú de adicionales
     	if($acta->recorrido > 1){
     		unset($this->_actaMenu['adicionales']);
+    		unset($this->_actaMenu['adicionalescapturas']);
+    		unset($this->_actaMenu['empleados']);
     	}
     	foreach ($this->_actaMenu as $menu) {
     		$action = $menu['action'];
@@ -376,7 +383,7 @@ class Elements extends Component
     	echo "<form class='menu-tab' action='/sico/cob_actamuestreo/abrir/$acta->id_actamuestreo' method='post'><input type='hidden' name='uri' value='$uri'><input type='submit' class='btn btn-info' value='Abrir Acta'></form>";
     	}
     	echo "</div><div class='clear'></clear>";
-    	}
+    }
     
     /**
      * Returns a select
@@ -393,11 +400,27 @@ class Elements extends Component
     			'7' => '7',
     			'8' => '8');
     			break;
+    		case "asistenciaempleados":
+    			return array (
+    			'1' => '1',
+    			'6' => '6');
+    			break;
+    		case "cargoempleados":
+    			return array (
+    			'1' => 'Auxiliar Educativo',
+    			'2' => 'Docente');
+    			break;
     		case "datos_valla":
     			return array (
     			'1' => '1. Si cuenta con valla, según manual del Programa Buen Comienzo',
     			'2' => '2. No cuenta con valla, según manual del Programa Buen Comienzo',
     			'3' => '3. No cuenta con ningún tipo de valla de identificación');
+    			break;
+    		case "dotacion":
+    			return array (
+    			'1' => '1. Sí cuenta con dotación, según manual del Programa Buen Comienzo',
+    			'2' => '2. Sí cuenta con dotación, pero no según manual del Programa Buen Comienzo',
+    			'3' => '3. No cuenta con ningún tipo de dotación');
     			break;
     		case "meses":
     			return array("Enero" => "Enero", "Febrero" => "Febrero", "Marzo" => "Marzo", "Abril" => "Abril", "Mayo" => "Mayo", "Junio" => "Junio", "Agosto" => "Agosto", "Septiembre" => "Septiembre", "Octubre" => "Octubre", "Noviembre" => "Noviembre", "Diciembre" => "Diciembre");

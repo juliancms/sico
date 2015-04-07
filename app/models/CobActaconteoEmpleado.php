@@ -29,24 +29,6 @@ class CobActaconteoEmpleado extends \Phalcon\Mvc\Model
 
     /**
      *
-     * @var string
-     */
-    public $horaInicio;
-
-    /**
-     *
-     * @var string
-     */
-    public $horaFin;
-
-    /**
-     *
-     * @var string
-     */
-    public $diasLaborales;
-
-    /**
-     *
      * @var integer
      */
     public $asistencia;
@@ -56,11 +38,11 @@ class CobActaconteoEmpleado extends \Phalcon\Mvc\Model
      * @var integer
      */
     public $dotacion;
-
+    
     /**
      *
      * @var string
      */
-    public $observacion;
+    public $fecha;
 
 }

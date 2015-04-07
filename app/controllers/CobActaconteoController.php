@@ -356,6 +356,34 @@ class CobActaconteoController extends ControllerBase
     }
     
     /**
+     * Empleados
+     *
+     * @param int $id_actaconteo
+     */
+    public function empleadosAction($id_actaconteo) {
+    	if (!$this->request->isPost()) {
+    		$acta = CobActaconteo::findFirstByid_actaconteo($id_actaconteo);
+    		if (!$acta) {
+    			$this->flash->error("El acta no fue encontrada");
+    			return $this->response->redirect("cob_periodo/");
+    		}
+    		$this->assets
+    		->addJs('js/parsley.min.js')
+    		->addJs('js/parsley.extend.js')
+    		->addJs('js/jquery.autoNumeric.js')
+    		->addJs('js/empleados.js');
+    		$this->view->empleados = $acta->getCobActaconteoEmpleado(['order' => 'id_actaconteo_empleado asc']);
+    		$this->view->acta = $acta;
+    		$this->view->id_actaconteo = $id_actaconteo;
+    		$this->view->dotacion = $this->elements->getSelect("dotacion");
+    		$this->view->asistenciaempleados = $this->elements->getSelect("asistenciaempleados");
+    		$this->view->cargoempleados = $this->elements->getSelect("cargoempleados");
+    		$this->view->acta = $acta;
+    		$this->actaCerrada($acta, $this->user['nivel']);
+    	}
+    }
+    
+    /**
      * Adicionales
      *
      * @param int $id_actaconteo
