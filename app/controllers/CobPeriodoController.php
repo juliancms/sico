@@ -120,14 +120,21 @@ class CobPeriodoController extends ControllerBase
     public function gdocumentalAction($id_periodo, $recorrido)
     {
     	$cob_periodo = CobPeriodo::findFirstByid_periodo($id_periodo);
-    	$actas_recorrido = CobActaconteo::find(array(
-    			"id_periodo = $id_periodo AND recorrido = $recorrido",
-    			"group" => "id_actaconteo"
-    	));
     	if (!$cob_periodo) {
     		$this->flash->error("El periodo no fue encontrado");
     		return $this->response->redirect("cob_periodo/");
-    	}
+    	}    	
+    	if($cob_periodo->tipo == 1){
+    		$actas_recorrido = CobActaconteo::find(array(
+    				"id_periodo = $id_periodo AND recorrido = $recorrido",
+    				"group" => "id_actaconteo"
+    		));
+    	} else if ($cob_periodo->tipo == 2){
+    		$actas_recorrido = CobActamuestreo::find(array(
+    				"id_periodo = $id_periodo AND recorrido = $recorrido",
+    				"group" => "id_actamuestreo"
+    		));
+    	}    	
     	if (!$recorrido) {
     		$this->flash->error("El recorrido no fue encontrado");
     		return $this->response->redirect("cob_periodo/");
