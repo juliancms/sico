@@ -260,6 +260,54 @@ class CobActaconteoController extends ControllerBase
     }
     
     /**
+     * Guardar Empleados
+     *
+     */
+    public function guardarempleadosAction($id_actaconteo)
+    {
+    	if (!$this->request->isPost()) {
+    		return $this->response->redirect("cob_periodo/");
+    	}
+    	$db = $this->getDI()->getDb();
+    	$acta = CobActaconteo::findFirstByid_actaconteo($id_actaconteo);
+    	if (!$acta) {
+    		$this->flash->error("El acta $id_actaconteo no existe");
+    		return $this->response->redirect("cob_periodo/");
+    	}
+    	$this->guardarActaCerrada($acta, $this->user['nivel']);
+    	$eliminar_adicionales = $this->request->getPost("eliminar_adicionales");
+    	if($eliminar_adicionales){
+    		$sql = $this->conversiones->multipledelete("cob_actaconteo_empleado", "id_actaconteo_empleado", $eliminar_adicionales);
+    		$query = $db->query($sql);
+    	}
+    	if($this->request->getPost("numDocumento")){
+    		$elementos = array(
+    				'numDocumento' => $this->request->getPost("numDocumento"),
+    				'nombre' => $this->request->getPost("nombre"),
+    				'cargo' => $this->request->getPost("cargo"),
+    				'asistencia' => $this->request->getPost("asistencia"),
+    				'dotacion' => $this->request->getPost("dotacion"),
+    				'id_actaconteo' => $id_actaconteo
+    		);
+    		$fechas = $this->request->getPost("fecha");
+    		if(count($fechas) > 0) {
+    			$fechas = $this->conversiones->array_fechas(1, $fechas);
+    			$elementos['fecha'] = $fechas;
+    		}
+    		$sql = $this->conversiones->multipleinsert("cob_actaconteo_empleado", $elementos);
+    		$query = $db->query($sql);
+    		if (!$query) {
+    			foreach ($query->getMessages() as $message) {
+    				$this->flash->error($message);
+    			}
+    			return $this->response->redirect("cob_actaconteo/empleados/$id_actaconteo");
+    		}
+    	}
+    	$this->flash->success("Los empleados fueron actualizados exitosamente");
+    	return $this->response->redirect("cob_actaconteo/empleados/$id_actaconteo");
+    }
+    
+    /**
      * Guardar Adicionales
      *
      */
