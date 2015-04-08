@@ -432,7 +432,7 @@ class Elements extends Component
     			return array("1" => "Sí", "2" => "No", "3" => "N/A");
     			break;
     		case "ciclovital":
-    			return array("1" => "G", "2" => "L", "3" => "GL", "4" => "N", "5" => "NM", "6" => "NC", "7" => "GLN");
+    			return array("1" => "G", "2" => "L", "4" => "N", "5" => "NM", "6" => "NG");
     			break;
     		default:
     			return array();
