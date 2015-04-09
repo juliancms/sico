@@ -9,7 +9,7 @@
 	        <h4 class="modal-title" id="myModalLabel">Agregar ítems</h4>
 	      </div>
 	      <div class="modal-body">
-	      <div class="alert alert-warning"><i class="glyphicon glyphicon-warning-sign"></i> El número de ítems debe de ser un número entre 1 y <span class="n2">30</span>, ya que sólo se permiten agregar hasta 30 empleados.</div>
+	      <div class="alert alert-warning"><i class="glyphicon glyphicon-warning-sign"></i> El número de ítems debe de ser un número entre 1 y <span class="n2">50</span>, ya que solo se permiten agregar hasta 50 empleados.</div>
 	      	<div class="form-group">
 			    <label for="n_items" class="col-sm-2 control-label">Ítems</label>
 			    <div class="col-sm-10">
@@ -53,7 +53,7 @@
             <td style="text-align:center;"><a id='{{ empleado.id_actaconteo_empleado }}' class='btn btn-default eliminar_guardado'><i class='glyphicon glyphicon-remove'></i></a></td>                      
         </tr>
     {% endfor %}
-    <?php for ($i = 1; $i <= 30; $i++) { ?>
+    <?php for ($i = 1; $i <= 50; $i++) { ?>
         <tr style='display: none;'>
         	<td><span class="number"><?php echo $i; ?></span></td>
         	<td>{{ text_field("numDocumento[]", "disabled" : "disabled", "placeholder" : "Número de documento", "class" : "num_documento form-control required") }}<div class="error_documento"></div></td>

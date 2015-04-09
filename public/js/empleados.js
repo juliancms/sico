@@ -14,13 +14,13 @@ $(".eliminar_guardado").click (
 $("#btn_varios_items").click (
 	function() {
 		var n_filas = $( ".num_documento[disabled!='disabled']" ).size();
-    	if(n_filas >= 30){
-	    	$(".alerta_lote").html("<i class='glyphicon glyphicon-warning-sign'></i> Sólo puedes guardar hasta 30 empleados.");
+    	if(n_filas >= 50){
+	    	$(".alerta_lote").html("<i class='glyphicon glyphicon-warning-sign'></i> Sólo puedes guardar hasta 50 empleados.");
 	    	$(".alerta_lote").fadeOut();
 	    	$(".alerta_lote").fadeIn();
 	    	return;
     	} else {
-        	var x2 = 30 - n_filas;
+        	var x2 = 50 - n_filas;
         	$('#n_items').autoNumeric('init', {vMin: '0', vMax: x2 }); /* Doc: https://github.com/BobKnothe/autoNumeric */
         	$('.n2').html(x2);
     		$('#agregar_items').modal('show');
