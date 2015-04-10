@@ -77,7 +77,7 @@ function eliminar_guardado(elemento){
 }
 function agregar_item(valor) {
 	var n_filas = $( ".num_documento[disabled!='disabled']" ).size();
-	if(n_filas !== 30){
+	if(n_filas !== 50){
 		$('#adicionales_form tbody tr:hidden:first').find("input").removeAttr("disabled");
 		$('#adicionales_form tbody tr:hidden:first').find("select").removeAttr("disabled");
 		$('#adicionales_form tbody tr:hidden:first').find("textarea").removeAttr("disabled");
@@ -86,7 +86,7 @@ function agregar_item(valor) {
 		$( '#adicionales_form' ).parsley();
 		reasignar_keys();
 	} else {
-		$(".alerta_lote").html("<i class='glyphicon glyphicon-warning-sign'></i> Sólo puedes guardar niños adicionales en lotes de 20, por favor diligencia los campos y presiona el botón 'Guardar' para agregar más niños adicionales.");
+		$(".alerta_lote").html("<i class='glyphicon glyphicon-warning-sign'></i> Sólo puedes agregar hasta 50 empleados.");
 		$(".alerta_lote").fadeOut();
     	$(".alerta_lote").fadeIn();
 	}
