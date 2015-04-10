@@ -25,6 +25,7 @@
 	    </div><!-- /.modal-content -->
 	  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+<a id='duplicar_fecha' class='btn btn-primary' style="margin-bottom: 5px;">Duplicar fecha</a>
 {{ form("cob_actaconteo/guardarempleados/"~id_actaconteo, "method":"post", "parsley-validate" : "", "id" : "adicionales_form", "enctype" : "multipart/form-data" ) }}
 <table class="table table-bordered table-hover" id="{{ id_actaconteo }}">
     <thead>

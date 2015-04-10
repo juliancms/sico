@@ -2,9 +2,9 @@ $( '#adicionales_form' ).parsley( 'destroy' );
 $( '#adicionales_form' ).parsley();
 reasignar_keys();
 $('#duplicar_fecha').click(function() {
-	var fecha_conteo = $( ".fecha_conteo" ).first().val();
-	$('.fecha_conteo').each(function() {
-    	$(this).val(fecha_conteo);
+	var fecha = $( ".fecha" ).first().val();
+	$('.fecha').each(function() {
+    	$(this).val(fecha);
     });
 });
 $(".eliminar_guardado").click (
