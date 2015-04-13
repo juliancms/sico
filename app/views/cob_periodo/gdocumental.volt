@@ -14,9 +14,8 @@
     </thead>
     <tbody>
     {% for acta in actas %}
-    	<?php $id_acta = "ACO-03-". date("Y") . sprintf('%05d', $acta->id_actaconteo); ?>
         <tr>
-            <td>{{ link_to("cob_actaconteo/ver/"~acta.id_actaconteo, id_acta) }}</td>
+            <td>{{ link_to(acta.getUrlDetail(), acta.getIdDetail()) }}</td>
             <td>{{ acta.id_contrato }}</td>
             <td>{{ acta.oferente_nombre }}</td>
             <td><?php echo $this->conversiones->fecha(5, $acta->CobPeriodo->fecha); ?></td>

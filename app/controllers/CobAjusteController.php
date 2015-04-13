@@ -81,7 +81,6 @@ class CobAjusteController extends ControllerBase
      */
     public function guardarAction($id_actaconteo_persona_facturacion)
     {
-    	
     	$beneficiario = CobActaconteoPersonaFacturacion::findFirstByid_actaconteo_persona_facturacion($id_actaconteo_persona_facturacion);
     	if (!$beneficiario) {
     		$this->flash->error("La persona no fue encontrada");
@@ -102,6 +101,18 @@ class CobAjusteController extends ControllerBase
     			$this->flash->error($message);
     		}
     		return $this->response->redirect("cob_ajuste/nuevo/$id_actaconteo_persona_facturacion");
+    	}
+    	$ninofac = CobActaconteoPersonaFacturacion::findFirstByid_actaconteo_persona_facturacion($id_actaconteo_persona_facturacion);
+    	if (!$ninofac) {
+    		$this->flash->error("El niño no existe en la base de datos de facturación pero sí se guardó el ajuste, favor informar esto al administrador inmediatamente");
+    		return $this->response->redirect("cob_ajuste");
+    	}
+    	$ninofac->certificacion = $this->request->getPost("certificar");   	
+    	if (!$ninofac->save()) {
+    		foreach ($ninofac->getMessages() as $message) {
+    			$this->flash->error($message);
+    		}
+    		return $this->response->redirect("cob_ajuste");
     	}
     	$this->flash->success("El ajuste fue realizado exitosamente.");
     	return $this->response->redirect("cob_ajuste/buscar");
