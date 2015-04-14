@@ -5,7 +5,6 @@
 	  <ol class="carousel-indicators">
 	    <li data-target="#carousel-inicio" data-slide-to="0" class="active"></li>
 	    <li data-target="#carousel-inicio" data-slide-to="1"></li>
-	    <li data-target="#carousel-inicio" data-slide-to="2"></li>
 	  </ol>
 	  <!-- Contenido de los slides -->
 	  <div class="carousel-inner" role="listbox">
@@ -14,9 +13,6 @@
 	    </div>
 	    <div class="item">
 	      {{ image("img/index/02.jpg", "alt": "Buen Comienzo") }}
-	    </div>
-	    <div class="item">
-	      {{ image("img/index/03.jpg", "alt": "Buen Comienzo") }}
 	    </div>
 	  </div>
 	  <!-- Controles -->
