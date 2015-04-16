@@ -110,7 +110,7 @@ class CobAjusteController extends ControllerBase
     	$ninofac->certificacion = $this->request->getPost("certificar");
     	if($this->request->getPost("certificar") == 1){
     		$ninofac->asistenciaFinal = 10;
-    	} else if($this->request->getPost("certificar") = 3) {
+    	} else if($this->request->getPost("certificar") == 3) {
     		$ninofac->asistenciaFinal = 11;
     	}
     	if (!$ninofac->save()) {
