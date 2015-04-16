@@ -107,7 +107,12 @@ class CobAjusteController extends ControllerBase
     		$this->flash->error("El niño no existe en la base de datos de facturación pero sí se guardó el ajuste, favor informar esto al administrador inmediatamente");
     		return $this->response->redirect("cob_ajuste");
     	}
-    	$ninofac->certificacion = $this->request->getPost("certificar");   	
+    	$ninofac->certificacion = $this->request->getPost("certificar");
+    	if($this->request->getPost("certificar") == 1){
+    		$ninofac->asistenciaFinal = 10;
+    	} else if($this->request->getPost("certificar") = 3) {
+    		$ninofac->asistenciaFinal = 11;
+    	}
     	if (!$ninofac->save()) {
     		foreach ($ninofac->getMessages() as $message) {
     			$this->flash->error($message);

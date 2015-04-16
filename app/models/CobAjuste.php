@@ -72,7 +72,7 @@ class CobAjuste extends \Phalcon\Mvc\Model
      */
     public function CertificarSelect()
     {
-    	return array("1" => "Certificar Atención del periodo por ajuste", "3" => "Descontar Atención del periodo por ajuste");
+    	return array("1" => "Certificar Atención del periodo por ajuste", "3" => "Descontar Atención del periodo por ajuste", "2" => "No certificar");
     }
 
 }
