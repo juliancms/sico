@@ -23,7 +23,10 @@
             <th>Total beneficiarios retirados después del día de corte de periodo (5)</th>
             <th>Total beneficiarios ausentes sin excusa al momento de la visita (6)</th>
             <th>Total beneficiarios con excusa médica mayor o igual a 15 días (7)</th>
-            <th>Total beneficiarios con excusa médica menor a 15 días (8)</th>            
+            <th>Total beneficiarios con excusa médica menor a 15 días (8)</th>
+            <th>Total beneficiarios certificados por ajuste posterior al recorrido (10)</th>
+            <th>Total beneficiarios descontados por ajuste posterior al recorrido (11)</th>
+            <th>Total de cupos a certificar</th>            
             <th>Total de cupos a certificar<br>Menores de 2 años</th>
             <th>Total de cupos a certificar<br>Igual o mayor de 2 años y menor de 4 años</th>
             <th>Total de cupos a certificar<br>Igual o mayor de 4 años y menor de 6 años</th>
@@ -47,7 +50,7 @@
             <td>{{ cuposSIBCcontrato }}</td>
             <td>{{ sede.CobActaconteo.modalidad_nombre }}</td>
             <td>{{ sede.id_sede }}</td>
-            <td>{{ sede.sede_nombre }}</td>
+            <td>{{ sede.CobActaconteo.sede_nombre }}</td>
             <td>{{ cuposSIBCsede }}</td>
             <td>{{ sede.CobPeriodoContratosedecupos.cuposSede }}</td>
             <td>{{ asistencia['asiste1'] }}</td>
@@ -56,6 +59,9 @@
             <td>{{ asistencia['asiste6'] }}</td>
             <td>{{ asistencia['asiste7'] }}</td>
             <td>{{ asistencia['asiste8'] }}</td>
+            <td>{{ asistencia['asiste10'] }}</td>
+            <td>- {{ asistencia['asiste11'] }}</td>
+            <td><?php echo $sede->getCertificarSede($sede->id_sede_contrato, $sede->id_periodo); ?></td>
             <td>{{ edades['menor2'] }}</td>
             <td>{{ edades['mayorigual2menor4'] }}</td>
             <td>{{ edades['mayorigual4menor6'] }}</td>

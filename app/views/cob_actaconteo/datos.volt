@@ -82,13 +82,13 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="col-sm-2 control-label" for="mosaicoFisico">* Cuenta con Mosaico Físico</label>
+        <label class="col-sm-2 control-label" for="mosaicoFisico">* Cuenta con Registro Fotográfico Físico</label>
         <div class="col-sm-10">
                 {{ select("mosaicoFisico", sino, "class" : "form-control required") }}
         </div>
     </div>
     <div class="form-group">
-        <label class="col-sm-2 control-label" for="mosaicoDigital">* Cuenta con Mosaico Digital</label>
+        <label class="col-sm-2 control-label" for="mosaicoDigital">* Cuenta con Registro Fotográfico Digital</label>
         <div class="col-sm-10">
                 {{ select("mosaicoDigital", sino, "class" : "form-control required") }}
         </div>

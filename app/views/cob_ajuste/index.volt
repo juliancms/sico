@@ -2,6 +2,9 @@
 {{ content() }}
 <h1>Ajustes</h1>
 {{ link_to("cob_ajuste/buscar", '<i class="glyphicon glyphicon-plus"></i> Nuevo ajuste', "class": "btn btn-primary menu-tab") }}
+{{ link_to("cob_ajuste/nuevafechacierre", '<i class="glyphicon glyphicon-plus"></i> Nueva fecha de cierre', "class": "btn btn-primary menu-tab") }}
+{{ link_to("cob_ajuste/cierre", '<i class="glyphicon glyphicon-calendar"></i> Cerrar ajustes', "class": "btn btn-primary menu-tab") }}
+{{ link_to("cob_ajuste/reportes", '<i class="glyphicon glyphicon-list-alt"></i> Reportes', "class": "btn btn-primary menu-tab") }}
 {% if (not(cob_ajuste is empty)) %}
 <!-- Modal -->
 <div class="modal fade" id="eliminar_elemento" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

@@ -41,6 +41,93 @@ class CobAjusteController extends ControllerBase
     	->addJs('js/parsley.extend.js');
     	$this->view->periodos = CobPeriodo::find(['order' => 'fecha DESC']);
     }
+    
+    /**
+     * Formulario para agregar fecha de cierre
+     */
+    public function cierreAction()
+    {
+    	$this->persistent->parameters = null;
+    	$this->assets
+    	->addJs('js/parsley.min.js')
+    	->addJs('js/parsley.extend.js');
+    	$this->view->ajustes = CobAjuste::find(["id_ajuste_cierre IS NULL", 'order' => 'datetime DESC']);
+    	$this->view->fechas = CobAjusteCierre::find(['order' => 'fecha DESC']);
+    }
+    
+    /**
+     * Formulario para agregar fecha de cierre
+     */
+    public function nuevafechacierreAction()
+    {
+    	$this->view->fechas = CobAjusteCierre::find(['order' => 'fecha DESC']);
+    }
+    
+    /**
+     * Guarda el fecha de cierre
+     *
+     */
+    public function guardarfechacierreAction()
+    {
+    	if (!$this->request->isPost()) {
+    		return $this->response->redirect("cob_ajuste/nuevafechacierre");
+    	}
+    	$cob_ajuste_cierre = new CobAjusteCierre();
+    	$cob_ajuste_cierre->fecha = $this->conversiones->fecha(1, $this->request->getPost("fecha"));
+    
+    	if (!$cob_ajuste_cierre->save()) {
+    		foreach ($cob_ajuste_cierre->getMessages() as $message) {
+    			$this->flash->error($message);
+    		}
+    		return $this->response->redirect("cob_periodo/nuevo");
+    	}
+    	$this->flash->success("La fecha de cierre fue creada exitosamente.");
+    	return $this->response->redirect("cob_ajuste/nuevafechacierre");
+    }
+    
+    /**
+     * Elimina una fecha de cierre
+     *
+     * @param int $id_periodo
+     */
+    public function eliminarfechacierreAction($id_ajuste_cierre)
+    {
+    	$cob_ajuste_cierre = CobAjusteCierre::findFirstByid_ajuste_cierre($id_ajuste_cierre);
+    	if (!$cob_ajuste_cierre) {
+    		$this->flash->error("La fecha no fue encontrada");
+    
+    		return $this->response->redirect("cob_ajuste/nuevafechacierre");
+    	}
+    	if (!$cob_ajuste_cierre->delete()) {
+    		foreach ($cob_ajuste_cierre->getMessages() as $message) {
+    			$this->flash->error($message);
+    		}
+    		return $this->response->redirect("cob_ajuste/nuevafechacierre");
+    	}
+    	$this->flash->success("La fecha fue eliminada correctamente");
+    	return $this->response->redirect("cob_ajuste/nuevafechacierre");
+    }
+    
+    /**
+     * Reportes de los ajustes
+     */
+    public function reportesAction()
+    {
+    	$this->view->fechas = CobAjusteCierre::find(['order' => 'fecha DESC']);
+    }
+    
+    /**
+     * Reportes de los ajustes
+     */
+    public function reporteAction($id_ajuste_cierre)
+    {
+    	$cob_ajuste = CobAjuste::find(array("id_ajuste_cierre = $id_ajuste_cierre", "group" => "id_sede_contrato"));
+    	if (count($cob_ajuste) == 0) {
+    		$this->flash->error("No se encontraron ajustes con esta fecha de cierre");
+    		return $this->response->redirect("cob_ajuste/reportes");
+    	}
+    	$this->view->cob_ajuste = $cob_ajuste;
+    }
 
     /**
      * Formulario para creación
@@ -73,7 +160,31 @@ class CobAjusteController extends ControllerBase
     	$this->view->acta = $acta;
     	$this->view->periodo = $this->conversiones->fecha(5, $cob_periodo->fecha);
     	$this->view->beneficiario = $beneficiario;
-
+    }
+    
+    /**
+     * Guardar ajuste
+     */
+    public function guardarcierreAction()
+    {
+    	if (!$this->request->isPost()) {
+    		return $this->response->redirect("cob_ajuste/cierre");
+    	}
+    	$elementos = array(
+    			'id_ajuste' => $this->request->getPost("id_ajuste"),
+    			'id_ajuste_cierre' => $this->request->getPost("fechaCierre")
+    	);
+    	$sql = $this->conversiones->multipleupdate("cob_ajuste", $elementos, "id_ajuste");
+    	$db = $this->getDI()->getDb();
+    	$query = $db->query($sql);
+    	if (!$query) {
+    		foreach ($query->getMessages() as $message) {
+    			$this->flash->error($message);
+    		}
+    		return $this->response->redirect("cob_ajuste/cierre");
+    	}
+    	$this->flash->success("Las fechas de cierre han sido actualizadas correctamente");
+    	return $this->response->redirect("cob_ajuste");
     }
     
     /**
@@ -90,6 +201,8 @@ class CobAjusteController extends ControllerBase
     	}
     	$ajuste = new CobAjuste();
     	$ajuste->id_periodo = $beneficiario->id_periodo;
+    	$ajuste->id_sede_contrato = $beneficiario->id_sede_contrato;
+    	$ajuste->id_contrato = $beneficiario->id_contrato;
     	$ajuste->id_actaconteo_persona_facturacion = $id_actaconteo_persona_facturacion;
     	$ajuste->certificar = $this->request->getPost("certificar");
     	$ajuste->datetime = date('Y-m-d H:i:s');

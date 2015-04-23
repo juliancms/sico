@@ -223,6 +223,14 @@ class SecurityPlugin extends Plugin
     				'nivelPermiso' => '2'
     		),'buscar' => array(
     				'nivelPermiso' => '2'
+    		),'cierre' => array(
+    				'nivelPermiso' => '1'
+    		),'nuevafechacierre' => array(
+    				'nivelPermiso' => '1'
+    		),'reportes' => array(
+    				'nivelPermiso' => '1'
+    		),'reporte' => array(
+    				'nivelPermiso' => '1'
     		)
     	),
     	'ibc_archivo_digital' => array(

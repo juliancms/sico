@@ -227,6 +227,12 @@ class CobActaconteoPersonaFacturacion extends \Phalcon\Mvc\Model
     	return array("menor2" => $menor2, "mayorigual2menor4" => $mayorigual2menor4, "mayorigual4menor6" => $mayorigual4menor6, "mayorigual6" => $mayorigual6);
     }
     
+    public function getCertificarSede($id_sede_contrato, $id_periodo)
+    {
+    	$ninos = CobActaconteoPersonaFacturacion::find("id_periodo = $id_periodo AND id_sede_contrato = $id_sede_contrato AND certificacion = 1");
+    	return count($ninos);
+    }
+    
     /**
      * Contar beneficiarios
      *
@@ -234,13 +240,15 @@ class CobActaconteoPersonaFacturacion extends \Phalcon\Mvc\Model
      */
     public function getAsistenciaSede($id_sede_contrato, $id_periodo)
     {
-    	$ninos = CobActaconteoPersonaFacturacion::find("id_periodo = $id_periodo AND id_sede_contrato = $id_sede_contrato AND certificacion = 1");
+    	$ninos = CobActaconteoPersonaFacturacion::find("id_periodo = $id_periodo AND id_sede_contrato = $id_sede_contrato");
     	$asiste1 = 0;
     	$asiste4 = 0;
     	$asiste5 = 0;
     	$asiste6 = 0;
     	$asiste7 = 0;
     	$asiste8 = 0;
+    	$asiste10 = 0;
+    	$asiste11 = 0;
     	foreach($ninos as $nino){
     		switch ($nino->asistenciaFinal) {
     			case "1":
@@ -261,10 +269,16 @@ class CobActaconteoPersonaFacturacion extends \Phalcon\Mvc\Model
     			case "8":
     				$asiste8++;
     				break;
+    			case "10":
+    				$asiste10++;
+    				break;
+    			case "11":
+    				$asiste11++;
+    				break;
     			default:
     				break;
     		}
     	}
-    	return array("asiste1" => $asiste1, "asiste4" => $asiste4, "asiste5" => $asiste5, "asiste6" => $asiste6, "asiste7" => $asiste7, "asiste8" => $asiste8);
+    	return array("asiste1" => $asiste1, "asiste4" => $asiste4, "asiste5" => $asiste5, "asiste6" => $asiste6, "asiste7" => $asiste7, "asiste8" => $asiste8, "asiste10" => $asiste10, "asiste11" => $asiste11);
     }
 }
