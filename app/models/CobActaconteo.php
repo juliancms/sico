@@ -366,8 +366,8 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     			<div>2.7 CORRECCIÓN DIRECCIÓN:</div>
     		</div>
     		<div class='fila col2'>
-    			<div>2.8 CUENTA CON MOSAICO FÍSICO:</div>
-    			<div>2.9 CUENTA CON MOSAICO DIGITAL:</div>
+    			<div>2.8 CUENTA CON REGISTRO FOTOGRÁFICO FÍSICO:</div>
+    			<div>2.9 CUENTA CON REGISTRO FOTOGRÁFICO DIGITAL:</div>
     		</div>
     		<div class='clear'></div>
     	</div>
@@ -432,7 +432,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
   			$html .= "<div class='paginacion'>PÁGINA $p</div>";
   			$html .= $encabezado;
   			$html .= "<div class='seccion' id='listado_empleados'>
-  			<div class='fila center bold'><div style='border:none; width: 100%'>6. LISTADO DE EMPLEADOS ENCONTRADOS EN LA SEDE AL MOMENTO DE LA VISITA</div></div>
+  			<div class='fila center bold'><div style='border:none; width: 100%'>6. LISTADO DE DOCENTES Y AUXILIARES EDUCATIVOS DE LA SEDE</div></div>
   			<div class='fila colb'><div style='width: 20px;'>#</div><div style='width: 120px;'>6.1 DOCUMENTO</div><div style='width: 200px'>6.2 NOMBRE COMPLETO</div><div style='width: 70px'>6.3 CARGO</div><div style='width: 70px'>6.4 ASISTENCIA</div><div style='width: 70px'>6.5 DOTACIÓN</div><div>6.6 FECHA VISITA</div></div>";
   			for($i = 1; $i <= 30; $i++){
   				$html .="<div class='fila colb'><div style='width: 20px;'>$i</div><div style='width: 120px;'></div><div style='width: 200px'></div><div style='width: 70px;'></div><div style='width: 70px'></div><div style='width: 70px'></div><div style='width: 70px'></div></div>";
