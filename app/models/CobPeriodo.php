@@ -22,6 +22,9 @@ class CobPeriodo extends \Phalcon\Mvc\Model
     					'message' => 'El periodo no puede ser eliminado porque está siendo utilizado en algún Acta de Conteo'
     			)
     	));
+    	$this->belongsTo('id_periodo', 'CobActaconteo', 'id_periodo', array(
+    			'reusable' => true
+    	));
     }
     
     /**
@@ -68,6 +71,22 @@ class CobPeriodo extends \Phalcon\Mvc\Model
     		return "Conteo";
     	} else if($this->tipo == 2) {
     		return "Muestreo";
+    	}
+    }
+    
+    /**
+     * Returns a human representation of 'fecha'
+     *
+     * @return string
+     */
+    public function getModalidad()
+    {
+    	if($this->tipo == 2) {
+    		return "Entorno Familiar";
+    	} else if($this->CobActaconteo->id_modalidad == 12) {
+    		return "Entorno Comunitario Itinerante";
+    	} else {
+    		return "Modalidades Generales";
     	}
     }
     

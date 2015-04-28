@@ -30,6 +30,7 @@
             <th>Periodo</th>
             <th>Fecha de Corte</th>
             <th>Tipo</th>
+            <th>Modalidad</th>
          </tr>
     </thead>
     <tbody>
@@ -41,6 +42,7 @@
             <td>{{ link_to("cob_periodo/ver/"~cob_periodo.id_periodo, cob_periodo.getFechaDetail()) }}</td>
             <td>{{ link_to("cob_periodo/ver/"~cob_periodo.id_periodo, cob_periodo.fecha) }}</td>
             <td>{{ cob_periodo.getTipoperiodoDetail() }}</td>
+            <td>{{ cob_periodo.getModalidad() }}</td>
         </tr>
     {% endfor %}
     </tbody>
