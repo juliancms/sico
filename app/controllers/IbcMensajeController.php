@@ -202,20 +202,20 @@ class IbcMensajeController extends ControllerBase
     		//Si es un mensaje para el componente
     		case 1:
     			$id_componente = $this->user['id_componente'];
-    			$usuarios = IbcUsuario::find(["id_componente = $id_componente"]);
+    			$usuarios = IbcUsuario::find(["id_componente = $id_componente"])->toArray();
     			break;
     		//Si es un mensaje para todos
     		case 0:
-    			$usuarios = IbcUsuario::find();
+    			$usuarios = IbcUsuario::find()->toArray();
     			break;
     		//Si es para los auxiliares
     		case 2:
     			$id_componente = $this->user['id_componente'];
-    			$usuarios = IbcUsuario::find(["id_componente = $id_componente AND id_usuario_cargo = 5"]);
+    			$usuarios = IbcUsuario::find(["id_componente = $id_componente AND id_usuario_cargo = 5"])->toArray();
     			break;
     		//Si es para los oferentes
     		case 3:
-    			$usuarios = IbcUsuario::find(["id_usuario_cargo = 6"]);
+    			$usuarios = IbcUsuario::find(["id_usuario_cargo = 6"])->toArray();
     			break;
     		//Si es para unos usuarios determinados
     		case 4:
