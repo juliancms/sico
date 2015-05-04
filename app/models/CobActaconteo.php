@@ -430,16 +430,19 @@ class CobActaconteo extends \Phalcon\Mvc\Model
   			$p++;
   			$html .= "<div class='clear'></div></div>" . $pie_pagina;
   			$html .= "<div class='paginacion'>PÁGINA $p</div>";
-  			$html .= $encabezado;
-  			$html .= "<div class='seccion' id='listado_empleados'>
-  			<div class='fila center bold'><div style='border:none; width: 100%'>6. LISTADO DE DOCENTES Y AUXILIARES EDUCATIVOS DE LA SEDE</div></div>
-  			<div class='fila colb'><div style='width: 20px;'>#</div><div style='width: 120px;'>6.1 DOCUMENTO</div><div style='width: 200px'>6.2 NOMBRE COMPLETO</div><div style='width: 70px'>6.3 CARGO</div><div style='width: 70px'>6.4 ASISTENCIA</div><div style='width: 70px'>6.5 DOTACIÓN</div><div>6.6 FECHA VISITA</div></div>";
-  			for($i = 1; $i <= 30; $i++){
-  				$html .="<div class='fila colb'><div style='width: 20px;'>$i</div><div style='width: 120px;'></div><div style='width: 200px'></div><div style='width: 70px;'></div><div style='width: 70px'></div><div style='width: 70px'></div><div style='width: 70px'></div></div>";
+  			//Si no es Entorno Comunitario Itinerante muestra la lista de empleados
+  			if($acta->id_modalidad != 12){
+	  			$html .= $encabezado;
+	  			$html .= "<div class='seccion' id='listado_empleados'>
+	  			<div class='fila center bold'><div style='border:none; width: 100%'>6. LISTADO DE DOCENTES Y AUXILIARES EDUCATIVOS DE LA SEDE</div></div>
+	  			<div class='fila colb'><div style='width: 20px;'>#</div><div style='width: 120px;'>6.1 DOCUMENTO</div><div style='width: 200px'>6.2 NOMBRE COMPLETO</div><div style='width: 70px'>6.3 CARGO</div><div style='width: 70px'>6.4 ASISTENCIA</div><div style='width: 70px'>6.5 DOTACIÓN</div><div>6.6 FECHA VISITA</div></div>";
+	  			for($i = 1; $i <= 30; $i++){
+	  				$html .="<div class='fila colb'><div style='width: 20px;'>$i</div><div style='width: 120px;'></div><div style='width: 200px'></div><div style='width: 70px;'></div><div style='width: 70px'></div><div style='width: 70px'></div><div style='width: 70px'></div></div>";
+	  			}
+	  			$p++;
+	  			$html .= "<div class='clear'></div></div>" . $pie_pagina;
+	  			$html .= "<div class='paginacion'>PÁGINA $p</div>";
   			}
-  			$p++;
-  			$html .= "<div class='clear'></div></div>" . $pie_pagina;
-  			$html .= "<div class='paginacion'>PÁGINA $p</div>";
   		}
   		$html .= "<div class='clear'></div>"; // </acta>
     	$datos_acta['html'] = $html; 
