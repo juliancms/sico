@@ -27,10 +27,10 @@
             <th>Total beneficiarios certificados por ajuste posterior al recorrido (10)</th>
             <th>Total beneficiarios descontados por ajuste posterior al recorrido (11)</th>
             <th>Total de cupos a certificar</th>            
-            <th>Total de cupos a certificar<br>Menores de 2 años</th>
-            <th>Total de cupos a certificar<br>Igual o mayor de 2 años y menor de 4 años</th>
-            <th>Total de cupos a certificar<br>Igual o mayor de 4 años y menor de 6 años</th>
-            <th>Total de cupos a certificar<br>Igual o mayor de 6 años</th>
+            <th>Total de cupos a certificar Menores de 2 años</th>
+            <th>Total de cupos a certificar Igual o mayor de 2 años y menor de 4 años</th>
+            <th>Total de cupos a certificar Igual o mayor de 4 años y menor de 6 años</th>
+            <th>Total de cupos a certificar Igual o mayor de 6 años</th>
          </tr>
     </thead>
     <tbody>

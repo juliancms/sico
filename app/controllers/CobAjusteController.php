@@ -43,69 +43,120 @@ class CobAjusteController extends ControllerBase
     }
     
     /**
-     * Formulario para agregar fecha de cierre
+     * Formulario para agregar fecha de reporte a los ajustes
      */
-    public function cierreAction()
+    public function asignarAction()
     {
     	$this->persistent->parameters = null;
     	$this->assets
     	->addJs('js/parsley.min.js')
     	->addJs('js/parsley.extend.js');
-    	$this->view->ajustes = CobAjuste::find(["id_ajuste_cierre IS NULL", 'order' => 'datetime DESC']);
-    	$this->view->fechas = CobAjusteCierre::find(['order' => 'fecha DESC']);
+    	$this->view->ajustes = CobAjuste::find(["id_ajuste_reportado IS NULL", 'order' => 'datetime DESC']);
+    	$this->view->fechas = CobAjusteReportado::find(["estado = 1", 'order' => 'fecha DESC']);
     }
     
     /**
-     * Formulario para agregar fecha de cierre
+     * Formulario para agregar fecha de reporte
      */
-    public function nuevafechacierreAction()
+    public function nuevafechareporteAction()
     {
-    	$this->view->fechas = CobAjusteCierre::find(['order' => 'fecha DESC']);
+    	$this->view->fechas = CobAjusteReportado::find(['order' => 'fecha DESC']);
     }
     
     /**
-     * Guarda el fecha de cierre
+     * Guarda el fecha de reporte
      *
      */
-    public function guardarfechacierreAction()
+    public function guardarfechareporteAction()
     {
     	if (!$this->request->isPost()) {
-    		return $this->response->redirect("cob_ajuste/nuevafechacierre");
+    		return $this->response->redirect("cob_ajuste/nuevafechareporte");
     	}
-    	$cob_ajuste_cierre = new CobAjusteCierre();
-    	$cob_ajuste_cierre->fecha = $this->conversiones->fecha(1, $this->request->getPost("fecha"));
+    	$cob_ajuste_reporte = new CobAjusteReportado();
+    	$cob_ajuste_reporte->fecha = $this->conversiones->fecha(1, $this->request->getPost("fecha"));
+    	$cob_ajuste_reporte->estado = 1;
     
-    	if (!$cob_ajuste_cierre->save()) {
-    		foreach ($cob_ajuste_cierre->getMessages() as $message) {
+    	if (!$cob_ajuste_reporte->save()) {
+    		foreach ($cob_ajuste_reporte->getMessages() as $message) {
     			$this->flash->error($message);
     		}
-    		return $this->response->redirect("cob_periodo/nuevo");
+    		return $this->response->redirect("cob_ajuste/nuevafechareporte");
     	}
-    	$this->flash->success("La fecha de cierre fue creada exitosamente.");
-    	return $this->response->redirect("cob_ajuste/nuevafechacierre");
+    	$this->flash->success("La fecha de reporte fue creada exitosamente.");
+    	return $this->response->redirect("cob_ajuste/nuevafechareporte");
     }
     
     /**
-     * Elimina una fecha de cierre
+     * Elimina una fecha de reporte
      *
      * @param int $id_periodo
      */
-    public function eliminarfechacierreAction($id_ajuste_cierre)
+    public function eliminarfechareporteAction($id_ajuste_reportado)
     {
-    	$cob_ajuste_cierre = CobAjusteCierre::findFirstByid_ajuste_cierre($id_ajuste_cierre);
-    	if (!$cob_ajuste_cierre) {
+    	$cob_ajuste_reportado = CobAjusteReportado::findFirstByid_ajuste_reportado($id_ajuste_reportado);
+    	if (!$cob_ajuste_reportado) {
     		$this->flash->error("La fecha no fue encontrada");
     
-    		return $this->response->redirect("cob_ajuste/nuevafechacierre");
+    		return $this->response->redirect("cob_ajuste/nuevafechareporte");
     	}
-    	if (!$cob_ajuste_cierre->delete()) {
-    		foreach ($cob_ajuste_cierre->getMessages() as $message) {
+    	if (!$cob_ajuste_reportado->delete()) {
+    		foreach ($cob_ajuste_reportado->getMessages() as $message) {
     			$this->flash->error($message);
     		}
-    		return $this->response->redirect("cob_ajuste/nuevafechacierre");
+    		return $this->response->redirect("cob_ajuste/nuevafechareporte");
     	}
     	$this->flash->success("La fecha fue eliminada correctamente");
-    	return $this->response->redirect("cob_ajuste/nuevafechacierre");
+    	return $this->response->redirect("cob_ajuste/nuevafechareporte");
+    }
+    
+    /**
+     * Deshabilita una fecha de reporte
+     *
+     * @param int $id_periodo
+     */
+    public function deshabilitarfechareporteAction($id_ajuste_reportado)
+    {
+    	$cob_ajuste_reportado = CobAjusteReportado::findFirstByid_ajuste_reportado($id_ajuste_reportado);
+    	if (!$cob_ajuste_reportado) {
+    		$this->flash->error("La fecha no fue encontrada");
+    
+    		return $this->response->redirect("cob_ajuste/nuevafechareporte");
+    	}
+    	$cob_ajuste_reportado->estado = 2;
+    	if (!$cob_ajuste_reportado->save()) {
+    	
+    		foreach ($cob_ajuste_reportado->getMessages() as $message) {
+    			$this->flash->error($message);
+    		}
+    		return $this->response->redirect("cob_ajuste/nuevafechareporte");
+    	}
+    	$this->flash->success("La fecha fue deshabilitada correctamente");
+    	return $this->response->redirect("cob_ajuste/nuevafechareporte");
+    }
+    
+    /**
+     * Habilita una fecha de reporte
+     *
+     * @param int $id_periodo
+     */
+    public function habilitarfechareporteAction($id_ajuste_reportado)
+    {
+    	$cob_ajuste_reportado = CobAjusteReportado::findFirstByid_ajuste_reportado($id_ajuste_reportado);
+    	if (!$cob_ajuste_reportado) {
+    		$this->flash->error("La fecha no fue encontrada");
+    
+    		return $this->response->redirect("cob_ajuste/nuevafechareporte");
+    	}
+    	$cob_ajuste_reportado->estado = 1;
+    	if (!$cob_ajuste_reportado->save()) {
+    		 
+    		foreach ($cob_ajuste_reportado->getMessages() as $message) {
+    			$this->flash->error($message);
+    		}
+    		return $this->response->redirect("cob_ajuste/nuevafechareporte");
+    	}
+    	$this->flash->success("La fecha fue habilitada correctamente");
+    	return $this->response->redirect("cob_ajuste/nuevafechareporte");
     }
     
     /**
@@ -113,17 +164,30 @@ class CobAjusteController extends ControllerBase
      */
     public function reportesAction()
     {
-    	$this->view->fechas = CobAjusteCierre::find(['order' => 'fecha DESC']);
+    	$this->view->fechas = CobAjuste::find(["id_ajuste_reportado IS NOT NULL", 'order' => 'id_ajuste_reportado DESC', 'group' => 'id_periodo, id_ajuste_reportado']);
     }
     
     /**
-     * Reportes de los ajustes
+     * Reportes sedes de los ajustes
      */
-    public function reporteAction($id_ajuste_cierre)
+    public function reportesedesAction($id_ajuste_reportado, $id_periodo)
     {
-    	$cob_ajuste = CobAjuste::find(array("id_ajuste_cierre = $id_ajuste_cierre", "group" => "id_sede_contrato"));
+    	$cob_ajuste = CobAjuste::find(array("id_ajuste_reportado = $id_ajuste_reportado AND id_periodo = $id_periodo", "group" => "id_sede_contrato"));
     	if (count($cob_ajuste) == 0) {
-    		$this->flash->error("No se encontraron ajustes con esta fecha de cierre");
+    		$this->flash->error("No se encontraron ajustes con esta fecha de reporte");
+    		return $this->response->redirect("cob_ajuste/reportes");
+    	}
+    	$this->view->cob_ajuste = $cob_ajuste;
+    }
+    
+    /**
+     * Reportes contratos de los ajustes
+     */
+    public function reportecontratosAction($id_ajuste_reportado, $id_periodo)
+    {
+    	$cob_ajuste = CobAjuste::find(array("id_ajuste_reportado = $id_ajuste_reportado AND id_periodo = $id_periodo", "group" => "id_contrato"));
+    	if (count($cob_ajuste) == 0) {
+    		$this->flash->error("No se encontraron ajustes con esta fecha de reporte");
     		return $this->response->redirect("cob_ajuste/reportes");
     	}
     	$this->view->cob_ajuste = $cob_ajuste;
@@ -150,6 +214,10 @@ class CobAjusteController extends ControllerBase
     		$this->flash->error("El beneficiario con número de documento <strong>$numDocumento</strong> no fue encontrado en el contrato <strong>$id_contrato</strong> para el periodo <strong>$cob_periodo->fecha</strong>");
     		return $this->response->redirect("cob_ajuste/buscar");
     	}
+    	if($beneficiario->certificacion == 0){
+    		$this->flash->error("El beneficiario se encuentra en estado 'Pendiente de Certificación', por lo tanto no puede ser ajustado, es posible que el periodo no haya sido cerrado");
+    		return $this->response->redirect("cob_ajuste/buscar");
+    	}
     	$this->flash->notice("<i class='glyphicon glyphicon-exclamation-sign'></i> Por favor, antes de ingresar la información verifique que el ajuste corresponde al periodo y la información del beneficiario.");
     	$this->assets
     	->addJs('js/ajuste.js')
@@ -165,14 +233,14 @@ class CobAjusteController extends ControllerBase
     /**
      * Guardar ajuste
      */
-    public function guardarcierreAction()
+    public function guardarasignarAction()
     {
     	if (!$this->request->isPost()) {
-    		return $this->response->redirect("cob_ajuste/cierre");
+    		return $this->response->redirect("cob_ajuste/asignar");
     	}
     	$elementos = array(
     			'id_ajuste' => $this->request->getPost("id_ajuste"),
-    			'id_ajuste_cierre' => $this->request->getPost("fechaCierre")
+    			'id_ajuste_reportado' => $this->request->getPost("fechaReportado")
     	);
     	$sql = $this->conversiones->multipleupdate("cob_ajuste", $elementos, "id_ajuste");
     	$db = $this->getDI()->getDb();
@@ -181,9 +249,9 @@ class CobAjusteController extends ControllerBase
     		foreach ($query->getMessages() as $message) {
     			$this->flash->error($message);
     		}
-    		return $this->response->redirect("cob_ajuste/cierre");
+    		return $this->response->redirect("cob_ajuste/asignar");
     	}
-    	$this->flash->success("Las fechas de cierre han sido actualizadas correctamente");
+    	$this->flash->success("Las fechas de reporte han sido actualizadas correctamente");
     	return $this->response->redirect("cob_ajuste");
     }
     
@@ -198,6 +266,13 @@ class CobAjusteController extends ControllerBase
     		return $this->response->redirect("cob_ajuste/buscar");    	}
     	if (!$this->request->isPost()) {
     		return $this->response->redirect("cob_ajuste/buscar");
+    	}
+    	if($beneficiario->certificacion == 1 && $this->request->getPost("certificar") == 1){
+    		$this->flash->error("El beneficiario ya se encuentra certificado, por lo tanto no puede volver a certificarlo");
+    		return $this->response->redirect("cob_ajuste/nuevo/$id_actaconteo_persona_facturacion");
+    	} else if(($beneficiario->certificacion == 2 || $beneficiario->certificar == 3) && $this->request->getPost("certificar") == 3){
+    		$this->flash->error("El beneficiario ya se encuentra en estado de 'No certificar', por lo tanto no puede descontarse.");
+    		return $this->response->redirect("cob_ajuste/nuevo/$id_actaconteo_persona_facturacion");
     	}
     	$ajuste = new CobAjuste();
     	$ajuste->id_periodo = $beneficiario->id_periodo;

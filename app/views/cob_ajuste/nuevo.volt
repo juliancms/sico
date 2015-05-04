@@ -5,7 +5,7 @@
 <table class="table table-bordered table-hover">
 	<thead>
         <tr>
-            <th colspan="6" style="text-align: center; background-color: #F8F8F8;">Información del beneficiario</th>
+            <th colspan="7" style="text-align: center; background-color: #F8F8F8;">Información del beneficiario</th>
         </tr>
     </thead>
     <thead>
@@ -16,6 +16,7 @@
             <th>Contrato</th>
             <th>Sede</th>
             <th class='danger'>Periodo</th>
+            <th>Estado</th>
          </tr>
     </thead>
     <tbody>
@@ -26,6 +27,7 @@
     	<td>{{ beneficiario.id_contrato }}</td>
     	<td>{{ acta.sede_nombre }}</td>
     	<td class='danger'>{{ periodo }}</td>
+    	<td>{{ beneficiario.getEstadoDetail() }}</td>
     </tr>
     </tbody>
 </table>

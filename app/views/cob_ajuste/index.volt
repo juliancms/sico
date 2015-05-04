@@ -2,8 +2,8 @@
 {{ content() }}
 <h1>Ajustes</h1>
 {{ link_to("cob_ajuste/buscar", '<i class="glyphicon glyphicon-plus"></i> Nuevo ajuste', "class": "btn btn-primary menu-tab") }}
-{{ link_to("cob_ajuste/nuevafechacierre", '<i class="glyphicon glyphicon-plus"></i> Nueva fecha de cierre', "class": "btn btn-primary menu-tab") }}
-{{ link_to("cob_ajuste/cierre", '<i class="glyphicon glyphicon-calendar"></i> Cerrar ajustes', "class": "btn btn-primary menu-tab") }}
+{{ link_to("cob_ajuste/nuevafechareporte", '<i class="glyphicon glyphicon-plus"></i> Fechas de reporte', "class": "btn btn-primary menu-tab") }}
+{{ link_to("cob_ajuste/asignar", '<i class="glyphicon glyphicon-calendar"></i> Asignar ajustes a fecha', "class": "btn btn-primary menu-tab") }}
 {{ link_to("cob_ajuste/reportes", '<i class="glyphicon glyphicon-list-alt"></i> Reportes', "class": "btn btn-primary menu-tab") }}
 {% if (not(cob_ajuste is empty)) %}
 <!-- Modal -->
@@ -27,7 +27,9 @@
 </div><!-- /.modal -->
 <table class="table table-bordered table-hover">
     <thead>
-        <tr>{% if (nivel <= 1) %}<th>Acciones</th>{% endif %}
+        <tr>
+        	<th>#</th>
+        	{% if (nivel <= 1) %}<th>Acciones</th>{% endif %}
             <th>Periodo<input autocomplete='off' class='filter form-control input-sm' name='periodo' data-col='periodo'/></th>
             <th>Contrato<input autocomplete='off' class='filter form-control input-sm' name='contrato' data-col='contrato'/></th>
             <th>Documento<input autocomplete='off' class='filter form-control input-sm' name='documento' data-col='documento'/></th>
@@ -37,12 +39,14 @@
             <th>Observacion<input autocomplete='off' class='filter form-control input-sm' name='observacion' data-col='observacion'/></th>
             <th>Fecha<input autocomplete='off' class='filter form-control input-sm' name='fecha' data-col='fecha'/></th>
             <th>Usuario<input autocomplete='off' class='filter form-control input-sm' name='usuario' data-col='usuario'/></th>
+            <th>Fecha_Reporte<input autocomplete='off' class='filter form-control input-sm' name='fecha_reporte' data-col='fecha_reporte'/></th>
          </tr>
     </thead>
     <tbody>
     {% for cob_ajuste in cob_ajuste %}
     	{% set nombre = {cob_ajuste.CobActaconteoPersonaFacturacion.primerNombre, cob_ajuste.CobActaconteoPersonaFacturacion.segundoNombre, cob_ajuste.CobActaconteoPersonaFacturacion.primerApellido, cob_ajuste.CobActaconteoPersonaFacturacion.segundoApellido} %}
         <tr>
+        <td>{{ loop.index }}</td>
         {% if (nivel <= 1) %}
         <td><a href="#eliminar_elemento" rel="tooltip" title="Eliminar" class="eliminar_fila" data-toggle = "modal" id="{{ url("cob_ajuste/eliminar/"~cob_ajuste.id_ajuste) }}"><i class="glyphicon glyphicon-trash"></i></a></td>
 		{% endif %}
@@ -55,6 +59,7 @@
         <td>{{ cob_ajuste.observacion }}</td>
         <td>{{ cob_ajuste.datetime }}</td>
         <td>{{ cob_ajuste.IbcUsuario.usuario }}</td>
+        <td>{{ cob_ajuste.CobAjusteReportado.fecha }}</td>
         </tr>
     {% endfor %}
     </tbody>

@@ -140,6 +140,29 @@ class CobActaconteoPersonaFacturacion extends \Phalcon\Mvc\Model
     }
 	
     /**
+     * Returns a human representation of 'certificacion'
+     *
+     * @return string
+     */
+    public function getEstadoDetail()
+    {
+    	switch ($this->certificacion) {
+    		case 0:
+    			return "Pendiente de Certificación (0)";
+    			break;
+    		case 1:
+    			return "Certificar atención (1)";
+    			break;
+    		case 2:
+    			return "No certificar atención (2)";
+    			break;
+    		case 3:
+    			return "Descontar atención (3)";
+    			break;
+    	}
+    }
+    
+    /**
      * Contar beneficiarios
      *
      * @return string
@@ -230,6 +253,12 @@ class CobActaconteoPersonaFacturacion extends \Phalcon\Mvc\Model
     public function getCertificarSede($id_sede_contrato, $id_periodo)
     {
     	$ninos = CobActaconteoPersonaFacturacion::find("id_periodo = $id_periodo AND id_sede_contrato = $id_sede_contrato AND certificacion = 1");
+    	return count($ninos);
+    }
+    
+    public function getCertificarContrato($id_contrato, $id_periodo)
+    {
+    	$ninos = CobActaconteoPersonaFacturacion::find("id_periodo = $id_periodo AND id_contrato = $id_contrato AND certificacion = 1");
     	return count($ninos);
     }
     
