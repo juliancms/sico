@@ -20,7 +20,7 @@ class CobPeriodoController extends ControllerBase
     public function indexAction()
     {
         $this->persistent->parameters = null;
-        $cob_periodo = CobPeriodo::find();
+        $cob_periodo = CobPeriodo::find(['order' => 'fecha, tipo asc']);
         if (count($cob_periodo) == 0) {
             $this->flash->notice("No se ha agregado ningún periodo hasta el momento");
             $cob_periodo = null;
