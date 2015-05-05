@@ -10,7 +10,6 @@
             <th>Código sede</th>
             <th>Nombre sede</th>
             <th>Total de cupos en el SIBC por sede</th>
-            <th>Total de cupos por sede</th>
             <th>Total beneficiarios que asistieron (1)</th>
             <th>Total beneficiarios retirados antes del día de corte de periodo (4)</th>
             <th>Total beneficiarios retirados después del día de corte de periodo (5)</th>
@@ -41,7 +40,6 @@
             <td>{{ sede.id_sede }}</td>
             <td>{{ sede.CobActaconteo.sede_nombre }}</td>
             <td>{{ cuposSIBCsede }}</td>
-            <td>{{ sede.CobPeriodoContratosedecupos.cuposSede }}</td>
             <td>{{ asistencia['asiste1'] }}</td>
             <td>{{ asistencia['asiste4'] }}</td>
             <td>{{ asistencia['asiste5'] }}</td>

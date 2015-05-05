@@ -14,9 +14,6 @@
             <th>Total de hogares comunitarios registrados en el SIBC x contrato</th>
             <th>Total hogares comunitarios x contrato</th>
             <th>Total beneficiarios certificados</th>
-            <th>Porcentaje de Cobertura certificado</th>
-            <th>Porcentaje de Cobertura matriculado SIBC</th>
-            <th>Porcentaje cobertura de acuerdo al numero de Hogares comunitarios matriculados en el SIBC x Contrato</th>
          </tr>
     </thead>
     <tbody>
@@ -38,10 +35,7 @@
             <td>{{ edades['mayorigual6'] }}</td>
             <td>{{ gruposTotal }}</td>
             <td>{{ hogaresContrato }}</td>
-            <td>{% if (certificados > cuposTotal) %}Se pasó{% else %}{{ certificados }}{% endif %}</td>
-            <td>{% if (certificados > cuposTotal) %}Se pasó{% else %}<?php echo number_format($certificados / $cuposTotal * 100, 2, '.', ''); ?>%{% endif %}</td>
-            <td>{% if (certificados > cuposTotal) %}Se pasó{% else %}<?php echo number_format($certificados / $cuposSIBC * 100, 2, '.', ''); ?>%{% endif %}</td>
-            <td>{% if (certificados > cuposTotal) %}Se pasó{% else %}<?php echo number_format($gruposTotal / $hogaresContrato * 100, 2, '.', ''); ?>%{% endif %}</td>
+            <td>{{ certificados }}</td>
         </tr>
     {% endfor %}
     </tbody>
