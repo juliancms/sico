@@ -64,7 +64,6 @@
             <td>{{ edades['mayorigual2menor4'] }}</td>
             <td>{{ edades['mayorigual4menor6'] }}</td>
             <td>{{ edades['mayorigual6'] }}</td>
-            <td>{{ edades['mayorigual6'] }}</td>
             <td>{{ gruposTotal }}</td>
         </tr>
     {% endfor %}

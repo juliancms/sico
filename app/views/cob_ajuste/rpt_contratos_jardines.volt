@@ -15,8 +15,8 @@
             <th>Total Pagos</th>
             <th>Total Descuentos</th>
             <th>Total cupos a certificar</th>
-            <td>Total CUPOS 1/4 UPA ATENCION JARDIN  CERTIFICADOS de niñas y niños contados en el período x sede</td>
-            <td>Total CUPOS JARDIN INFANTIL CERTIFICADOS de niñas y niños contados en el período x sede</td
+            <th>Total CUPOS 1/4 UPA ATENCION JARDIN  CERTIFICADOS de niñas y niños contados en el período x sede</th>
+            <th>Total CUPOS JARDIN INFANTIL CERTIFICADOS de niñas y niños contados en el período x sede</th>
             <th>Total de cupos a certificar Menores de 2 años</th>
             <th>Total de cupos a certificar Igual o mayor de 2 años y menor de 4 años</th>
             <th>Total de cupos a certificar Igual o mayor de 4 años y menor de 6 años</th>
