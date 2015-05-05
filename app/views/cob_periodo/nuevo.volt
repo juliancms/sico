@@ -8,7 +8,10 @@
         <div class="col-sm-10">
         	<select id="tipo" name="tipo" class="form-control">
 					<option value="1">Conteo General</option>
-					<option value="2">Muestreo</option>
+					<option value="2">Entorno Familiar</option>
+					<option value="3">Entorno Comunitario</option>
+					<option value="4">Entorno Comunitario Itinerante</option>
+					<option value="5">Jardines Infantiles</option>
 			</select>
         </div>
     </div>

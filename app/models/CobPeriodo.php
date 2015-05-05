@@ -68,9 +68,15 @@ class CobPeriodo extends \Phalcon\Mvc\Model
     public function getTipoperiodoDetail()
     {
     	if($this->tipo == 1) {
-    		return "Conteo";
+    		return "General";
     	} else if($this->tipo == 2) {
-    		return "Muestreo";
+    		return "Entorno Familiar";
+    	} else if($this->tipo == 3) {
+    		return "Entorno Comunitario";
+    	} else if($this->tipo == 4) {
+    		return "Entorno Comunitario Itinerante";
+    	} else if($this->tipo == 5) {
+    		return "Jardines Infantiles";
     	}
     }
     
@@ -87,6 +93,22 @@ class CobPeriodo extends \Phalcon\Mvc\Model
     		return "Entorno Comunitario Itinerante";
     	} else {
     		return "Modalidades Generales";
+    	}
+    }
+    
+    /**
+     * Returns a human representation of 'fecha'
+     *
+     * @return string
+     */
+    public function getModalidadId()
+    {
+    	if($this->tipo == 2) {
+    		return 5;
+    	} else if($this->CobActaconteo->id_modalidad == 12) {
+    		return 12;
+    	} else {
+    		return 1;
     	}
     }
     

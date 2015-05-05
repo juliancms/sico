@@ -30,19 +30,25 @@
             <th>Periodo</th>
             <th>Fecha de Corte</th>
             <th>Tipo</th>
-            <th>Modalidad</th>
+            {% if (nivel <= 1) %}
+            <th>Reporte Contratos</th>
+            <th>Reporte Sedes</th>
+            {% endif %}
          </tr>
     </thead>
     <tbody>
     {% for cob_periodo in cob_periodo %}
         <tr>
         {% if (nivel <= 1) %}
-        <td>{{ link_to("cob_periodo/ver/"~cob_periodo.id_periodo, '<i class="glyphicon glyphicon-list-alt"></i> ', "rel": "tooltip", "title":"Ver") }}{{ link_to("cob_periodo/editar/"~cob_periodo.id_periodo, '<i class="glyphicon glyphicon-pencil"></i> ', "rel": "tooltip", "title":"Editar") }}<a href="#eliminar_elemento" rel="tooltip" title="Eliminar" class="eliminar_fila" data-toggle = "modal" id="{{ url("cob_periodo/eliminar/"~cob_periodo.id_periodo) }}"><i class="glyphicon glyphicon-trash"></i></a> - {{ link_to("bc_informe/reportecontratos/"~cob_periodo.id_periodo, '<i class="glyphicon glyphicon-book"></i> ', "rel": "tooltip", "title":"Reporte Contratos") }}{{ link_to("bc_informe/reportesedes/"~cob_periodo.id_periodo, '<i class="glyphicon glyphicon-file"></i> ', "rel": "tooltip", "title":"Reporte Sedes") }}</td>
+        <td>{{ link_to("cob_periodo/ver/"~cob_periodo.id_periodo, '<i class="glyphicon glyphicon-list-alt"></i> ', "rel": "tooltip", "title":"Ver") }}{{ link_to("cob_periodo/editar/"~cob_periodo.id_periodo, '<i class="glyphicon glyphicon-pencil"></i> ', "rel": "tooltip", "title":"Editar") }}<a href="#eliminar_elemento" rel="tooltip" title="Eliminar" class="eliminar_fila" data-toggle = "modal" id="{{ url("cob_periodo/eliminar/"~cob_periodo.id_periodo) }}"><i class="glyphicon glyphicon-trash"></i></a></td>
 		{% endif %}
             <td>{{ link_to("cob_periodo/ver/"~cob_periodo.id_periodo, cob_periodo.getFechaDetail()) }}</td>
             <td>{{ link_to("cob_periodo/ver/"~cob_periodo.id_periodo, cob_periodo.fecha) }}</td>
             <td>{{ cob_periodo.getTipoperiodoDetail() }}</td>
-            <td>{{ cob_periodo.getModalidad() }}</td>
+            {% if (nivel <= 1) %}
+            <td>{{ link_to("bc_informe/reportecontratos/"~cob_periodo.id_periodo, '<i class="glyphicon glyphicon-book"></i> ', "rel": "tooltip", "title":"Reporte Contratos") }}</td>
+            <td>{{ link_to("bc_informe/reportesedes/"~cob_periodo.id_periodo, '<i class="glyphicon glyphicon-file"></i> ', "rel": "tooltip", "title":"Reporte Sedes") }}</td>
+            {% endif %}
         </tr>
     {% endfor %}
     </tbody>

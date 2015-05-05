@@ -49,13 +49,13 @@ class CobPeriodoController extends ControllerBase
     		$this->flash->error("El periodo no fue encontrado");
     		return $this->response->redirect("cob_periodo/");
     	}
-    	if($cob_periodo->tipo == 1){
-    		$recorridos = CobActaconteo::find(array(
+    	if($cob_periodo->tipo == 2) {
+    		$recorridos = CobActamuestreo::find(array(
     				"id_periodo = $id_periodo",
     				"group" => "recorrido"
     		));
-    	} else if ($cob_periodo->tipo == 2){
-    		$recorridos = CobActamuestreo::find(array(
+    	} else {
+    		$recorridos = CobActaconteo::find(array(
     				"id_periodo = $id_periodo",
     				"group" => "recorrido"
     		));
@@ -81,18 +81,18 @@ class CobPeriodoController extends ControllerBase
     		$this->flash->error("El periodo no fue encontrado");
     		return $this->response->redirect("cob_periodo/");
     	}
-    	if($cob_periodo->tipo == 1){
-    		$actas_recorrido = CobActaconteo::find(array(
-    			"id_periodo = $id_periodo AND recorrido = $recorrido",
-    			"group" => "id_actaconteo"
-    		));
-    		$titulo = "Actas de Conteo <small><span class='label label-danger'>Recorrido $recorrido</span></small>";
-    	} else if ($cob_periodo->tipo == 2){
+    	if($cob_periodo->tipo == 2){
     		$actas_recorrido = CobActamuestreo::find(array(
-    			"id_periodo = $id_periodo AND recorrido = $recorrido",
-    			"group" => "id_actamuestreo"
+    				"id_periodo = $id_periodo AND recorrido = $recorrido",
+    				"group" => "id_actamuestreo"
     		));
     		$titulo = "Actas de Muestreo <small><span class='label label-danger'>Recorrido $recorrido</span></small>";
+    	} else {
+    		$actas_recorrido = CobActaconteo::find(array(
+    				"id_periodo = $id_periodo AND recorrido = $recorrido",
+    				"group" => "id_actaconteo"
+    		));
+    		$titulo = "Actas de Conteo <small><span class='label label-danger'>Recorrido $recorrido</span></small>";
     	}
     	if (!$recorrido) {
     		$this->flash->error("El recorrido no fue encontrado");
@@ -125,14 +125,14 @@ class CobPeriodoController extends ControllerBase
     		return $this->response->redirect("cob_periodo/");
     	}    	
     	if($cob_periodo->tipo == 1){
-    		$actas_recorrido = CobActaconteo::find(array(
-    				"id_periodo = $id_periodo AND recorrido = $recorrido",
-    				"group" => "id_actaconteo"
-    		));
-    	} else if ($cob_periodo->tipo == 2){
     		$actas_recorrido = CobActamuestreo::find(array(
     				"id_periodo = $id_periodo AND recorrido = $recorrido",
     				"group" => "id_actamuestreo"
+    		));
+    	} else {
+    		$actas_recorrido = CobActaconteo::find(array(
+    				"id_periodo = $id_periodo AND recorrido = $recorrido",
+    				"group" => "id_actaconteo"
     		));
     	}    	
     	if (!$recorrido) {
