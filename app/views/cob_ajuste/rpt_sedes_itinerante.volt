@@ -10,9 +10,6 @@
             <th>Entidad Prestadora</th>
             <th>Número de Contrato</th>
             <th>Modalidad de Atención</th>
-            <th>Cupos de Ampliación Contratados</th>
-            <th>Cupos de Sostenibilidad Contratados</th>
-            <th>Total de cupos por contrato</th>
             <th>Total de cupos en el SIBC por contrato</th>
             <th>Código sede</th>
             <th>Nombre sede</th>
@@ -30,7 +27,6 @@
     </thead>
     <tbody>
     {% for sede in cob_ajuste %}
-    	<?php $cuposTotal = $sede->CobActaconteoPersonaFacturacion->CobPeriodoContratosedecupos->cuposTotal; ?>
     	<?php $cuposSIBCcontrato = $sede->CobActaconteoPersonaFacturacion->countBeneficiarioscontrato($sede->id_contrato, $sede->id_periodo); ?>
     	<?php $cuposSIBCsede = $sede->CobActaconteoPersonaFacturacion->countBeneficiariossede($sede->CobActaconteoPersonaFacturacion->id_sede, $sede->id_periodo); ?>
 		<?php $cuposCertificados = $sede->CobActaconteoPersonaFacturacion->getCertificarSede($sede->id_sede_contrato, $sede->id_periodo); ?>
@@ -41,9 +37,6 @@
             <td>{{ sede.CobActaconteoPersonaFacturacion.CobActaconteo.oferente_nombre }}</td>
             <td>{{ sede.id_contrato }}</td>
             <td>{{ sede.CobActaconteoPersonaFacturacion.CobActaconteo.modalidad_nombre }}</td>
-            <td>{{ sede.CobActaconteoPersonaFacturacion.CobPeriodoContratosedecupos.cuposAmpliacion }}</td>
-            <td>{{ sede.CobActaconteoPersonaFacturacion.CobPeriodoContratosedecupos.cuposSostenibilidad }}</td>
-            <td>{{ cuposTotal }}</td>
             <td>{{ cuposSIBCcontrato }}</td>
             <td>{{ sede.CobActaconteoPersonaFacturacion.id_sede }}</td>
             <td>{{ sede.CobActaconteoPersonaFacturacion.CobActaconteo.sede_nombre }}</td>

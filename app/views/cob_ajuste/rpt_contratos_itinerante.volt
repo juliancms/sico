@@ -6,9 +6,6 @@
             <th>Entidad Prestadora</th>
             <th>Número de Contrato</th>
             <th>Modalidad de Atención</th>
-            <th>Cupos de Ampliación Contratados</th>
-            <th>Cupos de Sostenibilidad Contratados</th>
-            <th>Total de cupos por contrato</th>
             <th>Total de cupos en el SIBC por contrato</th>
             <th>Total de cupos certificados</th>
             <th>Total Ajustes</th>
@@ -25,7 +22,6 @@
     </thead>
     <tbody>
     {% for contrato in cob_ajuste %}
-    	<?php $cuposTotal = $contrato->CobActaconteoPersonaFacturacion->CobPeriodoContratosedecupos->cuposTotal; ?>
     	<?php $cuposSIBCcontrato = $contrato->CobActaconteoPersonaFacturacion->countBeneficiarioscontrato($contrato->id_contrato, $contrato->id_periodo); ?>
     	<?php $cuposCertificados = $contrato->CobActaconteoPersonaFacturacion->getCertificarContrato($contrato->id_contrato, $contrato->id_periodo); ?>
     	<?php $totalajuste = $contrato->totalAjustecontrato($contrato->id_ajuste_reportado, $contrato->id_periodo, $contrato->id_contrato); ?>
