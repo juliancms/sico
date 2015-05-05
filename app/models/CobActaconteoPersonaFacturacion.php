@@ -173,6 +173,26 @@ class CobActaconteoPersonaFacturacion extends \Phalcon\Mvc\Model
     }
     
     /**
+     * Contar grupos contrato
+     *
+     * @return string
+     */
+    public function countGruposcontrato($id_contrato, $id_periodo)
+    {
+    	return CobActaconteoPersonaFacturacion::count(array("id_periodo = $id_periodo AND id_contrato = $id_contrato", "group" => "id_grupo"));
+    }
+    
+    /**
+     * Contar grupos sede
+     *
+     * @return string
+     */
+    public function countGrupossede($id_sede_contrato, $id_periodo)
+    {
+    	return CobActaconteoPersonaFacturacion::count(array("id_periodo = $id_periodo AND id_sede_contrato = $id_sede_contrato", "group" => "id_grupo"));
+    }
+    
+    /**
      * Contar beneficiarios
      *
      * @return string
