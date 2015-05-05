@@ -14,8 +14,8 @@
             <th>Total de cupos a certificar Igual o mayor de 2 años y menor de 4 años</th>
             <th>Total de cupos a certificar Igual o mayor de 4 años y menor de 6 años</th>
             <th>Total de cupos a certificar Igual o mayor de 6 años</th>
-            <th>Total de hogares comunitarios registrados en el SIBC x contrato</th>
-            <th>Total hogares comunitarios x contrato</th>           
+            <td>Total CUPOS 1/4 UPA ATENCION JARDIN  CERTIFICADOS de niñas y niños contados en el período x sede</td>
+            <td>Total CUPOS JARDIN INFANTIL CERTIFICADOS de niñas y niños contados en el período x sede</td
             <th>Total beneficiarios certificados</th>
             <th>Porcentaje de Cobertura certificado</th>
             <th>Porcentaje de Cobertura matriculado SIBC</th>
@@ -41,8 +41,8 @@
             <td>{{ edades['mayorigual2menor4'] }}</td>
             <td>{{ edades['mayorigual4menor6'] }}</td>
             <td>{{ edades['mayorigual6'] }}</td>
-            <td>{{ gruposTotal }}</td>
-            <td>{{ cuposTotal / 13 }}</td>           
+            <td></td>
+            <td></td>
             <td>{% if (certificados > cuposTotal) %}Se pasó{% else %}{{ certificados }}{% endif %}</td>
             <td>{% if (certificados > cuposTotal) %}Se pasó{% else %}<?php echo number_format($certificados / $cuposTotal * 100, 2, '.', ''); ?>%{% endif %}</td>
             <td>{% if (certificados > cuposTotal) %}Se pasó{% else %}<?php echo number_format($certificados / $cuposSIBC * 100, 2, '.', ''); ?>%{% endif %}</td>

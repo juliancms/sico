@@ -46,13 +46,13 @@ class BcInformeController extends ControllerBase
     	$this->view->contratos = $reporte_contratos;
     	$this->view->nombre_reporte = "Rpt_" . $cob_periodo->getPeriodoReporte . "_contratos_" . date("YmdHis") . ".xlsx";
     	if($tipo == 1){
-    		$this->view->setTemplateAfter('rpt_contratos_general');
+    		$this->view->setTemplateAfter('../bc_informe/rpt_contratos_general');
     	} else if($tipo == 3) {
-    		$this->view->setTemplateAfter('rpt_contratos_comunitario');
+    		$this->view->setTemplateAfter('../bc_informe/rpt_contratos_comunitario');
     	} else if($tipo == 4) {
-    		$this->view->setTemplateAfter('rpt_contratos_itinerante');
+    		$this->view->setTemplateAfter('../bc_informe/rpt_contratos_itinerante');
     	} else if($tipo == 5) {   		
-    		$this->view->setTemplateAfter('rpt_contratos_jardines');
+    		$this->view->setTemplateAfter('../bc_informe/rpt_contratos_jardines');
     	}
     	
     }
@@ -70,13 +70,13 @@ class BcInformeController extends ControllerBase
     	$reporte_sedes = CobActaconteoPersonaFacturacion::find(array("id_periodo = $id_periodo", "group" => "id_sede"));
     	$this->view->sedes = $reporte_sedes;
     	if($tipo == 1){
-    		$this->view->setTemplateAfter('rpt_sedes_general');
+    		$this->view->setTemplateAfter('../bc_informe/rpt_sedes_general');
     	} else if($tipo == 3) {
-    		$this->view->setTemplateAfter('rpt_sedes_comunitario');
+    		$this->view->setTemplateAfter('../bc_informe/rpt_sedes_comunitario');
     	} else if($tipo == 4) {
-    		$this->view->setTemplateAfter('rpt_sedes_itinerante');
+    		$this->view->setTemplateAfter('../bc_informe/rpt_sedes_itinerante');
     	} else if($tipo == 5) {
-    		$this->view->setTemplateAfter('rpt_sedes_jardines');
+    		$this->view->setTemplateAfter('../bc_informe/rpt_sedes_jardines');
     	}
     }
     

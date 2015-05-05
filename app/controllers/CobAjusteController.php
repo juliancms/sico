@@ -170,7 +170,7 @@ class CobAjusteController extends ControllerBase
     /**
      * Reportes sedes de los ajustes
      */
-    public function reportesedesAction($id_ajuste_reportado, $id_periodo)
+    public function reportesedesAction($id_ajuste_reportado, $id_periodo, $periodo_tipo)
     {
     	$cob_ajuste = CobAjuste::find(array("id_ajuste_reportado = $id_ajuste_reportado AND id_periodo = $id_periodo", "group" => "id_sede_contrato"));
     	if (count($cob_ajuste) == 0) {
@@ -178,12 +178,21 @@ class CobAjusteController extends ControllerBase
     		return $this->response->redirect("cob_ajuste/reportes");
     	}
     	$this->view->cob_ajuste = $cob_ajuste;
+    	if($tipo == 1){
+    		$this->view->setTemplateAfter('../cob_ajuste/rpt_sedes_general');
+    	} else if($tipo == 3) {
+    		$this->view->setTemplateAfter('../cob_ajuste/rpt_sedes_comunitario');
+    	} else if($tipo == 4) {
+    		$this->view->setTemplateAfter('../cob_ajuste/rpt_sedes_itinerante');
+    	} else if($tipo == 5) {
+    		$this->view->setTemplateAfter('../cob_ajuste/rpt_sedes_jardines');
+    	}
     }
     
     /**
      * Reportes contratos de los ajustes
      */
-    public function reportecontratosAction($id_ajuste_reportado, $id_periodo)
+    public function reportecontratosAction($id_ajuste_reportado, $id_periodo, $periodo_tipo)
     {
     	$cob_ajuste = CobAjuste::find(array("id_ajuste_reportado = $id_ajuste_reportado AND id_periodo = $id_periodo", "group" => "id_contrato"));
     	if (count($cob_ajuste) == 0) {
@@ -191,6 +200,15 @@ class CobAjusteController extends ControllerBase
     		return $this->response->redirect("cob_ajuste/reportes");
     	}
     	$this->view->cob_ajuste = $cob_ajuste;
+    	if($tipo == 1){
+    		$this->view->setTemplateAfter('../cob_ajuste/rpt_contratos_general');
+    	} else if($tipo == 3) {
+    		$this->view->setTemplateAfter('../cob_ajuste/rpt_contratos_comunitario');
+    	} else if($tipo == 4) {
+    		$this->view->setTemplateAfter('../cob_ajuste/rpt_contratos_itinerante');
+    	} else if($tipo == 5) {
+    		$this->view->setTemplateAfter('../cob_ajuste/rpt_contratos_jardines');
+    	}
     }
 
     /**

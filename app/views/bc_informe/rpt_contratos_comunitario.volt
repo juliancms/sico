@@ -15,7 +15,7 @@
             <th>Total de cupos a certificar Igual o mayor de 4 años y menor de 6 años</th>
             <th>Total de cupos a certificar Igual o mayor de 6 años</th>
             <th>Total de hogares comunitarios registrados en el SIBC x contrato</th>
-            <th>Total hogares comunitarios x contrato</th>           
+            <th>Total hogares comunitarios x contrato</th>
             <th>Total beneficiarios certificados</th>
             <th>Porcentaje de Cobertura certificado</th>
             <th>Porcentaje de Cobertura matriculado SIBC</th>

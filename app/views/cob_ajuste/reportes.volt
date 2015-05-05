@@ -15,8 +15,8 @@
         <tr>
             <td>{{ fecha.CobAjusteReportado.fecha }}</td>
             <td>{{ fecha.CobPeriodo.getFechaDetail() }}</td>
-            <td>{{ link_to("cob_ajuste/reportecontratos/"~fecha.id_ajuste_reportado~"/"~fecha.id_periodo, "<i class='glyphicon glyphicon-book'></i>" ) }}</td>
-            <td>{{ link_to("cob_ajuste/reportesedes/"~fecha.id_ajuste_reportado~"/"~fecha.id_periodo, "<i class='glyphicon glyphicon-file'></i>" ) }}</td>
+            <td>{{ link_to("cob_ajuste/reportecontratos/"~fecha.id_ajuste_reportado~"/"~fecha.id_periodo~"/"~fecha.CobPeriodo.tipo, "<i class='glyphicon glyphicon-book'></i>" ) }}</td>
+            <td>{{ link_to("cob_ajuste/reportesedes/"~fecha.id_ajuste_reportado~"/"~fecha.id_periodo~"/"~fecha.CobPeriodo.tipo, "<i class='glyphicon glyphicon-file'></i>" ) }}</td>
         </tr>
     {% endfor %}
     </tbody>
