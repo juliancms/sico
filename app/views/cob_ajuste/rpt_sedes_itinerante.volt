@@ -31,7 +31,7 @@
     	<?php $cuposSIBCsede = $sede->CobActaconteoPersonaFacturacion->countBeneficiariossede($sede->CobActaconteoPersonaFacturacion->id_sede, $sede->id_periodo); ?>
 		<?php $cuposCertificados = $sede->CobActaconteoPersonaFacturacion->getCertificarSede($sede->id_sede_contrato, $sede->id_periodo); ?>
     	<?php $totalajuste = $sede->totalAjustesede($sede->id_ajuste_reportado, $sede->id_periodo, $sede->id_sede_contrato); ?>
-    	<?php $edades = $contrato->getEdadesSede($sede->id_ajuste_reportado, $sede->id_periodo, $sede->id_sede_contrato); ?>
+    	<?php $edades = $sede->getEdadesSede($sede->id_ajuste_reportado, $sede->id_periodo, $sede->id_sede_contrato); ?>
         <tr>
             <td>{{ sede.CobPeriodo.getFechaDetail() }}</td>
             <td>{{ sede.CobActaconteoPersonaFacturacion.CobActaconteo.oferente_nombre }}</td>
