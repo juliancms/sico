@@ -170,7 +170,7 @@ class CobAjusteController extends ControllerBase
     /**
      * Reportes sedes de los ajustes
      */
-    public function reportesedesAction($id_ajuste_reportado, $id_periodo, $periodo_tipo)
+    public function reportesedesAction($id_ajuste_reportado, $id_periodo, $tipo)
     {
     	$cob_ajuste = CobAjuste::find(array("id_ajuste_reportado = $id_ajuste_reportado AND id_periodo = $id_periodo", "group" => "id_sede_contrato"));
     	if (count($cob_ajuste) == 0) {
@@ -192,7 +192,7 @@ class CobAjusteController extends ControllerBase
     /**
      * Reportes contratos de los ajustes
      */
-    public function reportecontratosAction($id_ajuste_reportado, $id_periodo, $periodo_tipo)
+    public function reportecontratosAction($id_ajuste_reportado, $id_periodo, $tipo)
     {
     	$cob_ajuste = CobAjuste::find(array("id_ajuste_reportado = $id_ajuste_reportado AND id_periodo = $id_periodo", "group" => "id_contrato"));
     	if (count($cob_ajuste) == 0) {
