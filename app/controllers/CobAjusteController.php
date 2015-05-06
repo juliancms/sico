@@ -297,7 +297,9 @@ class CobAjusteController extends ControllerBase
     	$ajuste->id_sede_contrato = $beneficiario->id_sede_contrato;
     	$ajuste->id_contrato = $beneficiario->id_contrato;
     	$ajuste->id_actaconteo_persona_facturacion = $id_actaconteo_persona_facturacion;
-    	$ajuste->certificar = $this->request->getPost("certificar");
+    	if($this->request->getPost("certificar") != 4) {
+    		$ajuste->certificar = $this->request->getPost("certificar");
+    	}
     	$ajuste->datetime = date('Y-m-d H:i:s');
     	$ajuste->observacion = $this->request->getPost("observacion");
     	$ajuste->radicado = $this->request->getPost("radicado");
