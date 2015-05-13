@@ -124,7 +124,7 @@ class CobPeriodoController extends ControllerBase
     		$this->flash->error("El periodo no fue encontrado");
     		return $this->response->redirect("cob_periodo/");
     	}    	
-    	if($cob_periodo->tipo == 1){
+    	if($cob_periodo->tipo == 2){
     		$actas_recorrido = CobActamuestreo::find(array(
     				"id_periodo = $id_periodo AND recorrido = $recorrido",
     				"group" => "id_actamuestreo"

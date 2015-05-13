@@ -71,7 +71,7 @@
         	<td><input type="checkbox" class="acta_check" id="{{ acta.getId() }}" value="{{ acta.getId() }}"><input type="hidden" name="id_acta[]" class="id_acta" value="{{ acta.getId() }}" disabled="disabled"><input type="hidden" name="contador_asignado[]" class="contador_asignado" disabled="disabled"></td>
         	<td class='interventor'><span class="asignado">{{ acta.IbcUsuario.usuario }}</span></td>
         	{% endif %}
-            <td>{{ link_to("cob_actaconteo/ver/"~acta.id_actaconteo, '<span class="nombre_lista" id="'~acta.id_actaconteo~'">'~acta.id_actaconteo~'</span>') }}</td>
+            <td>{{ link_to(acta.getUrlDetail(), '<span class="nombre_lista" id="'~acta.getId()~'">'~acta.getIdDetail()~'</span>') }}</td>
             <td>{{ acta.modalidad_nombre }}</td>
             <td>{{ acta.oferente_nombre }}</td>
             <td>{{ acta.id_sede }} - {{ acta.sede_nombre }}</td>
