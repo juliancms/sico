@@ -175,7 +175,8 @@ class CobActaconteo extends \Phalcon\Mvc\Model
         $modalidades = substr($modalidades, 0, -1);        
         $db->query("DELETE FROM $tabla_mat WHERE id_modalidad NOT IN ($modalidades)");
         if($facturacion == 1){
-        	$db->query("DELETE FROM $tabla_mat WHERE fechaRetiro > 0000-00-00 AND DATE_SUB('$cob_periodo->fecha' + INTERVAL 5 DAY, INTERVAL 35 DAY) > fechaRetiro OR '$cob_periodo->fecha' < fechaRetiro");
+        	$db->query("UPDATE $tabla_mat SET fechaRetiro = NULL WHERE fechaRetiro > '$cob_periodo->fecha'");
+        	$db->query("DELETE FROM $tabla_mat WHERE fechaRetiro > 0000-00-00 AND DATE_SUB('$cob_periodo->fecha', INTERVAL 30 DAY) > fechaRetiro OR '$cob_periodo->fecha' < fechaRetiro");
         	$db->query("UPDATE $tabla_mat SET certificacion = 2 WHERE fechaRetiro > 0000-00-00");
         	$archivo_sed = $config->application->basePath . "public/files/bc_bd/" . $carga->nombreSedes;
         	$db->query("LOAD DATA INFILE '$archivo_sed' IGNORE INTO TABLE cob_periodo_contratosedecupos FIELDS TERMINATED BY ';' LINES TERMINATED BY '\n' IGNORE 1 LINES (@ID_SEDE_CONTRATO, @ID_OFERENTE, @RAZON_SOCIAL, @ID_SEDE, @NOMBRE_SEDE, @TELEFONO, @DIRECCION, @ID_BARRIO_VEREDA, @NOMBRE_BARRIO_VEREDA, @ID_COMUNA, @NOMBRE_COMUNA_CORREGIMIENTO, @ZONA_UBICACION, @FECHA_INICIO_ATENCION, @NUMERO_CONTRATO, @ID_MODALIDAD_ORIGEN, @NOMBRE_MODALIDAD, @CUPOS_SEDE, @CUPOS_EN_USO, @CUPOS_SOSTENIBILIDAD, @CUPOS_AMPLIACION, @TOTAL_CUPOS_CONTRATO, @COORDX, @COORDY, @COORDINADOR, @PROPIEDAD_INMUEBLE, @AREA, @CAPACIDAD_ATENCION, @GRUPOS_ACTIVOS, @FECHA_FIN_CONTRATO, @FECHA_ADICION_CONTRATO) SET id_periodo = $cob_periodo->id_periodo, id_sede_contrato = @ID_SEDE_CONTRATO, cuposSede = @CUPOS_SEDE, cuposSostenibilidad = @CUPOS_SOSTENIBILIDAD, cuposAmpliacion = @CUPOS_AMPLIACION, cuposTotal = @TOTAL_CUPOS_CONTRATO");
@@ -231,7 +232,8 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     	$db->query("DELETE FROM $tabla_mat WHERE id_modalidad NOT IN ($modalidades)");
     	
     	if($facturacion == 1){
-    		$db->query("DELETE FROM $tabla_mat WHERE fechaRetiro > 0000-00-00 AND DATE_SUB('$cob_periodo->fecha' + INTERVAL 5 DAY, INTERVAL 35 DAY) > fechaRetiro OR '$cob_periodo->fecha' < fechaRetiro");
+    		$db->query("UPDATE $tabla_mat SET fechaRetiro = NULL WHERE fechaRetiro > '$cob_periodo->fecha'");
+    		$db->query("DELETE FROM $tabla_mat WHERE fechaRetiro > 0000-00-00 AND DATE_SUB('$cob_periodo->fecha', INTERVAL 30 DAY) > fechaRetiro OR '$cob_periodo->fecha' < fechaRetiro");
     		$db->query("UPDATE $tabla_mat SET certificacion = 2 WHERE fechaRetiro > 0000-00-00");
     		$archivo_sed = $config->application->basePath . "public/files/bc_bd/" . $carga->nombreSedes;
     		$db->query("LOAD DATA INFILE '$archivo_sed' IGNORE INTO TABLE cob_periodo_contratosedecupos FIELDS TERMINATED BY ';' LINES TERMINATED BY '\n' IGNORE 1 LINES (@ID_SEDE_CONTRATO, @ID_OFERENTE, @RAZON_SOCIAL, @ID_SEDE, @NOMBRE_SEDE, @TELEFONO, @DIRECCION, @ID_BARRIO_VEREDA, @NOMBRE_BARRIO_VEREDA, @ID_COMUNA, @NOMBRE_COMUNA_CORREGIMIENTO, @ZONA_UBICACION, @FECHA_INICIO_ATENCION, @NUMERO_CONTRATO, @ID_MODALIDAD_ORIGEN, @NOMBRE_MODALIDAD, @CUPOS_SEDE, @CUPOS_EN_USO, @CUPOS_SOSTENIBILIDAD, @CUPOS_AMPLIACION, @TOTAL_CUPOS_CONTRATO, @COORDX, @COORDY, @COORDINADOR, @PROPIEDAD_INMUEBLE, @AREA, @CAPACIDAD_ATENCION, @GRUPOS_ACTIVOS, @FECHA_FIN_CONTRATO, @FECHA_ADICION_CONTRATO) SET id_periodo = $cob_periodo->id_periodo, id_sede_contrato = @ID_SEDE_CONTRATO, cuposSede = @CUPOS_SEDE, cuposSostenibilidad = @CUPOS_SOSTENIBILIDAD, cuposAmpliacion = @CUPOS_AMPLIACION, cuposTotal = @TOTAL_CUPOS_CONTRATO");
