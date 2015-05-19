@@ -148,11 +148,11 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     	$timestamp = new DateTime();
         $tabla_mat = "m" . $timestamp->getTimestamp();
         
-        crearTablaMat($tabla_mat, $config, $carga);
+        $this::crearTablaMat($tabla_mat, $config, $carga);
         
         //generar actas PP
         if($cob_periodo->tipo == 1){
-        	generarActasPP($tabla_mat);
+        	$this::generarActasPP($tabla_mat);
         }
         
         $modalidades = "";
@@ -199,11 +199,11 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     	$timestamp = new DateTime();
     	$tabla_mat = "m" . $timestamp->getTimestamp();
     	
-    	crearTablaMat($tabla_mat, $config, $carga);
+    	$this::crearTablaMat($tabla_mat, $config, $carga);
     	
     	//generar actas PP
         if($cob_periodo->tipo == 1){
-        	generarActasPP($tabla_mat);
+        	$this::generarActasPP($tabla_mat);
         }
     	
     	$db->query("DELETE FROM $tabla_mat WHERE id_modalidad NOT IN ($modalidades)");
