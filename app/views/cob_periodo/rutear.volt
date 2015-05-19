@@ -19,7 +19,8 @@
 				<thead>
 					<tr>
 						<th>Rutear</th>
-						<th>Fecha de corte</th>
+						<th>Periodo</th>
+						<th>Tipo</th>
 						<th>Recorrido</th>
 					</tr>
 				</thead>
@@ -27,7 +28,8 @@
 					{% for periodo in periodos %}
 					<tr>
 						<td><a class="btn btn-link periodo_select" rel="tooltip" title="Rutear"><i class="glyphicon glyphicon-plus"></i></a></td>
-						<td><span class="id_periodo" id="{{ periodo.id_periodo }}"></span><span class="recorrido" id="{{ periodo.recorrido }}"></span>{{ periodo.CobPeriodo.fecha }}</td>
+						<td><span class="id_periodo" id="{{ periodo.id_periodo }}"></span><span class="recorrido" id="{{ periodo.recorrido }}"></span>{{ periodo.CobPeriodo.getFechaDetail() }}</td>
+						<td>Recorrido {{ periodo.CobPeriodo.getTipoperiodoDetail() }}</td>
 						<td>Recorrido {{ periodo.recorrido }}</td>
 					</tr>
 					{% endfor %}
