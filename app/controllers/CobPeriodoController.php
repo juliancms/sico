@@ -431,7 +431,7 @@ class CobPeriodoController extends ControllerBase
         $facturacion = $this->request->getPost("facturacion");
         $modalidades = implode(",", $this->request->getPost("modalidad"));
         $carga = BcCarga::findFirstByid_carga($id_carga);
-        if (!carga) {
+        if (!$carga) {
         	$this->flash->error("La carga no existe");
         	return $this->response->redirect("cob_periodo/nuevorecorrido1/$id_periodo");
         }
@@ -457,7 +457,7 @@ class CobPeriodoController extends ControllerBase
     	$id_carga = $this->request->getPost("carga");
     	$facturacion = $this->request->getPost("facturacion");
     	$carga = BcCarga::findFirstByid_carga($id_carga);
-    	if (!carga) {
+    	if (!$carga) {
     		$this->flash->error("La carga no existe");
     		return $this->response->redirect("cob_periodo/nuevorecorrido/$id_periodo");
     	}
