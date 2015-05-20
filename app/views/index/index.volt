@@ -10,13 +10,13 @@
 	  <!-- Contenido de los slides -->
 	  <div class="carousel-inner" role="listbox">
 	    <div class="item active">
+	      {{ image("img/index/03.jpg", "alt": "Interventoría Buen Comienzo") }}
+	    </div>
+	    <div class="item">
 	      {{ image("img/index/01.jpg", "alt": "Interventoría Buen Comienzo") }}
 	    </div>
 	    <div class="item">
 	      {{ image("img/index/02.jpg", "alt": "Interventoría Buen Comienzo") }}
-	    </div>
-	    <div class="item">
-	      {{ image("img/index/03.jpg", "alt": "Interventoría Buen Comienzo") }}
 	    </div>
 	  </div>
 	  <!-- Controles -->
