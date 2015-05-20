@@ -106,6 +106,10 @@ class Elements extends Component
     		'ibc_instrumentos' => array(
     				'caption' => 'Instrumentos',
     				'action' => 'index'
+    		),
+    		'bc_reporte' => array(
+    				'caption' => 'Reportes',
+    				'action' => 'oferente_contratos'
     		)
     );
     
@@ -432,7 +436,7 @@ class Elements extends Component
     			return array("1" => "Sí", "2" => "No", "3" => "N/A");
     			break;
     		case "ciclovital":
-    			return array("1" => "G", "2" => "L", "4" => "N", "5" => "NM", "6" => "NG");
+    			return array("1" => "G", "2" => "L", "4" => "N", "5" => "NM", "6" => "NG", "0" => "N/A");
     			break;
     		default:
     			return array();

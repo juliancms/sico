@@ -21,8 +21,8 @@
         	<td>{{ beneficiario.numDocumento }}</td>
             <td>{{ nombre|join(' ') }}</td>
             <td>{{ beneficiario.grupo }}</td>
-            <td>{{ select("cicloVital[]", ciclovital, "value" : beneficiario.cicloVital, "class" : "form-control asistencia required") }}</td>
-            <td>{{ select("complAlimientario[]", sinona, "value" : beneficiario.complAlimientario, "class" : "form-control asistencia required") }}</td>
+            <td>{{ select("cicloVital[]", ciclovital, "value" : beneficiario.cicloVital, "class" : "form-control ciclovital required") }}</td>
+            <td>{{ select("complAlimientario[]", sinona, "value" : beneficiario.complAlimientario, "class" : "form-control alimentario required") }}</td>
             <td><input type="hidden" name="id_actamuestreo_persona[]" value="{{ beneficiario.id_actamuestreo_persona }}">{{ select("asistencia[]", asistencia, "value" : beneficiario.asistencia, "class" : "form-control asistencia required") }}</td>
         </tr>
     {% endfor %}

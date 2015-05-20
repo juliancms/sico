@@ -184,6 +184,7 @@ class CobActamuestreoController extends ControllerBase
     		$this->assets
     		->addJs('js/parsley.min.js')
     		->addJs('js/parsley.extend.js')
+    		->addJs('js/beneficiarios-metrosalud.js')
     		->addJs('js/beneficiarios.js');
     		$this->view->nombre = array();
     		$this->view->acta = $acta;
