@@ -94,6 +94,10 @@ class BcReporteController extends ControllerBase
     		$this->flash->error("La base de datos de facturación no ha sido cargada.");
     		return $this->response->redirect("bc_reporte/oferente_contratos");
     	}
+    	if($cob_periodo->fecha < "2015-05-01"){
+    		$this->flash->error("El reporte para este periodo se encuentra en el menú 'Archivo Digital' del sitio web de la Interventoría Buen Comiecnzo.");
+    		return $this->response->redirect("bc_reporte/oferente_periodos/$id_contrato");
+    	}
     	$this->assets
     	->addJs('js/jquery.tablesorter.min.js')
     	->addJs('js/jquery.tablesorter.widgets.js')
@@ -120,9 +124,14 @@ class BcReporteController extends ControllerBase
     		return $this->response->redirect("bc_reporte/oferente_periodos/$id_contrato");
     	}
     	if($cob_periodo->fecha < "2015-05-01"){
-    		$this->flash->error("El reporte para este periodo se encuentra en el menú 'Archivo Digital'.");
+    		$this->flash->error("El reporte para este periodo se encuentra en el menú 'Archivo Digital' del sitio web de la Interventoría Buen Comiecnzo.");
     		return $this->response->redirect("bc_reporte/oferente_periodos/$id_contrato");
     	}
+    	$this->assets
+    	->addJs('js/jquery.tablesorter.min.js')
+    	->addJs('js/jquery.tablesorter.widgets.js')
+    	->addJs('js/multifilter.min.js')
+    	->addJs('js/reporte.js');
     	$reporte_contrato = CobActaconteoPersonaFacturacion::find(array("id_periodo = $id_periodo AND id_contrato = $id_contrato"));
     	$this->view->periodo = $cob_periodo;
     	$this->view->beneficiarios = $reporte_contrato;
