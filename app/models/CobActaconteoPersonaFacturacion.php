@@ -258,7 +258,7 @@ class CobActaconteoPersonaFacturacion extends \Phalcon\Mvc\Model
     public function getCertificacion3()
     {
     	if($this->asistencia3 == 1 || $this->asistencia3 == 7){
-    		return "CERTIFICAR ATENCIÓN";
+    		return "PENDIENTE CERTIFICAR ATENCIÓN";
     	} else if($this->asistencia3 == 0) {
     		return "";
     	} else {

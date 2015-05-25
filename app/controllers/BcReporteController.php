@@ -94,6 +94,11 @@ class BcReporteController extends ControllerBase
     		$this->flash->error("La base de datos de facturación no ha sido cargada.");
     		return $this->response->redirect("bc_reporte/oferente_contratos");
     	}
+    	$this->assets
+    	->addJs('js/jquery.tablesorter.min.js')
+    	->addJs('js/jquery.tablesorter.widgets.js')
+    	->addJs('js/multifilter.min.js')
+    	->addJs('js/reporte.js');
     	$reporte_contrato = CobActaconteoPersonaFacturacion::find(array("id_periodo = $id_periodo AND id_contrato = $id_contrato"));
     	$this->view->periodo = $cob_periodo;
     	$this->view->beneficiarios = $reporte_contrato;

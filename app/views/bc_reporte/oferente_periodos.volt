@@ -6,7 +6,7 @@
     	 <tr>
             <th>Periodo</th>
             <th>Reporte Niño a Niño R1 y R2</th>
-            <th>Reporte Niño a Niño Final</th>
+            <th>Reporte Niño a Niño por Recorridos</th>
          </tr>
     </thead>
     <tbody>
