@@ -43,6 +43,17 @@ class CobPeriodo extends \Phalcon\Mvc\Model
      *
      * @return string
      */
+    public function getFechaAnioDetail()
+    {
+    	$conversiones = $this->getDI()->getConversiones();
+    	return $conversiones->fecha(8, $this->fecha);
+    }
+    
+    /**
+     * Returns a human representation of 'fecha'
+     *
+     * @return string
+     */
     public function getFechacierreDetail()
     {
     	$conversiones = $this->getDI()->getConversiones();

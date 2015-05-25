@@ -21,6 +21,7 @@ class Conversiones extends Component
 	 *  5 = aaaa-mm-dd -> AGOSTO
 	 *  6 = aaaa-mm-dd -> AG
 	 *  7 = aaaa-mm-dd -> 02BC_Febrero
+	 *  8 = aaaa-mm-dd -> Agosto de 2015
 	 * @return string
 	 * @author Julián Camilo Marín Sánchez
 	 */
@@ -60,6 +61,10 @@ class Conversiones extends Component
 		elseif($tipo_formato == 7){
 			$parts = explode('-', $fecha);
 			return $parts[1] . "BC_" . $meses[$parts[1]-1];
+		}
+		elseif($tipo_formato == 8){
+			$parts = explode('-', $fecha);
+			return $meses[$parts[1]-1] . " de " . $parts[0];
 		}
 	}
 	

@@ -121,6 +121,66 @@ class CobActaconteoPersonaFacturacion extends \Phalcon\Mvc\Model
      *
      * @var integer
      */
+    public $acta1;
+    
+    /**
+     *
+     * @var integer
+     */
+    public $asistencia1;
+    
+    /**
+     *
+     * @var integer
+     */
+    public $id_actaconteo_persona1;
+    
+    /**
+     *
+     * @var integer
+     */
+    public $acta2;
+    
+    /**
+     *
+     * @var integer
+     */
+    public $asistencia2;
+    
+    /**
+     *
+     * @var integer
+     */
+    public $id_actaconteo_persona2;
+    
+    /**
+     *
+     * @var integer
+     */
+    public $acta3;
+    
+    /**
+     *
+     * @var integer
+     */
+    public $asistencia3;
+    
+    /**
+     *
+     * @var integer
+     */
+    public $id_actaconteo_persona3;
+    
+    /**
+     *
+     * @var integer
+     */
+    public $certificacionFija;
+    
+    /**
+     *
+     * @var integer
+     */
     public $asistenciaFinal;
     
     /**
@@ -129,14 +189,139 @@ class CobActaconteoPersonaFacturacion extends \Phalcon\Mvc\Model
      */
     public $certificacion;
     
+    /**
+     *
+     * @var integer
+     */
+    public $cuartoupaJI;
+    
     public function initialize()
     {
-    	$this->hasMany("id_actaconteo_persona_facturacion", "CobActaconteoPersona", "id_actaconteo_persona_facturacion");
+    	$this->hasMany("id_actaconteo_persona_facturacion", "CobActaconteoPersona", "id_actaconteo_persona_facturacion", array(
+    			'reusable' => true
+    	));
     	$this->belongsTo('id_periodo', 'CobPeriodo', 'id_periodo', array(
     			'reusable' => true
     	));
+    	$this->belongsTo('id_sede_contrato', 'BcSedeContrato', 'id_sede_contrato', array(
+    			'reusable' => true
+    	));
+    	$this->belongsTo('id_actaconteo_persona1', 'CobActaconteoPersonaExcusa', 'id_actaconteo_persona', array(
+    			'reusable' => true,
+    			'alias' => 'Motivo1'
+    	));
+    	$this->belongsTo('id_actaconteo_persona2', 'CobActaconteoPersonaExcusa', 'id_actaconteo_persona', array(
+    			'reusable' => true,
+    			'alias' => 'Motivo2'
+    	));
+    	$this->belongsTo('id_actaconteo_persona3', 'CobActaconteoPersonaExcusa', 'id_actaconteo_persona', array(
+    			'reusable' => true,
+    			'alias' => 'Motivo3'
+    	));
     	$this->belongsTo(array('id_sede_contrato', 'id_periodo'), 'CobActaconteo', array('id_sede_contrato', 'id_periodo'));
     	$this->belongsTo(array('id_sede_contrato', 'id_periodo'), 'CobPeriodoContratosedecupos', array('id_sede_contrato', 'id_periodo'));
+    }
+    
+    /**
+     * Certificación recorrido 1
+     *
+     * @return string
+     */
+    public function getCertificacion1()
+    {
+    	if($this->asistencia1 == 1 || $this->asistencia1 == 7){
+    		return "PRECERTIFICAR ATENCIÓN";
+    	} else {
+    		return "PENDIENTE DE CERTIFICAR ATENCIÓN";
+    	}
+    }
+    
+    /**
+     * Certificación recorrido 2
+     *
+     * @return string
+     */
+    public function getCertificacion2()
+    {
+    	if($this->asistencia2 == 1 || $this->asistencia2 == 7){
+    		return "PRECERTIFICAR ATENCIÓN";
+    	} else {
+    		return "PENDIENTE DE CERTIFICAR ATENCIÓN";
+    	}
+    }
+    
+    /**
+     * Certificación recorrido 3
+     *
+     * @return string
+     */
+    public function getCertificacion3()
+    {
+    	if($this->asistencia3 == 1 || $this->asistencia3 == 7){
+    		return "CERTIFICAR ATENCIÓN";
+    	} else if($this->asistencia3 == 0) {
+    		return "";
+    	} else {
+    		return "NO CERTIFICAR ATENCIÓN";
+    	}
+    }
+       
+    /**
+     * Certificación recorrido 2
+     *
+     * @return string
+     */
+    public function getCertificacionFinalFija()
+    {
+    	if($this->certificacionFija == 0){
+    		return "PENDIENTE DE CERTIFICACIÓN";
+    	} else if($this->certificacionFija == 1) {
+    		return "CERTIFICAR ATENCIÓN";
+    	} else {
+    		return "NO CERTIFICAR ATENCIÓN";
+    	}
+    }
+    
+    /**
+     * Observación1
+     *
+     * @return string
+     */
+    public function getObservacion1()
+    {
+    	if($this->fechaRetiro !== '0000-00-00' && $this->fechaRetiro !== NULL){
+    		return "RETIRADO ANTES DE LA FECHA DE CORTE";
+    	} else if($this->Motivo1->motivo) {
+    		return $this->Motivo1->motivo;
+   		}
+    }
+    
+    /**
+     * Observación2
+     *
+     * @return string
+     */
+    public function getObservacion2()
+    {
+    	if($this->fechaRetiro !== '0000-00-00' && $this->fechaRetiro !== NULL){
+    		return "RETIRADO ANTES DE LA FECHA DE CORTE";
+    	} else if($this->Motivo2->motivo) {
+    		return $this->Motivo2->motivo;
+    	}
+    }
+    
+    /**
+     * Observación3
+     *
+     * @return string
+     */
+    public function getObservacion3()
+    {
+    	if($this->fechaRetiro !== '0000-00-00' && $this->fechaRetiro !== NULL){
+    		return "RETIRADO ANTES DE LA FECHA DE CORTE";
+    	} else if($this->Motivo3->motivo) {
+    		return $this->Motivo3->motivo;
+    	}
     }
 	
     /**

@@ -259,12 +259,24 @@ class SecurityPlugin extends Plugin
     				'nivelPermiso' => '-2'
     		)
     	),
-    	'bc_informe' => array(
-    		'reportecontratos' => array(
+    	'bc_reporte' => array(
+    		'cob_contratos' => array(
     				'nivelPermiso' => '1'
     		),
-    		'reportesedes' => array(
+    		'cob_sedes' => array(
     				'nivelPermiso' => '1'
+    		),
+    		'oferente_contratos' => array(
+    				'nivelPermiso' => '4'
+    		),
+    		'oferente_periodos' => array(
+    				'nivelPermiso' => '4'
+    		),
+    		'beneficiarios_contratoparcial' => array(
+    				'nivelPermiso' => '4'
+    		),
+    		'beneficiarios_contratofinal' => array(
+    				'nivelPermiso' => '4'
     		)
     	),
     );
