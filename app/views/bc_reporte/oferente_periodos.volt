@@ -1,6 +1,7 @@
 
 {{ content() }}
 <h1>Periodos <br><small>CONTRATO {{ contrato.id_contrato }} MODALIDAD {{ contrato.modalidad_nombre }}</small></h1>
+{{ link_to("bc_reporte/oferente_contratos", '<i class="glyphicon glyphicon-chevron-left"></i> Regresar', "class": "btn btn-primary menu-tab") }}
 <table class="table table-bordered table-hover">
 	<thead>
     	 <tr>
