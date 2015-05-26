@@ -229,7 +229,9 @@ class CobActaconteoPersonaFacturacion extends \Phalcon\Mvc\Model
      */
     public function getCertificacion1()
     {
-    	if($this->asistencia1 == 1 || $this->asistencia1 == 7){
+    	if($this->fechaRetiro !== '0000-00-00' && $this->fechaRetiro !== NULL){
+    		return "NO CERTIFICAR ATENCIÓN";
+    	} else if($this->asistencia1 == 1 || $this->asistencia1 == 7){
     		return "PRECERTIFICAR ATENCIÓN";
     	} else {
     		return "PENDIENTE DE CERTIFICAR ATENCIÓN";
@@ -243,7 +245,9 @@ class CobActaconteoPersonaFacturacion extends \Phalcon\Mvc\Model
      */
     public function getCertificacion2()
     {
-    	if($this->asistencia1 == 1 || $this->asistencia1 == 7 || $this->asistencia2 == 1 || $this->asistencia2 == 7){
+    	if($this->fechaRetiro !== '0000-00-00' && $this->fechaRetiro !== NULL){
+    		return "NO CERTIFICAR ATENCIÓN";
+    	} else if($this->asistencia1 == 1 || $this->asistencia1 == 7 || $this->asistencia2 == 1 || $this->asistencia2 == 7){
     		return "PRECERTIFICAR ATENCIÓN";
     	} else {
     		return "PENDIENTE DE CERTIFICAR ATENCIÓN";
@@ -257,7 +261,9 @@ class CobActaconteoPersonaFacturacion extends \Phalcon\Mvc\Model
      */
     public function getCertificacion3()
     {
-    	if($this->asistencia3 == 1 || $this->asistencia3 == 7){
+    	if($this->fechaRetiro !== '0000-00-00' && $this->fechaRetiro !== NULL){
+    		return "NO CERTIFICAR ATENCIÓN";
+    	} else if($this->asistencia3 == 1 || $this->asistencia3 == 7){
     		return "PRECERTIFICAR ATENCIÓN";
     	} else if($this->asistencia3 == 0) {
     		return "";
