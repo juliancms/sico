@@ -243,7 +243,7 @@ class CobActaconteoPersonaFacturacion extends \Phalcon\Mvc\Model
      */
     public function getCertificacion2()
     {
-    	if($this->asistencia2 == 1 || $this->asistencia2 == 7){
+    	if($this->asistencia1 == 1 || $this->asistencia1 == 7 || $this->asistencia2 == 1 || $this->asistencia2 == 7){
     		return "PRECERTIFICAR ATENCIÓN";
     	} else {
     		return "PENDIENTE DE CERTIFICAR ATENCIÓN";
