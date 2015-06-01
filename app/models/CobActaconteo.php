@@ -188,7 +188,6 @@ class CobActaconteo extends \Phalcon\Mvc\Model
         	$db->query("UPDATE cob_actaconteo_persona, cob_actaconteo_persona_facturacion SET cob_actaconteo_persona.id_actaconteo_persona_facturacion = cob_actaconteo_persona_facturacion.id_actaconteo_persona_facturacion WHERE cob_actaconteo_persona.id_contrato = cob_actaconteo_persona_facturacion.id_contrato AND cob_actaconteo_persona.numDocumento = cob_actaconteo_persona_facturacion.numDocumento AND cob_actaconteo_persona.id_periodo = $cob_periodo->id_periodo AND cob_actaconteo_persona_facturacion.id_periodo = $cob_periodo->id_periodo");
         	$db->query("UPDATE cob_actaconteo_persona_facturacion, cob_actaconteo_persona SET cob_actaconteo_persona_facturacion.acta1 = cob_actaconteo_persona.id_actaconteo, cob_actaconteo_persona_facturacion.asistencia1 = cob_actaconteo_persona.asistencia, cob_actaconteo_persona_facturacion.id_actaconteo_persona1 = cob_actaconteo_persona.id_actaconteo_persona WHERE cob_actaconteo_persona_facturacion.id_actaconteo_persona_facturacion = cob_actaconteo_persona.id_actaconteo_persona_facturacion AND cob_actaconteo_persona.recorrido = 1 AND cob_actaconteo_persona.id_periodo = $cob_periodo->id_periodo AND cob_actaconteo_persona_facturacion.id_periodo = $cob_periodo->id_periodo");
         	$db->query("UPDATE cob_actaconteo_persona_facturacion, cob_actaconteo_persona SET cob_actaconteo_persona_facturacion.acta2 = cob_actaconteo_persona.id_actaconteo, cob_actaconteo_persona_facturacion.asistencia2 = cob_actaconteo_persona.asistencia, cob_actaconteo_persona_facturacion.id_actaconteo_persona2 = cob_actaconteo_persona.id_actaconteo_persona WHERE cob_actaconteo_persona_facturacion.id_actaconteo_persona_facturacion = cob_actaconteo_persona.id_actaconteo_persona_facturacion AND cob_actaconteo_persona.recorrido = 2 AND cob_actaconteo_persona.id_periodo = $cob_periodo->id_periodo AND cob_actaconteo_persona_facturacion.id_periodo = $cob_periodo->id_periodo");
-        	
         }
         $db->query("DELETE FROM $tabla_mat WHERE fechaRetiro > 0000-00-00");
         $eliminar = CobActaconteoPersona::find(["id_periodo = $cob_periodo->id_periodo AND recorrido < $recorrido AND (asistencia = 1 OR asistencia = 7 OR asistencia = 9 OR asistencia = 10)"]);
@@ -341,7 +340,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     		<div class='fila col3 center'><div>Código: F-ITBC-GC-001</div><div></div><div></div></div>
     		<div class='fila col3e'>
     			<div>ACTA: <span style='font-weight: normal;'>$acta_id</span></div>
-    			<div class='col2da'>NÚMERO DE CONTRATO: <span style='font-weight: normal;'>$acta->id_contrato</span></div>
+    			<div class='col2da'>NÚMERO DE CONTRATO: <span style='font-weight: normal;'></span></div>
     			<div>MODALIDAD: <span style='font-weight: normal;'>$acta->modalidad_nombre</span></div>
     		</div>
     		<div class='fila col3e'>
