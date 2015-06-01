@@ -297,9 +297,8 @@ class CobAjusteController extends ControllerBase
     	$ajuste->id_sede_contrato = $beneficiario->id_sede_contrato;
     	$ajuste->id_contrato = $beneficiario->id_contrato;
     	$ajuste->id_actaconteo_persona_facturacion = $id_actaconteo_persona_facturacion;
-    	if($this->request->getPost("certificar") != 4) {
-    		$ajuste->certificar = $this->request->getPost("certificar");
-    	}
+    	$certificar = $this->request->getPost("certificar");
+    	$ajuste->certificar = $certificar;
     	$ajuste->datetime = date('Y-m-d H:i:s');
     	$ajuste->observacion = $this->request->getPost("observacion");
     	$ajuste->radicado = $this->request->getPost("radicado");
@@ -310,23 +309,25 @@ class CobAjusteController extends ControllerBase
     		}
     		return $this->response->redirect("cob_ajuste/nuevo/$id_actaconteo_persona_facturacion");
     	}
-    	$ninofac = CobActaconteoPersonaFacturacion::findFirstByid_actaconteo_persona_facturacion($id_actaconteo_persona_facturacion);
-    	if (!$ninofac) {
-    		$this->flash->error("El niño no existe en la base de datos de facturación pero sí se guardó el ajuste, favor informar esto al administrador inmediatamente");
-    		return $this->response->redirect("cob_ajuste");
-    	}
-    	$ninofac->certificacion = $this->request->getPost("certificar");
-    	if($this->request->getPost("certificar") == 1){
-    		$ninofac->asistenciaFinal = 10;
-    	} else if($this->request->getPost("certificar") == 3) {
-    		$ninofac->asistenciaFinal = 11;
-    	}
-    	if (!$ninofac->save()) {
-    		foreach ($ninofac->getMessages() as $message) {
-    			$this->flash->error($message);
+    	if($certificar != 4){
+    		$ninofac = CobActaconteoPersonaFacturacion::findFirstByid_actaconteo_persona_facturacion($id_actaconteo_persona_facturacion);
+    		if (!$ninofac) {
+    			$this->flash->error("El niño no existe en la base de datos de facturación pero sí se guardó el ajuste, favor informar esto al administrador inmediatamente");
+    			return $this->response->redirect("cob_ajuste");
     		}
-    		return $this->response->redirect("cob_ajuste");
-    	}
+    		$ninofac->certificacion = $certificar;
+    		if($certificar == 1){
+    			$ninofac->asistenciaFinal = 10;
+    		} else if($certificar == 3) {
+    			$ninofac->asistenciaFinal = 11;
+    		}
+    		if (!$ninofac->save()) {
+    			foreach ($ninofac->getMessages() as $message) {
+    				$this->flash->error($message);
+    			}
+    			return $this->response->redirect("cob_ajuste");
+    		}
+    	}    	
     	$this->flash->success("El ajuste fue realizado exitosamente.");
     	return $this->response->redirect("cob_ajuste/buscar");
     }
