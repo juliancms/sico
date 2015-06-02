@@ -41,8 +41,8 @@
             <td>{{ edades['mayorigual2menor4'] }}</td>
             <td>{{ edades['mayorigual4menor6'] }}</td>
             <td>{{ edades['mayorigual6'] }}</td>
-            <td></td>
-            <td></td>
+            <td><?php echo $contrato->getCertificar4UPAContrato($contrato->id_contrato, $contrato->id_periodo); ?></td>
+            <td><?php echo $contrato->getCertificarno4UPAContrato($contrato->id_contrato, $contrato->id_periodo); ?></td>
             <td>{% if (certificados > cuposTotal) %}Se pasó{% else %}{{ certificados }}{% endif %}</td>
             <td>{% if (certificados > cuposTotal) %}Se pasó{% else %}<?php echo number_format($certificados / $cuposTotal * 100, 2, '.', ''); ?>%{% endif %}</td>
             <td>{% if (certificados > cuposTotal) %}Se pasó{% else %}<?php echo number_format($certificados / $cuposSIBC * 100, 2, '.', ''); ?>%{% endif %}</td>

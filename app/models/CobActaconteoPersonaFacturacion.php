@@ -467,9 +467,33 @@ class CobActaconteoPersonaFacturacion extends \Phalcon\Mvc\Model
     	return $ninos;
     }
     
+    public function getCertificar4UPASede($id_sede_contrato, $id_periodo)
+    {
+    	$ninos = CobActaconteoPersonaFacturacion::count("id_periodo = $id_periodo AND id_sede_contrato = $id_sede_contrato AND certificacion = 1 AND cuartoupaJI = 1");
+    	return $ninos;
+    }
+    
+    public function getCertificarno4UPASede($id_sede_contrato, $id_periodo)
+    {
+    	$ninos = CobActaconteoPersonaFacturacion::count("id_periodo = $id_periodo AND id_sede_contrato = $id_sede_contrato AND certificacion = 1 AND cuartoupaJI = 0");
+    	return $ninos;
+    }
+    
     public function getCertificarContrato($id_contrato, $id_periodo)
     {
     	$ninos = CobActaconteoPersonaFacturacion::find("id_periodo = $id_periodo AND id_contrato = $id_contrato AND certificacion = 1");
+    	return count($ninos);
+    }
+    
+    public function getCertificar4UPAContrato($id_contrato, $id_periodo)
+    {
+    	$ninos = CobActaconteoPersonaFacturacion::find("id_periodo = $id_periodo AND id_contrato = $id_contrato AND certificacion = 1 AND cuartoupaJI = 1");
+    	return count($ninos);
+    }
+    
+    public function getCertificarno4UPAContrato($id_contrato, $id_periodo)
+    {
+    	$ninos = CobActaconteoPersonaFacturacion::find("id_periodo = $id_periodo AND id_contrato = $id_contrato AND certificacion = 1 AND cuartoupaJI = 0");
     	return count($ninos);
     }
     

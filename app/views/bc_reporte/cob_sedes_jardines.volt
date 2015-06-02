@@ -64,8 +64,8 @@
             <td>{{ edades['mayorigual2menor4'] }}</td>
             <td>{{ edades['mayorigual4menor6'] }}</td>
             <td>{{ edades['mayorigual6'] }}</td>
-            <td></td>
-            <td></td>
+            <td><?php echo $sede->getCertificar4UPASede($sede->id_sede_contrato, $sede->id_periodo); ?></td>
+            <td><?php echo $sede->getCertificarno4UPASede($sede->id_sede_contrato, $sede->id_periodo); ?></td>
         </tr>
     {% endfor %}
     </tbody>

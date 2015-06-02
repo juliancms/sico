@@ -177,6 +177,9 @@ class CobActaconteo extends \Phalcon\Mvc\Model
         }
         $modalidades = substr($modalidades, 0, -1);        
         $db->query("DELETE FROM $tabla_mat WHERE id_modalidad NOT IN ($modalidades)");
+        if($cob_periodo->tipo == 4){
+        	$db->query("UPDATE $tabla_mat SET id_sede_contrato = CONCAT_WS('',codigoHCB,id_contrato), id_sede = codigoHCB, sede_nombre = nombreHCB, sede_direccion = direccionHCB, sede_barrio = comunaCorregimientoHCB, sede_telefono = NULL WHERE 1");
+        }
         if($facturacion == 1){
         	$db->query("UPDATE $tabla_mat SET fechaRetiro = NULL WHERE fechaRetiro > '$cob_periodo->fecha'");
         	$db->query("DELETE FROM $tabla_mat WHERE fechaRetiro > 0000-00-00 AND DATE_SUB('$cob_periodo->fecha', INTERVAL 30 DAY) > fechaRetiro OR '$cob_periodo->fecha' < fechaRetiro");
@@ -187,7 +190,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
         	$db->query("UPDATE cob_periodo SET id_carga_facturacion = $carga->id_carga WHERE id_periodo = $cob_periodo->id_periodo");
         	$db->query("UPDATE cob_actaconteo_persona, cob_actaconteo_persona_facturacion SET cob_actaconteo_persona.id_actaconteo_persona_facturacion = cob_actaconteo_persona_facturacion.id_actaconteo_persona_facturacion WHERE cob_actaconteo_persona.id_contrato = cob_actaconteo_persona_facturacion.id_contrato AND cob_actaconteo_persona.numDocumento = cob_actaconteo_persona_facturacion.numDocumento AND cob_actaconteo_persona.id_periodo = $cob_periodo->id_periodo AND cob_actaconteo_persona_facturacion.id_periodo = $cob_periodo->id_periodo");
         	$db->query("UPDATE cob_actaconteo_persona_facturacion, cob_actaconteo_persona SET cob_actaconteo_persona_facturacion.acta1 = cob_actaconteo_persona.id_actaconteo, cob_actaconteo_persona_facturacion.asistencia1 = cob_actaconteo_persona.asistencia, cob_actaconteo_persona_facturacion.id_actaconteo_persona1 = cob_actaconteo_persona.id_actaconteo_persona WHERE cob_actaconteo_persona_facturacion.id_actaconteo_persona_facturacion = cob_actaconteo_persona.id_actaconteo_persona_facturacion AND cob_actaconteo_persona.recorrido = 1 AND cob_actaconteo_persona.id_periodo = $cob_periodo->id_periodo AND cob_actaconteo_persona_facturacion.id_periodo = $cob_periodo->id_periodo");
-        	$db->query("UPDATE cob_actaconteo_persona_facturacion, cob_actaconteo_persona SET cob_actaconteo_persona_facturacion.acta2 = cob_actaconteo_persona.id_actaconteo, cob_actaconteo_persona_facturacion.asistencia2 = cob_actaconteo_persona.asistencia, cob_actaconteo_persona_facturacion.id_actaconteo_persona2 = cob_actaconteo_persona.id_actaconteo_persona WHERE cob_actaconteo_persona_facturacion.id_actaconteo_persona_facturacion = cob_actaconteo_persona.id_actaconteo_persona_facturacion AND cob_actaconteo_persona.recorrido = 2 AND cob_actaconteo_persona.id_periodo = $cob_periodo->id_periodo AND cob_actaconteo_persona_facturacion.id_periodo = $cob_periodo->id_periodo");
+        	$db->query("UPDATE cob_actaconteo_persona_facturacion, cob_actaconteo_persona SET cob_actaconteo_persona_facturacion.acta2 = cob_actaconteo_persona.id_actaconteo, cob_actaconteo_persona_facturacion.asistencia2 = cob_actaconteo_persona.asistencia, cob_actaconteo_persona_facturacion.id_actaconteo_persona2 = cob_actaconteo_persona.id_actaconteo_persona WHERE cob_actaconteo_persona_facturacion.id_actaconteo_persona_facturacion = cob_actaconteo_persona.id_actaconteo_persona_facturacion AND cob_actaconteo_persona.recorrido = 2 AND cob_actaconteo_persona.id_periodo = $cob_periodo->id_periodo AND cob_actaconteo_persona_facturacion.id_periodo = $cob_periodo->id_periodo");        	
         }
         $db->query("DELETE FROM $tabla_mat WHERE fechaRetiro > 0000-00-00");
         $eliminar = CobActaconteoPersona::find(["id_periodo = $cob_periodo->id_periodo AND recorrido < $recorrido AND (asistencia = 1 OR asistencia = 7 OR asistencia = 9 OR asistencia = 10)"]);
@@ -201,9 +204,6 @@ class CobActaconteo extends \Phalcon\Mvc\Model
         	$db->query($sql);
         }
         $db->query("INSERT IGNORE INTO bc_contrato (id_contrato, id_oferente, id_modalidad) SELECT id_contrato, id_oferente, id_modalidad FROM $tabla_mat");
-        if($cob_periodo->tipo == 4){
-        	$db->query("UPDATE $tabla_mat SET id_sede_contrato = CONCAT_WS('',codigoHCB,id_contrato), id_sede = codigoHCB, sede_nombre = nombreHCB, sede_direccion = direccionHCB, sede_barrio = comunaCorregimientoHCB, sede_telefono = NULL WHERE 1");
-        }
         $db->query("INSERT IGNORE INTO cob_actaconteo (id_periodo, id_carga, recorrido, id_sede_contrato, id_contrato, id_modalidad, modalidad_nombre, id_sede, sede_nombre, sede_barrio, sede_direccion, sede_telefono, id_oferente, oferente_nombre) SELECT $cob_periodo->id_periodo, $carga->id_carga, $recorrido, id_sede_contrato, id_contrato, id_modalidad, modalidad_nombre, id_sede, sede_nombre, sede_barrio, sede_direccion, sede_telefono, id_oferente, oferente_nombre FROM $tabla_mat");
         $db->query("REPLACE INTO bc_sede_contrato (id_sede_contrato, id_oferente, oferente_nombre, id_contrato, id_sede, sede_nombre, sede_barrio, sede_direccion, sede_telefono, id_modalidad, modalidad_nombre, estado) SELECT id_sede_contrato, id_oferente, oferente_nombre, id_contrato, id_sede, sede_nombre, sede_barrio, sede_direccion, sede_telefono, id_modalidad, modalidad_nombre, '1' FROM $tabla_mat");
         $db->query("INSERT IGNORE INTO cob_actaconteo_persona (id_actaconteo, id_periodo, recorrido, id_contrato, id_persona, numDocumento, primerNombre, segundoNombre, primerApellido, segundoApellido, id_grupo, grupo) SELECT (SELECT id_actaconteo FROM cob_actaconteo WHERE cob_actaconteo.id_sede_contrato = $tabla_mat.id_sede_contrato AND cob_actaconteo.id_periodo = $cob_periodo->id_periodo AND cob_actaconteo.recorrido = $recorrido), $cob_periodo->id_periodo, $recorrido, id_contrato, id_persona, numDocumento, primerNombre, segundoNombre, primerApellido, segundoApellido, id_grupo, grupo FROM $tabla_mat");
@@ -242,7 +242,9 @@ class CobActaconteo extends \Phalcon\Mvc\Model
         //Fin generar actas PP
     	
     	$db->query("DELETE FROM $tabla_mat WHERE id_modalidad NOT IN ($modalidades)");
-    	
+    	if($cob_periodo->tipo == 4){
+    		$db->query("UPDATE $tabla_mat SET id_sede_contrato = CONCAT_WS('',codigoHCB,id_contrato), id_sede = codigoHCB, sede_nombre = nombreHCB, sede_direccion = direccionHCB, sede_barrio = comunaCorregimientoHCB, sede_telefono = NULL WHERE 1");
+    	}
     	if($facturacion == 1){
     		$db->query("UPDATE $tabla_mat SET fechaRetiro = NULL WHERE fechaRetiro > '$cob_periodo->fecha'");
     		$db->query("DELETE FROM $tabla_mat WHERE fechaRetiro > 0000-00-00 AND DATE_SUB('$cob_periodo->fecha', INTERVAL 30 DAY) > fechaRetiro OR '$cob_periodo->fecha' < fechaRetiro");
@@ -258,9 +260,6 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     	}
     	$db->query("DELETE FROM $tabla_mat WHERE fechaRetiro > 0000-00-00");
     	$db->query("INSERT IGNORE INTO bc_contrato (id_contrato, id_oferente, id_modalidad) SELECT id_contrato, id_oferente, id_modalidad FROM $tabla_mat");
-    	if($cob_periodo->tipo == 4){
-    		$db->query("UPDATE $tabla_mat SET id_sede_contrato = CONCAT_WS('',codigoHCB,id_contrato), id_sede = codigoHCB, sede_nombre = nombreHCB, sede_direccion = direccionHCB, sede_barrio = comunaCorregimientoHCB, sede_telefono = NULL WHERE 1");
-    	}
     	$db->query("REPLACE INTO bc_sede_contrato (id_sede_contrato, id_oferente, oferente_nombre, id_contrato, id_sede, sede_nombre, sede_barrio, sede_direccion, sede_telefono, id_modalidad, modalidad_nombre, estado) SELECT id_sede_contrato, id_oferente, oferente_nombre, id_contrato, id_sede, sede_nombre, sede_barrio, sede_direccion, sede_telefono, id_modalidad, modalidad_nombre, '1' FROM $tabla_mat");
     	$db->query("INSERT IGNORE INTO cob_actaconteo (id_periodo, id_carga, recorrido, id_sede_contrato, id_contrato, id_modalidad, modalidad_nombre, id_sede, sede_nombre, sede_barrio, sede_direccion, sede_telefono, id_oferente, oferente_nombre) SELECT $cob_periodo->id_periodo, $carga->id_carga, '1', id_sede_contrato, id_contrato, id_modalidad, modalidad_nombre, id_sede, sede_nombre, sede_barrio, sede_direccion, sede_telefono, id_oferente, oferente_nombre FROM $tabla_mat");
     	$db->query("INSERT IGNORE INTO cob_actaconteo_persona (id_actaconteo, id_periodo, recorrido, id_contrato, id_persona, numDocumento, primerNombre, segundoNombre, primerApellido, segundoApellido, id_grupo, grupo) SELECT (SELECT id_actaconteo FROM cob_actaconteo WHERE cob_actaconteo.id_sede_contrato = $tabla_mat.id_sede_contrato AND cob_actaconteo.id_periodo = $cob_periodo->id_periodo AND cob_actaconteo.recorrido = 1), $cob_periodo->id_periodo, 1, id_contrato, id_persona, numDocumento, primerNombre, segundoNombre, primerApellido, segundoApellido, id_grupo, grupo FROM $tabla_mat");
