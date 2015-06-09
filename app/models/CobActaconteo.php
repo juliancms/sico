@@ -339,7 +339,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     		<div class='fila col3 center'><div>Código: F-ITBC-GC-001</div><div></div><div></div></div>
     		<div class='fila col3e'>
     			<div>ACTA: <span style='font-weight: normal;'>$acta_id</span></div>
-    			<div class='col2da'>NÚMERO DE CONTRATO: <span style='font-weight: normal;'></span></div>
+    			<div class='col2da'>NÚMERO DE CONTRATO: <span style='font-weight: normal;'>$acta->id_contrato</span></div>
     			<div>MODALIDAD: <span style='font-weight: normal;'>$acta->modalidad_nombre</span></div>
     		</div>
     		<div class='fila col3e'>
