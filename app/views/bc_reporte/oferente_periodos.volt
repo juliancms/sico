@@ -7,7 +7,9 @@
     	 <tr>
             <th>Periodo</th>
             <th>Reporte Niño a Niño R1 y R2</th>
-            <th>Reporte Niño a Niño por Recorridos</th>
+            <th>Reporte Niño a Niño todos los Recorridos</th>
+            <th>Reporte Niño a Niño de Facturación</th>
+            <th>Reporte Niño a Niño de Ajustes</th>
          </tr>
     </thead>
     <tbody>
@@ -15,7 +17,9 @@
         <tr>
             <td>{{ periodo.CobPeriodo.getFechaDetail() }}</td>
             <td>{{ link_to("bc_reporte/beneficiarios_contratoparcial/"~periodo.id_periodo~"/"~contrato.id_contrato, '<i class="glyphicon glyphicon-file"></i> ', "rel": "tooltip", "title":"Reporte R1 y R2") }}</td>
-            <td>{{ link_to("bc_reporte/beneficiarios_contratofinal/"~periodo.id_periodo~"/"~contrato.id_contrato, '<i class="glyphicon glyphicon-file"></i> ', "rel": "tooltip", "title":"Reporte Final") }}</td>
+            <td>{{ link_to("bc_reporte/beneficiarios_contratofinal/"~periodo.id_periodo~"/"~contrato.id_contrato, '<i class="glyphicon glyphicon-file"></i> ', "rel": "tooltip", "title":"Reporte Recorridos") }}</td>
+            <td>{{ link_to("bc_reporte/beneficiarios_contratofacturacion/"~periodo.id_periodo~"/"~contrato.id_contrato, '<i class="glyphicon glyphicon-file"></i> ', "rel": "tooltip", "title":"Reporte Facturación") }}</td>
+            <td>{{ link_to("bc_reporte/beneficiarios_contratoajustes/"~periodo.id_periodo~"/"~contrato.id_contrato, '<i class="glyphicon glyphicon-file"></i> ', "rel": "tooltip", "title":"Reporte Ajustes") }}</td>
         </tr>
     {% endfor %}
     </tbody>

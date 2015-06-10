@@ -25,8 +25,10 @@
     {% for contrato in cob_ajuste %}
     	<?php $cuposTotal = $contrato->CobActaconteoPersonaFacturacion->CobPeriodoContratosedecupos->cuposTotal; ?>
     	<?php $cuposSIBCcontrato = $contrato->CobActaconteoPersonaFacturacion->countBeneficiarioscontrato($contrato->id_contrato, $contrato->id_periodo); ?>
-    	<?php $cuposCertificados = $contrato->CobActaconteoPersonaFacturacion->getCertificarContrato($contrato->id_contrato, $contrato->id_periodo); ?>
+    	<?php $cuposCertificadosFacturacion = $contrato->CobActaconteoPersonaFacturacion->getCertificarContrato($contrato->id_contrato, $contrato->id_periodo); ?>
     	<?php $totalajuste = $contrato->totalAjustecontrato($contrato->id_ajuste_reportado, $contrato->id_periodo, $contrato->id_contrato); ?>
+    	<?php $totalajusteanterior = $contrato->totalAjusteanteriorcontrato($contrato->fecha_ajuste_reportado, $contrato->id_periodo, $contrato->id_contrato); ?>
+    	<?php $cuposCertificados = $cuposCertificadosFacturacion + ($totalajusteanterior['total']); ?>
     	<?php $edades = $contrato->getEdadesContrato($contrato->id_ajuste_reportado, $contrato->id_periodo, $contrato->id_contrato); ?>
         <tr>
             <td>{{ contrato.CobPeriodo.getFechaDetail() }}</td>
@@ -41,7 +43,7 @@
             <td>{{ totalajuste['total'] }}</td>
             <td>{{ totalajuste['pagos'] }}</td>
             <td>{% if (totalajuste['descuentos'] > 0) %}-{% endif %}{{ totalajuste['descuentos'] }}</td>
-	    	<td><?php echo ($cuposCertificados - ($totalajuste['total'])) + $totalajuste['total']; ?></td>
+	    	<td><?php echo $cuposCertificados + ($totalajuste['total']); ?></td>
 	    	<td>{{ edades['menor2'] }}</td>
             <td>{{ edades['mayorigual2menor4'] }}</td>
             <td>{{ edades['mayorigual4menor6'] }}</td>

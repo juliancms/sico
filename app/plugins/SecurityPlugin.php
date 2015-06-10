@@ -225,6 +225,8 @@ class SecurityPlugin extends Plugin
     				'nivelPermiso' => '2'
     		),'asignar' => array(
     				'nivelPermiso' => '1'
+    		),'asignarperiodo' => array(
+    				'nivelPermiso' => '1'
     		),'nuevafechareporte' => array(
     				'nivelPermiso' => '1'
     		),'reportes' => array(
@@ -233,6 +235,8 @@ class SecurityPlugin extends Plugin
     				'nivelPermiso' => '1'
     		),'reportecontratos' => array(
     				'nivelPermiso' => '1'
+    		),'reportebeneficiarioscontrato' => array(
+    				'nivelPermiso' => '4'
     		)
     	),
     	'ibc_archivo_digital' => array(
@@ -269,6 +273,9 @@ class SecurityPlugin extends Plugin
     		'oferente_contratos' => array(
     				'nivelPermiso' => '4'
     		),
+    		'oferentes_contratos' => array(
+    				'nivelPermiso' => '1'
+    		),
     		'oferente_periodos' => array(
     				'nivelPermiso' => '4'
     		),
@@ -276,6 +283,12 @@ class SecurityPlugin extends Plugin
     				'nivelPermiso' => '4'
     		),
     		'beneficiarios_contratofinal' => array(
+    				'nivelPermiso' => '4'
+    		),
+    		'beneficiarios_contratofacturacion' => array(
+    				'nivelPermiso' => '4'
+    		),
+    		'beneficiarios_contratoajustes' => array(
     				'nivelPermiso' => '4'
     		)
     	),

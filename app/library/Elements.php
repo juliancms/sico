@@ -91,6 +91,10 @@ class Elements extends Component
         	'ibc_usuario' => array(
         		'caption' => 'Usuarios',
         		'action' => 'index'
+        	),
+        	'bc_reporte' => array(
+        		'caption' => 'Reportes Prestadores',
+        		'action' => 'oferentes_contratos'
         	)
     );
     

@@ -81,7 +81,7 @@ class BcReporteController extends ControllerBase
     }
     
     /**
-     * Reporte general de Cobertura de Sedes
+     * Reporte general de Cobertura de Sedes (niño a niño R1 y R2)
      */
     public function beneficiarios_contratoparcialAction($id_periodo, $id_contrato)
     {
@@ -110,7 +110,7 @@ class BcReporteController extends ControllerBase
     }
     
     /**
-     * Reporte general de Cobertura de Sedes
+     * Reporte general de Cobertura de Sedes (niño a niño Final)
      */
     public function beneficiarios_contratofinalAction($id_periodo, $id_contrato)
     {
@@ -137,6 +137,63 @@ class BcReporteController extends ControllerBase
     	$this->view->beneficiarios = $reporte_contrato;
     	$this->view->contrato = $reporte_contrato[0];
     }
+    
+    /**
+     * Reporte general de Cobertura de Sedes (niño a niño Facturación)
+     */
+    public function beneficiarios_contratofacturacionAction($id_periodo, $id_contrato)
+    {
+    	$cob_periodo = CobPeriodo::findFirstByid_periodo($id_periodo);
+    	if (!$cob_periodo) {
+    		$this->flash->error("El periodo no fue encontrado");
+    		return $this->response->redirect("bc_reporte/oferente_contratos");
+    	}
+    	if($cob_periodo->fechaCierre == NULL || $cob_periodo->fechaCierre == "0000-00-00"){
+    		$this->flash->error("La base de datos de facturación no ha sido cargada o el periodo no ha sido cerrado.");
+    		return $this->response->redirect("bc_reporte/oferente_periodos/$id_contrato");
+    	}
+    	if($cob_periodo->fecha < "2015-05-01"){
+    		$this->flash->error("El reporte para este periodo se encuentra en el menú 'Archivo Digital' del sitio web de la Interventoría Buen Comiecnzo.");
+    		return $this->response->redirect("bc_reporte/oferente_periodos/$id_contrato");
+    	}
+    	$this->assets
+    	->addJs('js/jquery.tablesorter.min.js')
+    	->addJs('js/jquery.tablesorter.widgets.js')
+    	->addJs('js/multifilter.min.js')
+    	->addJs('js/reporte.js');
+    	$reporte_contrato = CobActaconteoPersonaFacturacion::find(array("id_periodo = $id_periodo AND id_contrato = $id_contrato"));
+    	$this->view->periodo = $cob_periodo;
+    	$this->view->beneficiarios = $reporte_contrato;
+    	$this->view->contrato = $reporte_contrato[0];
+    }
+    
+    /**
+     * Reporte general de Cobertura de Sedes (niño a niño Facturación)
+     */
+    public function beneficiarios_contratoajustesAction($id_periodo, $id_contrato)
+    {
+    	$cob_periodo = CobPeriodo::findFirstByid_periodo($id_periodo);
+    	if (!$cob_periodo) {
+    		$this->flash->error("El periodo no fue encontrado");
+    		return $this->response->redirect("bc_reporte/oferente_contratos");
+    	}
+    	if($cob_periodo->fechaCierre == NULL || $cob_periodo->fechaCierre == "0000-00-00"){
+    		$this->flash->error("La base de datos de facturación no ha sido cargada o el periodo no ha sido cerrado.");
+    		return $this->response->redirect("bc_reporte/oferente_periodos/$id_contrato");
+    	}
+    	if($cob_periodo->fecha < "2015-05-01"){
+    		$this->flash->error("El reporte para este periodo se encuentra en el menú 'Archivo Digital' del sitio web de la Interventoría Buen Comienzo.");
+    		return $this->response->redirect("bc_reporte/oferente_periodos/$id_contrato");
+    	}
+    	$reporte_contrato = CobAjuste::find(array("id_periodo = $id_periodo AND id_contrato = $id_contrato", "group" => "fecha_ajuste_reportado"));
+    	if(count($reporte_contrato) == 0){
+    		$this->flash->error("No existen ajustes para este contrato.");
+    		return $this->response->redirect("bc_reporte/oferente_periodos/$id_contrato");
+    	}
+    	$this->view->periodo = $cob_periodo;
+    	$this->view->ajustes = $reporte_contrato;
+    	$this->view->contrato = $reporte_contrato[0]->CobActaconteo;
+    }
       
     /**
      * Reporte index oferente
@@ -150,7 +207,20 @@ class BcReporteController extends ControllerBase
     	}
     	$contratos = BcSedeContrato::find(array("id_oferente = $oferente->id_oferente", "group" => "id_contrato" ));
     	if (!$contratos) {
-    		$this->flash->error("El periodo no fue encontrado");
+    		$this->flash->error("No se encontraron contratos");
+    		return $this->response->redirect("/");
+    	}
+    	$this->view->contratos = $contratos;
+    }
+    
+    /**
+     * Reporte index oferentes
+     */
+    public function oferentes_contratosAction()
+    {
+    	$contratos = BcSedeContrato::find(array("group" => "id_contrato", "order" => "id_oferente ASC"));
+    	if (!$contratos) {
+    		$this->flash->error("No se encontraron contratos");
     		return $this->response->redirect("/");
     	}
     	$this->view->contratos = $contratos;
@@ -161,12 +231,16 @@ class BcReporteController extends ControllerBase
      */
     public function oferente_periodosAction($id_contrato)
     {
-    	$oferente = IbcUsuarioOferente::findFirstByid_usuario($this->id_usuario);
-    	if(!$oferente){
-    		$this->flash->error("Este usuario no fue encontrado en la base de datos de prestadores.");
-    		return $this->response->redirect("/");
+    	if($this->user['nivel'] > 1){
+    		$oferente = IbcUsuarioOferente::findFirstByid_usuario($this->id_usuario);
+    		if(!$oferente){
+    			$this->flash->error("Este usuario no fue encontrado en la base de datos de prestadores.");
+    			return $this->response->redirect("/");
+    		}
+    		$periodos = CobActaconteo::find(array("id_contrato = $id_contrato AND id_oferente = $oferente->id_oferente", "group" => "id_periodo"));
+    	} else {
+    		$periodos = CobActaconteo::find(array("id_contrato = $id_contrato", "group" => "id_periodo"));
     	}
-    	$periodos = CobActaconteo::find(array("id_contrato = $id_contrato AND id_oferente = $oferente->id_oferente", "group" => "id_periodo"));
     	if (!$periodos) {
     		$this->flash->error("No se han encontrado periodos para este contrato.");
     		return $this->response->redirect("bc_reporte/oferente_contratos");

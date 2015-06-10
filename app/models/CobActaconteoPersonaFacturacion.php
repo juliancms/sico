@@ -175,19 +175,25 @@ class CobActaconteoPersonaFacturacion extends \Phalcon\Mvc\Model
      *
      * @var integer
      */
-    public $certificacionFija;
+    public $certificacionRecorridos;
     
     /**
      *
      * @var integer
      */
-    public $asistenciaFinal;
+    public $asistenciaFinalFacturacion;
     
     /**
      *
      * @var integer
      */
-    public $certificacion;
+    public $certificacionFacturacion;
+    
+    /**
+     *
+     * @var integer
+     */
+    public $certificacionLiquidacion;
     
     /**
      *
@@ -277,14 +283,34 @@ class CobActaconteoPersonaFacturacion extends \Phalcon\Mvc\Model
      *
      * @return string
      */
-    public function getCertificacionFinalFija()
+    public function getCertificacionRecorridos()
     {
-    	if($this->certificacionFija == 0){
+    	if($this->certificacionRecorridos == 0){
     		return "PENDIENTE DE CERTIFICACIÓN";
-    	} else if($this->certificacionFija == 1) {
+    	} else if($this->certificacionRecorridos == 1) {
     		return "CERTIFICAR ATENCIÓN";
     	} else {
     		return "NO CERTIFICAR ATENCIÓN";
+    	}
+    }
+    
+    /**
+     * Certificación recorrido 2
+     *
+     * @return string
+     */
+    public function getCertificacionFacturacion()
+    {
+    	if($this->certificacionFacturacion == 0){
+    		return "PENDIENTE DE CERTIFICACIÓN";
+    	} else if($this->certificacionFacturacion == 1) {
+    		return "CERTIFICAR ATENCIÓN";
+    	} else if($this->certificacionFacturacion == 2) {
+    		return "NO CERTIFICAR ATENCIÓN";
+    	} else if($this->certificacionFacturacion == 3) {
+    		return "NO CERTIFICAR ATENCIÓN POR DESCUENTO";
+    	} else if($this->certificacionFacturacion == 4) {
+    		return "CERTIFICAR ATENCIÓN POR AJUSTE";
     	}
     }
     
@@ -337,18 +363,21 @@ class CobActaconteoPersonaFacturacion extends \Phalcon\Mvc\Model
      */
     public function getEstadoDetail()
     {
-    	switch ($this->certificacion) {
+    	switch ($this->certificacionFacturacion) {
     		case 0:
-    			return "Pendiente de Certificación (0)";
+    			return "Pendiente de Certificación";
     			break;
     		case 1:
-    			return "Certificar atención (1)";
+    			return "Certificar atención";
     			break;
     		case 2:
-    			return "No certificar atención (2)";
+    			return "No certificar atención";
     			break;
     		case 3:
-    			return "Descontar atención (3)";
+    			return "No certificar atención por ajuste";
+    			break;
+    		case 4:
+    			return "Certificar atención por ajuste";
     			break;
     	}
     }
@@ -400,7 +429,7 @@ class CobActaconteoPersonaFacturacion extends \Phalcon\Mvc\Model
      */
     public function countBeneficiarioscertcontrato($id_contrato, $id_periodo)
     {
-    	return CobActaconteoPersonaFacturacion::count("id_periodo = $id_periodo AND id_contrato = $id_contrato AND certificacion = 1");
+    	return CobActaconteoPersonaFacturacion::count("id_periodo = $id_periodo AND id_contrato = $id_contrato AND (certificacionFacturacion = 1 OR certificacionFacturacion = 4)");
     }
     
     /**
@@ -410,7 +439,7 @@ class CobActaconteoPersonaFacturacion extends \Phalcon\Mvc\Model
      */
     public function getEdadesContrato($id_contrato, $id_periodo)
     {
-    	$ninos = CobActaconteoPersonaFacturacion::find("id_periodo = $id_periodo AND id_contrato = $id_contrato AND certificacion = 1");
+    	$ninos = CobActaconteoPersonaFacturacion::find("id_periodo = $id_periodo AND id_contrato = $id_contrato AND (certificacionFacturacion = 1 OR certificacionFacturacion = 4)");
     	$menor2 = 0;
     	$mayorigual2menor4 = 0;
     	$mayorigual4menor6 = 0;
@@ -439,7 +468,7 @@ class CobActaconteoPersonaFacturacion extends \Phalcon\Mvc\Model
      */
     public function getEdadesSede($id_sede_contrato, $id_periodo)
     {
-    	$ninos = CobActaconteoPersonaFacturacion::find("id_periodo = $id_periodo AND id_sede_contrato = $id_sede_contrato AND certificacion = 1");
+    	$ninos = CobActaconteoPersonaFacturacion::find("id_periodo = $id_periodo AND id_sede_contrato = $id_sede_contrato AND (certificacionFacturacion = 1 OR certificacionFacturacion = 4)");
     	$menor2 = 0;
     	$mayorigual2menor4 = 0;
     	$mayorigual4menor6 = 0;
@@ -463,37 +492,37 @@ class CobActaconteoPersonaFacturacion extends \Phalcon\Mvc\Model
     
     public function getCertificarSede($id_sede_contrato, $id_periodo)
     {
-    	$ninos = CobActaconteoPersonaFacturacion::count("id_periodo = $id_periodo AND id_sede_contrato = $id_sede_contrato AND certificacion = 1");
+    	$ninos = CobActaconteoPersonaFacturacion::count("id_periodo = $id_periodo AND id_sede_contrato = $id_sede_contrato AND (certificacionFacturacion = 1 OR certificacionFacturacion = 4)");
     	return $ninos;
     }
     
     public function getCertificar4UPASede($id_sede_contrato, $id_periodo)
     {
-    	$ninos = CobActaconteoPersonaFacturacion::count("id_periodo = $id_periodo AND id_sede_contrato = $id_sede_contrato AND certificacion = 1 AND cuartoupaJI = 1");
+    	$ninos = CobActaconteoPersonaFacturacion::count("id_periodo = $id_periodo AND id_sede_contrato = $id_sede_contrato AND (certificacionFacturacion = 1 OR certificacionFacturacion = 4) AND cuartoupaJI = 1");
     	return $ninos;
     }
     
     public function getCertificarno4UPASede($id_sede_contrato, $id_periodo)
     {
-    	$ninos = CobActaconteoPersonaFacturacion::count("id_periodo = $id_periodo AND id_sede_contrato = $id_sede_contrato AND certificacion = 1 AND cuartoupaJI = 0");
+    	$ninos = CobActaconteoPersonaFacturacion::count("id_periodo = $id_periodo AND id_sede_contrato = $id_sede_contrato AND (certificacionFacturacion = 1 OR certificacionFacturacion = 4) AND cuartoupaJI = 0");
     	return $ninos;
     }
     
     public function getCertificarContrato($id_contrato, $id_periodo)
     {
-    	$ninos = CobActaconteoPersonaFacturacion::find("id_periodo = $id_periodo AND id_contrato = $id_contrato AND certificacion = 1");
+    	$ninos = CobActaconteoPersonaFacturacion::find("id_periodo = $id_periodo AND id_contrato = $id_contrato AND (certificacionFacturacion = 1 OR certificacionFacturacion = 4)");
     	return count($ninos);
     }
     
     public function getCertificar4UPAContrato($id_contrato, $id_periodo)
     {
-    	$ninos = CobActaconteoPersonaFacturacion::find("id_periodo = $id_periodo AND id_contrato = $id_contrato AND certificacion = 1 AND cuartoupaJI = 1");
+    	$ninos = CobActaconteoPersonaFacturacion::find("id_periodo = $id_periodo AND id_contrato = $id_contrato AND (certificacionFacturacion = 1 OR certificacionFacturacion = 4) AND cuartoupaJI = 1");
     	return count($ninos);
     }
     
     public function getCertificarno4UPAContrato($id_contrato, $id_periodo)
     {
-    	$ninos = CobActaconteoPersonaFacturacion::find("id_periodo = $id_periodo AND id_contrato = $id_contrato AND certificacion = 1 AND cuartoupaJI = 0");
+    	$ninos = CobActaconteoPersonaFacturacion::find("id_periodo = $id_periodo AND id_contrato = $id_contrato AND (certificacionFacturacion = 1 OR certificacionFacturacion = 4) AND cuartoupaJI = 0");
     	return count($ninos);
     }
     
@@ -504,14 +533,14 @@ class CobActaconteoPersonaFacturacion extends \Phalcon\Mvc\Model
      */
     public function getAsistenciaSede($id_sede_contrato, $id_periodo)
     {
-    	$asiste1 = CobActaconteoPersonaFacturacion::count("id_periodo = $id_periodo AND id_sede_contrato = $id_sede_contrato AND asistenciaFinal = 1");
-    	$asiste4 = CobActaconteoPersonaFacturacion::count("id_periodo = $id_periodo AND id_sede_contrato = $id_sede_contrato AND asistenciaFinal = 4");
-    	$asiste5 = CobActaconteoPersonaFacturacion::count("id_periodo = $id_periodo AND id_sede_contrato = $id_sede_contrato AND asistenciaFinal = 5");
-    	$asiste6 = CobActaconteoPersonaFacturacion::count("id_periodo = $id_periodo AND id_sede_contrato = $id_sede_contrato AND asistenciaFinal = 6");
-    	$asiste7 = CobActaconteoPersonaFacturacion::count("id_periodo = $id_periodo AND id_sede_contrato = $id_sede_contrato AND asistenciaFinal = 7");
-    	$asiste8 = CobActaconteoPersonaFacturacion::count("id_periodo = $id_periodo AND id_sede_contrato = $id_sede_contrato AND asistenciaFinal = 8");
-    	$asiste10 = CobActaconteoPersonaFacturacion::count("id_periodo = $id_periodo AND id_sede_contrato = $id_sede_contrato AND asistenciaFinal = 10");
-    	$asiste11 = CobActaconteoPersonaFacturacion::count("id_periodo = $id_periodo AND id_sede_contrato = $id_sede_contrato AND asistenciaFinal = 11");
+    	$asiste1 = CobActaconteoPersonaFacturacion::count("id_periodo = $id_periodo AND id_sede_contrato = $id_sede_contrato AND asistenciaFinalFacturacion = 1");
+    	$asiste4 = CobActaconteoPersonaFacturacion::count("id_periodo = $id_periodo AND id_sede_contrato = $id_sede_contrato AND asistenciaFinalFacturacion = 4");
+    	$asiste5 = CobActaconteoPersonaFacturacion::count("id_periodo = $id_periodo AND id_sede_contrato = $id_sede_contrato AND asistenciaFinalFacturacion = 5");
+    	$asiste6 = CobActaconteoPersonaFacturacion::count("id_periodo = $id_periodo AND id_sede_contrato = $id_sede_contrato AND asistenciaFinalFacturacion = 6");
+    	$asiste7 = CobActaconteoPersonaFacturacion::count("id_periodo = $id_periodo AND id_sede_contrato = $id_sede_contrato AND asistenciaFinalFacturacion = 7");
+    	$asiste8 = CobActaconteoPersonaFacturacion::count("id_periodo = $id_periodo AND id_sede_contrato = $id_sede_contrato AND asistenciaFinalFacturacion = 8");
+    	$asiste10 = CobActaconteoPersonaFacturacion::count("id_periodo = $id_periodo AND id_sede_contrato = $id_sede_contrato AND asistenciaFinalFacturacion = 10");
+    	$asiste11 = CobActaconteoPersonaFacturacion::count("id_periodo = $id_periodo AND id_sede_contrato = $id_sede_contrato AND asistenciaFinalFacturacion = 11");
     	return array("asiste1" => $asiste1, "asiste4" => $asiste4, "asiste5" => $asiste5, "asiste6" => $asiste6, "asiste7" => $asiste7, "asiste8" => $asiste8, "asiste10" => $asiste10, "asiste11" => $asiste11);
     }
 }

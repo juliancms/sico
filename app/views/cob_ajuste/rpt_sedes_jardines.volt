@@ -31,8 +31,10 @@
     	<?php $cuposTotal = $sede->CobActaconteoPersonaFacturacion->CobPeriodoContratosedecupos->cuposTotal; ?>
     	<?php $cuposSIBCcontrato = $sede->CobActaconteoPersonaFacturacion->countBeneficiarioscontrato($sede->id_contrato, $sede->id_periodo); ?>
     	<?php $cuposSIBCsede = $sede->CobActaconteoPersonaFacturacion->countBeneficiariossede($sede->CobActaconteoPersonaFacturacion->id_sede, $sede->id_periodo); ?>
-		<?php $cuposCertificados = $sede->CobActaconteoPersonaFacturacion->getCertificarSede($sede->id_sede_contrato, $sede->id_periodo); ?>
+		<?php $cuposCertificadosFacturacion = $sede->CobActaconteoPersonaFacturacion->getCertificarSede($sede->id_sede_contrato, $sede->id_periodo); ?>
     	<?php $totalajuste = $sede->totalAjustesede($sede->id_ajuste_reportado, $sede->id_periodo, $sede->id_sede_contrato); ?>
+    	<?php $totalajusteanterior = $sede->totalAjusteanteriorsede($sede->fecha_ajuste_reportado, $sede->id_periodo, $sede->id_sede_contrato); ?>
+    	<?php $cuposCertificados = $cuposCertificadosFacturacion + ($totalajusteanterior['total']); ?>
     	<?php $edades = $sede->getEdadesSede($sede->id_ajuste_reportado, $sede->id_periodo, $sede->id_sede_contrato); ?>
         <tr>
             <td>{{ sede.CobPeriodo.getFechaDetail() }}</td>
@@ -50,7 +52,7 @@
             <td>{{ totalajuste['total'] }}</td>
             <td>{{ totalajuste['pagos'] }}</td>
             <td>{% if (totalajuste['descuentos'] > 0) %}-{% endif %}{{ totalajuste['descuentos'] }}</td>
-	    	<td><?php echo ($cuposCertificados - ($totalajuste['total'])) + $totalajuste['total']; ?></td>
+	    	<td><?php echo $cuposCertificados + ($totalajuste['total']); ?></td>
 	    	<td>{{ edades['menor2'] }}</td>
             <td>{{ edades['mayorigual2menor4'] }}</td>
             <td>{{ edades['mayorigual4menor6'] }}</td>

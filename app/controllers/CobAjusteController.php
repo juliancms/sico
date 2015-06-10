@@ -51,8 +51,20 @@ class CobAjusteController extends ControllerBase
     	$this->assets
     	->addJs('js/parsley.min.js')
     	->addJs('js/parsley.extend.js');
-    	$this->view->ajustes = CobAjuste::find(["id_ajuste_reportado IS NULL", 'order' => 'datetime DESC']);
+    	$this->view->ajustes = CobAjuste::find(["id_ajuste_reportado IS NULL AND ajusteDentroPeriodo = 0", 'order' => 'datetime DESC']);
     	$this->view->fechas = CobAjusteReportado::find(["estado = 1", 'order' => 'fecha DESC']);
+    }
+    
+    /**
+     * Formulario para agregar ajustes a un periodo antes de la fecha de facturación
+     */
+    public function asignarperiodoAction()
+    {
+    	$this->persistent->parameters = null;
+    	$this->assets
+    	->addJs('js/parsley.min.js')
+    	->addJs('js/parsley.extend.js');
+    	$this->view->ajustes = CobAjuste::find(["id_ajuste_reportado IS NULL AND (certificar = 3 OR certificar = 4)", 'order' => 'datetime DESC']);    	
     }
     
     /**
@@ -210,6 +222,22 @@ class CobAjusteController extends ControllerBase
     		$this->view->setTemplateAfter('../cob_ajuste/rpt_contratos_jardines');
     	}
     }
+    
+    /**
+     * Reportes contratos de los ajustes
+     */
+    public function reportebeneficiarioscontratoAction($id_ajuste_reportado, $id_periodo, $id_contrato)
+    {
+    	$cob_ajuste = CobAjuste::find(array("id_ajuste_reportado = $id_ajuste_reportado AND id_periodo = $id_periodo AND id_contrato = $id_contrato AND (certificar = 3 OR certificar = 4)"));
+    	if (count($cob_ajuste) == 0) {
+    		$this->flash->error("No se encontraron ajustes con esta fecha de reporte");
+    		return $this->response->redirect("bc_reporte/beneficiarios_contratoajustes/$id_periodo/$id_contrato");
+    	}
+    	$this->view->cob_ajuste = $cob_ajuste;
+    	$this->view->fecha = $cob_ajuste[0]->fecha_ajuste_reportado;
+    	$this->view->contrato = $cob_ajuste[0]->CobActaconteo;
+    	$this->view->periodo = $cob_ajuste[0]->CobPeriodo;
+    }
 
     /**
      * Formulario para creación
@@ -249,16 +277,18 @@ class CobAjusteController extends ControllerBase
     }
     
     /**
-     * Guardar ajuste
+     * Guardar asignación de ajustes a fecha
      */
     public function guardarasignarAction()
     {
     	if (!$this->request->isPost()) {
     		return $this->response->redirect("cob_ajuste/asignar");
     	}
+    	$fecha = explode("-", $this->request->getPost("fechaReportado"));
     	$elementos = array(
     			'id_ajuste' => $this->request->getPost("id_ajuste"),
-    			'id_ajuste_reportado' => $this->request->getPost("fechaReportado")
+    			'id_ajuste_reportado' => $fecha[0],
+    			'fecha_ajuste_reportado' => $fecha[1]
     	);
     	$sql = $this->conversiones->multipleupdate("cob_ajuste", $elementos, "id_ajuste");
     	$db = $this->getDI()->getDb();
@@ -270,6 +300,46 @@ class CobAjusteController extends ControllerBase
     		return $this->response->redirect("cob_ajuste/asignar");
     	}
     	$this->flash->success("Las fechas de reporte han sido actualizadas correctamente");
+    	return $this->response->redirect("cob_ajuste");
+    }
+    
+    /**
+     * Guardar asignación de ajustes a periodo
+     */
+    public function guardarasignarperiodoAction()
+    {
+    	if (!$this->request->isPost()) {
+    		return $this->response->redirect("cob_ajuste/asignar");
+    	}
+    	$elementos = array(
+    			'id_ajuste' => $this->request->getPost("id_ajuste"),
+    			'fecha_ajuste_reportado' => $this->request->getPost("fecha_ajuste_reportado"),
+    			'ajusteDentroPeriodo' => 1
+    	);
+    	$sql = $this->conversiones->multipleupdate("cob_ajuste", $elementos, "id_ajuste");
+    	$db = $this->getDI()->getDb();
+    	$query = $db->query($sql);
+    	if (!$query) {
+    		foreach ($query->getMessages() as $message) {
+    			$this->flash->error($message);
+    		}
+    		return $this->response->redirect("cob_ajuste/asignar");
+    	}
+    	$elementos = array(
+    			'id_actaconteo_persona_facturacion' => $this->request->getPost("id_actaconteo_persona_facturacion"),
+    			'certificacionFacturacion' => $this->request->getPost("certificar"),
+    			'asistenciaFinalFacturacion' => $this->request->getPost("asistenciaFinalFacturacion")
+    	);
+    	$sql = $this->conversiones->multipleupdate("cob_ajuste", $elementos, "id_actaconteo_persona_facturacion");
+    	$db = $this->getDI()->getDb();
+    	$query = $db->query($sql);
+    	if (!$query) {
+    		foreach ($query->getMessages() as $message) {
+    			$this->flash->error($message);
+    		}
+    		return $this->response->redirect("cob_ajuste/asignar");
+    	}
+    	$this->flash->success("Los ajustes han sido asignados al periodo correctamente");
     	return $this->response->redirect("cob_ajuste");
     }
     
@@ -309,25 +379,20 @@ class CobAjusteController extends ControllerBase
     		}
     		return $this->response->redirect("cob_ajuste/nuevo/$id_actaconteo_persona_facturacion");
     	}
-    	if($certificar != 4){
+    	if($certificar != 5){
     		$ninofac = CobActaconteoPersonaFacturacion::findFirstByid_actaconteo_persona_facturacion($id_actaconteo_persona_facturacion);
     		if (!$ninofac) {
     			$this->flash->error("El niño no existe en la base de datos de facturación pero sí se guardó el ajuste, favor informar esto al administrador inmediatamente");
     			return $this->response->redirect("cob_ajuste");
     		}
-    		$ninofac->certificacion = $certificar;
-    		if($certificar == 1){
-    			$ninofac->asistenciaFinal = 10;
-    		} else if($certificar == 3) {
-    			$ninofac->asistenciaFinal = 11;
-    		}
+    		$ninofac->certificacionLiquidacion = $certificar;
     		if (!$ninofac->save()) {
     			foreach ($ninofac->getMessages() as $message) {
     				$this->flash->error($message);
     			}
     			return $this->response->redirect("cob_ajuste");
     		}
-    	}    	
+    	}
     	$this->flash->success("El ajuste fue realizado exitosamente.");
     	return $this->response->redirect("cob_ajuste/buscar");
     }

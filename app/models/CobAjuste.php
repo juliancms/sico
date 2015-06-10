@@ -13,6 +13,12 @@ class CobAjuste extends \Phalcon\Mvc\Model
 	 * @var integer
 	 */
 	public $id_ajuste_reportado;
+	
+	/**
+	 *
+	 * @var integer
+	 */
+	public $ajusteDentroPeriodo;
 
     /**
      *
@@ -71,16 +77,35 @@ class CobAjuste extends \Phalcon\Mvc\Model
      */
     public function getCertificarDetail()
     {
+//     	if ($this->certificar == 0) {
+//     		return 'Pendiente de Certificación';
+//     	} else if($this->certificar == 1) {
+//     		return 'Certificar Atención del periodo por ajuste';
+//     	} else if($this->certificar == 3) {
+//     		return 'Descontar Atención del periodo por ajuste';
+//     	} else if($this->certificar == 4) {
+//     		return 'No afectar';
+//     	}
+    	
     	if ($this->certificar == 0) {
-    		return 'Pendiente de Certificación';
-    	} else if($this->certificar == 1) {
-    		return 'Certificar Atención del periodo por ajuste';
-    	} else if($this->certificar == 3) {
-    		return 'Descontar Atención del periodo por ajuste';
+    		return 'PENDIENTE DE CERTIFICACIÓN';
     	} else if($this->certificar == 4) {
-    		return 'No afectar';
+    		return 'CERTIFICAR ATENCIÓN DEL PERIODO POR AJUSTE';
+    	} else if($this->certificar == 3) {
+    		return 'DESCONTAR ATENCIÓN DEL PERIODO POR AJUSTE';
+    	} else if($this->certificar == 5) {
+    		return 'NO AFECTAR';
     	}
     	
+    }
+    
+    public function getAsistenciaFinalFacturacion()
+    {    	 
+    	if($this->certificar == 4) {
+    		return 10;
+    	} else if($this->certificar == 3) {
+    		return 11;
+    	}
     }
         
     /**
@@ -88,7 +113,7 @@ class CobAjuste extends \Phalcon\Mvc\Model
      */
     public function CertificarSelect()
     {
-    	return array("1" => "Certificar Atención del periodo por ajuste", "3" => "Descontar Atención del periodo por ajuste", "4" => "No afectar");
+    	return array("4" => "Certificar Atención del periodo por ajuste", "3" => "Descontar Atención del periodo por ajuste", "5" => "No afectar");
     }
     
     /**
@@ -98,8 +123,21 @@ class CobAjuste extends \Phalcon\Mvc\Model
      */
     public function totalAjustesede($id_ajuste_reportado, $id_periodo, $id_sede_contrato)
     {
-    	$pagos = CobAjuste::count("id_ajuste_reportado = $id_ajuste_reportado AND id_periodo = $id_periodo AND id_sede_contrato = $id_sede_contrato AND certificar = 1");
+    	$pagos = CobAjuste::count("id_ajuste_reportado = $id_ajuste_reportado AND id_periodo = $id_periodo AND id_sede_contrato = $id_sede_contrato AND certificar = 4");
     	$descuentos = CobAjuste::count("id_ajuste_reportado = $id_ajuste_reportado AND id_periodo = $id_periodo AND id_sede_contrato = $id_sede_contrato AND certificar = 3");
+    	$total = $pagos - $descuentos;
+    	return array("pagos" => $pagos, "descuentos" => $descuentos, "total" => $total );
+    }
+    
+    /**
+     * Total Ajuste Sede
+     *
+     * @return string
+     */
+    public function totalAjusteanteriorsede($fecha, $id_periodo, $id_sede_contrato)
+    {
+    	$pagos = CobAjuste::count("fecha_ajuste_reportado < $fecha AND id_periodo = $id_periodo AND id_sede_contrato = $id_sede_contrato AND certificar = 4");
+    	$descuentos = CobAjuste::count("fecha_ajuste_reportado < $fecha AND id_periodo = $id_periodo AND id_sede_contrato = $id_sede_contrato AND certificar = 3");
     	$total = $pagos - $descuentos;
     	return array("pagos" => $pagos, "descuentos" => $descuentos, "total" => $total );
     }
@@ -111,8 +149,21 @@ class CobAjuste extends \Phalcon\Mvc\Model
      */
     public function totalAjustecontrato($id_ajuste_reportado, $id_periodo, $id_contrato)
     {
-    	$pagos = CobAjuste::count("id_ajuste_reportado = $id_ajuste_reportado AND id_periodo = $id_periodo AND id_contrato = $id_contrato AND certificar = 1");
+    	$pagos = CobAjuste::count("id_ajuste_reportado = $id_ajuste_reportado AND id_periodo = $id_periodo AND id_contrato = $id_contrato AND certificar = 4");
     	$descuentos = CobAjuste::count("id_ajuste_reportado = $id_ajuste_reportado AND id_periodo = $id_periodo AND id_contrato = $id_contrato AND certificar = 3");
+    	$total = $pagos - $descuentos;
+    	return array("pagos" => $pagos, "descuentos" => $descuentos, "total" => $total );
+    }
+    
+    /**
+     * Total Ajuste Contrato
+     *
+     * @return string
+     */
+    public function totalAjusteanteriorcontrato($fecha, $id_periodo, $id_contrato)
+    {
+    	$pagos = CobAjuste::count("fecha_ajuste_reportado < $fecha AND id_periodo = $id_periodo AND id_contrato = $id_contrato AND certificar = 4");
+    	$descuentos = CobAjuste::count("fecha_ajuste_reportado < $fecha AND id_periodo = $id_periodo AND id_contrato = $id_contrato AND certificar = 3");
     	$total = $pagos - $descuentos;
     	return array("pagos" => $pagos, "descuentos" => $descuentos, "total" => $total );
     }
@@ -124,7 +175,7 @@ class CobAjuste extends \Phalcon\Mvc\Model
      */
     public function getEdadesSede($id_ajuste_reportado, $id_periodo, $id_sede_contrato)
     {
-    	$ninos = CobAjuste::find("id_ajuste_reportado = $id_ajuste_reportado AND id_periodo = $id_periodo AND id_sede_contrato = $id_sede_contrato AND certificar = 1");
+    	$ninos = CobAjuste::find("id_ajuste_reportado = $id_ajuste_reportado AND id_periodo = $id_periodo AND id_sede_contrato = $id_sede_contrato AND certificar = 4");
     	$menor2 = 0;
     	$mayorigual2menor4 = 0;
     	$mayorigual4menor6 = 0;
@@ -152,7 +203,7 @@ class CobAjuste extends \Phalcon\Mvc\Model
      */
     public function getEdadesContrato($id_ajuste_reportado, $id_periodo, $id_contrato)
     {
-    	$ninos = CobAjuste::find("id_ajuste_reportado = $id_ajuste_reportado AND id_periodo = $id_periodo AND id_contrato = $id_contrato AND certificar = 1");
+    	$ninos = CobAjuste::find("id_ajuste_reportado = $id_ajuste_reportado AND id_periodo = $id_periodo AND id_contrato = $id_contrato AND certificar = 4");
     	$menor2 = 0;
     	$mayorigual2menor4 = 0;
     	$mayorigual4menor6 = 0;
