@@ -67,7 +67,7 @@ class BcReporteController extends ControllerBase
     		$this->flash->error("El periodo no fue encontrado");
     		return $this->response->redirect("cob_periodo/");
     	}
-    	$reporte_sedes = CobActaconteoPersonaFacturacion::find(array("id_periodo = $id_periodo", "group" => "id_sede"));
+    	$reporte_sedes = CobActaconteoPersonaFacturacion::find(array("id_periodo = $id_periodo", "group" => "id_sede_contrato", "order" => "id_contrato ASC"));
     	$this->view->sedes = $reporte_sedes;
     	if($tipo == 1){
     		$this->view->setTemplateAfter('../bc_reporte/cob_sedes_general');
