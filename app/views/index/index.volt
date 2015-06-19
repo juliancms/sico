@@ -8,7 +8,7 @@
 	  </ol>
 	  <!-- Contenido de los slides -->
 	  <div class="carousel-inner" role="listbox">
-	    <div class="item">
+	    <div class="item active">
 	      {{ image("img/index/01.jpg", "alt": "Interventoría Buen Comienzo") }}
 	    </div>
 	    <div class="item">
