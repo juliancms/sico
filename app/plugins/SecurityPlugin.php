@@ -292,6 +292,29 @@ class SecurityPlugin extends Plugin
     				'nivelPermiso' => '4'
     		)
     	),
+    	'cob_visita' => array(
+    		'index' => array(
+    				'nivelPermiso' => '3'
+    		),
+    		'nuevo' => array(
+    				'nivelPermiso' => '1'
+    		),
+    		'ver' => array(
+    				'nivelPermiso' => '3'
+    		),
+    		'editar' => array(
+    				'nivelPermiso' => '1'
+    		),
+    		'crear' => array(
+    				'nivelPermiso' => '1'
+    		),
+    		'guardar' => array(
+    				'nivelPermiso' => '1'
+    		),
+    		'eliminar' => array(
+    				'nivelPermiso' => '1'
+    		)
+    	),
     );
 
     /**
