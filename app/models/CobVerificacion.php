@@ -1,13 +1,13 @@
 <?php
 use Phalcon\DI\FactoryDefault;
-class CobVisita extends \Phalcon\Mvc\Model
+class CobVerificacion extends \Phalcon\Mvc\Model
 {
 
     /**
      *
      * @var integer
      */
-    public $id_visita;
+    public $id_verificacion;
     
     /**
      *
@@ -52,4 +52,5 @@ class CobVisita extends \Phalcon\Mvc\Model
     		return 'Equipo de Cómputo';
     	}
     }
+    
 }

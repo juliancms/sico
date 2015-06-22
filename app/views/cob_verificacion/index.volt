@@ -1,10 +1,10 @@
 
 {{ content() }}
-<h1>Visitas</h1>
+<h1>Verificaciones</h1>
 {% if (nivel <= 1) %}
-{{ link_to("cob_visita/nuevo", '<i class="glyphicon glyphicon-plus"></i> Nueva Visita', "class": "btn btn-primary menu-tab") }}
+{{ link_to("cob_verificacion/nuevo", '<i class="glyphicon glyphicon-plus"></i> Nueva Verificacion', "class": "btn btn-primary menu-tab") }}
 {% endif %}
-{% if (not(cob_visita is empty)) %}
+{% if (not(cob_verificacion is empty)) %}
 <!-- Modal -->
 <div class="modal fade" id="eliminar_elemento" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -33,14 +33,14 @@
          </tr>
     </thead>
     <tbody>
-    {% for cob_visita in cob_visita %}
+    {% for cob_verificacion in cob_verificacion %}
         <tr>
         {% if (nivel <= 1) %}
-        <td>{{ link_to("cob_visita/ver/"~cob_visita.id_visita, '<i class="glyphicon glyphicon-list-alt"></i> ', "rel": "tooltip", "title":"Ver") }}{{ link_to("cob_visita/editar/"~cob_visita.id_visita, '<i class="glyphicon glyphicon-pencil"></i> ', "rel": "tooltip", "title":"Editar") }}<a href="#eliminar_elemento" rel="tooltip" title="Eliminar" class="eliminar_fila" data-toggle = "modal" id="{{ url("cob_visita/eliminar/"~cob_visita.id_visita) }}"><i class="glyphicon glyphicon-trash"></i></a></td>
+        <td>{{ link_to("cob_verificacion/ver/"~cob_verificacion.id_verificacion, '<i class="glyphicon glyphicon-list-alt"></i> ', "rel": "tooltip", "title":"Ver") }}{{ link_to("cob_verificacion/editar/"~cob_verificacion.id_verificacion, '<i class="glyphicon glyphicon-pencil"></i> ', "rel": "tooltip", "title":"Editar") }}<a href="#eliminar_elemento" rel="tooltip" title="Eliminar" class="eliminar_fila" data-toggle = "modal" id="{{ url("cob_verificacion/eliminar/"~cob_verificacion.id_verificacion) }}"><i class="glyphicon glyphicon-trash"></i></a></td>
 		{% endif %}
-            <td>{{ link_to("cob_visita/ver/"~cob_visita.id_visita, cob_visita.fecha) }}</td>
-            <td>{{ link_to("cob_visita/ver/"~cob_visita.id_visita, cob_visita.getTipo()) }}</td>
-            <td>{{ link_to("cob_visita/ver/"~cob_visita.id_visita, cob_visita.nombre) }}</td>
+            <td>{{ link_to("cob_verificacion/ver/"~cob_verificacion.id_verificacion, cob_verificacion.fecha) }}</td>
+            <td>{{ link_to("cob_verificacion/ver/"~cob_verificacion.id_verificacion, cob_verificacion.getTipo()) }}</td>
+            <td>{{ link_to("cob_verificacion/ver/"~cob_verificacion.id_verificacion, cob_verificacion.nombre) }}</td>
         </tr>
     {% endfor %}
     </tbody>

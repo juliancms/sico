@@ -1,8 +1,8 @@
 
 {{ content() }}
-<h1>Editar Visita</h1>
-{{ link_to("cob_visita/index", '<i class="glyphicon glyphicon-chevron-left"></i> Regresar', "class": "btn btn-primary menu-tab") }}
-{{ form("cob_visita/guardar", "method":"post", "class":"form-container form-horizontal", "parsley-validate" : "") }}
+<h1>Editar Verificación</h1>
+{{ link_to("cob_verificacion/index", '<i class="glyphicon glyphicon-chevron-left"></i> Regresar', "class": "btn btn-primary menu-tab") }}
+{{ form("cob_verificacion/guardar", "method":"post", "class":"form-container form-horizontal", "parsley-validate" : "") }}
     <div class="form-group">
         <label class="col-sm-2 control-label" for="fecha">Fecha</label>
         <div class="col-sm-10">
@@ -17,7 +17,7 @@
     </div>
 <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
-        <input type="hidden" id="id_visita" name="id_visita" value="{{ id_visita }}">
+        <input type="hidden" id="id_verificacion" name="id_verificacion" value="{{ id_verificacion }}">
           {{ submit_button("Guardar", "class" : "btn btn-default") }}
     </div>
 </div>

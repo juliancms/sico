@@ -292,7 +292,7 @@ class SecurityPlugin extends Plugin
     				'nivelPermiso' => '4'
     		)
     	),
-    	'cob_visita' => array(
+    	'cob_verificacion' => array(
     		'index' => array(
     				'nivelPermiso' => '3'
     		),
@@ -313,6 +313,14 @@ class SecurityPlugin extends Plugin
     		),
     		'eliminar' => array(
     				'nivelPermiso' => '1'
+    		),
+    		'rutear' => array(
+    				'nivelPermiso' => '2'
+    		)
+    	),
+    	'cob_actaverificaciondocumentacion' => array(
+    		'ver' => array(
+    				'nivelPermiso' => '3'
     		)
     	),
     );

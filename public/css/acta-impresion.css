@@ -35,6 +35,22 @@
 	border: none;
 }
 
+#imprimir .colb2 div {
+	float: left;
+	border-right: 1px solid #000000;
+	font-size: 7px;
+	height: 18px;
+}
+
+#imprimir .encabezadodoc div {
+	height: 50px !important;
+	line-height: 7px;
+}
+
+#imprimir .colb2 div:last-child {
+	border: none;
+}
+
 #imprimir .col2 div {
 	width: 336px;
 	float: left;
@@ -85,6 +101,10 @@
 
 #imprimir .observacion {
 	height: 150px;
+}
+
+#imprimir .observacion2 {
+	height: 250px;
 }
 
 @media print { 

@@ -80,8 +80,8 @@ class Elements extends Component
                 'caption' => 'Periodos',
                 'action' => 'index'
             ),
-    		'cob_visita' => array(
-    				'caption' => 'Visitas',
+    		'cob_verificacion' => array(
+    				'caption' => 'Verificaciones',
     				'action' => 'index'
     		),
             'bc_carga' => array(
