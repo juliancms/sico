@@ -177,10 +177,6 @@ class CobActaverificaciondocumentacion extends \Phalcon\Mvc\Model
     			<div>2.4 NOMBRE ENCARGADO DE LA SEDE:</div>
     			<div>2.5 NOMBRE INTERVENTOR:</div>
     		</div>
-    		<div class='fila col2'>
-    			<div>2.6 CUENTA CON VALLA DE IDENTIFICACIÓN:</div>
-    			<div>2.7 CORRECCIÓN DIRECCIÓN:</div>
-    		</div>
     		<div class='clear'></div>
     	</div>
     	<div class='seccion' id='observaciones'>
