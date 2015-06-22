@@ -1,0 +1,3 @@
+
+{{ content() }}
+{{ acta_html }} 

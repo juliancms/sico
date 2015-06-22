@@ -164,7 +164,6 @@ class CobActaverificaciondocumentacion extends \Phalcon\Mvc\Model
     			$html .= "<div id='imprimir'>"; // <acta>
         	//Página 1
         	$html .= $encabezado;
-        	$html .= $totalizacion_asistencia;
     	$html .= "
         	<div class='seccion' id='datos_generales'>
         	<div class='fila center bold'><div style='border:none; width: 100%'>2. DATOS GENERALES</div></div>

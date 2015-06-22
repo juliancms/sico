@@ -323,6 +323,11 @@ class SecurityPlugin extends Plugin
     				'nivelPermiso' => '3'
     		)
     	),
+    	'cob_actaverificacioncomputo' => array(
+    		'ver' => array(
+    				'nivelPermiso' => '3'
+    		)
+    	),
     );
 
     /**
