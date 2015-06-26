@@ -260,7 +260,7 @@ class CobAjusteController extends ControllerBase
     		$this->flash->error("El beneficiario con número de documento <strong>$numDocumento</strong> no fue encontrado en el contrato <strong>$id_contrato</strong> para el periodo <strong>$cob_periodo->fecha</strong>");
     		return $this->response->redirect("cob_ajuste/buscar");
     	}
-    	if($beneficiario->certificacion == 0){
+    	if($beneficiario->certificacionRecorridos == 0){
     		$this->flash->error("El beneficiario se encuentra en estado 'Pendiente de Certificación', por lo tanto no puede ser ajustado, es posible que el periodo no haya sido cerrado");
     		return $this->response->redirect("cob_ajuste/buscar");
     	}
@@ -355,10 +355,10 @@ class CobAjusteController extends ControllerBase
     	if (!$this->request->isPost()) {
     		return $this->response->redirect("cob_ajuste/buscar");
     	}
-    	if($beneficiario->certificacion == 1 && $this->request->getPost("certificar") == 1){
+    	if($beneficiario->certificacionLiquidacion == 1 && $this->request->getPost("certificar") == 1){
     		$this->flash->error("El beneficiario ya se encuentra certificado, por lo tanto no puede volver a certificarlo");
     		return $this->response->redirect("cob_ajuste/nuevo/$id_actaconteo_persona_facturacion");
-    	} else if(($beneficiario->certificacion == 2 || $beneficiario->certificar == 3) && $this->request->getPost("certificar") == 3){
+    	} else if(($beneficiario->certificacionLiquidacion == 2 || $beneficiario->certificacionLiquidacion == 3) && $this->request->getPost("certificar") == 3){
     		$this->flash->error("El beneficiario ya se encuentra en estado de 'No certificar', por lo tanto no puede descontarse.");
     		return $this->response->redirect("cob_ajuste/nuevo/$id_actaconteo_persona_facturacion");
     	}
