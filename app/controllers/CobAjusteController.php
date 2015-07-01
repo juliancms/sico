@@ -51,7 +51,7 @@ class CobAjusteController extends ControllerBase
     	$this->assets
     	->addJs('js/parsley.min.js')
     	->addJs('js/parsley.extend.js');
-    	$this->view->ajustes = CobAjuste::find(["id_ajuste_reportado IS NULL AND ajusteDentroPeriodo = 0", 'order' => 'datetime DESC']);
+    	$this->view->ajustes = CobAjuste::find(["(id_ajuste_reportado IS NULL OR id_ajuste_reportado = 0) AND (ajusteDentroPeriodo = 0 OR ajusteDentroPeriodo IS NULL)", 'order' => 'datetime DESC']);
     	$this->view->fechas = CobAjusteReportado::find(["estado = 1", 'order' => 'fecha DESC']);
     }
     
