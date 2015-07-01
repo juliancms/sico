@@ -260,10 +260,6 @@ class CobAjusteController extends ControllerBase
     		$this->flash->error("El beneficiario con número de documento <strong>$numDocumento</strong> no fue encontrado en el contrato <strong>$id_contrato</strong> para el periodo <strong>$cob_periodo->fecha</strong>");
     		return $this->response->redirect("cob_ajuste/buscar");
     	}
-    	if($beneficiario->certificacionRecorridos == 0){
-    		$this->flash->error("El beneficiario se encuentra en estado 'Pendiente de Certificación', por lo tanto no puede ser ajustado, es posible que el periodo no haya sido cerrado");
-    		return $this->response->redirect("cob_ajuste/buscar");
-    	}
     	$this->flash->notice("<i class='glyphicon glyphicon-exclamation-sign'></i> Por favor, antes de ingresar la información verifique que el ajuste corresponde al periodo y la información del beneficiario.");
     	$this->assets
     	->addJs('js/ajuste.js')
