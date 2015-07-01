@@ -60,6 +60,7 @@ class CobVerificacionController extends ControllerBase
     				"id_verificacion = $id_verificacion"
     		));
     	}
+    	$this->view->id_usuario = $this->id_usuario;
     	$this->view->verificacion = $cob_verificacion;
     	$this->view->id_verificacion = $id_verificacion;
     	$this->view->actas = $actas;
