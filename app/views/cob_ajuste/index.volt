@@ -62,7 +62,7 @@
         <td>{{ cob_ajuste.observacion }}</td>
         <td>{{ cob_ajuste.datetime }}</td>
         <td>{{ cob_ajuste.IbcUsuario.usuario }}</td>
-        <td>{{ cob_ajuste.CobAjusteReportado.fecha }}</td>
+        <td>{% if (cob_ajuste.CobAjusteReportado.fecha) %}{{ cob_ajuste.CobAjusteReportado.fecha }}{% endif %}</td>
         </tr>
     {% endfor %}
     </tbody>

@@ -178,6 +178,9 @@ class SecurityPlugin extends Plugin
     		'empleados' => array(
     				'nivelPermiso' => '3'
     		),
+    		'guardarempleados' => array(
+    				'nivelPermiso' => '3'
+    		),
     		'adicionalescapturas' => array(
     				'nivelPermiso' => '3'
     		),
