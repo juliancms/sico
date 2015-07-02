@@ -224,4 +224,14 @@ class CobAjuste extends \Phalcon\Mvc\Model
     	}
     	return array("menor2" => $menor2, "mayorigual2menor4" => $mayorigual2menor4, "mayorigual4menor6" => $mayorigual4menor6, "mayorigual6" => $mayorigual6);
     }
+    
+    public function getFecha()
+    {
+    	if($this->CobAjusteReportado->fecha) {
+    		$conversiones = $this->getDI()->getConversiones();
+    		return $conversiones->fecha(3, $this->CobAjusteReportado->fecha);
+    	} else {
+    		return "";
+    	}
+    }
 }
