@@ -324,6 +324,15 @@ class SecurityPlugin extends Plugin
     	'cob_actaverificaciondocumentacion' => array(
     		'ver' => array(
     				'nivelPermiso' => '3'
+    		),
+    		'datos' => array(
+    				'nivelPermiso' => '3'
+    		),
+    		'guardardatos' => array(
+    				'nivelPermiso' => '3'
+    		),
+    		'beneficiarios' => array(
+    				'nivelPermiso' => '3'
     		)
     	),
     	'cob_actaverificacioncomputo' => array(
