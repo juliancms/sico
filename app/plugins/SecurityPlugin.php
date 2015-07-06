@@ -333,6 +333,9 @@ class SecurityPlugin extends Plugin
     		),
     		'beneficiarios' => array(
     				'nivelPermiso' => '3'
+    		),
+    		'guardarbeneficiarios' => array(
+    				'nivelPermiso' => '3'
     		)
     	),
     	'cob_actaverificacioncomputo' => array(
