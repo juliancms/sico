@@ -19,7 +19,6 @@
     <tbody>
     {% for beneficiario in beneficiarios %}  
 	{% set nombre = {beneficiario.primerNombre, beneficiario.segundoNombre, beneficiario.primerApellido, beneficiario.segundoApellido} %}
-	<?php $fecha = $this->conversiones->fecha(2, $beneficiario->fechaInterventoria); ?>
         <tr>
         	<td>{{ loop.index }}</td>
         	<td><input type="hidden" name="id_actaverificaciondocumentacion_persona[]" value="{{ beneficiario.id_actaverificaciondocumentacion_persona }}">{{ beneficiario.numDocumento }}</td>
