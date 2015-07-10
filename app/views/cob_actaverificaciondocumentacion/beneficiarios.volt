@@ -24,12 +24,12 @@
         	<td><input type="hidden" name="id_actaverificaciondocumentacion_persona[]" value="{{ beneficiario.id_actaverificaciondocumentacion_persona }}">{{ beneficiario.numDocumento }}</td>
             <td>{{ nombre|join(' ') }}</td>
             <td>{{ beneficiario.grupo }}</td>
-            <td>{{ select("nombreCedulaSibc[]", sinonare, "value" : beneficiario.nombreCedulaSibc, "class" : "form-control sinonare required") }}</td>
-            <td>{{ select("telefonoSibc[]", sinonare, "value" : beneficiario.telefonoSibc, "class" : "form-control sinonare required") }}</td>
-            <td>{{ select("certificadoSgs[]", sinonare, "value" : beneficiario.certificadoSgs, "class" : "form-control sinonare required") }}</td>
-            <td>{{ select("certificadoSisben[]", sinonare, "value" : beneficiario.certificadoSisben, "class" : "form-control sinonare required") }}</td>
-            <td>{{ select("matriculaFirmada[]", sinonare, "value" : beneficiario.matriculaFirmada, "class" : "form-control sinonare required") }}</td>
-            <td>{{ select("fechaMatricula[]", sinonare, "value" : beneficiario.fechaMatricula, "class" : "form-control sinonare required") }}</td>
+            <td<?php echo $beneficiario->getsinonareDetail($beneficiario->nombreCedulaSibc); ?>>{{ select("nombreCedulaSibc[]", sinonare, "value" : beneficiario.nombreCedulaSibc, "class" : "form-control sinonare required") }}</td>
+            <td<?php echo $beneficiario->getsinonareDetail($beneficiario->telefonoSibc); ?>>{{ select("telefonoSibc[]", sinonare, "value" : beneficiario.telefonoSibc, "class" : "form-control sinonare required") }}</td>
+            <td<?php echo $beneficiario->getsinonareDetail($beneficiario->certificadoSgs); ?>>{{ select("certificadoSgs[]", sinonare, "value" : beneficiario.certificadoSgs, "class" : "form-control sinonare required") }}</td>
+            <td<?php echo $beneficiario->getsinonareDetail($beneficiario->certificadoSisben); ?>>{{ select("certificadoSisben[]", sinonare, "value" : beneficiario.certificadoSisben, "class" : "form-control sinonare required") }}</td>
+            <td<?php echo $beneficiario->getsinonareDetail($beneficiario->matriculaFirmada); ?>>{{ select("matriculaFirmada[]", sinonare, "value" : beneficiario.matriculaFirmada, "class" : "form-control sinonare required") }}</td>
+            <td<?php echo $beneficiario->getsinonareDetail($beneficiario->fechaMatricula); ?>>{{ select("fechaMatricula[]", sinonare, "value" : beneficiario.fechaMatricula, "class" : "form-control sinonare required") }}</td>
         </tr>
     {% endfor %}
     </tbody>

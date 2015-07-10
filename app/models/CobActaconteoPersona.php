@@ -122,7 +122,7 @@ class CobActaconteoPersona extends \Phalcon\Mvc\Model
     {
     	switch ($this->asistencia) {
     		case 6:
-    			return " class='danger'";
+    			return " class='warning'";
     			break;
     		case 4:
     			return " class='warning'";

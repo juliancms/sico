@@ -118,16 +118,16 @@ class CobActaverificaciondocumentacionPersona extends \Phalcon\Mvc\Model
      *
      * @return string
      */
-    public function getAsistenciaDetail()
+    public function getsinonareDetail($value)
     {
-    	switch ($this->asistencia) {
-    		case 6:
+    	switch ($value) {
+    		case 2:
     			return " class='danger'";
     			break;
-    		case 4:
+    		case 3:
     			return " class='warning'";
     			break;
-    		case 5:
+    		case 4:
     			return " class='warning'";
     			break;
     		default:

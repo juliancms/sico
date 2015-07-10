@@ -438,13 +438,13 @@ class Elements extends Component
 		    }
     	}
     	$uri = str_replace($this->url->getBaseUri(), '', str_replace($_SERVER["SCRIPT_NAME"], '', $_SERVER["REQUEST_URI"]));
-//     	//SI el acta pertenece al interventor o auxiliar y no está cerrada
-//     	if($acta->id_usuario != 0 && (($acta->id_usuario == $user['id_usuario'] && $acta->estado < 2) || ($acta->IbcUsuario->id_usuario_lider == $user['id_usuario'] && $acta->estado < 3))){
-//     	echo "<form class='menu-tab' action='/sico/cob_actamuestreo/cerrar/$acta->id_actamuestreo' method='post'><input type='hidden' name='uri' value='$uri'><input type='submit' class='btn btn-danger' value='Cerrar Acta'></form>";
-//     	}
-//     	if($acta->estado == 2 && $acta->IbcUsuario->id_usuario_lider == $user['id_usuario']){
-//     	echo "<form class='menu-tab' action='/sico/cob_actamuestreo/abrir/$acta->id_actamuestreo' method='post'><input type='hidden' name='uri' value='$uri'><input type='submit' class='btn btn-info' value='Abrir Acta'></form>";
-//     	}
+    	//SI el acta pertenece al interventor o auxiliar y no está cerrada
+    	if($acta->id_usuario != 0 && (($acta->id_usuario == $user['id_usuario'] && $acta->estado < 2) || ($acta->IbcUsuario->id_usuario_lider == $user['id_usuario'] && $acta->estado < 3))){
+    	echo "<form class='menu-tab' action='/sico/$controllerName/cerrar/$acta->id_acta' method='post'><input type='hidden' name='uri' value='$uri'><input type='submit' class='btn btn-danger' value='Cerrar Acta'></form>";
+    	}
+    	if($acta->estado == 2 && $acta->IbcUsuario->id_usuario_lider == $user['id_usuario']){
+    	echo "<form class='menu-tab' action='/sico/$controllerName/abrir/$acta->id_acta' method='post'><input type='hidden' name='uri' value='$uri'><input type='submit' class='btn btn-info' value='Abrir Acta'></form>";
+    	}
     	echo "</div><div class='clear'></clear>";
     }
     

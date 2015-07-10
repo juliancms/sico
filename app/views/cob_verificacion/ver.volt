@@ -6,7 +6,7 @@
 {{ link_to("cob_verificacion/rutear/"~id_verificacion, '<i class="glyphicon glyphicon-road"></i> Rutear', "class": "btn btn-primary menu-tab") }}
 {% endif %}
 {{ link_to("cob_verificacion/gdocumental/"~id_verificacion, '<i class="glyphicon glyphicon-file"></i> Gestión Documental', "class": "btn btn-primary menu-tab") }}
-<table class="table table-bordered table-hover" id="recorrido">
+<table class="table table-bordered table-hover filtrar" id="recorrido">
     <thead>
         <tr><th>#</th>
             <th>No. Acta</th>

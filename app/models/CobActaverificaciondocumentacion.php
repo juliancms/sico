@@ -319,4 +319,27 @@ class CobActaverificaciondocumentacion extends \Phalcon\Mvc\Model
     {
     	return count($this->CobActaverificaciondocumentacionPersona);
     }
+    
+    /**
+     * Returns a human representation of 'estado'
+     *
+     * @return string
+     */
+    public function getsinonareDetail($value)
+    {
+    	switch ($value) {
+    		case 2:
+    			return " class='warning'";
+    			break;
+    		case 3:
+    			return " class='warning'";
+    			break;
+    		case 4:
+    			return " class='warning'";
+    			break;
+    		default:
+    			return "";
+    			break;
+    	}
+    }
 }
