@@ -165,11 +165,13 @@ class CobPeriodoController extends ControllerBase
     				"id_periodo = $id_periodo AND recorrido = $recorrido",
     				"group" => "id_actamuestreo"
     		));
+    		$this->view->periodos = CobActamuestreo::find(['group' => 'id_periodo, recorrido']);
     	} else {
     		$actas = CobActaconteo::find(array(
     				"id_periodo = $id_periodo AND recorrido = $recorrido",
     				"group" => "id_actaconteo"
     		));
+    		$this->view->periodos = CobActaconteo::find(['group' => 'id_periodo, recorrido']);
     	}
     	if (!$cob_periodo) {
     		$this->flash->error("El periodo no fue encontrado");
@@ -183,7 +185,7 @@ class CobPeriodoController extends ControllerBase
     	->addJs('js/jquery.tablesorter.min.js')
     	->addJs('js/jquery.tablesorter.widgets.js')
     	->addJs('js/rutear.js');
-    	$this->view->periodos = CobActaconteo::find(['group' => 'id_periodo, recorrido']);
+    	
     	$this->view->id_periodo = $cob_periodo->id_periodo;
     	$this->view->recorrido = $recorrido;
     	$this->view->fecha_periodo = $cob_periodo->id_periodo;
