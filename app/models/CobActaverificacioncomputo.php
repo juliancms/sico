@@ -111,7 +111,7 @@ class CobActaverificacioncomputo extends \Phalcon\Mvc\Model
     	$this->belongsTo('id_verificacion', 'CobVerificacion', 'id_verificacion', array(
     			'reusable' => true
     	));
-    	$this->belongsTo('id_actaverificacioncomputo', 'CobActaverificaciondocumentacionDatos', 'id_actaverificacioncomputo', array(
+    	$this->belongsTo('id_actaverificacioncomputo', 'CobActaverificacioncomputoDatos', 'id_actaverificacioncomputo', array(
     			'reusable' => true
     	));
     	$this->belongsTo('id_usuario', 'IbcUsuario', 'id_usuario', array(
@@ -127,9 +127,9 @@ class CobActaverificacioncomputo extends \Phalcon\Mvc\Model
     	if(!$acta || $acta == NULL){
     		return FALSE;
     	}
-    	$acta_id = "AVE-03-". date("Y") . sprintf('%05d', $acta->id_actaverificaciondocumentacion);
+    	$acta_id = "AVE-03-". date("Y") . sprintf('%05d', $acta->id_actaverificacioncomputo);
     	$encabezado = "<div class='seccion encabezado'>
-    	<div class='fila center'><div>ACTA DE VERIFICACIÓN FÍSICA DE LAS CARPETAS DE LOS BENEFICIARIOS REPORTADOS EN EL SIBC<br>INTERVENTORÍA BUEN COMIENZO</div></div>
+    	<div class='fila center'><div>ACTA DE VERIFICACIÓN FÍSICA DE EQUIPOS DE CÓMPUTO DE ACUERDO A LAS CÉD EN EL SIBC<br>INTERVENTORÍA BUEN COMIENZO</div></div>
     	<div class='fila col3 center'><div>Código: F-ITBC-GC-001</div><div></div><div></div></div>
     	<div class='fila col3e'>
     	<div>ACTA: <span style='font-weight: normal;'>$acta_id</span></div>

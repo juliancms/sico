@@ -27,6 +27,7 @@ class CobActaverificacioncomputoController extends ControllerBase
     		$this->flash->error("El acta no fue encontrada");
     		return $this->response->redirect("cob_verificacion/");
     	}
+    	$acta['datos']->id_acta = $id_actaverificacioncomputo;
     	$this->view->nivel = $this->user['nivel'];
     	$this->view->acta_html = $acta['html'];
     	$this->view->acta_datos = $acta['datos'];
@@ -38,54 +39,30 @@ class CobActaverificacioncomputoController extends ControllerBase
      *
      * @param int $id_actaconteo
      */
-    public function datosAction($id_actaconteo)
+    public function datosAction($id_actaverificacioncomputo)
     {
         if (!$this->request->isPost()) {
 
-            $acta = CobActaconteo::findFirstByid_actaconteo($id_actaconteo);
+            $acta = CobActaverificacioncomputo::findFirstByid_actaverificacioncomputo($id_actaverificacioncomputo);
             if (!$acta) {
                 $this->flash->error("El acta no fue encontrada");
 
-                return $this->response->redirect("cob_periodo/");
-            }
-            $asiste1 = $acta->getCobActaconteoPersona(['tipoPersona = 0 AND asistencia = 1']);
-            $asiste2 = $acta->getCobActaconteoPersona(['tipoPersona = 0 AND asistencia = 2']);
-            $asiste3 = $acta->getCobActaconteoPersona(['tipoPersona = 0 AND asistencia = 3']);
-            $asiste4 = $acta->getCobActaconteoPersona(['tipoPersona = 0 AND asistencia = 4']);
-            $asiste5 = $acta->getCobActaconteoPersona(['tipoPersona = 0 AND asistencia = 5']);
-            $asiste6 = $acta->getCobActaconteoPersona(['tipoPersona = 0 AND asistencia = 6']);
-            $asiste7 = $acta->getCobActaconteoPersona(['tipoPersona = 0 AND asistencia = 7']);
-            $asiste8 = $acta->getCobActaconteoPersona(['tipoPersona = 0 AND asistencia = 8']);
-            $asistetotal = $acta->getCobActaconteoPersona(['tipoPersona = 0']);
-            $asisteadicionales = $acta->getCobActaconteoPersona(['tipoPersona = 1']);
-            $this->view->asiste1 = count($asiste1);
-            $this->view->asiste2 = count($asiste2);
-            $this->view->asiste3 = count($asiste3);
-            $this->view->asiste4 = count($asiste4);
-            $this->view->asiste5 = count($asiste5);
-            $this->view->asiste6 = count($asiste6);
-            $this->view->asiste7 = count($asiste7);
-            $this->view->asiste8 = count($asiste8);
-            $this->view->asistetotal = count($asistetotal);
-            $this->view->asisteadicionales = count($asisteadicionales);
-            $this->assets
+                return $this->response->redirect("cob_verificacion/");
+            }$this->assets
             ->addJs('js/parsley.min.js')
             ->addJs('js/parsley.extend.js');
-            $this->view->id_actaconteo = $id_actaconteo;
-            $this->view->valla_sede = $this->elements->getSelect("datos_valla");
-            $this->view->sino = $this->elements->getSelect("sino");
-            if($acta->CobActaconteoDatos){
-            	$this->tag->setDefault("fecha", $this->conversiones->fecha(2, $acta->CobActaconteoDatos->fecha));
-            	$this->tag->setDefault("horaInicio", $acta->CobActaconteoDatos->horaInicio);
-            	$this->tag->setDefault("horaFin", $acta->CobActaconteoDatos->horaFin);
-            	$this->tag->setDefault("nombreEncargado", $acta->CobActaconteoDatos->nombreEncargado);
-            	$this->tag->setDefault("vallaClasificacion", $acta->CobActaconteoDatos->vallaClasificacion);
-            	$this->tag->setDefault("correccionDireccion", $acta->CobActaconteoDatos->correccionDireccion);
-            	$this->tag->setDefault("mosaicoFisico", $acta->CobActaconteoDatos->mosaicoFisico);
-            	$this->tag->setDefault("mosaicoDigital", $acta->CobActaconteoDatos->mosaicoDigital);
-            	$this->tag->setDefault("observacionEncargado", $acta->CobActaconteoDatos->observacionEncargado);
-            	$this->tag->setDefault("observacionUsuario", $acta->CobActaconteoDatos->observacionUsuario);
+            $acta->id_acta = $id_actaverificacioncomputo;
+            if($acta->CobActaverificacioncomputoDatos){
+            	$this->tag->setDefault("fecha", $this->conversiones->fecha(2, $acta->CobActaverificacioncomputoDatos->fecha));
+            	$this->tag->setDefault("horaInicio", $acta->CobActaverificacioncomputoDatos->horaInicio);
+            	$this->tag->setDefault("horaFin", $acta->CobActaverificacioncomputoDatos->horaFin);
+            	$this->tag->setDefault("nombreEncargado", $acta->CobActaverificacioncomputoDatos->nombreEncargado);
+            	$this->tag->setDefault("observacionEncargado", $acta->CobActaverificacioncomputoDatos->observacionEncargado);
+            	$this->tag->setDefault("observacionUsuario", $acta->CobActaverificacioncomputoDatos->observacionUsuario);
+            	$this->tag->setDefault("cantidadEquipos", $acta->CobActaverificacioncomputoDatos->cantidadEquipos);
+            	$this->tag->setDefault("servicioInternet", $acta->CobActaverificacioncomputoDatos->servicioInternet);
             }
+            $this->view->sino = $this->elements->getSelect("sino");
             $this->view->acta = $acta;
             $this->actaCerrada($acta, $this->user['nivel']);
         }
@@ -95,183 +72,57 @@ class CobActaverificacioncomputoController extends ControllerBase
      * Guardar Datos
      *  
      */
-    public function guardardatosAction($id_actaconteo)
+    public function guardardatosAction($id_actaverificacioncomputo)
     {
     	if (!$this->request->isPost()) {
-            return $this->response->redirect("cob_periodo/");
+            return $this->response->redirect("cob_verificacion/");
         }
-        $acta = CobActaconteo::findFirstByid_actaconteo($id_actaconteo);
+        $acta = CobActaverificacioncomputo::findFirstByid_actaverificacioncomputo($id_actaverificacioncomputo);
         if (!$acta) {
-            $this->flash->error("El acta $id_actaconteo no existe ");
-            return $this->response->redirect("cob_periodo/");
+            $this->flash->error("El acta $id_actaverificacioncomputo no existe ");
+            return $this->response->redirect("cob_verificacion/");
         }
         $this->guardarActaCerrada($acta, $this->user['nivel']);
-        $dato = new CobActaconteoDatos();
-        $dato->id_actaconteo = $id_actaconteo;
-        $dato->id_usuario = $this->session->auth['id_usuario'];
+        $dato = new CobActaverificacioncomputoDatos();
+        $dato->id_actaverificacioncomputo = $id_actaverificacioncomputo;
         $dato->fecha = $this->conversiones->fecha(1, $this->request->getPost("fecha"));
         $dato->horaInicio = $this->request->getPost("horaInicio");
         $dato->horaFin = $this->request->getPost("horaFin");
         $dato->nombreEncargado = $this->request->getPost("nombreEncargado");
-        $dato->vallaClasificacion = $this->request->getPost("vallaClasificacion");
-        $dato->correccionDireccion = $this->request->getPost("correccionDireccion");
-        $dato->mosaicoFisico = $this->request->getPost("mosaicoFisico");
-        $dato->mosaicoDigital = $this->request->getPost("mosaicoDigital");
         $dato->observacionEncargado = $this->request->getPost("observacionEncargado");
         $dato->observacionUsuario = $this->request->getPost("observacionUsuario");
+        $dato->cantidadEquipos = $this->request->getPost("cantidadEquipos");
+        $dato->servicioInternet = $this->request->getPost("servicioInternet");
         if (!$dato->save()) {
             foreach ($dato->getMessages() as $message) {
                 $this->flash->error($message);
             }
-            return $this->response->redirect("cob_actaconteo/datos/$id_actaconteo");
+            return $this->response->redirect("cob_actaverificacioncomputo/datos/$id_actaverificacioncomputo");
         }
         $this->flash->success("Los Datos Generales fueron actualizados exitosamente");
-        return $this->response->redirect("cob_actaconteo/datos/$id_actaconteo");
-    }
-    
-    /**
-     * Guardar Beneficiarios
-     *
-     */
-    public function guardarbeneficiariosAction($id_actaconteo)
-    {
-    	if (!$this->request->isPost()) {
-    		return $this->response->redirect("cob_periodo/");
-    	}
-    	$db = $this->getDI()->getDb();
-    	$acta = CobActaconteo::findFirstByid_actaconteo($id_actaconteo);
-    	if (!$acta) {
-    		$this->flash->error("El acta $id_actaconteo no existe");
-    		return $this->response->redirect("cob_periodo/");
-    	}
-    	$this->guardarActaCerrada($acta, $this->user['nivel']);
-    	$persona = new CobActaconteoPersona();
-    	$i = 0;
-    	$elementos = array(
-    			'id_actaconteo_persona' => $this->request->getPost("id_actaconteo_persona"),
-    			'asistencia' => $this->request->getPost("asistencia")
-    	);
-    	$fechas = $this->request->getPost("fecha");
-    	if(count($fechas) > 0) {
-    		$fechas = $this->conversiones->array_fechas(1, $fechas);
-    		$elementos['fechaInterventoria'] = $fechas;
-    	}
-    	$sql = $this->conversiones->multipleupdate("cob_actaconteo_persona", $elementos, "id_actaconteo_persona");
-    	$query = $db->query($sql);
-    	if (!$query) {
-    		foreach ($query->getMessages() as $message) {
-    			$this->flash->error($message);
-    		}
-    		return $this->response->redirect("cob_actaconteo/datos/$id_actaconteo");
-    	}
-    	$fechas = $this->request->getPost("fecha_excusa");
-    	if($fechas){
-    		$fechas = $this->conversiones->array_fechas(1, $fechas);
-	    	$elementos = array(
-	    			'id_actaconteo_persona' => $this->request->getPost("id_actaconteo_persona2"),
-	    			'motivo' => $this->request->getPost("motivo"),
-	    			'fecha' => $fechas,
-	    			'profesional' => $this->request->getPost("profesional"),    			
-	    			'telefono' => $this->request->getPost("telefono")    			
-	    	);
-	    	$sql = $this->conversiones->multipleinsert("cob_actaconteo_persona_excusa", $elementos);
-	    	$query = $db->query($sql);
-	    	if (!$query) {
-	    		foreach ($query->getMessages() as $message) {
-	    			$this->flash->error($message);
-	    		}
-	    		return $this->response->redirect("cob_actaconteo/adicionales/$id_actaconteo");
-	    	}
-    	}
-    	//Eliminar las excusas que ya no tienen clasificación de excusa
-    	$db->query("DELETE FROM cob_actaconteo_persona_excusa WHERE id_actaconteo_persona IN (SELECT id_actaconteo_persona FROM cob_actaconteo_persona WHERE asistencia != 7 AND asistencia != 8)");
-    	$acta->estado = 1;
-    	$acta->save();
-    	$this->flash->success("Los beneficiarios fueron actualizados exitosamente");
-    	return $this->response->redirect("cob_actaconteo/beneficiarios/$id_actaconteo");
-    }
-    
-    /**
-     * Beneficiarios
-     *
-     * @param int $id_actaconteo
-     */
-    public function beneficiariosAction($id_actaconteo) {
-    	if (!$this->request->isPost()) {
-    		$acta = CobActaconteo::findFirstByid_actaconteo($id_actaconteo);
-    		if (!$acta) {
-    			$this->flash->error("El acta no fue encontrada");
-    			return $this->response->redirect("cob_periodo/");
-    		}
-    		$this->assets
-    		->addJs('js/parsley.min.js')
-    		->addJs('js/parsley.extend.js')
-    		->addJs('js/beneficiarios.js');
-    		$this->view->nombre = array();
-    		$this->view->acta = $acta;
-    		$this->view->beneficiarios = $acta->getCobActaconteoPersona(['tipoPersona = 0','order' => 'id_grupo, primerNombre asc']);
-    		$beneficiario_grupos = $acta->getCobActaconteoPersona(['group' => 'id_grupo']);
-    		$grupos = array();
-    		foreach($beneficiario_grupos as $row){
-    			$grupos[] = array("id_grupo" => $row->id_grupo, "nombre_grupo" => $row->grupo);
-    		}
-    		$this->view->grupos = $grupos;
-    		$this->view->id_actaconteo = $id_actaconteo;
-    		$this->view->asistencia = $this->elements->getSelect("asistencia");
-    		$this->view->acta = $acta;
-    		$this->actaCerrada($acta, $this->user['nivel']);
-    	}
+        return $this->response->redirect("cob_actaverificacioncomputo/datos/$id_actaverificacioncomputo");
     }
 
-    /**
-     * Elimina un acta
-     *
-     * @param int $id_actaconteo
-     */
-    public function eliminarAction($id_actaconteo)
-    {
-
-        $acta = CobActaconteo::findFirstByid_actaconteo($id_actaconteo);
-        if (!$acta) {
-            $this->flash->error("El acta no fue encontrada");
-            return $this->response->redirect("cob_actaconteo/");
-        }
-        if (!$acta->delete()) {
-            foreach ($acta->getMessages() as $message) {
-                $this->flash->error($message);
-            }
-            return $this->response->redirect("cob_periodo/");
-        }
-        $this->flash->success("El acta fue eliminada correctamente");
-        return $this->response->redirect("cob_actaconteo/");
-    }
-    
     /**
      * Cierra un acta
      *
      * @param int $id_actaconteo
      */
-    public function cerrarAction($id_actaconteo)
+    public function cerrarAction($id_actaverificacioncomputo)
     {
     	if (!$this->request->isPost()) {
-    		return $this->response->redirect("cob_actaconteo/ver/$id_actaconteo");
+    		return $this->response->redirect("cob_actaverificacioncomputo/ver/$id_actaverificacioncomputo");
     	}
-        $acta = CobActaconteo::findFirstByid_actaconteo($id_actaconteo);
+        $acta = CobActaverificacioncomputo::findFirstByid_actaverificacioncomputo($id_actaverificacioncomputo);
         if (!$acta) {
             $this->flash->error("El acta no fue encontrada");
-            return $this->response->redirect("cob_actaconteo/");
+            return $this->response->redirect("cob_verificacion/");
         }
         $uri = $this->request->getPost("uri");
         $error = 0;
-        if(!($acta->CobActaconteoDatos->fecha)){
+        if(!($acta->CobActaverificacioncomputoDatos->fecha)){
         	$this->flash->notice("<i class='glyphicon glyphicon-exclamation-sign'></i> El acta no puede ser cerrada debido a que:");
         	$this->flash->error("No han sido digitados los datos del acta.");
-        	$error = 1;
-        }
-        if($acta->CobActaconteoPersona[0]->asistencia == 0){
-        	if($error == 0)
-        		$this->flash->notice("<i class='glyphicon glyphicon-exclamation-sign'></i> El acta no puede ser cerrada debido a que:");
-        	$this->flash->error("No han sido digitados los beneficiarios del acta.");
         	$error = 1;
         }
         if($error > 0){
@@ -300,15 +151,15 @@ class CobActaverificacioncomputoController extends ControllerBase
      *
      * @param int $id_actaconteo
      */
-    public function abrirAction($id_actaconteo)
+    public function abrirAction($id_actaverificacioncomputo)
     {
     	if (!$this->request->isPost()) {
-    		return $this->response->redirect("cob_actaconteo/ver/$id_actaconteo");
+    		return $this->response->redirect("cob_actaverificacioncomputo/ver/$id_actaverificacioncomputo");
     	}
-    	$acta = CobActaconteo::findFirstByid_actaconteo($id_actaconteo);
+    	$acta = CobActaverificacioncomputo::findFirstByid_actaverificacioncomputo($id_actaverificacioncomputo);
     	if (!$acta) {
     		$this->flash->error("El acta no fue encontrada");
-    		return $this->response->redirect("cob_actaconteo/");
+    		return $this->response->redirect("cob_verificacion/");
     	}
     	$uri = $this->request->getPost("uri");
     	//Si es interventor
@@ -325,32 +176,6 @@ class CobActaverificacioncomputoController extends ControllerBase
     	}
     	$this->flash->success("El acta fue abierta exitosamente para el interventor");
     	return $this->response->redirect($uri);
-    }
-    
-    /**
-     * Duplicar una acta
-     */
-    public function duplicaractaAction($id_actaconteo){
-    	if (!$id_actaconteo) {
-    		return $this->response->redirect("cob_actaconteo/ver/$id_actaconteo");
-    	}
-    	$acta = CobActaconteo::findFirstByid_actaconteo($id_actaconteo);
-    	if (!$acta) {
-    		$this->flash->error("El acta no fue encontrada");
-    		return $this->response->redirect("cob_actaconteo/ver/$id_actaconteo");
-    	}
-    	$cob_periodo = CobPeriodo::findFirstByid_periodo($acta->id_periodo);
-    	if (!$cob_periodo) {
-    		$this->flash->error("El periodo no existe");
-    		return $this->response->redirect("cob_actaconteo/ver/$id_actaconteo");
-    	}
-    	$duplicar = CobActaconteo::duplicarActa($acta, $cob_periodo);
-    	if($duplicar){
-    		$this->flash->success("Se duplicó exitosamente el acta");
-    	} else {
-    		$this->flash->error("No se duplicó el acta");
-    	}
-    	return $this->response->redirect("cob_actaconteo/ver/$id_actaconteo");
     }
         
     private function actaCerrada($acta, $nivel){
