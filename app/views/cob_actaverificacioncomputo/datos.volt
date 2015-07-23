@@ -40,7 +40,7 @@
     <div class="form-group">
         <label class="col-sm-2 control-label" for="cantidadEquipos">Cantidad de Equipos de Cómputo</label>
         <div class="col-sm-10">
-                {{ text_field("cantidadEquipos", "parsley-min" : "1", "class" : "form-control required number") }}
+                {{ text_field("cantidadEquipos", "parsley-min" : "0", "class" : "form-control required number") }}
         </div>
     </div>
     <div class="form-group">
