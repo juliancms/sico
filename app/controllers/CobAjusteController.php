@@ -68,6 +68,18 @@ class CobAjusteController extends ControllerBase
     }
     
     /**
+     * Lista de periodos
+     */
+    public function asignarperiodosAction()
+    {
+    	$this->persistent->parameters = null;
+    	$this->assets
+    	->addJs('js/parsley.min.js')
+    	->addJs('js/parsley.extend.js');
+    	$this->view->ajustes = CobAjuste::find(["(id_ajuste_reportado IS NULL OR id_ajuste_reportado = 0) AND (ajusteDentroPeriodo = 0 OR ajusteDentroPeriodo IS NULL) AND (certificar = 3 OR certificar = 4)", 'order' => 'datetime DESC']);
+    }
+    
+    /**
      * Formulario para agregar fecha de reporte
      */
     public function nuevafechareporteAction()
@@ -313,20 +325,6 @@ class CobAjusteController extends ControllerBase
     			'ajusteDentroPeriodo' => 1
     	);
     	$sql = $this->conversiones->multipleupdate("cob_ajuste", $elementos, "id_ajuste");
-    	$db = $this->getDI()->getDb();
-    	$query = $db->query($sql);
-    	if (!$query) {
-    		foreach ($query->getMessages() as $message) {
-    			$this->flash->error($message);
-    		}
-    		return $this->response->redirect("cob_ajuste/asignar");
-    	}
-    	$elementos = array(
-    			'id_actaconteo_persona_facturacion' => $this->request->getPost("id_actaconteo_persona_facturacion"),
-    			'certificacionFacturacion' => $this->request->getPost("certificar"),
-    			'asistenciaFinalFacturacion' => $this->request->getPost("asistenciaFinalFacturacion")
-    	);
-    	$sql = $this->conversiones->multipleupdate("cob_ajuste", $elementos, "id_actaconteo_persona_facturacion");
     	$db = $this->getDI()->getDb();
     	$query = $db->query($sql);
     	if (!$query) {

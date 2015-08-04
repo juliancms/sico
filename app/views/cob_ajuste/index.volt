@@ -30,7 +30,6 @@
     <thead>
         <tr>
         	<th>#</th>
-        	{% if (nivel <= 1) %}<th>Acciones</th>{% endif %}
             <th>Periodo<input autocomplete='off' class='filter form-control input-sm' name='periodo' data-col='periodo'/></th>
             <th>Contrato<input autocomplete='off' class='filter form-control input-sm' name='contrato' data-col='contrato'/></th>
             <th>Modalidad<input autocomplete='off' class='filter form-control input-sm' name='modalidad' data-col='modalidad'/></th>
@@ -49,9 +48,6 @@
     	{% set nombre = {cob_ajuste.CobActaconteoPersonaFacturacion.primerNombre, cob_ajuste.CobActaconteoPersonaFacturacion.segundoNombre, cob_ajuste.CobActaconteoPersonaFacturacion.primerApellido, cob_ajuste.CobActaconteoPersonaFacturacion.segundoApellido} %}
         <tr>
         <td>{{ loop.index }}</td>
-        {% if (nivel <= 1) %}
-        <td><a href="#eliminar_elemento" rel="tooltip" title="Eliminar" class="eliminar_fila" data-toggle = "modal" id="{{ url("cob_ajuste/eliminar/"~cob_ajuste.id_ajuste) }}"><i class="glyphicon glyphicon-trash"></i></a></td>
-		{% endif %}
 		<td><?php echo $this->conversiones->fecha(5, $cob_ajuste->CobPeriodo->fecha); ?></td>
         <td>{{ cob_ajuste.CobActaconteoPersonaFacturacion.id_contrato }}</td>
         <td>{{ cob_ajuste.CobActaconteo.modalidad_nombre }}</td>
