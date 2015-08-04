@@ -333,6 +333,21 @@ class CobAjusteController extends ControllerBase
     		}
     		return $this->response->redirect("cob_ajuste/asignar");
     	}
+    	$elementos = array(
+    			'id_actaconteo_persona_facturacion' => $this->request->getPost("id_actaconteo_persona_facturacion"),
+    			'certificacionFacturacion' => $this->request->getPost("certificacionFacturacion"),
+    			'certificacionLiquidacion' => $this->request->getPost("certificacionFacturacion"),
+    			'asistenciaFinalFacturacion' => $this->request->getPost("asistenciaFinalFacturacion")
+    	);
+    	$sql = $this->conversiones->multipleupdate("cob_actaconteo_persona_facturacion", $elementos, "id_actaconteo_persona_facturacion");
+    	$db = $this->getDI()->getDb();
+    	$query = $db->query($sql);
+    	if (!$query) {
+    		foreach ($query->getMessages() as $message) {
+    			$this->flash->error($message);
+    		}
+    		return $this->response->redirect("cob_ajuste/asignar");
+    	}
     	$this->flash->success("Los ajustes han sido asignados al periodo correctamente");
     	return $this->response->redirect("cob_ajuste");
     }
