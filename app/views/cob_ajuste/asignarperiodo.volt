@@ -20,7 +20,7 @@
          </tr>
     </thead>
     <tbody>
-    {{ form("cob_ajuste/guardarasignar/", "method":"post", "parsley-validate" : "", "id" : "ajustes_form") }}
+    {{ form("cob_ajuste/guardarasignarperiodo/", "method":"post", "parsley-validate" : "", "id" : "ajustes_form") }}
     {% for cob_ajuste in ajustes %}
     	{% set nombre = {cob_ajuste.CobActaconteoPersonaFacturacion.primerNombre, cob_ajuste.CobActaconteoPersonaFacturacion.segundoNombre, cob_ajuste.CobActaconteoPersonaFacturacion.primerApellido, cob_ajuste.CobActaconteoPersonaFacturacion.segundoApellido} %}
         <tr>
