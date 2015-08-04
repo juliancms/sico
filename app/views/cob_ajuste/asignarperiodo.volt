@@ -34,7 +34,7 @@
         <td>{{ cob_ajuste.observacion }}</td>
         <td>{{ cob_ajuste.datetime }}</td>
         <td>{{ cob_ajuste.IbcUsuario.usuario }}</td>
-        <td><select style="width: 122px;" name="fecha_ajuste_reportado[]" class="form-control required"><option value="{{ cob_ajuste.CobPeriodo.fecha }}">{{ cob_ajuste.CobPeriodo.getFechaDetail() }}</option></select><input type="hidden" name="id_ajuste[]" value="{{ cob_ajuste.id_ajuste }}"></td>
+        <td><select style="width: 122px;" name="fecha_ajuste_reportado[]" class="form-control required"><option value="{{ cob_ajuste.CobPeriodo.fecha }}">{{ cob_ajuste.CobPeriodo.getFechaDetail() }}</option></select><input type="hidden" name="id_ajuste[]" value="{{ cob_ajuste.id_ajuste }}"><input type="hidden" name="ajusteDentroPeriodo[]" value="1"></td>
         </tr>
     {% endfor %}
     </tbody>

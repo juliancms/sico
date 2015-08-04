@@ -322,7 +322,7 @@ class CobAjusteController extends ControllerBase
     	$elementos = array(
     			'id_ajuste' => $this->request->getPost("id_ajuste"),
     			'fecha_ajuste_reportado' => $this->request->getPost("fecha_ajuste_reportado"),
-    			'ajusteDentroPeriodo' => 1
+    			'ajusteDentroPeriodo' => $this->request->getPost("ajusteDentroPeriodo")
     	);
     	$sql = $this->conversiones->multipleupdate("cob_ajuste", $elementos, "id_ajuste");
     	$db = $this->getDI()->getDb();
