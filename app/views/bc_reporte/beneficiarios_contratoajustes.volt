@@ -11,8 +11,7 @@
     <tbody>
     {% for ajuste in ajustes %}
         <tr>
-        	<td>{{ link_to("cob_ajuste/reportebeneficiarioscontrato/"~ajuste.id_ajuste_reportado~"/"~periodo.id_periodo~"/"~contrato.id_contrato, ajuste.fecha_ajuste_reportado) }}</td>
-            <td></td>
+        	<td>{{ link_to("cob_ajuste/reportebeneficiarioscontrato/"~ajuste.fecha_ajuste_reportado~"/"~periodo.id_periodo~"/"~contrato.id_contrato, ajuste.fecha_ajuste_reportado) }}</td>
         </tr>
     {% endfor %}
     </tbody>

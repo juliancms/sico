@@ -8,19 +8,19 @@
             <th>Nombre Sede<input autocomplete='off' class='filter form-control input-sm' name='nombre sede' data-col='nombre sede'/></th>
             <th>Nombre Grupo<input autocomplete='off' class='filter form-control input-sm' name='nombre grupo' data-col='nombre grupo'/></th>
             <th>ID Persona<input autocomplete='off' class='filter form-control input-sm' name='id persona' data-col='id persona'/></th>
-            <th>Número documento<input autocomplete='off' class='filter form-control input-sm' name='numero documento' data-col='numero documento'/></th>
+            <th>Número documento<input autocomplete='off' class='filter form-control input-sm' name='número documento' data-col='número documento'/></th>
             <th>Primer Nombre<input autocomplete='off' class='filter form-control input-sm' name='primer nombre' data-col='primer nombre'/></th>
             <th>Segundo Nombre<input autocomplete='off' class='filter form-control input-sm' name='segundo nombre' data-col='segundo nombre'/></th>
             <th>Primer Apellido<input autocomplete='off' class='filter form-control input-sm' name='primer apellido' data-col='primer apellido'/></th>
             <th>Segundo Apellido<input autocomplete='off' class='filter form-control input-sm' name='segundo apellido' data-col='segundo apellido'/></th>
-            <th>Fecha Registro Matrícula<input autocomplete='off' class='filter form-control input-sm' name='fecha registro matricula' data-col='fecha registro matricula'/></th>
+            <th>Fecha Registro Matrícula<input autocomplete='off' class='filter form-control input-sm' name='fecha registro matrícula' data-col='fecha registro matrícula'/></th>
             <th>Fecha Registro Beneficiario<input autocomplete='off' class='filter form-control input-sm' name='fecha registro beneficiario' data-col='fecha registro beneficiario'/></th>
             <th>Fecha Retiro<input autocomplete='off' class='filter form-control input-sm' name='fecha retiro' data-col='fecha retiro'/></th>
             <th>Acta R3<input autocomplete='off' class='filter form-control input-sm' name='acta r3' data-col='acta r3'/></th>
             <th>Asistencia R3<input autocomplete='off' class='filter form-control input-sm' name='asistencia r3' data-col='asistencia r3'/></th>
-            <th>Certificación R3<input autocomplete='off' class='filter form-control input-sm' name='certificacion r3' data-col='certificacion r3'/></th>
-            <th>Observación R3<input autocomplete='off' class='filter form-control input-sm' name='observacion r3' data-col='observacion r3'/></th>
-            <th>Certificación Recorridos<input autocomplete='off' class='filter form-control input-sm' name='certificacion recorridos' data-col='certificacion recorridos'/></th>
+            <th>Certificación R3<input autocomplete='off' class='filter form-control input-sm' name='certificación r3' data-col='certificación r3'/></th>
+            <th>Observación R3<input autocomplete='off' class='filter form-control input-sm' name='observación r3' data-col='observación r3'/></th>
+            <th>Certificación Recorridos<input autocomplete='off' class='filter form-control input-sm' name='certificación recorridos' data-col='certificación recorridos'/></th>
          </tr>
     </thead>
     <tbody>

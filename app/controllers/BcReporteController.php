@@ -185,7 +185,7 @@ class BcReporteController extends ControllerBase
     		$this->flash->error("El reporte para este periodo se encuentra en el menú 'Archivo Digital' del sitio web de la Interventoría Buen Comienzo.");
     		return $this->response->redirect("bc_reporte/oferente_periodos/$id_contrato");
     	}
-    	$reporte_contrato = CobAjuste::find(array("id_periodo = $id_periodo AND id_contrato = $id_contrato", "group" => "fecha_ajuste_reportado"));
+    	$reporte_contrato = CobAjuste::find(array("id_periodo = $id_periodo AND id_contrato = $id_contrato AND (certificar = 3 OR certificar = 4)", "group" => "fecha_ajuste_reportado"));
     	if(count($reporte_contrato) == 0){
     		$this->flash->error("No existen ajustes para este contrato.");
     		return $this->response->redirect("bc_reporte/oferente_periodos/$id_contrato");

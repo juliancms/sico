@@ -238,9 +238,9 @@ class CobAjusteController extends ControllerBase
     /**
      * Reportes contratos de los ajustes
      */
-    public function reportebeneficiarioscontratoAction($id_ajuste_reportado, $id_periodo, $id_contrato)
+    public function reportebeneficiarioscontratoAction($fecha_ajuste_reportado, $id_periodo, $id_contrato)
     {
-    	$cob_ajuste = CobAjuste::find(array("id_ajuste_reportado = $id_ajuste_reportado AND id_periodo = $id_periodo AND id_contrato = $id_contrato AND (certificar = 3 OR certificar = 4)"));
+    	$cob_ajuste = CobAjuste::find(array("fecha_ajuste_reportado = $fecha_ajuste_reportado AND id_periodo = $id_periodo AND id_contrato = $id_contrato AND (certificar = 3 OR certificar = 4)"));
     	if (count($cob_ajuste) == 0) {
     		$this->flash->error("No se encontraron ajustes con esta fecha de reporte");
     		return $this->response->redirect("bc_reporte/beneficiarios_contratoajustes/$id_periodo/$id_contrato");
