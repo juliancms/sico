@@ -230,6 +230,8 @@ class SecurityPlugin extends Plugin
     				'nivelPermiso' => '1'
     		),'asignarperiodo' => array(
     				'nivelPermiso' => '1'
+    		),'asignarperiodos' => array(
+    				'nivelPermiso' => '1'
     		),'nuevafechareporte' => array(
     				'nivelPermiso' => '1'
     		),'reportes' => array(

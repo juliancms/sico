@@ -4,7 +4,7 @@
 {{ link_to("cob_ajuste/buscar", '<i class="glyphicon glyphicon-plus"></i> Nuevo ajuste', "class": "btn btn-primary menu-tab") }}
 {{ link_to("cob_ajuste/nuevafechareporte", '<i class="glyphicon glyphicon-plus"></i> Fechas de reporte', "class": "btn btn-primary menu-tab") }}
 {{ link_to("cob_ajuste/asignar", '<i class="glyphicon glyphicon-calendar"></i> Asignar ajustes a fecha', "class": "btn btn-primary menu-tab") }}
-{{ link_to("cob_ajuste/asignarperiodo", '<i class="glyphicon glyphicon-list-alt"></i> Asignar ajustes a periodo', "class": "btn btn-primary menu-tab") }}
+{{ link_to("cob_ajuste/asignarperiodos", '<i class="glyphicon glyphicon-list-alt"></i> Asignar ajustes a periodo', "class": "btn btn-primary menu-tab") }}
 {{ link_to("cob_ajuste/reportes", '<i class="glyphicon glyphicon-list-alt"></i> Reportes', "class": "btn btn-primary menu-tab") }}
 {% if (not(cob_ajuste is empty)) %}
 <!-- Modal -->

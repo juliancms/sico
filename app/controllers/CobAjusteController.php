@@ -58,13 +58,18 @@ class CobAjusteController extends ControllerBase
     /**
      * Formulario para agregar ajustes a un periodo antes de la fecha de facturación
      */
-    public function asignarperiodoAction()
+    public function asignarperiodoAction($id_periodo)
     {
     	$this->persistent->parameters = null;
     	$this->assets
     	->addJs('js/parsley.min.js')
     	->addJs('js/parsley.extend.js');
-    	$this->view->ajustes = CobAjuste::find(["(id_ajuste_reportado IS NULL OR id_ajuste_reportado = 0) AND (ajusteDentroPeriodo = 0 OR ajusteDentroPeriodo IS NULL) AND (certificar = 3 OR certificar = 4)", 'order' => 'datetime DESC']);    	
+    	$cob_ajuste = CobAjuste::find(["(fecha_ajuste_reportado IS NULL OR fecha_ajuste_reportado = '0000-00-00') AND (ajusteDentroPeriodo = 0 OR ajusteDentroPeriodo IS NULL) AND (certificar = 3 OR certificar = 4) AND (id_periodo = $id_periodo)", 'order' => 'datetime DESC']);
+    	if (count($cob_ajuste) == 0) {
+    		$this->flash->error("No existen ajustes disponibles para ser asignados");
+    		return $this->response->redirect("cob_ajuste/index");
+    	}
+    	$this->view->ajustes = $cob_ajuste;
     }
     
     /**
@@ -76,7 +81,13 @@ class CobAjusteController extends ControllerBase
     	$this->assets
     	->addJs('js/parsley.min.js')
     	->addJs('js/parsley.extend.js');
-    	$this->view->ajustes = CobAjuste::find(["(id_ajuste_reportado IS NULL OR id_ajuste_reportado = 0) AND (ajusteDentroPeriodo = 0 OR ajusteDentroPeriodo IS NULL) AND (certificar = 3 OR certificar = 4)", 'order' => 'datetime DESC']);
+    	
+    	$cob_ajuste = CobAjuste::find(["(fecha_ajuste_reportado IS NULL OR fecha_ajuste_reportado = '0000-00-00') AND (ajusteDentroPeriodo = 0 OR ajusteDentroPeriodo IS NULL) AND (certificar = 3 OR certificar = 4)", 'order' => 'datetime DESC', 'group' => 'fecha_ajuste_reportado']);
+    	if (count($cob_ajuste) == 0) {
+    		$this->flash->error("No existen ajustes disponibles para ser asignados");
+    		return $this->response->redirect("cob_ajuste/index");
+    	}
+    	$this->view->ajustes = $cob_ajuste;
     }
     
     /**
