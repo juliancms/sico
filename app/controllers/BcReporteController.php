@@ -248,4 +248,41 @@ class BcReporteController extends ControllerBase
     	$this->view->contrato = $periodos[0];
     	$this->view->periodos = $periodos;
     }
+    
+    /**
+     * Reporte de liquidación para un contrato
+     */
+    public function contrato_liquidacionAction($id_contrato)
+    {
+    	$this->assets
+    	->addJs('js/jquery.tablesorter.min.js')
+    	->addJs('js/jquery.tablesorter.widgets.js')
+    	->addJs('js/multifilter.min.js')
+    	->addJs('js/reporte.js');
+    	$reporte_contrato = CobActaconteoPersonaFacturacion::find(array("id_contrato = $id_contrato"));
+    	$this->view->beneficiarios = $reporte_contrato;
+    	$this->view->contrato = $reporte_contrato[0];
+    }
+    /**
+     * Reporte de liquidación para un contrato
+     */
+    public function contratos_liquidacionAction()
+    {
+    }
+    /**
+     * Reporte de liquidación para un contrato
+     */
+    public function buscar_contratoliquidacionAction()
+    {
+    	if (!$this->request->isPost()) {
+    		return $this->response->redirect("bc_reporte/contratos_liquidacion");
+    	}
+    	$id_contrato = $this->request->getPost("id_contrato");
+    	$buscar_contrato = CobActaconteoPersonaFacturacion::findFirstByid_contrato($id_contrato);
+    	if (!$buscar_contrato) {
+    		$this->flash->error("El contrato no existe");
+    		return $this->response->redirect("bc_reporte/contratos_liquidacion");
+    	}
+    	return $this->response->redirect("bc_reporte/contrato_liquidacion/$id_contrato");
+    }
 }

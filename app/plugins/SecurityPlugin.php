@@ -295,6 +295,12 @@ class SecurityPlugin extends Plugin
     		),
     		'beneficiarios_contratoajustes' => array(
     				'nivelPermiso' => '4'
+    		),'contratos_liquidacion' => array(
+    				'nivelPermiso' => '1'
+    		),'contrato_liquidacion' => array(
+    				'nivelPermiso' => '1'
+    		),'buscar_contratoliquidacion' => array(
+    				'nivelPermiso' => '1'
     		)
     	),
     	'cob_verificacion' => array(

@@ -96,23 +96,7 @@ class Elements extends Component
     		'cob_verificacion' => array(
     				'caption' => 'Verificaciones',
     				'action' => 'index'
-    		),
-            'bc_carga' => array(
-                'caption' => 'Cargas',
-                'action' => 'index'
-            ),
-    		'cob_ajuste' => array(
-    				'caption' => 'Ajustes',
-    				'action' => 'index'
-    		),
-        	'ibc_usuario' => array(
-        		'caption' => 'Usuarios',
-        		'action' => 'index'
-        	),
-        	'bc_reporte' => array(
-        		'caption' => 'Reportes Prestadores',
-        		'action' => 'oferentes_contratos'
-        	)
+    		)
     );
     
     private $_headerMenuOferente = array(
@@ -193,6 +177,15 @@ class Elements extends Component
             	$menu = $this->_headerMenuComponente;
             } else {
             	$menu = $this->_headerMenu;
+            	
+            	if($user['nivel'] <= 1){
+            		$menu ['bc_carga'] = array ('caption' => 'Cargas', 'action' => 'index');
+            	}
+            	if($user['nivel'] <= 2){
+            		$menu ['cob_ajuste'] = array ('caption' => 'Ajustes', 'action' => 'index');
+            		$menu ['bc_reporte'] = array ('caption' => 'Reportes', 'action' => '');
+            		$menu ['ibc_usuario'] = array ('caption' => 'Usuarios', 'action' => 'index');
+            	}
             	$menu_usuario .= '<li role="presentation" class="divider"></li>';
             	$menu_usuario .= '<li><a target="_blank" href="http://interventoriabuencomienzo.org/redirect_server2.php?sico">Permisos</a></li>';
             	$menu_usuario .= '<li><a target="_blank" href="http://www.asesoriayconsultoria.pascualbravo.org/index.php?option=com_content&amp;view=article&amp;id=314&amp;Itemid=183">Reporte de Pago</a></li>';
@@ -200,13 +193,27 @@ class Elements extends Component
             	$menu_usuario .= '<li><a target="_blank" href="http://interventoriabuencomienzo.org/redirect_owncloud.php">Owncloud</a></li>';
             }
             foreach ($menu as $controller => $option) {
-            	if ($controllerName == $controller) {
-            		echo '<li class="active">';
+            	if($controller == "bc_reporte"){
+            		if ($controllerName == $controller) {
+            			echo '<li class="dropdown bc_reporte active">';
+            		} else {
+            			echo '<li class="dropdown bc_reporte">';
+            		}
+            		echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown">Reportes <b class="caret"></b></a>';
+            		echo '<ul class="dropdown-menu">';
+            		echo '<li>'.$this->tag->linkTo("bc_reporte/contratos_liquidacion", "Generar Reporte Liquidación").'</li>';
+            		echo '<li>'.$this->tag->linkTo("bc_reporte/oferentes_contratos", "Reportes Prestadores").'</li>';
+            		echo '</ul>';
+            		echo '</li>';
             	} else {
-            		echo '<li>';
+            		if ($controllerName == $controller) {
+            			echo '<li class="active">';
+            		} else {
+            			echo '<li>';
+            		}
+            		echo $this->tag->linkTo($controller . '/' . $option['action'], $option['caption']);
+            		echo '</li>';
             	}
-            	echo $this->tag->linkTo($controller . '/' . $option['action'], $option['caption']);
-            	echo '</li>';
             }
             echo '</ul>';
             echo '</div>';

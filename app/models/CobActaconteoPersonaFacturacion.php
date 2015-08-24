@@ -1,5 +1,5 @@
 <?php
-
+use Phalcon\DI\FactoryDefault;
 class CobActaconteoPersonaFacturacion extends \Phalcon\Mvc\Model
 {
 
@@ -378,6 +378,47 @@ class CobActaconteoPersonaFacturacion extends \Phalcon\Mvc\Model
     			break;
     		case 4:
     			return "Certificar atención por ajuste";
+    			break;
+    	}
+    }
+    
+    /**
+     * Returns a human representation of 'certificacion'
+     *
+     * @return string
+     */
+    public function getPeriodo()
+    {
+    	if($this->periodo == 1){
+    		return "ALISTAMIENTO_2015";
+    	} else {
+    		$conversiones = $this->getDI()->getConversiones();
+    		return $conversiones->fecha(9, $this->CobPeriodo->fecha);
+    	}
+    }
+    
+    /**
+     * Returns a human representation of 'certificacion'
+     *
+     * @return string
+     */
+    public function getCertificacionLiquidacion()
+    {
+    	switch ($this->certificacionLiquidacion) {
+    		case 0:
+    			return "PENDIENTE_CERTIFICACION_" . $this->getPeriodo();
+    			break;
+    		case 1:
+    			return "CERTIFICAR_ATENCION_" . $this->getPeriodo();
+    			break;
+    		case 2:
+    			return "NO_CERTIFICAR_ATENCION_" . $this->getPeriodo();
+    			break;
+    		case 3:
+    			return "NO_CERTIFICAR_ATENCION(AJUSTE)_" . $this->getPeriodo();
+    			break;
+    		case 4:
+    			return "CERTIFICAR_ATENCION(AJUSTE)_" . $this->getPeriodo();
     			break;
     	}
     }
