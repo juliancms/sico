@@ -193,7 +193,7 @@ class Elements extends Component
             	$menu_usuario .= '<li><a target="_blank" href="http://interventoriabuencomienzo.org/redirect_owncloud.php">Owncloud</a></li>';
             }
             foreach ($menu as $controller => $option) {
-            	if($controller == "bc_reporte"){
+            	if($controller == "bc_reporte" && $user['nivel'] <= 2){
             		if ($controllerName == $controller) {
             			echo '<li class="dropdown bc_reporte active">';
             		} else {

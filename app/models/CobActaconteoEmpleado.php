@@ -8,6 +8,18 @@ class CobActaconteoEmpleado extends \Phalcon\Mvc\Model
      * @var integer
      */
     public $id_actaconteo;
+    
+    /**
+     *
+     * @var integer
+     */
+    public $id_contrato;
+    
+    /**
+     *
+     * @var integer
+     */
+    public $id_periodo;
 
     /**
      *

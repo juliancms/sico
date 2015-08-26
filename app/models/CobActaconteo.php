@@ -472,6 +472,10 @@ class CobActaconteo extends \Phalcon\Mvc\Model
   			$html .= "<div class='paginacion'>PÁGINA $p</div>";
   			//Si no es Entorno Comunitario Itinerante muestra la lista de empleados
   			if($acta->id_modalidad != 12){
+  				$id_periodo_anterior = CobActaconteoEmpleado::maximum(array("column" => "id_periodo", "conditions" => "id_periodo < '$acta->id_periodo' AND id_contrato = '$acta->id_contrato'"));
+  				if($id_periodo_anterior){
+  					$empleados = CobActaconteoEmpleado::find("id_contrato = $acta->id_contrato AND id_periodo = $acta->id_periodo");
+  				}
 	  			$html .= $encabezado;
 	  			$html .= "<div class='seccion' id='listado_empleados'>
 	  			<div class='fila center bold'><div style='border:none; width: 100%'>6. LISTADO DE DOCENTES Y AUXILIARES EDUCATIVOS DE LA SEDE</div></div>
