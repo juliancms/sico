@@ -227,7 +227,7 @@ class CobAjuste extends \Phalcon\Mvc\Model
     
     public function getFecha()
     {
-    	if($this->CobAjusteReportado->fecha) {
+    	if(isset($this->CobAjusteReportado->fecha)) {
     		$conversiones = $this->getDI()->getConversiones();
     		return $conversiones->fecha(3, $this->CobAjusteReportado->fecha);
     	} else {
