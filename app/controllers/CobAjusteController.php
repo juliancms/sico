@@ -58,13 +58,19 @@ class CobAjusteController extends ControllerBase
     /**
      * Formulario para agregar ajustes a un periodo antes de la fecha de facturación
      */
-    public function asignarperiodoAction($id_periodo)
+    public function asignarperiodoAction($fecha_ajuste_reportado)
     {
     	$this->persistent->parameters = null;
     	$this->assets
     	->addJs('js/parsley.min.js')
     	->addJs('js/parsley.extend.js');
-    	$cob_ajuste = CobAjuste::find(["(fecha_ajuste_reportado IS NULL OR fecha_ajuste_reportado = '0000-00-00') AND (ajusteDentroPeriodo = 0 OR ajusteDentroPeriodo IS NULL) AND (certificar = 3 OR certificar = 4) AND (id_periodo = $id_periodo)", 'order' => 'datetime DESC']);
+    	$sql_periodos = CobPeriodo::find(["fecha = '$fecha_ajuste_reportado'", "group" => "id_periodo"]);
+    	$periodos = array();
+    	foreach($sql_periodos as $row){
+    		$periodos[] = $row->id_periodo;
+    	}
+    	$periodos = implode(', ', $periodos);
+    	$cob_ajuste = CobAjuste::find(["(fecha_ajuste_reportado IS NULL OR fecha_ajuste_reportado = '0000-00-00') AND (ajusteDentroPeriodo = 0 OR ajusteDentroPeriodo IS NULL) AND (certificar = 3 OR certificar = 4) AND (id_periodo IN ($periodos))", 'order' => 'datetime DESC']);
     	if (count($cob_ajuste) == 0) {
     		$this->flash->error("No existen ajustes disponibles para ser asignados");
     		return $this->response->redirect("cob_ajuste/index");
@@ -303,11 +309,18 @@ class CobAjusteController extends ControllerBase
     	if (!$this->request->isPost()) {
     		return $this->response->redirect("cob_ajuste/asignar");
     	}
-    	$fecha = explode("-", $this->request->getPost("fechaReportado"));
+    	$fechas = $this->request->getPost("fechaReportado");
+    	$id_ajuste_reportado = array();
+    	$fecha_ajuste_reportado = array();
+    	foreach($fechas as $row){
+    		$fecha = explode("x", $row);
+    		$id_ajuste_reportado[] = $fecha[0];
+    		$fecha_ajuste_reportado[] = $fecha[1];
+    	}
     	$elementos = array(
     			'id_ajuste' => $this->request->getPost("id_ajuste"),
-    			'id_ajuste_reportado' => $fecha[0],
-    			'fecha_ajuste_reportado' => $fecha[1]
+    			'id_ajuste_reportado' => $id_ajuste_reportado,
+    			'fecha_ajuste_reportado' => $fecha_ajuste_reportado
     	);
     	$sql = $this->conversiones->multipleupdate("cob_ajuste", $elementos, "id_ajuste");
     	$db = $this->getDI()->getDb();

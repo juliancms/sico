@@ -14,8 +14,8 @@
     {% for cob_ajuste in ajustes %}
         <tr>
         <?php $periodo = $this->conversiones->fecha(5, $cob_ajuste->CobPeriodo->fecha); ?>
-        <td>{{ link_to("cob_ajuste/asignarperiodo/"~cob_ajuste.CobPeriodo.id_periodo, periodo) }}</td>
-        <td>{{ link_to("cob_ajuste/asignarperiodo/"~cob_ajuste.CobPeriodo.id_periodo, cob_ajuste.CobPeriodo.fecha) }}</td>
+        <td>{{ link_to("cob_ajuste/asignarperiodo/"~cob_ajuste.CobPeriodo.fecha, periodo) }}</td>
+        <td>{{ link_to("cob_ajuste/asignarperiodo/"~cob_ajuste.CobPeriodo.fecha, cob_ajuste.CobPeriodo.fecha) }}</td>
         </tr>
     {% endfor %}
     </tbody>
