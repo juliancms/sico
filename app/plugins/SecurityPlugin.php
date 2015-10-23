@@ -346,6 +346,23 @@ class SecurityPlugin extends Plugin
     				'nivelPermiso' => '3'
     		)
     	),
+    	'cob_actaverificaciontelefonica' => array(
+    		'ver' => array(
+    				'nivelPermiso' => '3'
+    		),
+    		'datos' => array(
+    				'nivelPermiso' => '3'
+    		),
+    		'guardardatos' => array(
+    				'nivelPermiso' => '3'
+    		),
+    		'beneficiarios' => array(
+    				'nivelPermiso' => '3'
+    		),
+    		'guardarbeneficiarios' => array(
+    				'nivelPermiso' => '3'
+    		)
+    	),
     	'cob_actaverificacioncomputo' => array(
     		'ver' => array(
     				'nivelPermiso' => '3'

@@ -387,6 +387,13 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     	$html .= $pie_pagina;
     	$html .= "<div class='paginacion'>PÁGINA DEL PRESTADOR</div>";
     	//Página 1
+    	$aiepi = "";
+    	//Si el acta es I8H, LDK, PP ó JI se coloca el mensaje AIEPI
+    	if($acta->id_modalidad == 1 || $acta->id_modalidad == 6 || $acta->id_modalidad == 8){
+    		$aiepi = "<br>SE ENCONTRARON ____ BENEFICIARIOS ATENDIDOS POR ____ DOCENTES Y ____ AUXILIARES DOCENTES.<br>SE PRESENTARON ____ FORMATOS AIEPI DE LOS NIÑOS AUSENTES PARA SER REVISADOS POR LA INTERVENTORIA.<BR>FIRMA RESPONSABLE DE LA SEDE ________________________________________";
+    	} else if ($acta->id_modalidad == 7){
+    		$aiepi = "<br>____/____/________ ASISTEN ____ GRUPOS, ATENDIDOS POR ____ DOCUENTES<br>____/____/________ ASISTEN ____ GRUPOS, ATENDIDOS POR ____ DOCUENTES<br>____/____/________ ASISTEN ____ GRUPOS, ATENDIDOS POR ____ DOCUENTES<br>____/____/________ ASISTEN ____ GRUPOS, ATENDIDOS POR ____ DOCUENTES<br>SE PRESENTARON ____ FORMATOS AIEPI DE LOS NIÑOS AUSENTES PARA SER REVISADOS POR LA INTERVENTORIA.<BR>FIRMA RESPONSABLE DE LA SEDE ________________________________________";
+    	}
     	$html .= $encabezado;
     	$html .= $totalizacion_asistencia;
     	$html .= "
@@ -413,7 +420,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     	</div>
     	<div class='seccion' id='observaciones'>
     		<div class='fila center bold'><div style='border:none; width: 100%'>3. OBSERVACIONES AL MOMENTO DE LA INTERVENTORÍA</div></div>
-    		<div class='fila observacion'><div>3.1 OBSERVACIÓN DEL INTERVENTOR:</div></div>
+    		<div class='fila observacion'><div>3.1 OBSERVACIÓN DEL INTERVENTOR:$aiepi</div></div>
     		<div class='fila observacion'><div>3.2 OBSERVACIÓN DEL ENCARGADO DE LA SEDE:</div></div>
     		<div class='clear'></div>
     	</div>";

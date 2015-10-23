@@ -39,7 +39,7 @@
             <td>{{ contrato.CobActaconteoPersonaFacturacion.CobPeriodoContratosedecupos.cuposSostenibilidad }}</td>
             <td>{{ cuposTotal }}</td>
             <td>{{ cuposSIBCcontrato }}</td>
-            <td>{{ cuposCertificados }}</td>
+            <td>{{ cuposCertificados }}<br><?php echo $totalajusteanterior['total']; ?></td>
             <td>{{ totalajuste['total'] }}</td>
             <td>{{ totalajuste['pagos'] }}</td>
             <td>{% if (totalajuste['descuentos'] > 0) %}-{% endif %}{{ totalajuste['descuentos'] }}</td>

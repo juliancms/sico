@@ -9,6 +9,7 @@
         	<select id="tipo" name="tipo" class="form-control">
 					<option value="1">Revisión de Carpetas</option>
 					<option value="2">Equipo de Cómputo</option>
+					<option value="3">Telefónica</option>
 			</select>
         </div>
     </div>

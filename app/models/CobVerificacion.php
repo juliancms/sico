@@ -50,6 +50,8 @@ class CobVerificacion extends \Phalcon\Mvc\Model
     		return 'Revisión de Carpetas';
     	} else if($this->tipo == 2) {
     		return 'Equipo de Cómputo';
+    	} else if($this->tipo == 3) {
+    		return 'Telefónica';
     	}
     }
     
