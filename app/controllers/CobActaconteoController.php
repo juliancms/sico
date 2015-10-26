@@ -275,11 +275,11 @@ class CobActaconteoController extends ControllerBase
     		return $this->response->redirect("cob_periodo/");
     	}
     	$this->guardarActaCerrada($acta, $this->user['nivel']);
-    	$eliminar_adicionales = $this->request->getPost("eliminar_adicionales");
-    	if($eliminar_adicionales){
-    		$sql = $this->conversiones->multipledelete("cob_actaconteo_empleado", "id_actaconteo_empleado", $eliminar_adicionales);
-    		$query = $db->query($sql);
-    	}
+//     	$eliminar_adicionales = $this->request->getPost("eliminar_adicionales");
+//     	if($eliminar_adicionales){
+//     		$sql = $this->conversiones->multipledelete("cob_actaconteo_empleado", "id_actaconteo_empleado", $eliminar_adicionales);
+//     		$query = $db->query($sql);
+//     	}
     	if($this->request->getPost("numDocumento")){
     		$elementos = array(
     				'numDocumento' => $this->request->getPost("numDocumento"),
@@ -287,7 +287,10 @@ class CobActaconteoController extends ControllerBase
     				'cargo' => $this->request->getPost("cargo"),
     				'asistencia' => $this->request->getPost("asistencia"),
     				'dotacion' => $this->request->getPost("dotacion"),
-    				'id_actaconteo' => $id_actaconteo
+    				'id_actaconteo' => $id_actaconteo,
+    				'id_periodo' => $acta->id_periodo,
+    				'id_contrato' => $acta->id_contrato,
+    				'id_sede' => $acta->id_sede
     		);
     		$fechas = $this->request->getPost("fecha");
     		if(count($fechas) > 0) {
@@ -420,7 +423,14 @@ class CobActaconteoController extends ControllerBase
     		->addJs('js/parsley.extend.js')
     		->addJs('js/jquery.autoNumeric.js')
     		->addJs('js/empleados.js');
-    		$this->view->empleados = $acta->getCobActaconteoEmpleado(['order' => 'id_actaconteo_empleado asc']);
+    		$empleados = $acta->getCobActaconteoEmpleado(['order' => 'id_actaconteo_empleado asc']);
+    		if(count($empleados) == 0){
+    			$id_periodo_anterior = CobActaconteoEmpleado::maximum(array("column" => "id_periodo", "conditions" => "id_periodo < '$acta->id_periodo' AND id_contrato = '$acta->id_contrato'"));
+    			if($id_periodo_anterior){
+    				$empleados = CobActaconteoEmpleado::find("id_contrato = $acta->id_contrato AND id_sede = $acta->id_sede AND id_periodo = $id_periodo_anterior");
+    			}
+    		}
+    		$this->view->empleados = $empleados;
     		$this->view->acta = $acta;
     		$this->view->id_actaconteo = $id_actaconteo;
     		$this->view->dotacion = $this->elements->getSelect("dotacion");

@@ -8,6 +8,8 @@
             <th>Documento</th>
             <th>Nombre Completo</th>
             <th>Grupo</th>
+            <th>Teléfono</th>
+            <th>Teléfono Contacto</th>
             <th>Persona que contesta</th>
             <th>Parentesco</th>
             <th>Observación</th>
@@ -21,6 +23,8 @@
         	<td><input type="hidden" name="id_actaverificaciontelefonica_persona[]" value="{{ beneficiario.id_actaverificaciontelefonica_persona }}">{{ beneficiario.numDocumento }}</td>
             <td>{{ nombre|join(' ') }}</td>
             <td>{{ beneficiario.grupo }}</td>
+            <td>{{ beneficiario.beneficiarioTelefono }}</td>
+            <td>{{ text_field("telefonoContacto[]", "value" : beneficiario.telefonoContacto, "class" : "form-control") }}</td>
             <td>{{ text_field("personaContesta[]", "value" : beneficiario.personaContesta, "class" : "form-control") }}</td>
             <td>{{ text_field("parentesco[]", "value" : beneficiario.parentesco, "class" : "form-control") }}</td>
             <td>{{ text_field("observacion[]", "value" : beneficiario.observacion, "class" : "form-control") }}</td>

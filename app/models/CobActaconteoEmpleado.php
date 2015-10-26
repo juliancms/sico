@@ -56,5 +56,19 @@ class CobActaconteoEmpleado extends \Phalcon\Mvc\Model
      * @var string
      */
     public $fecha;
+    
+    /**
+     * Retorna cargo empleado en texto
+     *
+     * @return string
+     */
+    public function getCargoEmpleado()
+    {
+    	if ($this->cargo == 1) {
+    		return "Auxiliar Educativo";
+    	} else if ($this->cargo == 2){
+    		return "Docente";
+    	}
+    }
 
 }

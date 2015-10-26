@@ -479,17 +479,43 @@ class CobActaconteo extends \Phalcon\Mvc\Model
   			$html .= "<div class='paginacion'>PÁGINA $p</div>";
   			//Si no es Entorno Comunitario Itinerante muestra la lista de empleados
   			if($acta->id_modalidad != 12){
-  				$id_periodo_anterior = CobActaconteoEmpleado::maximum(array("column" => "id_periodo", "conditions" => "id_periodo < '$acta->id_periodo' AND id_contrato = '$acta->id_contrato'"));
-  				if($id_periodo_anterior){
-  					$empleados = CobActaconteoEmpleado::find("id_contrato = $acta->id_contrato AND id_periodo = $acta->id_periodo");
-  				}
-	  			$html .= $encabezado;
-	  			$html .= "<div class='seccion' id='listado_empleados'>
+  				$encabezado_empleados = "<div class='seccion' id='listado_empleados'>
 	  			<div class='fila center bold'><div style='border:none; width: 100%'>6. LISTADO DE DOCENTES Y AUXILIARES EDUCATIVOS DE LA SEDE</div></div>
 	  			<div class='fila colb'><div style='width: 20px;'>#</div><div style='width: 120px;'>6.1 DOCUMENTO</div><div style='width: 200px'>6.2 NOMBRE COMPLETO</div><div style='width: 70px'>6.3 CARGO</div><div style='width: 70px'>6.4 ASISTENCIA</div><div style='width: 70px'>6.5 DOTACIÓN</div><div>6.6 FECHA VISITA</div></div>";
-	  			for($i = 1; $i <= 30; $i++){
-	  				$html .="<div class='fila colb'><div style='width: 20px;'>$i</div><div style='width: 120px;'></div><div style='width: 200px'></div><div style='width: 70px;'></div><div style='width: 70px'></div><div style='width: 70px'></div><div style='width: 70px'></div></div>";
-	  			}
+  				$html .= $encabezado;
+  				$html .= $encabezado_empleados;
+  				$id_periodo_anterior = CobActaconteoEmpleado::maximum(array("column" => "id_periodo", "conditions" => "id_periodo < '$acta->id_periodo' AND id_contrato = '$acta->id_contrato'"));
+  				$empleados = 0;
+  				if($id_periodo_anterior){
+  					$empleados = CobActaconteoEmpleado::find("id_contrato = $acta->id_contrato AND id_sede = $acta->id_sede AND id_periodo = $id_periodo_anterior");
+  				}
+  				if(count($empleados > 0)){
+  					$i = 1;
+  					$j = 1;
+  					foreach($empleados as $row){
+  						$i = ($i<10) ? "0" .$i : $i;
+  						if($j == 31){
+  							$j = 1;
+  							$p++;
+  							$html .= "<div class='clear'></div></div>" . $pie_pagina;
+  							$html .= "<div class='paginacion'>PÁGINA $p</div>";
+  							$html .= $encabezado;
+  							$html .= $encabezado_empleados;
+  						}
+  						$html .="<div class='fila colb'><div style='width: 20px;'>$i</div><div style='width: 120px;'>$row->numDocumento</div><div style='width: 200px'>$row->nombre</div><div style='width: 70px;'>".$row->getCargoEmpleado()."</div><div style='width: 70px'></div><div style='width: 70px'></div><div style='width: 70px'></div></div>";
+  						$i++;
+  						$j++;
+  					}  				
+  					for($i = $j; $i <= 30; $i++){
+  						$i = ($i<10) ? "0" .$i : $i;
+  						$html .="<div class='fila colb'><div style='width: 20px;'>$i</div><div style='width: 120px;'></div><div style='width: 200px'></div><div style='width: 70px;'></div><div style='width: 70px'></div><div style='width: 70px'></div><div style='width: 70px'></div></div>";
+  					}
+  				} else {
+  					for($i = 1; $i <= 30; $i++){
+  						$i = ($i<10) ? "0" .$i : $i;
+  						$html .="<div class='fila colb'><div style='width: 20px;'>$i</div><div style='width: 120px;'></div><div style='width: 200px'></div><div style='width: 70px;'></div><div style='width: 70px'></div><div style='width: 70px'></div><div style='width: 70px'></div></div>";
+  					}
+  				}
 	  			$p++;
 	  			$html .= "<div class='clear'></div></div>" . $pie_pagina;
 	  			$html .= "<div class='paginacion'>PÁGINA $p</div>";
