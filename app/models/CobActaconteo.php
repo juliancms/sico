@@ -389,10 +389,10 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     	//Página 1
     	$aiepi = "";
     	//Si el acta es I8H, LDK, PP ó JI se coloca el mensaje AIEPI
-    	if($acta->id_modalidad == 1 || $acta->id_modalidad == 6 || $acta->id_modalidad == 8){
-    		$aiepi = "<br>SE ENCONTRARON ____ BENEFICIARIOS ATENDIDOS POR ____ DOCENTES Y ____ AUXILIARES DOCENTES.<br>SE PRESENTARON ____ FORMATOS AIEPI DE LOS NIÑOS AUSENTES PARA SER REVISADOS POR LA INTERVENTORIA.<BR>FIRMA RESPONSABLE DE LA SEDE ________________________________________";
-    	} else if ($acta->id_modalidad == 7){
-    		$aiepi = "<br>____/____/________ ASISTEN ____ GRUPOS, ATENDIDOS POR ____ DOCUENTES<br>____/____/________ ASISTEN ____ GRUPOS, ATENDIDOS POR ____ DOCUENTES<br>____/____/________ ASISTEN ____ GRUPOS, ATENDIDOS POR ____ DOCUENTES<br>____/____/________ ASISTEN ____ GRUPOS, ATENDIDOS POR ____ DOCUENTES<br>SE PRESENTARON ____ FORMATOS AIEPI DE LOS NIÑOS AUSENTES PARA SER REVISADOS POR LA INTERVENTORIA.<BR>FIRMA RESPONSABLE DE LA SEDE ________________________________________";
+    	if($acta->id_modalidad == 1 || $acta->id_modalidad == 6 || $acta->id_modalidad == 7 || $acta->id_modalidad == 8){
+    		$aiepi = "<br>SE ENCONTRARON ____ BENEFICIARIOS ATENDIDOS POR ____ DOCENTES Y ____ AUXILIARES DOCENTES.<br>SE PRESENTARON FORMATOS AIEPI DE LOS NIÑOS AUSENTES PARA SER REVISADOS POR LA INTERVENTORIA: <u>SÍ</u> - <u>NO</u><br>FIRMA RESPONSABLE DE LA SEDE ________________________________________";
+    	} else if ($acta->id_modalidad == 3){
+    		$aiepi = "<br>____/____/________ ASISTEN ____ GRUPOS, ATENDIDOS POR ____ DOCENTES<br>____/____/________ ASISTEN ____ GRUPOS, ATENDIDOS POR ____ DOCENTES<br>____/____/________ ASISTEN ____ GRUPOS, ATENDIDOS POR ____ DOCENTES<br>____/____/________ ASISTEN ____ GRUPOS, ATENDIDOS POR ____ DOCENTES<br>SE PRESENTARON FORMATOS AIEPI DE LOS NIÑOS AUSENTES PARA SER REVISADOS POR LA INTERVENTORIA: <u>SÍ</u> - <u>NO</u><br>FIRMA RESPONSABLE DE LA SEDE ________________________________________";
     	}
     	$html .= $encabezado;
     	$html .= $totalizacion_asistencia;
