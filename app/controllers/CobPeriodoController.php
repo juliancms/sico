@@ -536,7 +536,7 @@ class CobPeriodoController extends ControllerBase
     }
     
     /**
-     * Duplicar una acta
+     * Cerrar periodo
      */
     public function cerrarAction($id_periodo){
     	$cob_periodo = CobPeriodo::findFirstByid_periodo($id_periodo);

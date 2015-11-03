@@ -16,7 +16,7 @@
         <h4 class="modal-title" id="myModalLabel">Eliminar</h4>
       </div>
       <div class="modal-body">
-          <p>¿Estás seguro de que deseas eliminar el elemento con ID <span class="fila_eliminar"></span> de la base de datos?</p>
+          <p>¿Estás seguro de que desea eliminar el ajuste de la base de datos?</p>
           <p><div class="alert alert-danger"><i class="glyphicon glyphicon-warning-sign"></i> <strong>Atención: </strong>Después de eliminado no podrá ser recuperado y la información asociada se perderá.</div></p>
       </div>
       <div class="modal-footer">
@@ -28,8 +28,8 @@
 </div><!-- /.modal -->
 <table class="table table-bordered table-hover">
     <thead>
-        <tr>
-        	<th>#</th>
+        <tr>{% if (nivel <= 1) %}<th>Acciones</th>{% endif %}
+        	<th>ID<input autocomplete='off' class='filter form-control input-sm' name='id' data-col='id'/></th>
             <th>Periodo<input autocomplete='off' class='filter form-control input-sm' name='periodo' data-col='periodo'/></th>
             <th>Contrato<input autocomplete='off' class='filter form-control input-sm' name='contrato' data-col='contrato'/></th>
             <th>Modalidad<input autocomplete='off' class='filter form-control input-sm' name='modalidad' data-col='modalidad'/></th>
@@ -47,7 +47,10 @@
     {% for cob_ajuste in cob_ajuste %}
     	{% set nombre = {cob_ajuste.CobActaconteoPersonaFacturacion.primerNombre, cob_ajuste.CobActaconteoPersonaFacturacion.segundoNombre, cob_ajuste.CobActaconteoPersonaFacturacion.primerApellido, cob_ajuste.CobActaconteoPersonaFacturacion.segundoApellido} %}
         <tr>
-        <td>{{ loop.index }}</td>
+        {% if (nivel <= 1) %}
+        <td><a href="#eliminar_elemento" rel="tooltip" title="Eliminar" class="eliminar_fila" data-toggle = "modal" id="{{ url("cob_ajuste/eliminar/"~cob_ajuste.id_ajuste) }}"><i class="glyphicon glyphicon-trash"></i></a></td>
+		{% endif %}
+        <td>{{ cob_ajuste.id_ajuste }}</td>
 		<td><?php echo $this->conversiones->fecha(5, $cob_ajuste->CobPeriodo->fecha); ?></td>
         <td>{{ cob_ajuste.CobActaconteoPersonaFacturacion.id_contrato }}</td>
         <td>{{ cob_ajuste.CobActaconteo.modalidad_nombre }}</td>

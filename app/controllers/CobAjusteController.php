@@ -437,26 +437,49 @@ class CobAjusteController extends ControllerBase
      */
     public function eliminarAction($id_ajuste)
     {
-    
-    	$cob_ajuste = CobAjuste::findFirstByid_ajuste($id_ajuste);
-    	if (!$cob_ajuste) {
-    		$this->flash->error("El ajuste no fue encontrado");
-    
-    		return $this->response->redirect("cob_ajuste/");
-    	}
-    
-    	if (!$cob_ajuste->delete()) {
-    
-    		foreach ($cob_ajuste->getMessages() as $message) {
-    			$this->flash->error($message);
+    	$nivel = $this->user['nivel'];
+    	if($nivel <= 1){
+    		$cob_ajuste = CobAjuste::findFirstByid_ajuste($id_ajuste);
+    		if (!$cob_ajuste) {
+    			$this->flash->error("El ajuste no fue encontrado");
+    			return $this->response->redirect("cob_ajuste/");
     		}
-    
+    		if($cob_ajuste->fecha_ajuste_reportado != NULL){
+    			$this->flash->error("El ajuste no puede ser eliminado porque ya fue reportado, si desea cambiar el estado de certificación debe de agregar el ajuste nuevamente.");
+    			return $this->response->redirect("cob_ajuste/");
+    		}
+    		$id_actaconteo_persona_facturacion = $cob_ajuste->id_actaconteo_persona_facturacion;
+    		if (!$cob_ajuste->delete()) {
+    			foreach ($cob_ajuste->getMessages() as $message) {
+    				$this->flash->error($message);
+    			}
+    			return $this->response->redirect("cob_ajuste/");
+    		}
+    		$ajuste_anterior = CobAjuste::find(["id_ajuste != $id_ajuste AND id_actaconteo_persona_facturacion = $id_actaconteo_persona_facturacion AND (certificar = 3 OR certificar = 4)", 'order' => 'id_ajuste DESC'])->toArray();
+    		$ninofac = CobActaconteoPersonaFacturacion::findFirstByid_actaconteo_persona_facturacion($id_actaconteo_persona_facturacion);
+    		if (count($ajuste_anterior) > 0) {
+    			$certificar = $ajuste_anterior[0]['certificar'];
+    		} else {
+    			if (!$ninofac) {
+    				$this->flash->error("El niño no existe en la base de datos de facturación pero el ajuste fue eliminado, favor informar esto al administrador inmediatamente");
+    				return $this->response->redirect("cob_ajuste");
+    			}
+    			$certificar = $ninofac->certificacionFacturacion;
+    		}
+    		$ninofac->certificacionLiquidacion = $certificar;
+    		if (!$ninofac->save()) {
+    			foreach ($ninofac->getMessages() as $message) {
+    				$this->flash->error($message);
+    			}
+    			return $this->response->redirect("cob_ajuste");
+    		}
+    		$this->flash->success("El ajuste fue eliminado correctamente");
+    		return $this->response->redirect("cob_ajuste/");
+    	} else {
+    		$this->flash->error("Usted no tiene permisos para eliminar ajustes.");
     		return $this->response->redirect("cob_ajuste/");
     	}
-    
-    	$this->flash->success("El ajuste fue eliminado correctamente");
-    
-    	return $this->response->redirect("cob_ajuste/");
+    	
     }
 
 }
