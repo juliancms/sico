@@ -520,7 +520,7 @@ class Elements extends Component
     	}
     
     /**
-     * Returns a select
+     * Selects para formularios
      */
     public function getSelect($select)
     {
