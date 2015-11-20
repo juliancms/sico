@@ -102,6 +102,7 @@ class CobActaverificaciontelefonicaController extends ControllerBase
     	$i = 0;
     	$elementos = array(
     			'id_actaverificaciontelefonica_persona' => $this->request->getPost("id_actaverificaciontelefonica_persona"),
+    			'asistencia' => $this->request->getPost("asistencia"),
     			'telefonoContacto' => $this->request->getPost("telefonoContacto"),
     			'personaContesta' => $this->request->getPost("personaContesta"),
     			'parentesco' => $this->request->getPost("parentesco"),
@@ -143,6 +144,7 @@ class CobActaverificaciontelefonicaController extends ControllerBase
     		$this->view->beneficiarios = $acta->getCobActaverificaciontelefonicaPersona(['order' => 'grupo, primerNombre asc']);
     		$acta->id_acta = $id_actaverificaciontelefonica;
     		$this->view->acta = $acta;
+    		$this->view->asistencia = $this->elements->getSelect("asistenciatelefonica");
     		$this->view->sinonare = $this->elements->getSelect("sinonare");
     		$this->actaCerrada($acta, $this->user['nivel']);
     	}

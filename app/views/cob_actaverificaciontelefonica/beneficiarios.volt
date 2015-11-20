@@ -8,6 +8,7 @@
             <th>Documento</th>
             <th>Nombre Completo</th>
             <th>Grupo</th>
+            <th>Asistencia</th>
             <th>Teléfono</th>
             <th>Teléfono Contacto</th>
             <th>Persona que contesta</th>
@@ -24,6 +25,7 @@
             <td>{{ nombre|join(' ') }}</td>
             <td>{{ beneficiario.grupo }}</td>
             <td>{{ beneficiario.beneficiarioTelefono }}</td>
+            <td>{{ select("asistencia[]", asistencia, "value" : beneficiario.asistencia, "class" : "form-control asistencia required") }}</td>
             <td>{{ text_field("telefonoContacto[]", "value" : beneficiario.telefonoContacto, "class" : "form-control") }}</td>
             <td>{{ text_field("personaContesta[]", "value" : beneficiario.personaContesta, "class" : "form-control") }}</td>
             <td>{{ text_field("parentesco[]", "value" : beneficiario.parentesco, "class" : "form-control") }}</td>

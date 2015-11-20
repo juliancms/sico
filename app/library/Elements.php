@@ -556,6 +556,13 @@ class Elements extends Component
     			'2' => '2. Sí cuenta con dotación, pero no según manual del Programa Buen Comienzo',
     			'3' => '3. No cuenta con ningún tipo de dotación');
     			break;
+    		case "asistenciatelefonica":
+    			return array (
+    			'1' => '1. Asiste',
+    			'4' => '4. Retirado',
+    			'6' => '6. No contesta',
+    			'8' => '8. No cuenta con número telefónico');
+    			break;
     		case "meses":
     			return array("Enero" => "Enero", "Febrero" => "Febrero", "Marzo" => "Marzo", "Abril" => "Abril", "Mayo" => "Mayo", "Junio" => "Junio", "Julio" => "Julio", "Agosto" => "Agosto", "Septiembre" => "Septiembre", "Octubre" => "Octubre", "Noviembre" => "Noviembre", "Diciembre" => "Diciembre");
     			break;
