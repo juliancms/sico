@@ -102,6 +102,7 @@ class CobActaverificaciontelefonicaController extends ControllerBase
     	$i = 0;
     	$elementos = array(
     			'id_actaverificaciontelefonica_persona' => $this->request->getPost("id_actaverificaciontelefonica_persona"),
+    			'telefonoContacto' => $this->request->getPost("telefonoContacto"),
     			'personaContesta' => $this->request->getPost("personaContesta"),
     			'parentesco' => $this->request->getPost("parentesco"),
     			'observacion' => $this->request->getPost("observacion")
