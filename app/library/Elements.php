@@ -559,8 +559,9 @@ class Elements extends Component
     		case "asistenciatelefonica":
     			return array (
     			'1' => '1. Asiste',
+    			'2' => '2. No contesta',
     			'4' => '4. Retirado',
-    			'6' => '6. No contesta',
+    			'6' => '6. No asiste',
     			'7' => '7. Incapacitado',
     			'8' => '8. No cuenta con número telefónico');
     			break;
