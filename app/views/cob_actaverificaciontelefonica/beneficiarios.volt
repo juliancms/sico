@@ -8,8 +8,8 @@
             <th>Documento</th>
             <th>Nombre Completo</th>
             <th>Grupo</th>
-            <th>Asistencia</th>
             <th>Teléfono</th>
+            <th>Asistencia</th>
             <th>Teléfono Contacto</th>
             <th>Persona que contesta</th>
             <th>Parentesco</th>
