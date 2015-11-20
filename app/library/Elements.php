@@ -561,6 +561,7 @@ class Elements extends Component
     			'1' => '1. Asiste',
     			'4' => '4. Retirado',
     			'6' => '6. No contesta',
+    			'7' => '7. Incapacitado',
     			'8' => '8. No cuenta con número telefónico');
     			break;
     		case "meses":
