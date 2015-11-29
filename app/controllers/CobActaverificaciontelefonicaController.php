@@ -172,7 +172,7 @@ class CobActaverificaciontelefonicaController extends ControllerBase
         	$this->flash->error("No han sido digitados los datos del acta.");
         	$error = 1;
         }
-        if($acta->CobActaverificaciontelefonicaPersona[0]->personaContesta == 0){
+        if($acta->CobActaverificaciontelefonicaPersona[0]->asistencia == 0){
         	if($error == 0)
         		$this->flash->notice("<i class='glyphicon glyphicon-exclamation-sign'></i> El acta no puede ser cerrada debido a que:");
         	$this->flash->error("No han sido digitados los beneficiarios del acta.");
