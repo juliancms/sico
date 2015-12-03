@@ -458,12 +458,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
   				$html .= $encabezado;
   				$html .= $encabezado_beneficiarios;
   			}
-  		if($acta->id_periodo = 53 && $acta->id_contrato == 4600058508 && $row->asistencia > 0){
-  				$asistencia = $row->asistencia;
-  		} else {
-  				$asistencia = "";
-  		}
-  		$html .="<div class='fila colb'><div style='width: 20px;'>$i</div><div style='width: 80px;'>$row->numDocumento</div><div style='width: 200px'>$nombre_completo</div><div style='width: 200px;'>$row->grupo</div><div style='width: 70px'>$asistencia</div>$fecha_lista</div>";
+  		$html .="<div class='fila colb'><div style='width: 20px;'>$i</div><div style='width: 80px;'>$row->numDocumento</div><div style='width: 200px'>$nombre_completo</div><div style='width: 200px;'>$row->grupo</div><div style='width: 70px'></div>$fecha_lista</div>";
   			$i++;
   			$j++;
   		}
