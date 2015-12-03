@@ -259,7 +259,7 @@ class BcReporteController extends ControllerBase
     	->addJs('js/jquery.tablesorter.widgets.js')
     	->addJs('js/multifilter.min.js')
     	->addJs('js/reporte.js');
-    	$reporte_contrato = CobActaconteoPersonaFacturacion::find(array("id_contrato = $id_contrato"));
+    	$reporte_contrato = CobActaconteoPersonaFacturacion::find(array("id_contrato = $id_contrato", "order" => " id_periodo ASC"));
     	$this->view->beneficiarios = $reporte_contrato;
     	$this->view->contrato = $reporte_contrato[0];
     }
