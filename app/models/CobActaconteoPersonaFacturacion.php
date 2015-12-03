@@ -420,9 +420,6 @@ class CobActaconteoPersonaFacturacion extends \Phalcon\Mvc\Model
     		case 4:
     			return "CERTIFICAR_ATENCION(AJUSTE)_" . $this->getPeriodo();
     			break;
-    		case 4:
-    			return "CERTIFICAR_ATENCION(AJUSTE)_" . $this->getPeriodo();
-    			break;
     	}
     }
     
