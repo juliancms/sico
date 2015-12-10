@@ -389,9 +389,12 @@ class CobActaconteoPersonaFacturacion extends \Phalcon\Mvc\Model
      */
     public function getPeriodo()
     {
-    	if($this->id_periodo == 1 || $this->id_periodo == 11){
+    	if($this->id_periodo == 11){
     		return "ALISTAMIENTO_2015";
-    	} else {
+    	} else if($this->id_periodo == 1){
+    		return "ENERO_2015";
+    	}	
+    		else {
     		$conversiones = $this->getDI()->getConversiones();
     		return $conversiones->fecha(9, $this->CobPeriodo->fecha);
     	}
