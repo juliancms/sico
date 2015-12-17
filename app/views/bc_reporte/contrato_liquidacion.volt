@@ -33,7 +33,7 @@
             <td>{{ beneficiario.acta3 }}</td>
             <td>{{ beneficiario.CobPeriodo.fecha }}</td>
             <td>{{ beneficiario.id_sede }}</td>
-            <td>{{ beneficiario.CobActaconteo.sede_nombre }}</td>
+            <td>{{ beneficiario.BcSedeContrato.sede_nombre }}</td>
             <td>{{ beneficiario.id_persona }}</td>
             <td>{{ beneficiario.numDocumento }}</td>
             <td>{{ beneficiario.primerNombre }}</td>

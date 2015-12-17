@@ -224,6 +224,7 @@ class CobActaconteoPersonaFacturacion extends \Phalcon\Mvc\Model
     			'reusable' => true,
     			'alias' => 'Motivo3'
     	));
+    	$this->belongsTo(array('id_sede_contrato'), 'BcSedeContrato', array('id_sede_contrato'));
     	$this->belongsTo(array('id_sede_contrato', 'id_periodo'), 'CobActaconteo', array('id_sede_contrato', 'id_periodo'));
     	$this->belongsTo(array('id_sede_contrato', 'id_periodo'), 'CobPeriodoContratosedecupos', array('id_sede_contrato', 'id_periodo'));
     }
