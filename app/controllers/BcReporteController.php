@@ -269,6 +269,7 @@ class BcReporteController extends ControllerBase
     public function contratos_liquidacionAction()
     {
     }
+    
     /**
      * Reporte de liquidación para un contrato
      */

@@ -140,8 +140,8 @@ window.ParsleyConfig = window.ParsleyConfig || {};
       , rangewords:     "This value should have between %s and %s words."
       , greaterthan:    "Este valor debe de ser superior al de %s."
       , lessthan:       "This value should be less than %s."
-      , beforedate:     "This date should be before %s."
-      , afterdate:      "This date should be after %s."
+      , beforedate:     "La fecha debe de ser de este año."
+      , afterdate:      "La fecha debe ser superior a la fecha actual + 10 días."
       , luhn:           "This value should pass the luhn test."
       , americandate:	"This value should be a valid date (MM/DD/YYYY)."
     }

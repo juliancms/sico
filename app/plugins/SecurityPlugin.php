@@ -374,6 +374,15 @@ class SecurityPlugin extends Plugin
     				'nivelPermiso' => '3'
     		)
     	),
+    	'bc_permiso' => array(
+    		'index' => array(
+    				'nivelPermiso' => '4'
+    		),
+    		'nuevo' => array(
+    				'nivelPermiso' => '4'
+    		)
+    	),
+    	
     );
 
     /**

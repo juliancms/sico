@@ -19,8 +19,6 @@ class SessionController extends ControllerBase
     	->addCss('css/bootstrap-select.min.css')
     	->addJs('js/bootstrap-select.min.js')
     	->addJs('js/iniciar_sesion.js');
-    	$oferentes = BcOferente::find();
-    	$this->view->oferentes = $oferentes;
     }
 
     /**
@@ -28,32 +26,20 @@ class SessionController extends ControllerBase
      *
      * @param IbcUsuario $user
      */
-    private function _registerSession($user, $tipo_usuario)
+    private function _registerSession($user)
     {
-    	//Si es oferente
-    	if($tipo_usuario == 1){
-    		$this->session->set('auth', array(
-    				'id_usuario' => $user->id_oferente,
-    				'abreviacion' => $user->abreviacion,
-    				'email' => $user->email,
-    				'nombre' => $user->nombre,
-    				'id_usuario_cargo' => 6,
-    				'nivel' => -1
-    		));
-    	} else {
-    		$this->session->set('auth', array(
-    				'id_usuario' => $user->id_usuario,
-    				'id_componente' => $user->id_componente,
-    				'componente' => $user->IbcComponente->nombre,
-    				'usuario' => $user->usuario,
-    				'email' => $user->email,
-    				'nombre' => $user->nombre,
-    				'id_usuario_cargo' => $user->id_usuario_cargo,
-    				'foto' => $user->foto,
-    				'estado' => $user->estado,
-    				'nivel' => $user->IbcUsuarioCargo->nivelPermiso
-    		));
-    	}
+    	$this->session->set('auth', array(
+    			'id_usuario' => $user->id_usuario,
+    			'id_componente' => $user->id_componente,
+    			'componente' => $user->IbcComponente->nombre,
+    			'usuario' => $user->usuario,
+    			'email' => $user->email,
+    			'nombre' => $user->nombre,
+    			'id_usuario_cargo' => $user->id_usuario_cargo,
+    			'foto' => $user->foto,
+    			'estado' => $user->estado,
+    			'nivel' => $user->IbcUsuarioCargo->nivelPermiso
+    	));
     }
 
     /**
@@ -64,30 +50,17 @@ class SessionController extends ControllerBase
     public function startAction()
     {
     	if ($this->request->isPost()) {
-    		$tipo_usuario = $this->request->getPost('tipo_usuario');
     		$password = $this->request->getPost('password');
-    		if($tipo_usuario == 1){
-    			$usuario = $this->request->getPost('id_oferente');
-    			$user = BcOferente::findFirstByid_oferente($usuario);
-    			if ($user) {
-    				if ($this->security->checkHash($password, $user->password)) {
-    					$this->_registerSession($user, $tipo_usuario);
-    					$this->flash->success('Bienvenido ' . $user->nombre);
-    					return $this->response->redirect('ibc_mensaje/anuncios');
+    		$usuario = $this->request->getPost('usuario');
+    		$user = IbcUsuario::findFirst(array("email='$usuario' OR usuario = '$usuario'"));
+    		if ($user) {
+    			if ($this->security->checkHash($password, $user->password)) {
+    				$this->_registerSession($user);
+    				$this->flash->success('Bienvenido(a) ' . $user->nombre);
+    				if ($this->session->has("last_url")) {
+    					return $this->response->redirect($this->session->get("last_url"));
     				}
-    			}
-    		} else {
-    			$usuario = $this->request->getPost('usuario');
-    			$user = IbcUsuario::findFirst(array("email='$usuario' OR usuario = '$usuario'"));
-    			if ($user) {
-    				if ($this->security->checkHash($password, $user->password)) {
-    					$this->_registerSession($user, $tipo_usuario);
-    					$this->flash->success('Bienvenido(a) ' . $user->nombre);
-    					if ($this->session->has("last_url")) {
-    						return $this->response->redirect($this->session->get("last_url"));
-    					}
-    					return $this->response->redirect('ibc_mensaje/anuncios');
-    				}
+    				return $this->response->redirect('ibc_mensaje/anuncios');
     			}
     		}
             $this->flash->error('Contraseña o usuario inválido');
@@ -97,10 +70,9 @@ class SessionController extends ControllerBase
     
     public function restartAction($id_usuario)
     {
-    	$tipo_usuario = 2;
     	$usuario = IbcUsuario::findFirstByid_usuario($id_usuario);
     	if ($usuario) {
-    		$this->_registerSession($usuario, $tipo_usuario);
+    		$this->_registerSession($usuario);
     		return $this->response->redirect('ibc_mensaje/anuncios');
     	} else {
     		return $this->response->redirect('session/index');
