@@ -138,6 +138,7 @@ class Conversiones extends Component
 	 * @param $elementos Array in Array
 	 *
 	 * @return string
+	 * NOTA: El primer elemento debe de ser Array
 	 * Produce un string similar a este:
 	 * 	INSERT INTO example
 		  (example_id, name, value, other_value)

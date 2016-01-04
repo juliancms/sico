@@ -47,7 +47,7 @@ function agregar_item(valor) {
 		$( '#jornada_planeacion_form' ).parsley();
 		reasignar_keys();
 	} else {
-		$(".alerta_lote").html("<i class='glyphicon glyphicon-warning-sign'></i> Sólo puedes guardar hasta 24 permisos por sede en todo el año.");
+		$(".alerta_lote").html("<i class='glyphicon glyphicon-warning-sign'></i> Sólo puedes guardar hasta 24 permisos de planeación por sede en todo el año.");
 		$(".alerta_lote").fadeOut();
     	$(".alerta_lote").fadeIn();
 	}
@@ -60,8 +60,8 @@ function reasignar_keys(){
 	});
 }
 function eliminar_valor(valor){
-	$(valor).parent().parent().find("input").attr("disabled", "disabled");
-    $(valor).parent().parent().hide();
+	$(valor).parent().parent().remove();
+	$( "#jornada_planeacion_form tbody tr:hidden:first" ).clone().appendTo( "tbody" );
     $( '#jornada_planeacion_form' ).parsley( 'destroy' );
 	$( '#jornada_planeacion_form' ).parsley();
 	reasignar_keys();

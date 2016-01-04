@@ -15,10 +15,6 @@ class SessionController extends ControllerBase
 
     public function indexAction()
     {
-    	$this->assets
-    	->addCss('css/bootstrap-select.min.css')
-    	->addJs('js/bootstrap-select.min.js')
-    	->addJs('js/iniciar_sesion.js');
     }
 
     /**

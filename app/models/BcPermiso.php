@@ -87,10 +87,10 @@ class BcPermiso extends \Phalcon\Mvc\Model
     			return "Salida Pedagógica";
     			break;
     		case 3:
-    			return "Movilizaciones Sociales";
+    			return "Movilización Social";
     			break;
     		case 4:
-    			return "Salida a Ludotekas";
+    			return "Salida a Ludoteka";
     			break;
     		case 5:
     			return "Jornada de Planeación";

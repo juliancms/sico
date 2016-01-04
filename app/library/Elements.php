@@ -519,6 +519,21 @@ class Elements extends Component
     	echo "</div><div class='clear'></clear>";
     	}
     
+    public function errorFecha($error){
+    	switch ($error) {
+    		case "0":
+    			return "";
+    		case "1":
+    			return "La fecha es incorrecta porque el permiso solo puede ser creado con 10 o más días de anticipación.";
+    		case "2":
+    			return "La fecha es incorrecta porque ya existe una jornada de planeación de esta sede para este mes.";
+    		case "3":
+    			return "No puedes crear dos permisos de planeación en el mismo mes, por favor cambia la fecha o elimina esta fila.";
+    		default:
+    			return "";
+    	}
+    }	
+   	
     /**
      * Selects para formularios
      */
@@ -584,4 +599,34 @@ class Elements extends Component
     			return array();
     	}
     }
+    
+    /**
+     * Selects para formularios
+     */
+    public function getCategoriaPermiso($id_categoria)
+    {
+    	switch ($id_categoria) {
+    		case "salida_pedagogica":
+    			return array (
+    			'titulo' => 'Nuevo Permiso - Salida Pedagógica',
+    			'enlace' => $id_categoria,
+    			'id' => '2');
+    			break;
+    		case "movilizacion_social":
+    			return array (
+    			'titulo' => 'Nuevo Permiso - Movilización Social',
+    			'enlace' => $id_categoria,
+    			'id' => '3');
+    			break;
+    		case "salida_ludoteka":
+    			return array (
+    			'titulo' => 'Nuevo Permiso - Salida a Ludoteka',
+    			'enlace' => $id_categoria,
+    			'id' => '4');
+    			break;
+    		default:
+    			return array();
+    	}
+    }
+    
 }

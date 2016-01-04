@@ -380,6 +380,12 @@ class SecurityPlugin extends Plugin
     		),
     		'nuevo' => array(
     				'nivelPermiso' => '4'
+    		),
+    		'crear_jornada_planeacion' => array(
+    				'nivelPermiso' => '4'
+    		),
+    		'subir_archivo' => array(
+    				'nivelPermiso' => '4'
     		)
     	),
     	

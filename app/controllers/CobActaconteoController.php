@@ -275,11 +275,6 @@ class CobActaconteoController extends ControllerBase
     		return $this->response->redirect("cob_periodo/");
     	}
     	$this->guardarActaCerrada($acta, $this->user['nivel']);
-//     	$eliminar_adicionales = $this->request->getPost("eliminar_adicionales");
-//     	if($eliminar_adicionales){
-//     		$sql = $this->conversiones->multipledelete("cob_actaconteo_empleado", "id_actaconteo_empleado", $eliminar_adicionales);
-//     		$query = $db->query($sql);
-//     	}
     	if($this->request->getPost("numDocumento")){
     		$elementos = array(
     				'numDocumento' => $this->request->getPost("numDocumento"),

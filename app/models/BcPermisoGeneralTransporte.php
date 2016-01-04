@@ -1,6 +1,6 @@
 <?php
 
-class BcPermisoGeneral extends \Phalcon\Mvc\Model
+class BcPermisoGeneralTransporte extends \Phalcon\Mvc\Model
 {
 
     /**
