@@ -26,6 +26,7 @@
 	  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <h1>Nuevo Permiso - Jornada de Planeación</h1>
+<a href='/sico/bc_permiso/nuevo/jornada_planeacion' class='btn btn-primary regresar'><i class='glyphicon glyphicon-chevron-left'></i> Atrás</a><br><br>
 <table class='table table-bordered table-hover'>
 	<thead>
 		<tr>

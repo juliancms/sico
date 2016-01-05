@@ -1,6 +1,7 @@
 
 {{ content() }}
 <h1>Nuevo Permiso - Incidente</h1>
+<a href='/sico/bc_permiso/nuevo/incidente' class='btn btn-primary regresar'><i class='glyphicon glyphicon-chevron-left'></i> Atrás</a><br><br>
 <table class='table table-bordered table-hover'>
 	<thead>
 		<tr>

@@ -1,6 +1,7 @@
 
 {{ content() }}
 <h1>{{ titulo }}</h1>
+<a href='/sico/bc_permiso/nuevo/<?php echo $categoria; ?>' class='btn btn-primary regresar'><i class='glyphicon glyphicon-chevron-left'></i> Atrás</a><br><br>
 <table class='table table-bordered table-hover nuevo_general' id="{{ id_sede_contrato }}">
 	<thead>
 		<tr>

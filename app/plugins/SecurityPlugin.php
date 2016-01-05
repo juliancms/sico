@@ -386,6 +386,18 @@ class SecurityPlugin extends Plugin
     		),
     		'subir_archivo' => array(
     				'nivelPermiso' => '4'
+    		),
+    		'mes' => array(
+    				'nivelPermiso' => '4'
+    		),
+    		'anio' => array(
+    				'nivelPermiso' => '4'
+    		),
+    		'semana' => array(
+    				'nivelPermiso' => '4'
+    		),
+    		'dia' => array(
+    				'nivelPermiso' => '4'
     		)
     	),
     	

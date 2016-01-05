@@ -23,6 +23,7 @@ class Conversiones extends Component
 	 *  7 = aaaa-mm-dd -> 02BC_Febrero
 	 *  8 = aaaa-mm-dd -> Agosto de 2015
 	 *  9 = aaaa-mm-dd -> MARZO_2015
+	 *  10 = aaaa-mm-dd-> Lunes, 31/06/2015
 	 * @return string
 	 * @author Julián Camilo Marín Sánchez
 	 */
@@ -70,6 +71,10 @@ class Conversiones extends Component
 		elseif($tipo_formato == 9){
 			$parts = explode('-', $fecha);
 			return strtoupper($meses[$parts[1]-1]) . "_" . $parts[0];
+		}
+		elseif($tipo_formato == 10){
+			$parts = explode('-', $fecha);
+			return $dias[date('w', strtotime($fecha))] . " " . $parts[2] . "/" . $meses[$parts[1]-1] . "/" . $parts[0];
 		}
 	}
 	

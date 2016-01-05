@@ -1,6 +1,7 @@
 
 {{ content() }}
 <h1>{{ titulo }}</h1>
+<a href='/sico/bc_permiso/nuevo' class='btn btn-primary regresar'><i class='glyphicon glyphicon-chevron-left'></i> Atrás</a><br>
 <h3>2. Selecciona la sede, puedes utilizar los filtros para encontrarla rápidamente</h3>
 {% if (not(sedes is empty)) %}
 <table id='sedes' class="table table-bordered table-hover">

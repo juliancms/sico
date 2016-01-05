@@ -21,21 +21,236 @@ class BcPermisoController extends ControllerBase
     	/*	Si el nivel de usuario corresponde a un oferente (4), carga los permisos de ese oferente,
     	 * de lo contrario cargará la lista completa de permisos
     	*/
+    	$date = new DateTime(date('Y-m-d'));
+    	$dia = sprintf("%02d", $date->format("z") + 1);
+    	$semana = sprintf("%02d", $date->format("W"));
+    	$mes_actual = date('m');
+    	$mes_siguiente = intval($mes_actual) + 1;
+    	$mes_siguiente = sprintf("%02d", $mes_siguiente);
+    	$mes_anterior = intval($mes_actual) - 1;
+    	$mes_anterior = sprintf("%02d",$mes_anterior);
     	if($this->user['nivel'] == 4){
     		$oferente = IbcUsuarioOferente::findFirstByid_usuario($this->id_usuario);
     		if(!$oferente){
     			$this->flash->error("Este usuario no fue encontrado en la base de datos de prestadores.");
     			return $this->response->redirect("/");
     		}
-    		$permisos = BcPermiso::find(array("id_oferente = $oferente->id_oferente"));
+    		$permisos = BcPermiso::find(array("id_oferente = $oferente->id_oferente AND MONTH(fecha) = $mes_actual", "order" => "fecha ASC"));
     	} else {
-    		$permisos = BcPermiso::find();
+    		$permisos = BcPermiso::find(array("MONTH(fecha) = $mes_actual", "order" => "fecha ASC"));
     	}
         if (count($permisos) == 0) {
-        	$this->flash->notice("No se ha agregado ningún permiso hasta el momento");
+        	$this->flash->notice("No se existen permisos para este mes");
         	$permisos = null;
         }
+        if($mes_actual == 1){
+        	$this->view->btn_anterior = "<a disabled='disabled' class='btn btn-primary'>&lt;&lt; Anterior</a>";
+        } else {
+        	$this->view->btn_anterior = "<a class='btn btn-primary'>&lt;&lt; Anterior</a>";
+        }
+        if($mes_actual == 12){
+        	$this->view->btn_siguiente = "<a disabled='disabled' class='btn btn-primary'>Siguiente &gt;&gt;</a>";
+        } else {
+        	$this->view->btn_siguiente = "<a href='/sico/bc_permiso/mes/". $mes_siguiente ."' class='btn btn-primary'>Siguiente &gt;&gt;</a>";
+        }
+        $this->view->btn_anio = "<a href='/sico/bc_permiso/anio/' class='btn btn-warning'>Año</button>";
+        $this->view->btn_mes = "<a class='btn btn-warning active'>Mes</a>";
+        $this->view->btn_semana = "<a href='/sico/bc_permiso/semana/". $semana ."' class='btn btn-warning'>Semana</a>";
+        $this->view->btn_dia = "<a href='/sico/bc_permiso/dia/". $dia ."' class='btn btn-warning'>Día</a>";
+        $this->view->titulo = $this->conversiones->fecha(8, date('Y-m-d'));
         $this->view->permisos = $permisos;
+    }
+    
+    /**
+     * semana action
+     */
+    public function diaAction($fecha)
+    {
+    	$date = new DateTime($fecha);
+    	$semana = $fecha;
+    	$mes_actual = $date->format("m");
+    	if(date("w", strtotime($fecha))){
+    		$semana = date("Y-m-d", strtotime($fecha. ' next Sunday'));
+    	}
+    	$dia_anterior = date("Y-m-d", strtotime($fecha. ' - 1 day'));
+    	$dia_siguiente = date("Y-m-d", strtotime($fecha. ' + 1 day'));
+    	/*	Si el nivel de usuario corresponde a un oferente (4), carga los permisos de ese oferente,
+    	 * de lo contrario cargará la lista completa de permisos
+    	 */
+    	if($this->user['nivel'] == 4){
+    		$oferente = IbcUsuarioOferente::findFirstByid_usuario($this->id_usuario);
+    		if(!$oferente){
+    			$this->flash->error("Este usuario no fue encontrado en la base de datos de prestadores.");
+    			return $this->response->redirect("/");
+    		}
+    		$permisos = BcPermiso::find(array("id_oferente = $oferente->id_oferente AND fecha = '$fecha'", "order" => "fecha ASC"));
+    	} else {
+    		$permisos = BcPermiso::find(array("fecha = '$fecha'", "order" => "fecha ASC"));
+    	}
+    	if (count($permisos) == 0) {
+    		$this->flash->notice("No se existen permisos para esta semana");
+    		$permisos = null;
+    	}
+    	if($fecha == date('Y') . "-01-01"){
+    		$this->view->btn_anterior = "<a disabled='disabled' class='btn btn-primary'>&lt;&lt; Anterior</a>";
+    	} else {
+    		$this->view->btn_anterior = "<a href='/sico/bc_permiso/dia/". $dia_anterior ."'class='btn btn-primary'>&lt;&lt; Anterior</a>";
+    	}
+    	if($fecha == date('Y') . "-12-31"){
+    		$this->view->btn_siguiente = "<a disabled='disabled' class='btn btn-primary'>Siguiente &gt;&gt;</a>";
+    	} else {
+    		$this->view->btn_siguiente = "<a href='/sico/bc_permiso/dia/". $dia_siguiente ."' class='btn btn-primary'>Siguiente &gt;&gt;</a>";
+    	}
+    	$this->view->btn_anio = "<a href='/sico/bc_permiso/anio/' class='btn btn-warning'>Año</button>";
+    	$this->view->btn_mes = "<a href='/sico/bc_permiso/mes/" . $mes_actual . "' class='btn btn-warning'>Mes</a>";
+    	$this->view->btn_semana = "<a href='/sico/bc_permiso/semana/" . $semana . "' class='btn btn-warning'>Semana</a>";
+    	$this->view->btn_dia = "<a class='btn btn-warning active'>Día</a>";
+    	$this->view->titulo = $this->conversiones->fecha(4, $fecha);
+    	$this->view->permisos = $permisos;
+    	$this->view->pick('bc_permiso/index');
+    }
+    
+    /**
+     * semana action
+     */
+    public function semanaAction($fecha_inicio)
+    {
+    	$date = new DateTime($fecha_inicio);
+		$fecha_inicio_comparacion = date("Y") . "-01-01";
+    	if($fecha_inicio == $fecha_inicio_comparacion){
+    		//Si es sabado fecha final sera la misma, de lo contrario será el próximo sábado
+    		$this->view->btn_anterior = "<a disabled='disabled' class='btn btn-primary'>&lt;&lt; Anterior</a>";
+    		if(date("w", strtotime("$fecha_inicio")) == 6){
+    			$fecha_final = $fecha_inicio;
+    		} else {
+    			$fecha_final = date("Y-m-d", strtotime($fecha_inicio. ' next Saturday'));
+    		}
+    	} else {
+    		$fecha_final = date("Y-m-d", strtotime($fecha_inicio. ' next Saturday'));
+    		$semana_anterior = date("Y-m-d", strtotime($fecha_final. ' - 13 days'));
+    		if(date("Y", strtotime($semana_anterior)) < date("Y")){
+    			$semana_anterior = date("Y") . "-01-01";
+    			
+    		}
+    		$this->view->btn_anterior = "<a href='/sico/bc_permiso/semana/" . $semana_anterior . "' class='btn btn-primary'>&lt;&lt; Anterior</a>";
+    	}
+    	$semana_siguiente = date("Y-m-d", strtotime($fecha_final. ' + 1 day'));
+    	if(date("Y", strtotime($semana_siguiente)) > date("Y")){
+    		$this->view->btn_siguiente = "<a disabled='disabled' class='btn btn-primary'>Siguiente &gt;&gt;</a>";
+    		 
+    	} else {
+    		$this->view->btn_siguiente = "<a href='/sico/bc_permiso/semana/". $semana_siguiente ."' class='btn btn-primary'>Siguiente &gt;&gt;</a>";
+    	}
+    	/*	Si el nivel de usuario corresponde a un oferente (4), carga los permisos de ese oferente,
+    	 * de lo contrario cargará la lista completa de permisos
+    	 */
+    	if($this->user['nivel'] == 4){
+    		$oferente = IbcUsuarioOferente::findFirstByid_usuario($this->id_usuario);
+    		if(!$oferente){
+    			$this->flash->error("Este usuario no fue encontrado en la base de datos de prestadores.");
+    			return $this->response->redirect("/");
+    		}
+    		$permisos = BcPermiso::find(array("id_oferente = $oferente->id_oferente AND fecha >= '$fecha_inicio' AND fecha <= '$fecha_final'", "order" => "fecha ASC"));
+    	} else {
+    		$permisos = BcPermiso::find(array("fecha >= '$fecha_inicio' AND fecha <= '$fecha_final'", "order" => "fecha ASC"));
+    	}
+    	if (count($permisos) == 0) {
+    		$this->flash->notice("No se existen permisos para esta semana");
+    		$permisos = null;
+    	}
+    	$this->view->btn_anio = "<a href='/sico/bc_permiso/anio/' class='btn btn-warning'>Año</button>";
+    	$this->view->btn_mes = "<a href='/sico/bc_permiso/mes/" . $date->format("m") . "' class='btn btn-warning'>Mes</a>";
+    	$this->view->btn_semana = "<a class='btn btn-warning active'>Semana</a>";
+    	$this->view->btn_dia = "<a href='/sico/bc_permiso/dia/". $fecha_inicio ."' class='btn btn-warning'>Día</a>";
+    	$this->view->titulo = $this->conversiones->fecha(10, $fecha_inicio) . " - " . $this->conversiones->fecha(10, $fecha_final);
+    	$this->view->permisos = $permisos;
+    	$this->view->pick('bc_permiso/index');
+    }
+    
+    /**
+     * mes action
+     */
+    public function mesAction($mes_actual)
+    {
+    	/*	Si el nivel de usuario corresponde a un oferente (4), carga los permisos de ese oferente,
+    	 * de lo contrario cargará la lista completa de permisos
+    	 */
+    	$fecha_actual = date("Y-$mes_actual-01");
+    	$date = new DateTime($fecha_actual);
+    	$semana = $fecha_actual;
+    	if(date("w", strtotime($fecha_actual)) !== 0 && $mes_actual > 1){
+    		$semana = date("Y-m-d", strtotime($fecha_actual. ' next Sunday'));
+    	}
+    	$mes_siguiente = intval($mes_actual) + 1;
+    	$mes_siguiente = sprintf("%02d", $mes_siguiente);
+    	$mes_anterior = intval($mes_actual) - 1;
+    	$mes_anterior = sprintf("%02d",$mes_anterior);
+    	if($this->user['nivel'] == 4){
+    		$oferente = IbcUsuarioOferente::findFirstByid_usuario($this->id_usuario);
+    		if(!$oferente){
+    			$this->flash->error("Este usuario no fue encontrado en la base de datos de prestadores.");
+    			return $this->response->redirect("/");
+    		}
+    		$permisos = BcPermiso::find(array("id_oferente = $oferente->id_oferente AND MONTH(fecha) = $mes_actual", "order" => "fecha ASC"));
+    	} else {
+    		$permisos = BcPermiso::find(array("MONTH(fecha) = $mes_actual", "order" => "fecha ASC"));
+    	}
+    	if (count($permisos) == 0) {
+    		$this->flash->notice("No se existen permisos para este mes");
+    		$permisos = null;
+    	}
+    	if($mes_actual == "01"){
+    		$this->view->btn_anterior = "<a disabled='disabled' class='btn btn-primary'>&lt;&lt; Anterior</a>";
+    	} else {
+    		$this->view->btn_anterior = "<a href='/sico/bc_permiso/mes/". $mes_anterior ."'class='btn btn-primary'>&lt;&lt; Anterior</a>";
+    	}
+    	if($mes_actual == "12"){
+    		$this->view->btn_siguiente = "<a disabled='disabled' class='btn btn-primary'>Siguiente &gt;&gt;</a>";
+    	} else {
+    		$this->view->btn_siguiente = "<a href='/sico/bc_permiso/mes/". $mes_siguiente ."' class='btn btn-primary'>Siguiente &gt;&gt;</a>";
+    	}
+    	$this->view->btn_anio = "<a href='/sico/bc_permiso/anio/' class='btn btn-warning'>Año</button>";
+    	$this->view->btn_mes = "<a class='btn btn-warning active'>Mes</a>";
+    	$this->view->btn_semana = "<a href='/sico/bc_permiso/semana/". $semana ."' class='btn btn-warning'>Semana</a>";
+    	$this->view->btn_dia = "<a href='/sico/bc_permiso/dia/". $semana ."' class='btn btn-warning'>Día</a>";
+    	$this->view->titulo = $this->conversiones->fecha(8, $fecha_actual);
+    	$this->view->permisos = $permisos;
+    	$this->view->pick('bc_permiso/index');
+    }
+    
+    /**
+     * anio action
+     */
+    public function anioAction()
+    {
+    	$fecha_actual = date("Y-01-01");
+    	$date = new DateTime($fecha_actual);
+    	/*	Si el nivel de usuario corresponde a un oferente (4), carga los permisos de ese oferente,
+    	 * de lo contrario cargará la lista completa de permisos
+    	 */
+    	if($this->user['nivel'] == 4){
+    		$oferente = IbcUsuarioOferente::findFirstByid_usuario($this->id_usuario);
+    		if(!$oferente){
+    			$this->flash->error("Este usuario no fue encontrado en la base de datos de prestadores.");
+    			return $this->response->redirect("/");
+    		}
+    		$permisos = BcPermiso::find(array("id_oferente = $oferente->id_oferente", "order" => "fecha ASC"));
+    	} else {
+    		$permisos = BcPermiso::find(array("order" => "fecha ASC"));
+    	}
+    	if (count($permisos) == 0) {
+    		$this->flash->notice("No se existen permisos para este año");
+    		$permisos = null;
+    	}
+    	$this->view->btn_anterior = "";
+    	$this->view->btn_siguiente = "";
+    	$this->view->btn_anio = "<a class='btn btn-warning active'>Año</button>";
+    	$this->view->btn_mes = "<a href='/sico/bc_permiso/mes/01' class='btn btn-warning'>Mes</a>";
+    	$this->view->btn_semana = "<a href='/sico/bc_permiso/semana/". date("Y") ."-01-01' class='btn btn-warning'>Semana</a>";
+    	$this->view->btn_dia = "<a href='/sico/bc_permiso/dia/". date("Y") ."-01-01' class='btn btn-warning'>Día</a>";
+    	$this->view->titulo = "Año " . date('Y');
+    	$this->view->permisos = $permisos;
+    	$this->view->pick('bc_permiso/index');
     }
 
     /**
@@ -129,6 +344,7 @@ class BcPermisoController extends ControllerBase
     			$this->view->sede = $sede;
     			$this->view->id_sede_contrato = $accion2;
     			$this->view->id_categoria = $this->elements->getCategoriaPermiso($id_categoria)['id'];
+    			$this->view->categoria = $id_categoria;
     			$this->assets
     			->addJs('js/parsley.min.js')
     			->addJs('js/parsley.extend.js')
