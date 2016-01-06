@@ -70,6 +70,7 @@ class BcPermiso extends \Phalcon\Mvc\Model
     	$this->belongsTo('id_sede_contrato', 'BcSedeContrato', 'id_sede_contrato', array(
     			'reusable' => true
     	));
+    	$this->hasMany("id_permiso", "BcPermisoObservacion", "id_permiso");
     }
     
     /**
@@ -81,7 +82,7 @@ class BcPermiso extends \Phalcon\Mvc\Model
     {
     	switch ($this->categoria) {
     		case 1:
-    			return "Permiso Prioritario";
+    			return "Incidente";
     			break;
     		case 2:
     			return "Salida Pedagógica";
@@ -94,6 +95,52 @@ class BcPermiso extends \Phalcon\Mvc\Model
     			break;
     		case 5:
     			return "Jornada de Planeación";
+    			break;
+    	}
+    }
+    
+    /**
+     * Convierte en texto la categoría de los permisos
+     *
+     * @return string
+     */
+    public function getEstado()
+    {
+    	switch ($this->estado) {
+    		case 0:
+    			return "Pendiente de revisión";
+    			break;
+    		case 1:
+    			return "Preaprobado por Interventoría";
+    			break;
+    		case 2:
+    			return "Aprobado por Buen Comienzo";
+    			break;
+    		case 3:
+    			return "Anulado";
+    			break;
+    	}
+    }
+    
+    /**
+     * Coloca estilo visual a los estados
+     *
+     * @return string
+     */
+    public function getEstadoStyle()
+    {
+    	switch ($this->estado) {
+    		case 0:
+    			return "default";
+    			break;
+    		case 1:
+    			return "info";
+    			break;
+    		case 2:
+    			return "success";
+    			break;
+    		case 3:
+    			return "danger";
     			break;
     	}
     }

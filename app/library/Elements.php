@@ -628,5 +628,17 @@ class Elements extends Component
     			return array();
     	}
     }
-    
+    public function getCategoriaEnlace($id_categoria)
+    {
+    	switch ($id_categoria) {
+    		case "1":
+    			return "incidente";
+    			break;
+    		case "5":
+    			return "jornada_planeacion";
+    			break;
+    		default:
+    			return "general";
+    	}
+    }
 }

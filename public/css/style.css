@@ -145,3 +145,6 @@ footer p { padding-top: 10px; font-size: 13px; olor:  }
 	background-color: #eee !important;
 	opacity: 1 !important;
 }
+.fila_eliminar {
+	font-weight: bold; 
+}

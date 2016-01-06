@@ -398,6 +398,9 @@ class SecurityPlugin extends Plugin
     		),
     		'dia' => array(
     				'nivelPermiso' => '4'
+    		),
+    		'permiso' => array(
+    				'nivelPermiso' => '4'
     		)
     	),
     	

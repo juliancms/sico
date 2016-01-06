@@ -79,6 +79,28 @@ class Conversiones extends Component
 	}
 	
 	/**
+	 * hora
+	 *
+	 * Tipos de formato de fecha:
+	 * 	1 = aaaa-mm-dd HH:MM:SS -> 08:30AM ó HH:MM:SS -> 08:30AM
+	 * @return string
+	 * @author Julián Camilo Marín Sánchez
+	 */
+	public function hora($tipo_formato, $fecha) {
+		if(!$fecha || $fecha == NULL || $fecha == "00/00/0000" || $fecha == "0000-00-00"){
+			return "";
+		}
+		switch ($tipo_formato) {
+    		case "1":
+    			$date = date_create($fecha);
+    			return date_format($date, 'G:iA');
+    			break;
+    		default:
+    			return "";
+    	}
+	}
+	
+	/**
 	 * array_fechas
 	 *
 	 * @return string

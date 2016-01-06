@@ -21,9 +21,16 @@ class BcPermisoController extends ControllerBase
     	/*	Si el nivel de usuario corresponde a un oferente (4), carga los permisos de ese oferente,
     	 * de lo contrario cargará la lista completa de permisos
     	*/
-    	$date = new DateTime(date('Y-m-d'));
-    	$dia = sprintf("%02d", $date->format("z") + 1);
-    	$semana = sprintf("%02d", $date->format("W"));
+    	$this->assets
+    	->addJs('js/parsley.min.js')
+    	->addJs('js/parsley.extend.js')
+    	->addJs('js/picnet.table.filter.min.js')
+    	->addJs('js/permisos_lista.js');
+    	$fecha_actual = date('Y-m-d');
+    	$semana = $fecha_actual;
+    	if(date("w", strtotime($fecha_actual)) != 0){
+    		$semana = date("Y-m-d", strtotime($fecha_actual. ' next Sunday'));
+    	}
     	$mes_actual = date('m');
     	$mes_siguiente = intval($mes_actual) + 1;
     	$mes_siguiente = sprintf("%02d", $mes_siguiente);
@@ -35,8 +42,10 @@ class BcPermisoController extends ControllerBase
     			$this->flash->error("Este usuario no fue encontrado en la base de datos de prestadores.");
     			return $this->response->redirect("/");
     		}
+    		$this->view->pick('bc_permiso/index_prestador');
     		$permisos = BcPermiso::find(array("id_oferente = $oferente->id_oferente AND MONTH(fecha) = $mes_actual", "order" => "fecha ASC"));
     	} else {
+    		$this->view->pick('bc_permiso/index_prestador');
     		$permisos = BcPermiso::find(array("MONTH(fecha) = $mes_actual", "order" => "fecha ASC"));
     	}
         if (count($permisos) == 0) {
@@ -56,9 +65,40 @@ class BcPermisoController extends ControllerBase
         $this->view->btn_anio = "<a href='/sico/bc_permiso/anio/' class='btn btn-warning'>Año</button>";
         $this->view->btn_mes = "<a class='btn btn-warning active'>Mes</a>";
         $this->view->btn_semana = "<a href='/sico/bc_permiso/semana/". $semana ."' class='btn btn-warning'>Semana</a>";
-        $this->view->btn_dia = "<a href='/sico/bc_permiso/dia/". $dia ."' class='btn btn-warning'>Día</a>";
+        $this->view->btn_dia = "<a href='/sico/bc_permiso/dia/". $fecha_actual ."' class='btn btn-warning'>Día</a>";
         $this->view->titulo = $this->conversiones->fecha(8, date('Y-m-d'));
         $this->view->permisos = $permisos;
+    }
+    
+    /**
+     * permiso action
+     */
+    public function permisoAction($id_permiso)
+    {
+    	/*	Si el nivel de usuario corresponde a un oferente (4), carga los permisos de ese oferente,
+    	 * de lo contrario cargará la lista completa de permisos
+    	 */
+    	if(!$id_permiso){
+    		return $this->response->redirect("bc_permiso");
+    	}
+    	if($this->user['nivel'] == 4){
+    		$oferente = IbcUsuarioOferente::findFirstByid_usuario($this->id_usuario);
+    		if(!$oferente){
+    			$this->flash->error("Este usuario no fue encontrado en la base de datos de prestadores.");
+    			return $this->response->redirect("/");
+    		}
+    		$permiso = BcPermiso::find(array("id_oferente = $oferente->id_oferente AND id_permiso = $id_permiso"));
+    	} else {
+    		$permiso = BcPermiso::find(array("id_permiso = $id_permiso"));
+    	}
+    	if (count($permiso) == 0) {
+    		$this->flash->notice("El permiso no fue encontrado en la base de datos");
+    		return $this->response->redirect("bc_permiso");
+    	}
+    	$this->assets
+    	->addCss('css/observaciones.css');
+    	$this->view->permiso = $permiso[0];
+    	$this->view->pick("bc_permiso/permiso_" . $this->elements->getCategoriaEnlace($permiso[0]->categoria));
     }
     
     /**
@@ -66,10 +106,15 @@ class BcPermisoController extends ControllerBase
      */
     public function diaAction($fecha)
     {
+    	$this->assets
+    	->addJs('js/parsley.min.js')
+    	->addJs('js/parsley.extend.js')
+    	->addJs('js/picnet.table.filter.min.js')
+    	->addJs('js/permisos_lista.js');
     	$date = new DateTime($fecha);
     	$semana = $fecha;
     	$mes_actual = $date->format("m");
-    	if(date("w", strtotime($fecha))){
+    	if(date("w", strtotime($fecha)) != 0){
     		$semana = date("Y-m-d", strtotime($fecha. ' next Sunday'));
     	}
     	$dia_anterior = date("Y-m-d", strtotime($fecha. ' - 1 day'));
@@ -107,7 +152,7 @@ class BcPermisoController extends ControllerBase
     	$this->view->btn_dia = "<a class='btn btn-warning active'>Día</a>";
     	$this->view->titulo = $this->conversiones->fecha(4, $fecha);
     	$this->view->permisos = $permisos;
-    	$this->view->pick('bc_permiso/index');
+    	$this->view->pick('bc_permiso/index_prestador');
     }
     
     /**
@@ -115,6 +160,11 @@ class BcPermisoController extends ControllerBase
      */
     public function semanaAction($fecha_inicio)
     {
+    	$this->assets
+    	->addJs('js/parsley.min.js')
+    	->addJs('js/parsley.extend.js')
+    	->addJs('js/picnet.table.filter.min.js')
+    	->addJs('js/permisos_lista.js');
     	$date = new DateTime($fecha_inicio);
 		$fecha_inicio_comparacion = date("Y") . "-01-01";
     	if($fecha_inicio == $fecha_inicio_comparacion){
@@ -164,7 +214,7 @@ class BcPermisoController extends ControllerBase
     	$this->view->btn_dia = "<a href='/sico/bc_permiso/dia/". $fecha_inicio ."' class='btn btn-warning'>Día</a>";
     	$this->view->titulo = $this->conversiones->fecha(10, $fecha_inicio) . " - " . $this->conversiones->fecha(10, $fecha_final);
     	$this->view->permisos = $permisos;
-    	$this->view->pick('bc_permiso/index');
+    	$this->view->pick('bc_permiso/index_prestador');
     }
     
     /**
@@ -172,6 +222,11 @@ class BcPermisoController extends ControllerBase
      */
     public function mesAction($mes_actual)
     {
+    	$this->assets
+    	->addJs('js/parsley.min.js')
+    	->addJs('js/parsley.extend.js')
+    	->addJs('js/picnet.table.filter.min.js')
+    	->addJs('js/permisos_lista.js');
     	/*	Si el nivel de usuario corresponde a un oferente (4), carga los permisos de ese oferente,
     	 * de lo contrario cargará la lista completa de permisos
     	 */
@@ -215,7 +270,7 @@ class BcPermisoController extends ControllerBase
     	$this->view->btn_dia = "<a href='/sico/bc_permiso/dia/". $semana ."' class='btn btn-warning'>Día</a>";
     	$this->view->titulo = $this->conversiones->fecha(8, $fecha_actual);
     	$this->view->permisos = $permisos;
-    	$this->view->pick('bc_permiso/index');
+    	$this->view->pick('bc_permiso/index_prestador');
     }
     
     /**
@@ -223,6 +278,11 @@ class BcPermisoController extends ControllerBase
      */
     public function anioAction()
     {
+    	$this->assets
+    	->addJs('js/parsley.min.js')
+    	->addJs('js/parsley.extend.js')
+    	->addJs('js/picnet.table.filter.min.js')
+    	->addJs('js/permisos_lista.js');
     	$fecha_actual = date("Y-01-01");
     	$date = new DateTime($fecha_actual);
     	/*	Si el nivel de usuario corresponde a un oferente (4), carga los permisos de ese oferente,
@@ -250,7 +310,7 @@ class BcPermisoController extends ControllerBase
     	$this->view->btn_dia = "<a href='/sico/bc_permiso/dia/". date("Y") ."-01-01' class='btn btn-warning'>Día</a>";
     	$this->view->titulo = "Año " . date('Y');
     	$this->view->permisos = $permisos;
-    	$this->view->pick('bc_permiso/index');
+    	$this->view->pick('bc_permiso/index_prestador');
     }
 
     /**
@@ -288,7 +348,7 @@ class BcPermisoController extends ControllerBase
     			$sede = BcSedeContrato::findFirstByid_sede_contrato($accion2);
     			if(!$sede){
     				$this->flash->notice("No se encontró la sede, por favor inténtelo nuevamente o contacte con el administrador");
-    				return $this->response->redirect("/bc_permiso/");
+    				return $this->response->redirect("bc_permiso");
     			}
     			$this->view->sede = $sede;
     			$this->view->id_sede_contrato = $accion2;
@@ -309,7 +369,7 @@ class BcPermisoController extends ControllerBase
     			$sede = BcSedeContrato::findFirstByid_sede_contrato($accion2);
     			if(!$sede){
     				$this->flash->notice("No se encontró la sede, por favor inténtelo nuevamente o contacte con el administrador");
-    				return $this->response->redirect("/bc_permiso/");
+    				return $this->response->redirect("bc_permiso");
     			}
     			$this->view->sede = $sede;
     			$this->view->id_sede_contrato = $accion2;
@@ -339,7 +399,7 @@ class BcPermisoController extends ControllerBase
     			$sede = BcSedeContrato::findFirstByid_sede_contrato($accion2);
     			if(!$sede){
     				$this->flash->notice("No se encontró la sede, por favor inténtelo nuevamente o contacte con el administrador");
-    				return $this->response->redirect("/bc_permiso/");
+    				return $this->response->redirect("bc_permiso");
     			}
     			$this->view->sede = $sede;
     			$this->view->id_sede_contrato = $accion2;
@@ -600,30 +660,48 @@ class BcPermisoController extends ControllerBase
     }
     
     /**
-     * Elimina una carga
+     * Anular permiso
      * 
      *
      * @param string $id_carga
      */
-    public function eliminarAction($id_carga)
+    public function anularAction()
     {
-
-        $bc_carga = BcCarga::findFirstByid_carga($id_carga);
-        if (!$bc_carga) {
-            $this->flash->error("Esta carga no fue encontrada");
-            return $this->response->redirect("bc_carga/");
+    	if (!$this->request->isPost()) {
+    		return $this->response->redirect("bc_permiso");
+    	}
+    	$id_permiso = $this->request->getPost("id_permiso");
+    	if($this->user['nivel'] == 4){
+    		$oferente = IbcUsuarioOferente::findFirstByid_usuario($this->id_usuario);
+    		if(!$oferente){
+    			$this->flash->error("Este usuario no fue encontrado en la base de datos de prestadores.");
+    			return $this->response->redirect("/");
+    		}
+    		$permiso = BcPermiso::find(array("id_oferente = $oferente->id_oferente AND id_permiso = $id_permiso"));
+    	} else {
+    		$permiso = BcPermiso::find(array("id_permiso = $id_permiso"));
+    	}
+   		if (!$permiso) {
+            $this->flash->error("El permiso no fue encontrado o no tiene privilegios para anularlo");
+            return $this->response->redirect("bc_permiso/");
         }
-
-        if (!$bc_carga->delete()) {
-
-            foreach ($bc_carga->getMessages() as $message) {
-                $this->flash->error($message);
-            }
-            return $this->response->redirect("bc_carga/");
+        $permiso = $permiso[0];
+        $permiso->estado = 3;
+        if (!$permiso->save()) {
+        	foreach ($permiso->getMessages() as $message) {
+        		$this->flash->error($message);
+        	}
+        	return $this->response->redirect("bc_permiso");
         }
-
-        $this->flash->success("La carga fue eliminada exitosamente");
-        return $this->response->redirect("bc_carga/");
+        $permiso_observacion = new BcPermisoObservacion();
+        $permiso_observacion->id_permiso = $id_permiso;
+        $permiso_observacion->id_usuario = $this->id_usuario;
+        $permiso_observacion->fechahora = date("Y-m-d H:i:s");
+        $permiso_observacion->estado = 3;
+        $permiso_observacion->observacion = $this->request->getPost("observacion");
+        $permiso_observacion->save();
+        $this->flash->success("El permiso fue anulado exitosamente");
+        return $this->response->redirect("bc_permiso/");
     }
 
 }
