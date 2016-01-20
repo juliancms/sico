@@ -1,20 +1,8 @@
 
 {{ content() }}
-<h1>Permisos - {{ titulo }}</h1>
-<div class="pull-right form-inline">
-	<div class="btn-group">
-		{{ btn_anterior }}
-		<a class="btn btn-default" data-calendar-nav="today">{{ titulo }}</a>
-		{{ btn_siguiente }}
-	</div>
-	<div class="btn-group">
-		{{ btn_anio }}
-		{{ btn_mes }}
-		{{ btn_semana }}
-		{{ btn_dia }}
-	</div>
-</div>
-{{ link_to("bc_permiso/nuevo", '<i class="glyphicon glyphicon-plus"></i> Nuevo Permiso', "class": "btn btn-primary menu-tab-first") }}
+<h1>Revisión de Permisos</h1>
+<a href='/sico/bc_permiso' class='btn btn-primary regresar'><i class='glyphicon glyphicon-chevron-left'></i> Lista de Permisos</a><br>
+<br>
 {% if (not(permisos is empty)) %}
 <!-- Modal -->
 <div class="modal fade" id="eliminar_elemento" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -60,8 +48,8 @@
     $fecha_limite = strtotime(date('Y-m-d'). ' +1 days');
     ?>
     {% for permiso in permisos %}
-        <tr data-estado="{{ permiso.estado }}" class="bg-{{ permiso.getEstadoStyle() }}">
-            <td><a rel="tooltip" title="Ver Detalles del Permiso" href="{{ url("bc_permiso/permiso/"~permiso.id_permiso) }}"><?php if (strtotime($permiso->fecha) > $fecha_limite && $permiso->estado < 3){ ?><a href="#eliminar_elemento" rel="tooltip" title="Anular" class="eliminar_fila" data-id = "{{ permiso.id_permiso }}" data-toggle = "modal" id="{{ url("bc_permiso/eliminar/"~permiso.id_permiso) }}"><i class="glyphicon glyphicon-remove"></i></a> <?php } ?>{{ permiso.id_permiso }}</a></td>
+        <tr>
+            <td><a rel="tooltip" title="Ver Detalles del Permiso" href="{{ url("bc_permiso/permiso/"~permiso.id_permiso) }}"><a href="{{ url("bc_permiso/aprobar/"~permiso.id_permiso) }}" rel="tooltip" title="Aprobar"><i class="glyphicon glyphicon-ok"></i></a> <a href="#eliminar_elemento" rel="tooltip" title="Anular" class="eliminar_fila" data-id = "{{ permiso.id_permiso }}" data-toggle = "modal" id="{{ url("bc_permiso/eliminar/"~permiso.id_permiso) }}"><i class="glyphicon glyphicon-remove"></i></a> {{ permiso.id_permiso }}</a></td>
             <td><a rel="tooltip" title="Ver Detalles del Permiso" href="{{ url("bc_permiso/permiso/"~permiso.id_permiso) }}">{{ permiso.getEstado() }}</a></td>
             <td>{{ permiso.getCategoria() }}</td>
             <td>{{ permiso.BcSedeContrato.oferente_nombre }}</td>

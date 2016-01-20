@@ -401,6 +401,9 @@ class SecurityPlugin extends Plugin
     		),
     		'permiso' => array(
     				'nivelPermiso' => '4'
+    		),
+    		'revision' => array(
+    				'nivelPermiso' => '2'
     		)
     	),
     	

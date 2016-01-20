@@ -96,6 +96,10 @@ class Elements extends Component
     		'cob_verificacion' => array(
     				'caption' => 'Verificaciones',
     				'action' => 'index'
+    		),
+    		'bc_permiso' => array(
+    				'caption' => 'Permisos',
+    				'action' => 'index'
     		)
     );
     
@@ -115,6 +119,21 @@ class Elements extends Component
     		'bc_reporte' => array(
     				'caption' => 'Reportes',
     				'action' => 'oferente_contratos'
+    		),
+    		'bc_permiso' => array(
+    				'caption' => 'Permisos',
+    				'action' => 'index'
+    		)
+    );
+    
+    private $_headerMenuPermisosBC = array(
+    		'ibc_mensaje' => array(
+    				'caption' => 'Comunicaciones',
+    				'action' => 'anuncios'
+    		),
+    		'bc_permiso' => array(
+    				'caption' => 'Permisos',
+    				'action' => 'index'
     		)
     );
     
@@ -173,6 +192,8 @@ class Elements extends Component
             if($user['id_usuario_cargo'] == 6){
             	$menu = $this->_headerMenuOferente;
             	
+            } else if($user['id_usuario_cargo'] == 8){
+            	$menu = $this->_headerMenuPermisosBC;
             } else if($user['id_usuario_cargo'] == 7){
             	$menu = $this->_headerMenuComponente;
             } else {

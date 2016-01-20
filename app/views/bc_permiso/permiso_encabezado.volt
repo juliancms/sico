@@ -1,5 +1,27 @@
 <h1>Permiso ID {{ permiso.id_permiso }}</h1>
-<a href='/sico/bc_permiso' class='btn btn-primary regresar'><i class='glyphicon glyphicon-chevron-left'></i> Lista de Permisos</a><br><br>
+<!-- Modal -->
+<div class="modal fade" id="eliminar_elemento" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Anulando Permiso ID <span class="fila_eliminar"></span></h4>
+      </div>
+      <div class="modal-body">
+      {{ form("bc_permiso/anular/", "method":"post", "class":"", "id":"anular_permiso", "parsley-validate" : "") }}
+          <p>Escribe el motivo por el cual vas a anular el permiso ID <span class="fila_eliminar"></span>:</p>
+          <p>{{ text_area("observacion", "maxlength" : "150", "parsley-maxlength" : "150", "rows" : "4", "class" : "form-control required") }}</p>
+          <input type="hidden" name="id_permiso" class="id_elemento">
+      </div>
+      <div class="modal-footer">
+        {{ submit_button("Anular", "class" : "btn btn-primary") }}
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        </form>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<a href='/sico/bc_permiso' class='btn btn-primary regresar'><i class='glyphicon glyphicon-chevron-left'></i> Lista de Permisos</a>{{ accion_permiso }}<br><br> 
 <table class='table table-bordered table-hover'>
 	<thead>
 		<tr>
