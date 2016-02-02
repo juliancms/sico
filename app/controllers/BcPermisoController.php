@@ -513,6 +513,7 @@ class BcPermisoController extends ControllerBase
     	$bc_permiso = new BcPermiso();
     	$bc_permiso->id_oferente = $sede->id_oferente;
     	$bc_permiso->categoria = 1;
+    	$bc_permiso->estado = 0;
     	$bc_permiso->id_sede_contrato = $sede->id_sede_contrato;
     	$bc_permiso->titulo = $this->request->getPost("titulo");
     	$bc_permiso->fecha = $this->conversiones->fecha(1, $this->request->getPost("fecha"));
@@ -573,6 +574,7 @@ class BcPermisoController extends ControllerBase
     			'fecha' => $fechas,
     			'id_oferente' => $sede->id_oferente,
     			'categoria' => '5',
+    			'estado' => '0',
     			'id_sede_contrato' => $sede->id_sede_contrato,
 	    		'horaInicio' => $this->request->getPost("horaInicio"),
 	    		'horaFin' => $this->request->getPost("horaFin")    			
@@ -602,6 +604,7 @@ class BcPermisoController extends ControllerBase
     	$bc_permiso = new BcPermiso();
     	$bc_permiso->id_oferente = $sede->id_oferente;
     	$bc_permiso->categoria = $id_categoria;
+    	$bc_permiso->estado = '0';
     	$bc_permiso->id_sede_contrato = $sede->id_sede_contrato;
     	$bc_permiso->titulo = $this->request->getPost("titulo");
     	$bc_permiso->fecha = $this->conversiones->fecha(1, $this->request->getPost("fecha"));
