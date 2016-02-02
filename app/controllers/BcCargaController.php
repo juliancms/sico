@@ -17,18 +17,12 @@ class BcCargaController extends ControllerBase
     public function indexAction()
     {
         $this->persistent->parameters = null;
-        $mt_carga = MtCarga::find();
-        if (count($mt_carga) == 0) {
-        	$this->flash->notice("No se ha agregado ninguna carga de Metrosalud hasta el momento");
-        	$mt_carga = null;
-        }
         $bc_carga = BcCarga::find();
         if (count($bc_carga) == 0) {
-            $this->flash->notice("No se ha agregado ninguna carga General hasta el momento");
+            $this->flash->notice("No se ha agregado ninguna carga hasta el momento");
             $bc_carga = null;
         }
         $this->view->bc_carga = $bc_carga;
-        $this->view->mt_carga = $mt_carga;
     }
 
     /**
