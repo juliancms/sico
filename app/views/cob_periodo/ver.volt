@@ -34,3 +34,6 @@
 {% endif %}
 <a data-toggle="modal" href='#confirmacion_cierre' class="btn btn-danger btn-lg btn-block">Cerrar Periodo</a>
 {% endif %}
+{% if (id_facturacion is empty) %}
+{{ link_to("cob_periodo/elegirfacturacion/"~id_periodo, "Elegir BD Facturación", "class": "btn btn-success btn-lg btn-block") }}
+{% endif %}

@@ -63,6 +63,7 @@ class CobPeriodoController extends ControllerBase
     	$this->view->id_periodo = $cob_periodo->id_periodo;
     	$this->view->fecha_periodo = $cob_periodo->getFechaDetail();
     	$this->view->fecha_cierre = $cob_periodo->fechaCierre;
+    	$this->view->id_facturacion = $cob_periodo->id_carga_facturacion;
     	$this->view->recorridos = $recorridos;
     	$this->view->crear_recorrido = count($recorridos) + 1;
     	$this->view->nivel = $this->user['nivel'];
@@ -470,6 +471,50 @@ class CobPeriodoController extends ControllerBase
     	$actas = CobActaconteo::generarActasRcarga($cob_periodo, $carga, $facturacion, count($recorridos));
     	if($actas){
     		$this->flash->success("Se generaron exitosamente las actas");
+    	}
+    	return $this->response->redirect("cob_periodo/ver/$id_periodo");
+    }
+    
+    /**
+     * elegirfacturacion
+     */
+    public function elegirfacturacionAction($id_periodo){
+    	$cob_periodo = CobPeriodo::findFirstByid_periodo($id_periodo);
+    	if (!$cob_periodo) {
+    		$this->flash->error("El periodo no existe");
+    
+    		return $this->response->redirect("cob_periodo/");
+    	}
+    	$cargas = BcCarga::find(['order' => 'fecha DESC']);
+    	if (!$cargas) {
+    		$this->flash->error("Hasta el momento no han sido creadas cargas");
+    		return $this->response->redirect("cob_periodo/nuevorecorrido1/$id_periodo");
+    	}
+    	$this->view->cargas = $cargas;
+    	$this->view->id_periodo = $id_periodo;
+    }
+    
+    /**
+     * elegirfacturacionguardar
+     */
+    public function elegirfacturacionguardarAction($id_periodo){
+    	if (!$this->request->isPost() || !$id_periodo) {
+    		return $this->response->redirect("cob_periodo/");
+    	}
+    	$cob_periodo = CobPeriodo::findFirstByid_periodo($id_periodo);
+    	if (!$cob_periodo) {
+    		$this->flash->error("El periodo no existe");
+    		return $this->response->redirect("cob_periodo/");
+    	}
+    	$id_carga = $this->request->getPost("carga");
+    	$carga = BcCarga::findFirstByid_carga($id_carga);
+    	if (!$carga) {
+    		$this->flash->error("La carga no existe");
+    		return $this->response->redirect("cob_periodo/elegirfacturacion/$id_periodo");
+    	}
+    	$beneficiarios_facturacion = CobActaconteo::generarFacturacion($cob_periodo, $carga);
+    	if($beneficiarios_facturacion){
+    		$this->flash->success("Se generaron exitosamente los beneficiarios que serán facturados");
     	}
     	return $this->response->redirect("cob_periodo/ver/$id_periodo");
     }

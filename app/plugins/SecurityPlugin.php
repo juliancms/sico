@@ -77,6 +77,9 @@ class SecurityPlugin extends Plugin
     		),
     		'eliminar' => array(
     				'nivelPermiso' => '1'
+    		),
+    		'elegirfacturacion' => array(
+    				'nivelPermiso' => '1'
     		)
     	),
     	'bc_carga' => array(

@@ -705,12 +705,20 @@ class BcPermisoController extends ControllerBase
     		$this->flash->notice("El permiso no fue encontrado en la base de datos.");
     		return $this->response->redirect("bc_permiso/revision");
     	}
+    	$permiso_observacion = new BcPermisoObservacion();
     	if($this->user['id_componente'] == 1){
     		$permiso->estado = 1;
+    		$permiso_observacion->estado = 1;
     	} else if($this->user['id_componente'] == 2) {
     		$permiso->estado = 2;
+    		$permiso_observacion->estado = 2;
     	}
     	$permiso->save();
+    	$permiso_observacion->id_permiso = $id_permiso;
+    	$permiso_observacion->id_usuario = $this->id_usuario;
+    	$permiso_observacion->fechahora = date("Y-m-d H:i:s");
+    	$permiso_observacion->observacion = $this->request->getPost("observacion");
+    	$permiso_observacion->save();
     	$this->flash->success("El permiso fue aprobado exitosamente");
         return $this->response->redirect("bc_permiso/revision");
     }
