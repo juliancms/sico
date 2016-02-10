@@ -20,10 +20,14 @@ class IbcArchivoDigitalController extends ControllerBase
     {
         $this->persistent->parameters = null;
         $menu = BcOferenteMenu::find("id_usuario = $this->id_usuario AND anio = $anio");
-        if (substr($this->conversiones->get_client_ip(), 0, 7) == "192.168"){
-        	$this->view->url = "http://192.168.2.4/owncloud/" . $menu->menu;
+        if($menu){
+        	if (substr($this->conversiones->get_client_ip(), 0, 7) == "192.168"){
+        		$this->view->url = "http://192.168.2.4/owncloud/" . $menu->menu;
+        	} else {
+        		$this->view->url = "http://192.168.2.4/owncloud/index.php/s/xxK4tBUWdh07X8x";
+        	}
         } else {
-        	$this->view->url = "http://190.248.150.222:842/owncloud/" . $menu->menu;
+        	$this->flash->error("No se encontraron archivos para el año $anio");
         }
     }
 
