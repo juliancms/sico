@@ -22,9 +22,9 @@ class IbcArchivoDigitalController extends ControllerBase
         $menu = BcOferenteMenu::find("id_usuario = $this->id_usuario AND anio = $anio");
         if($menu){
         	if (substr($this->conversiones->get_client_ip(), 0, 7) == "192.168"){
-        		$this->view->url = "http://192.168.2.4/owncloud/" . $menu->menu;
+        		$this->view->url = "http://192.168.2.4/owncloud/" . $menu[0]->menu;
         	} else {
-        		$this->view->url = "http://192.168.2.4/owncloud/" . $menu->menu;
+        		$this->view->url = "http://192.168.2.4/owncloud/" . $menu[0]->menu;
         	}
         } else {
         	$this->flash->error("No se encontraron archivos para el año $anio");
