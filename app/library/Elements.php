@@ -226,6 +226,18 @@ class Elements extends Component
             		echo '<li>'.$this->tag->linkTo("bc_reporte/oferentes_contratos", "Reportes Prestadores").'</li>';
             		echo '</ul>';
             		echo '</li>';
+            	} else if($controller == "ibc_archivo_digital") {
+            		if ($controllerName == $controller) {
+            			echo '<li class="dropdown ibc_archivo_digital active">';
+            		} else {
+            			echo '<li class="dropdown ibc_archivo_digital">';
+            		}
+            		echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown">Archivo Digital <b class="caret"></b></a>';
+            		echo '<ul class="dropdown-menu">';
+            		echo '<li>'.$this->tag->linkTo("ibc_archivo_digital/index/2015", "2015").'</li>';
+            		echo '<li>'.$this->tag->linkTo("ibc_archivo_digital/index/2016", "2016").'</li>';
+            		echo '</ul>';
+            		echo '</li>';
             	} else {
             		if ($controllerName == $controller) {
             			echo '<li class="active">';
