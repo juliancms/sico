@@ -20,7 +20,6 @@ class IbcArchivoDigitalController extends ControllerBase
     {
         $this->persistent->parameters = null;
         $menu = BcOferenteMenu::find("id_usuario = $this->id_usuario AND anio = $anio")->toArray();
-        echo $menu[0]['menu'];
         if($menu){
         	if (substr($this->conversiones->get_client_ip(), 0, 7) == "192.168"){
         		$this->view->url = "http://192.168.2.4/owncloud/" . $menu[0]['menu'];
