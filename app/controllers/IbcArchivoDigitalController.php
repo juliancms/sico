@@ -24,7 +24,7 @@ class IbcArchivoDigitalController extends ControllerBase
         	if (substr($this->conversiones->get_client_ip(), 0, 7) == "192.168"){
         		$this->view->url = "http://192.168.2.4/owncloud/" . $menu[0]->menu;
         	} else {
-        		$this->view->url = "http://192.168.2.4/owncloud/" . $menu[0]->menu;
+        		$this->view->url = "190.248.150.222:842/owncloud/" . $menu[0]->menu;
         	}
         } else {
         	$this->flash->error("No se encontraron archivos para el año $anio");
