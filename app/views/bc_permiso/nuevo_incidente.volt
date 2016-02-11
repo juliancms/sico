@@ -19,6 +19,7 @@
 	</tbody>
 </table>
 <h3>3. Ingresa los campos del permiso</h3>
+<div id="festivos" style="display:none"><?php echo $this->elements->festivos(); ?></div>
 {{ form("bc_permiso/crear_incidente/"~id_sede_contrato, "method":"post", "class":"form-container form-horizontal", "parsley-validate" : "", "id" : "incidente_form", "enctype" : "multipart/form-data") }}
 	<div class="form-group">
         <label class="col-sm-2 control-label" for="titulo">Motivo Permiso (25 caracteres máximo)</label>
