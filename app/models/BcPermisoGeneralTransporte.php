@@ -8,12 +8,6 @@ class BcPermisoGeneralTransporte extends \Phalcon\Mvc\Model
      * @var integer
      */
     public $id_permiso;
-    
-    /**
-     *
-     * @var string
-     */
-    public $contratoTransporte;
 
     /**
      *
@@ -32,7 +26,7 @@ class BcPermisoGeneralTransporte extends \Phalcon\Mvc\Model
      *
      * @var string
      */
-    public $soat;
+    public $polizaResponsabilidadCivil;
 
     /**
      *

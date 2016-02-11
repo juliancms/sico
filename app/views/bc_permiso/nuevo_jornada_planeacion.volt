@@ -9,7 +9,7 @@
 	        <h4 class="modal-title" id="myModalLabel">Agregar ítems</h4>
 	      </div>
 	      <div class="modal-body">
-	      <div class="alert alert-warning"><i class="glyphicon glyphicon-warning-sign"></i> El número de ítems debe de ser un número entre 1 y <span class="n2">24</span>, ya que sólo se permiten agregar un máximo de 24 permisos por sede en todo el año.</div>
+	      <div class="alert alert-warning"><i class="glyphicon glyphicon-warning-sign"></i> El número de ítems debe de ser un número entre 1 y <span class="n2">{{ permisos_anuales }}</span>, ya que sólo se permiten agregar un máximo de <span class='permisos_anuales'>{{ permisos_anuales }}</span> permisos por sede para esta modalidad en todo el año.</div>
 	      	<div class="form-group">
 			    <label for="n_items" class="col-sm-2 control-label">Ítems</label>
 			    <div class="col-sm-10">
@@ -26,6 +26,7 @@
 	  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <h1>Nuevo Permiso - Jornada de Planeación</h1>
+<div id="festivos" style="display:none"><?php echo $this->elements->festivos(); ?></div>
 <a href='/sico/bc_permiso/nuevo/jornada_planeacion' class='btn btn-primary regresar'><i class='glyphicon glyphicon-chevron-left'></i> Atrás</a><br><br>
 <table class='table table-bordered table-hover'>
 	<thead>
@@ -62,7 +63,7 @@
     	foreach($fechas as $fecha) { ?>
     	<tr>
     		<td><span class="number"><?php echo $i + 1; ?></span></td>
-    		<td><input type="text" value="<?php echo $fecha; ?>" name="fecha[]" class="form-control required tipo-fecha" parsley-type="dateIso" data-date-format="dd/mm/yyyy"><?php if ($error[$i] > 0) { ?><ul class="parsley-error-list"><li class="required" style="display: list-item;"><?php echo $this->elements->errorFecha($error[$i]); ?></li></ul><?php } ?></td>
+    		<td><input type="text" value="<?php echo $fecha; ?>" name="fecha[]" class="form-control required tipo-fecha" parsley-type="dateIso" data-date-format="dd/mm/yyyy"><?php if ($error[$i] > 0) { ?><ul class="parsley-error-list"><li class="required" style="display: list-item;"><?php echo $this->elements->errorFecha($error[$i], $limite); ?></li></ul><?php } ?></td>
     		<td><input type="text" value="<?php echo $horasInicio[$i]; ?>" name="horaInicio[]" class="form-control required time start"></td>
     		<td><input type="text" value="<?php echo $horasFin[$i]; ?>" name="horaFin[]" class="form-control required time end"></td>
     		<td style="text-align:center;"><a class='btn btn-default eliminar_valor'><i class='glyphicon glyphicon-remove'></i></a></td>
@@ -79,7 +80,7 @@
         	<td style="text-align:center;"><a class='btn btn-default eliminar_valor'><i class='glyphicon glyphicon-remove'></i></a></td>
     	</tr>
     	{% endif %}
-    <?php for ($i = 2; $i <= 24; $i++) { ?>
+    <?php for ($i = 2; $i <= $permisos_anuales; $i++) { ?>
     	<tr style='display: none;'>
     		<td><span class="number"><?php echo $i; ?></span></td>
         	<td>{{ text_field("fecha[]", "type" : "date", "class" : "form-control tipo-fecha required", "parsley-type" : "dateIso", "data-date-format" : "dd/mm/yyyy", "disabled" : "disabled") }}</td>

@@ -83,28 +83,18 @@
     <div class="form-group">
         <label class="col-sm-2 control-label" for="emailContactoEvento">Email de la Persona de Contacto</label>
         <div class="col-sm-10">
-                {{ text_field("emailContactoEvento", "maxlength" : "80", "parsley-maxlength" : "80", "class" : "form-control required") }}
+                {{ email_field("emailContactoEvento", "maxlength" : "80", "parsley-maxlength" : "80", "class" : "form-control required") }}
                 <div class="max">80 caracteres máximo</div>
         </div>
     </div>
     <div class="form-group">
     	<label class="col-sm-2 control-label" for="listadoNinios">Listado de Niños Participantes</label>
 		<div class="col-sm-10 imagen_imppnt">
-			<input class="fileupload filestyle" data-input="false" data-badge="false" type="file" name="archivo[]" multiple>
+			<input class="fileupload filestyle" data-tipo = "xls" data-input="false" data-badge="false" type="file" name="archivo[]" multiple>
 		    <div id="progress" class="progress" style="margin: 0 !important;">
 		        <div class="progress-bar progress-bar-success"></div>
 		    </div>
 		    <input style="display:none" type='text' class='urlArchivo required' name='listadoNinios' value=''>
-		</div>
-	</div>
-	<div class="form-group">
-    	<label class="col-sm-2 control-label" for="consentimientoInformado">Consentimiento Informado</label>
-		<div class="col-sm-10 imagen_imppnt">
-			<input class="fileupload filestyle" data-input="false" data-badge="false" type="file" name="archivo[]" multiple>
-		    <div id="progress" class="progress" style="margin: 0 !important;">
-		        <div class="progress-bar progress-bar-success"></div>
-		    </div>
-		    <input style="display:none" type='text' class='urlArchivo required' name='consentimientoInformado' value=''>
 		</div>
 	</div>
 	<div class="form-group">
@@ -121,19 +111,9 @@
         </div>
     </div>
 	<div class="form-group transporte">
-    	<label class="col-sm-2 control-label" for="contratoTransporte">Contrato Transporte</label>
-		<div class="col-sm-10 imagen_imppnt">
-			<input disabled="disabled" class="fileupload filestyle" data-input="false" data-badge="false" type="file" name="archivo[]" multiple>
-		    <div id="progress" class="progress" style="margin: 0 !important;">
-		        <div class="progress-bar progress-bar-success"></div>
-		    </div>
-		    <input disabled="disabled" style="display:none" type='text' class='urlArchivo required' name='contratoTransporte' value=''>
-		</div>
-	</div>
-	<div class="form-group transporte">
     	<label class="col-sm-2 control-label" for="runtConductor">RUNT del Conductor</label>
 		<div class="col-sm-10 imagen_imppnt">
-			<input disabled="disabled" class="fileupload filestyle" data-input="false" data-badge="false" type="file" name="archivo[]" multiple>
+			<input disabled="disabled" class="fileupload filestyle" data-tipo = "img_pdf" data-input="false" data-badge="false" type="file" name="archivo[]" multiple>
 		    <div id="progress" class="progress" style="margin: 0 !important;">
 		        <div class="progress-bar progress-bar-success"></div>
 		    </div>
@@ -143,7 +123,7 @@
 	<div class="form-group transporte">
     	<label class="col-sm-2 control-label" for="runtVehiculo">RUNT del Vehículo</label>
 		<div class="col-sm-10 imagen_imppnt">
-			<input disabled="disabled" class="fileupload filestyle" data-input="false" data-badge="false" type="file" name="archivo[]" multiple>
+			<input disabled="disabled" class="fileupload filestyle" data-tipo = "img_pdf" data-input="false" data-badge="false" type="file" name="archivo[]" multiple>
 		    <div id="progress" class="progress" style="margin: 0 !important;">
 		        <div class="progress-bar progress-bar-success"></div>
 		    </div>
@@ -151,19 +131,19 @@
 		</div>
 	</div>
 	<div class="form-group transporte">
-    	<label class="col-sm-2 control-label" for="soat">Póliza de Responsabilidad (SOAT)</label>
+    	<label class="col-sm-2 control-label" for="polizaResponsabilidadCivil">Póliza Responsabilidad Civil</label>
 		<div class="col-sm-10 imagen_imppnt">
-			<input disabled="disabled" class="fileupload filestyle" data-input="false" data-badge="false" type="file" name="archivo[]" multiple>
+			<input disabled="disabled" class="fileupload filestyle" data-tipo = "img_pdf" data-input="false" data-badge="false" type="file" name="archivo[]" multiple>
 		    <div id="progress" class="progress" style="margin: 0 !important;">
 		        <div class="progress-bar progress-bar-success"></div>
 		    </div>
-		    <input disabled="disabled" style="display:none" type='text' class='urlArchivo required' name='soat' value=''>
+		    <input disabled="disabled" style="display:none" type='text' class='urlArchivo required' name='polizaResponsabilidadCivil' value=''>
 		</div>
 	</div>
 	<div class="form-group transporte">
     	<label class="col-sm-2 control-label" for="tarjetaOperacionVehiculo">Tarjeta de Operación del Vehículo</label>
 		<div class="col-sm-10 imagen_imppnt">
-			<input disabled="disabled" class="fileupload filestyle" data-input="false" data-badge="false" type="file" name="archivo[]" multiple>
+			<input disabled="disabled" class="fileupload filestyle" data-tipo = "img_pdf" data-input="false" data-badge="false" type="file" name="archivo[]" multiple>
 		    <div id="progress" class="progress" style="margin: 0 !important;">
 		        <div class="progress-bar progress-bar-success"></div>
 		    </div>

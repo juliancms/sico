@@ -21,7 +21,30 @@
 	</div>
 </div>
 {{ link_to("bc_permiso/nuevo", '<i class="glyphicon glyphicon-plus"></i> Nuevo Permiso', "class": "btn btn-primary menu-tab-first") }}
+{{ link_to("bc_permiso/revision", '<i class="glyphicon glyphicon-list-alt"></i> Revisar Total No Aprobados', "class": "btn btn-primary menu-tab-first") }}
 {% if (not(permisos is empty)) %}
+<!-- Modal -->
+<div class="modal fade" id="aprobar_permiso" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Aprobando Permiso ID <span class="fila_eliminar"></span></h4>
+      </div>
+      <div class="modal-body">
+      {{ form("bc_permiso/aprobarbc/", "method":"post", "class":"", "id":"aprobar_permiso", "parsley-validate" : "") }}
+          <p>Escribe el motivo por el cual vas a <span style='color: #5cb85c; font-weight: bold'>aprobar</span> el permiso ID <span class="fila_eliminar"></span>:</p>
+          <p>{{ text_area("observacion", "maxlength" : "400", "parsley-maxlength" : "400", "rows" : "4", "class" : "form-control", "value" : aprobar_texto) }}</p>
+          <input type="hidden" name="id_permiso" class="id_elemento">
+      </div>
+      <div class="modal-footer">
+        {{ submit_button("Aprobar", "class" : "btn btn-primary") }}
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        </form>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <!-- Modal -->
 <div class="modal fade" id="eliminar_elemento" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -32,8 +55,8 @@
       </div>
       <div class="modal-body">
       {{ form("bc_permiso/anular/", "method":"post", "class":"", "id":"anular_permiso", "parsley-validate" : "") }}
-          <p>Escribe el motivo por el cual vas a anular el permiso ID <span class="fila_eliminar"></span>:</p>
-          <p>{{ text_area("observacion", "maxlength" : "150", "parsley-maxlength" : "150", "rows" : "4", "class" : "form-control required") }}</p>
+          <p>Escribe el motivo por el cual vas a <span style='color: #d9534f; font-weight: bold'>anular</span> el permiso ID <span class="fila_eliminar"></span>:</p>
+          <p>{{ text_area("observacion", "maxlength" : "400", "parsley-maxlength" : "400", "rows" : "4", "class" : "form-control required") }}</p>
           <input type="hidden" name="id_permiso" class="id_elemento">
       </div>
       <div class="modal-footer">
@@ -67,7 +90,7 @@
     ?>
     {% for permiso in permisos %}
         <tr data-estado="{{ permiso.estado }}" class="bg-{{ permiso.getEstadoStyle() }}">
-            <td><a rel="tooltip" title="Ver Detalles del Permiso" href="{{ url("bc_permiso/permiso/"~permiso.id_permiso) }}"><?php if ($permiso->estado == 1){ ?><a href="/sico/bc_permiso/aprobar/<?php echo $permiso->id_permiso; ?>" rel="tooltip" title="Aprobar"><i class="glyphicon glyphicon-ok"></i></a> <a href="#eliminar_elemento" rel="tooltip" title="Anular" class="eliminar_fila" data-id = "{{ permiso.id_permiso }}" data-toggle = "modal" id="{{ url("bc_permiso/eliminar/"~permiso.id_permiso) }}"><i class="glyphicon glyphicon-remove"></i></a> <?php } ?>{{ permiso.id_permiso }}</a></td>
+            <td><a rel="tooltip" title="Ver Detalles del Permiso" href="{{ url("bc_permiso/permiso/"~permiso.id_permiso) }}"><?php if ($permiso->estado == 1){ ?><a href="#aprobar_permiso" rel="tooltip" title="Aprobar" class="eliminar_fila" data-id = "{{ permiso.id_permiso }}" data-toggle = "modal" id="{{ url("bc_permiso/eliminar/"~permiso.id_permiso) }}"><i class="glyphicon glyphicon-ok"></i></a> <a href="#eliminar_elemento" rel="tooltip" title="Anular" class="eliminar_fila" data-id = "{{ permiso.id_permiso }}" data-toggle = "modal" id="{{ url("bc_permiso/eliminar/"~permiso.id_permiso) }}"><i class="glyphicon glyphicon-remove"></i></a> <?php } ?>{{ permiso.id_permiso }}</a></td>
             <td><a rel="tooltip" title="Ver Detalles del Permiso" href="{{ url("bc_permiso/permiso/"~permiso.id_permiso) }}">{{ permiso.getEstado() }}</a></td>
             <td>{{ permiso.getCategoria() }}</td>
             <td>{{ permiso.BcSedeContrato.oferente_nombre }}</td>

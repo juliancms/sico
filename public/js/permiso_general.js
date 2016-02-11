@@ -9,7 +9,6 @@ $(".no_requiere_transporte").click (
 			$('.transporte').find("input").attr("disabled", "disabled");
 			$('.transporte').hide();
 })
-var url = window.location.protocol + "//" + window.location.host + "/sico/" + "bc_permiso/subir_archivo/" + $("table").attr("id");
 $('#permiso_general_form .tipo-fecha').datepicker({
     format: "dd/mm/yyyy",
     weekStart: 0,
@@ -32,8 +31,9 @@ $('.hora input').timepicker({
 $('form').datepair();
 
 $(".fileupload").change(function() {
-	
 	var archivo = $(this);
+	var tipo =  $(archivo).attr("data-tipo");
+	var url = window.location.protocol + "//" + window.location.host + "/sico/" + "bc_permiso/subir_archivo/" + $("table").attr("id") + "/" + tipo;
 	$(archivo).parent().find('#progress .progress-bar').css(
             "width", "0%"
         );																														
@@ -45,8 +45,10 @@ $(".fileupload").change(function() {
 	      processData: false,
 	      contentType: false,
 	      success: function (data) {
-	    	  if(data == "Tipo"){
+	    	  if(data == "img_pdf"){
 	    		  alert("El tipo de archivo debe de ser jpg, png, bmp, gif o pdf")
+	    	  } else if(data == "xls"){
+	    		  alert("El tipo de archivo debe de ser xls o xlsx (archivo de Excel)")
 	    	  } else if(data == "Error"){
 	    		  alert("Ocurrió un error la subir la imagen");
 	    	  } else {

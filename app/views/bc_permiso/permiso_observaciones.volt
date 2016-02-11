@@ -6,7 +6,7 @@
 		    <img src="{{ row.IbcUsuario.foto }}" width="40px" height="40px">
 		  </div>
 		  <div>
-		  	<h3 style="margin: 0px;">{{ row.IbcUsuario.nombre }} <span class="label label-{{ permiso.getEstadoStyle() }}">{{ permiso.getEstado() }}</span></h3>
+		  	<h3 style="margin: 0px;">{{ row.IbcUsuario.nombre }} <span class="label label-{{ row.getEstadoStyle() }}">{{ row.getEstado() }}</span></h3>
    			<div class="info_anuncio"><?php $date = date_create($row->fechahora); ?><i class="fa fa-calendar"></i> <?php echo date_format($date, 'd/m/Y'); ?> <i class="fa fa-clock-o"></i> <?php echo date_format($date, 'G:ia'); ?> <span class="label label-success"></span></div>
 		  </div>
 		</div>

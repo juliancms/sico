@@ -387,6 +387,9 @@ class SecurityPlugin extends Plugin
     		'crear_jornada_planeacion' => array(
     				'nivelPermiso' => '4'
     		),
+    		'crear_incidente' => array(
+    				'nivelPermiso' => '4'
+    		),
     		'subir_archivo' => array(
     				'nivelPermiso' => '4'
     		),

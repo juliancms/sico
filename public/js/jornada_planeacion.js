@@ -3,13 +3,14 @@ $( '#jornada_planeacion_form' ).parsley();
 $("#btn_varios_items").click (
 	function() {
 		var n_filas = $( ".tipo-fecha[disabled!='disabled']" ).size();
-    	if(n_filas >= 24){
-	    	$(".alerta_lote").html("<i class='glyphicon glyphicon-warning-sign'></i> Sólo puedes guardar hasta 24 jornadas de planeación en una misma sede en todo el año.");
+		var permisos_anuales = $(".permisos_anuales").html();
+    	if(n_filas >= permisos_anuales){
+	    	$(".alerta_lote").html("<i class='glyphicon glyphicon-warning-sign'></i> Sólo puedes guardar hasta "+ permisos_anuales+ " 24 jornadas de planeación en una misma sede en todo el año.");
 	    	$(".alerta_lote").fadeOut();
 	    	$(".alerta_lote").fadeIn();
 	    	return;
     	} else {
-        	var x2 = 24 - n_filas;
+        	var x2 = permisos_anuales - n_filas;
         	$('#n_items').autoNumeric('init', {vMin: '0', vMax: x2 }); /* Doc: https://github.com/BobKnothe/autoNumeric */
         	$('.n2').html(x2);
     		$('#agregar_items').modal('show');
@@ -66,9 +67,10 @@ function eliminar_valor(valor){
 	$( '#jornada_planeacion_form' ).parsley();
 	reasignar_keys();
 }
-
+var festivos = $("#festivos").html().split(',');
 $('#jornada_planeacion_form .tipo-fecha').datepicker({
     format: "dd/mm/yyyy",
+    datesDisabled: festivos,
     weekStart: 0,
     startDate: $('#fecha_inicio').val(),
     endDate: $('#fecha_fin').val(),

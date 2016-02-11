@@ -2,6 +2,12 @@
 {{ content() }}
 <h1>Permisos - {{ titulo }}</h1>
 <div class="pull-right form-inline">
+	<div class="input-group">
+      <input name="buscar" type="text" class="form-control buscar-permiso-input" placeholder="Buscar por ID...">
+      <span class="input-group-btn">
+        <a class="btn btn-primary buscar-permiso-btn" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Buscar</a>
+      </span>
+    </div><!-- /input-group -->
 	<div class="btn-group">
 		{{ btn_anterior }}
 		<a class="btn btn-default" data-calendar-nav="today">{{ titulo }}</a>

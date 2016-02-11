@@ -1,26 +1,8 @@
 
 {{ content() }}
-<h1>Permisos - {{ titulo }}</h1>
-<div class="pull-right form-inline">
-	<div class="input-group">
-      <input name="buscar" type="text" class="form-control buscar-permiso-input" placeholder="Buscar por ID...">
-      <span class="input-group-btn">
-        <a class="btn btn-primary buscar-permiso-btn" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Buscar</a>
-      </span>
-    </div><!-- /input-group -->
-	<div class="btn-group">
-		{{ btn_anterior }}
-		<a class="btn btn-default" data-calendar-nav="today">{{ titulo }}</a>
-		{{ btn_siguiente }}
-	</div>
-	<div class="btn-group">
-		{{ btn_anio }}
-		{{ btn_mes }}
-		{{ btn_semana }}
-		{{ btn_dia }}
-	</div>
-</div>
-{{ link_to("bc_permiso/revision", '<i class="glyphicon glyphicon-list-alt"></i> Revisar Total No Aprobados', "class": "btn btn-primary menu-tab-first") }}
+<h1>Revisión de Permisos</h1>
+<a href='/sico/bc_permiso' class='btn btn-primary regresar'><i class='glyphicon glyphicon-chevron-left'></i> Lista de Permisos</a><br>
+<br>
 {% if (not(permisos is empty)) %}
 <!-- Modal -->
 <div class="modal fade" id="eliminar_elemento" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -32,8 +14,8 @@
       </div>
       <div class="modal-body">
       {{ form("bc_permiso/anular/", "method":"post", "class":"", "id":"anular_permiso", "parsley-validate" : "") }}
-          <p>Escribe el motivo por el cual vas a anular el permiso ID <span class="fila_eliminar"></span>:</p>
-          <p>{{ text_area("observacion", "maxlength" : "150", "parsley-maxlength" : "150", "rows" : "4", "class" : "form-control required") }}</p>
+          <p>Escribe el motivo por el cual vas a <span style='color: #d9534f; font-weight: bold'>anular</span> el permiso ID <span class="fila_eliminar"></span>:</p>
+          <p>{{ text_area("observacion", "maxlength" : "400", "parsley-maxlength" : "150", "rows" : "4", "class" : "form-control required", "value" : anular_permiso) }}</p>
           <input type="hidden" name="id_permiso" class="id_elemento">
       </div>
       <div class="modal-footer">
@@ -66,8 +48,8 @@
     $fecha_limite = strtotime(date('Y-m-d'). ' +1 days');
     ?>
     {% for permiso in permisos %}
-        <tr data-estado="{{ permiso.estado }}" class="bg-{{ permiso.getEstadoStyle() }}">
-            <td><a rel="tooltip" title="Ver Detalles del Permiso" href="{{ url("bc_permiso/permiso/"~permiso.id_permiso) }}"><?php if ($permiso->estado == 0){ ?><a href="/sico/bc_permiso/aprobar/<?php echo $permiso->id_permiso; ?>" rel="tooltip" title="Pre Aprobar"><i class="glyphicon glyphicon-ok"></i></a> <a href="#eliminar_elemento" rel="tooltip" title="Anular" class="eliminar_fila" data-id = "{{ permiso.id_permiso }}" data-toggle = "modal" id="{{ url("bc_permiso/eliminar/"~permiso.id_permiso) }}"><i class="glyphicon glyphicon-remove"></i></a> <?php } ?>{{ permiso.id_permiso }}</a></td>
+        <tr>
+            <td><a rel="tooltip" title="Ver Detalles del Permiso" href="{{ url("bc_permiso/permiso/"~permiso.id_permiso) }}"><a href="/sico/bc_permiso/aprobar/<?php echo $permiso->id_permiso; ?>" rel="tooltip" title="Pre Aprobar"><i class="glyphicon glyphicon-ok"></i></a> <a href="#eliminar_elemento" rel="tooltip" title="Anular" class="eliminar_fila" data-id = "{{ permiso.id_permiso }}" data-toggle = "modal" id="{{ url("bc_permiso/eliminar/"~permiso.id_permiso) }}"><i class="glyphicon glyphicon-remove"></i></a> {{ permiso.id_permiso }}</a></td>
             <td><a rel="tooltip" title="Ver Detalles del Permiso" href="{{ url("bc_permiso/permiso/"~permiso.id_permiso) }}">{{ permiso.getEstado() }}</a></td>
             <td>{{ permiso.getCategoria() }}</td>
             <td>{{ permiso.BcSedeContrato.oferente_nombre }}</td>

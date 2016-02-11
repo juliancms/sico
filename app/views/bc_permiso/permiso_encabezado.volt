@@ -10,7 +10,7 @@
       <div class="modal-body">
       {{ form("bc_permiso/anular/", "method":"post", "class":"", "id":"anular_permiso", "parsley-validate" : "") }}
           <p>Escribe el motivo por el cual vas a anular el permiso ID <span class="fila_eliminar"></span>:</p>
-          <p>{{ text_area("observacion", "maxlength" : "150", "parsley-maxlength" : "150", "rows" : "4", "class" : "form-control required") }}</p>
+          <p>{{ text_area("observacion", "maxlength" : "150", "parsley-maxlength" : "150", "rows" : "4", "class" : "form-control required", "value" : texto_anular) }}</p>
           <input type="hidden" name="id_permiso" class="id_elemento">
       </div>
       <div class="modal-footer">

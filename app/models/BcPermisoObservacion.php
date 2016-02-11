@@ -41,4 +41,49 @@ class BcPermisoObservacion extends \Phalcon\Mvc\Model
     	));
     }
 
+    /**
+     * Convierte en texto la categoría de los permisos
+     *
+     * @return string
+     */
+    public function getEstado()
+    {
+    	switch ($this->estado) {
+    		case 0:
+    			return "Pendiente de revisión";
+    			break;
+    		case 1:
+    			return "Preaprobado por Interventoría";
+    			break;
+    		case 2:
+    			return "Aprobado por Buen Comienzo";
+    			break;
+    		case 3:
+    			return "Anulado";
+    			break;
+    	}
+    }
+    
+    /**
+     * Coloca estilo visual a los estados
+     *
+     * @return string
+     */
+    public function getEstadoStyle()
+    {
+    	switch ($this->estado) {
+    		case 0:
+    			return "default";
+    			break;
+    		case 1:
+    			return "info";
+    			break;
+    		case 2:
+    			return "success";
+    			break;
+    		case 3:
+    			return "danger";
+    			break;
+    	}
+    }
 }

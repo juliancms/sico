@@ -552,16 +552,16 @@ class Elements extends Component
     	echo "</div><div class='clear'></clear>";
     	}
     
-    public function errorFecha($error){
+    public function errorFecha($error, $limite){
     	switch ($error) {
     		case "0":
     			return "";
     		case "1":
     			return "La fecha es incorrecta porque el permiso solo puede ser creado con 10 o más días de anticipación.";
     		case "2":
-    			return "La fecha es incorrecta porque ya existe una jornada de planeación de esta sede para este mes.";
+    			return "La fecha es incorrecta porque para esta modalidad solo se pueden crear $limite permiso(s) de planeación mensualmente.";
     		case "3":
-    			return "No puedes crear dos permisos de planeación en el mismo mes, por favor cambia la fecha o elimina esta fila.";
+    			return "No puedes crear más de $limite permiso(s) de planeación en el mismo mes para esta modalidad, por favor cambia la fecha o elimina esta fila.";
     		default:
     			return "";
     	}
@@ -673,5 +673,14 @@ class Elements extends Component
     		default:
     			return "general";
     	}
+    }
+    public function permiso($accion){
+    	switch ($accion) {
+    		case "aprobar_bc":
+    			return "Se recuerda a la entidad contar con los procedimientos de seguridad para estas salidas y garantizar la alimentación de los niños y las niñas como lo establece la minuta.";
+    	}
+    }
+    public function festivos(){
+    	return "20/03/2016,21/03/2016,24/03/2016,25/03/2016,01/05/2016,09/05/2016,30/05/2016,06/06/2016,04/07/2016,20/07/2016,07/08/2016,15/08/2016,17/10/2016,07/11/2016,14/11/2016,08/12/2016,25/12/2016";
     }
 }

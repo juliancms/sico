@@ -19,13 +19,6 @@ class BcPermisoGeneral extends \Phalcon\Mvc\Model
      *
      * @var string
      */
-    public $consentimientoInformado;
-
-
-    /**
-     *
-     * @var string
-     */
     public $actores;
 
     /**

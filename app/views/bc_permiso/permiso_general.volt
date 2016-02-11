@@ -20,7 +20,6 @@
 			<th>Teléfonos de la Persona de Contacto</th>
 			<th>Email de la Persona de Contacto</th>
 			<th>Listado de Niños Participantes</th>
-			<th>Consentimiento Informado</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -38,24 +37,21 @@
 			<td>{{ permiso.BcPermisoGeneral.telefonoContactoEvento }}</td>
 			<td>{{ permiso.BcPermisoGeneral.emailContactoEvento }}</td>
 			<td><a target="_blank" href="/sico/files/permisos/{{ permiso.BcPermisoGeneral.listadoNinios }}">Clic para ver Archivo</a></td>
-			<td><a target="_blank" href="/sico/files/permisos/{{ permiso.BcPermisoGeneral.consentimientoInformado }}">Clic para ver Archivo</a></td>
 		</tr>
 		<?php if($permiso->BcPermisoGeneral->requiereTransporte == 1){ ?>
 		<tr>
 			<th colspan="14" style="text-align:center;">Transporte</th>
 		</tr>
 		<tr>
-			<th colspan="2">Contrato de Transporte</th>
 			<th colspan="3">RUNT del Conductor</th>
 			<th colspan="3">RUNT del Vehículo</th>
-			<th colspan="3">Póliza de Responsabilidad (SOAT)</th>
+			<th colspan="3">Póliza de Responsabilidad Civil</th>
 			<th colspan="3">Tarjeta de Operación del Vehículo</th>
 		</tr>
 		<tr>
-			<td colspan="2"><a target="_blank" href="/sico/files/permisos/{{ permiso.BcPermisoGeneralTransporte.contratoTransporte }}">Clic para ver Archivo</a></td>
 			<td colspan="3"><a target="_blank" href="/sico/files/permisos/{{ permiso.BcPermisoGeneralTransporte.runtConductor }}">Clic para ver Archivo</a></td>
 			<td colspan="3"><a target="_blank" href="/sico/files/permisos/{{ permiso.BcPermisoGeneralTransporte.runtVehiculo }}">Clic para ver Archivo</a></td>
-			<td colspan="3"><a target="_blank" href="/sico/files/permisos/{{ permiso.BcPermisoGeneralTransporte.soat }}">Clic para ver Archivo</a></td>
+			<td colspan="3"><a target="_blank" href="/sico/files/permisos/{{ permiso.BcPermisoGeneralTransporte.polizaResponsabilidadCivil }}">Clic para ver Archivo</a></td>
 			<td colspan="3"><a target="_blank" href="/sico/files/permisos/{{ permiso.BcPermisoGeneralTransporte.tarjetaOperacionVehiculo }}">Clic para ver Archivo</a></td>
 		</tr>
 		<?php } ?>

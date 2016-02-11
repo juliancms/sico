@@ -5,6 +5,29 @@
 <br>
 {% if (not(permisos is empty)) %}
 <!-- Modal -->
+<div class="modal fade" id="aprobar_permiso" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Aprobando Permiso ID <span class="fila_eliminar"></span></h4>
+      </div>
+      <div class="modal-body">
+      {{ form("bc_permiso/aprobarbc/", "method":"post", "class":"", "id":"aprobar_permiso", "parsley-validate" : "") }}
+          <p>Escribe el motivo por el cual vas a <span style='color: #5cb85c; font-weight: bold'>aprobar</span> el permiso ID <span class="fila_eliminar"></span>:</p>
+          <p>{{ text_area("observacion", "maxlength" : "400", "parsley-maxlength" : "400", "rows" : "4", "class" : "form-control", "value" : aprobar_texto) }}</p>
+          <input type="hidden" name="id_permiso" class="id_elemento">
+      </div>
+      <div class="modal-footer">
+        {{ submit_button("Aprobar", "class" : "btn btn-primary") }}
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        </form>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- Modal -->
+<!-- Modal -->
 <div class="modal fade" id="eliminar_elemento" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -14,8 +37,8 @@
       </div>
       <div class="modal-body">
       {{ form("bc_permiso/anular/", "method":"post", "class":"", "id":"anular_permiso", "parsley-validate" : "") }}
-          <p>Escribe el motivo por el cual vas a anular el permiso ID <span class="fila_eliminar"></span>:</p>
-          <p>{{ text_area("observacion", "maxlength" : "150", "parsley-maxlength" : "150", "rows" : "4", "class" : "form-control required") }}</p>
+          <p>Escribe el motivo por el cual vas a <span style='color: #d9534f; font-weight: bold'>anular</span> el permiso ID <span class="fila_eliminar"></span>:</p>
+          <p>{{ text_area("observacion", "maxlength" : "400", "parsley-maxlength" : "150", "rows" : "4", "class" : "form-control required", "value" : anular_permiso) }}</p>
           <input type="hidden" name="id_permiso" class="id_elemento">
       </div>
       <div class="modal-footer">

@@ -19,7 +19,7 @@
 	</tbody>
 </table>
 <h3>3. Ingresa los campos del permiso</h3>
-{{ form("bc_permiso/crear_incidente/"~id_sede_contrato, "method":"post", "class":"form-container form-horizontal", "parsley-validate" : "") }}
+{{ form("bc_permiso/crear_incidente/"~id_sede_contrato, "method":"post", "class":"form-container form-horizontal", "parsley-validate" : "", "id" : "incidente_form", "enctype" : "multipart/form-data") }}
 	<div class="form-group">
         <label class="col-sm-2 control-label" for="titulo">Motivo Permiso (25 caracteres máximo)</label>
         <div class="col-sm-10">
@@ -29,7 +29,7 @@
     <div class="form-group">
         <label class="col-sm-2 control-label" for="fecha">Fecha (dd/mm/aaaa)</label>
         <div class="col-sm-10">
-                {{ text_field("fecha", "type" : "date", "class" : "form-control tipo-fecha required", "placeholder" : "dd/mm/aaaa", "parsley-type" : "dateIso", "data-date-format" : "dd/mm/yyyy") }}
+                {{ text_field("fecha", "class" : "form-control tipo-fecha required", "placeholder" : "dd/mm/aaaa", "parsley-type" : "dateIso", "data-date-format" : "dd/mm/yyyy") }}
         </div>
     </div>
     <div class="form-group">
@@ -40,6 +40,8 @@
     </div>
 <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
+	    <input type="hidden" name="fecha_inicio" id="fecha_inicio" value="<?php echo date('d/m/Y'); ?>">
+		<input type="hidden" name="fecha_fin" id="fecha_fin" value="<?php echo "01/01/" . date('Y',strtotime('+1 year')); ?>"">
           {{ submit_button("Guardar", "class" : "btn btn-default") }}
     </div>
 </div>
