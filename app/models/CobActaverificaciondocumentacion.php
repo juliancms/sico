@@ -197,6 +197,11 @@ class CobActaverificaciondocumentacion extends \Phalcon\Mvc\Model
       			foreach($acta->getCobActaverificaciondocumentacionPersona(['order' => 'grupo, primerNombre asc']) as $row){
       			$nombre_completo = array($row->primerNombre, $row->segundoNombre, $row->primerApellido, $row->segundoApellido);
       			$nombre_completo = implode(" ", $nombre_completo);
+      			if($row->beneficiarioTelefono){
+      				$espacio = "&nbsp;";
+      			} else {
+      				$espacio = "";
+      			}
       			$i = ($i<10) ? "0" .$i : $i;
       			if($j == 31){
       			$j = 1;
@@ -206,7 +211,7 @@ class CobActaverificaciondocumentacion extends \Phalcon\Mvc\Model
   				$html .= $encabezado;
       						$html .= $encabezado_beneficiarios;
       					}
-      					$html .="<div class='fila colb2'><div style='width: 20px;'>$i</div><div style='width: 60px;'>$row->numDocumento</div><div style='width: 170px'>$nombre_completo</div><div style='width: 80px;'>$row->grupo</div><div style='width: 90px;'>$row->beneficiarioTelefono &nbsp; $row->beneficiarioCelular</div><div style='width: 40px'></div><div style='width: 40px'></div><div style='width: 40px'></div><div style='width: 40px'></div><div style='width: 40px'></div><div style='width: 40px'></div></div>";
+      					$html .="<div class='fila colb2'><div style='width: 20px;'>$i</div><div style='width: 60px;'>$row->numDocumento</div><div style='width: 170px'>$nombre_completo</div><div style='width: 80px;'>$row->grupo</div><div style='width: 90px;'>$row->beneficiarioTelefono $espacio $row->beneficiarioCelular</div><div style='width: 40px'></div><div style='width: 40px'></div><div style='width: 40px'></div><div style='width: 40px'></div><div style='width: 40px'></div><div style='width: 40px'></div></div>";
       					$i++;
       					$j++;
       			}
