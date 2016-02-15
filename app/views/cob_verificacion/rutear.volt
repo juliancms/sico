@@ -1,7 +1,49 @@
 
 {{ content() }}
 <h1>Rutear Verificación</h1>
+<!-- Modal -->
+	<div class="modal fade" id="rutear_recorrido" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title" id="myModalLabel">Rutear</h4>
+	      </div>
+	      <div class="modal-body">
+	      	<div class="input-group">
+			  <span class="input-group-addon">Buscar</span>
+			  <input class='form-control search_input' type='text' placeholder='Escribe el término a buscar'>
+			</div>
+			{{ form("cob_verificacion/ruteodesdeotroguardar/"~id_verificacion, "method":"post", "name":"ruteodesdeotro") }}
+	      	<table class="table table-bordered table-hover">
+				<thead>
+					<tr>
+						<th>Rutear</th>
+						<th>Periodo</th>
+						<th>Tipo</th>
+						<th>Recorrido</th>
+					</tr>
+				</thead>
+				<tbody class="search_list">
+					{% for periodo in periodos %}
+					<tr>
+						<td><a class="btn btn-link periodo_select" rel="tooltip" title="Rutear"><i class="glyphicon glyphicon-plus"></i></a></td>
+						<td><span class="id_periodo" id="{{ periodo.id_periodo }}"></span><span class="recorrido" id="{{ periodo.recorrido }}"></span>{{ periodo.CobPeriodo.getFechaDetail() }}</td>
+						<td>Recorrido {{ periodo.CobPeriodo.getTipoperiodoDetail() }}</td>
+						<td>Recorrido {{ periodo.recorrido }}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			<input type="hidden" name="id_periodo_actualizar" class="ruteo_id_periodo">
+			<input type="hidden" name="recorrido_actualizar" class="ruteo_recorrido">
+			</form>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
 {{ link_to("cob_verificacion/ver/"~id_verificacion, '<i class="glyphicon glyphicon-chevron-left"></i> Regresar', "class": "btn btn-primary menu-tab") }}
+<a href="#rutear_recorrido" data-toggle="modal" class="btn btn-primary menu-tab"><i class="glyphicon glyphicon-road"></i> Rutear desde otro periodo</a>
 {{ form("cob_verificacion/ruteoguardar/"~id_verificacion, "method":"post", "name":"ruteo") }}
 <table class="table table-bordered table-hover" id="ruteo">
     <thead>

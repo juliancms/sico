@@ -242,6 +242,7 @@ class CobVerificacionController extends ControllerBase
     	->addJs('js/jquery.tablesorter.min.js')
     	->addJs('js/jquery.tablesorter.widgets.js')
     	->addJs('js/rutear.js');
+    	$this->view->periodos = CobActaconteo::find(['group' => 'id_periodo, recorrido']);
     	$this->view->id_verificacion = $cob_verificacion->id_verificacion;
     	$this->view->fecha_periodo = $cob_verificacion->id_verificacion;
     	$this->view->actas = $actas;
@@ -337,11 +338,11 @@ class CobVerificacionController extends ControllerBase
      * Rutea desde otro recorrido
      *
      */
-    public function ruteodesdeotroguardarAction($id_periodo, $recorrido)
+    public function ruteodesdeotroguardarAction($id_verificacion)
     {
     
     	if (!$this->request->isPost()) {
-    		return $this->response->redirect("rutear/$id_periodo/$recorrido");
+    		return $this->response->redirect("cob_verificacion/rutear/$id_verificacion");
     	}
     	$id_periodo_actualizar = $this->request->getPost("id_periodo_actualizar");
     	$recorrido_actualizar = $this->request->getPost("recorrido_actualizar");
@@ -351,7 +352,6 @@ class CobVerificacionController extends ControllerBase
     				"id_periodo = $id_periodo_actualizar AND recorrido = $recorrido_actualizar",
     				"group" => "id_actamuestreo"
     		));
-    		$tabla_acta = "cob_actamuestreo";
     	} else {
     		$actas = CobActaconteo::find(array(
     				"id_periodo = $id_periodo_actualizar AND recorrido = $recorrido_actualizar",
@@ -374,10 +374,10 @@ class CobVerificacionController extends ControllerBase
     		$id_usuario = $row->id_usuario;
     		$id_contrato = $row->id_contrato;
     		$id_sede = $row->id_sede;
-    		$query = $db->execute("UPDATE $tabla_acta SET id_usuario = $id_usuario WHERE id_periodo = $id_periodo AND recorrido = $recorrido AND id_contrato = $id_contrato AND id_sede = $id_sede");
+    		$query = $db->execute("UPDATE cob_actaverificaciondocumentacion SET id_usuario = $id_usuario WHERE id_verificacion = $id_verificacion AND id_contrato = $id_contrato AND id_sede = $id_sede");
     	}
     	$this->flash->success("El ruteo fue actualizado exitosamente");
-    	return $this->response->redirect("cob_periodo/rutear/$id_periodo/$recorrido");
+    	return $this->response->redirect("cob_verificacion/rutear/$id_verificacion");
     }
 
 }

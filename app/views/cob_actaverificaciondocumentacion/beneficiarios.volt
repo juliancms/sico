@@ -9,7 +9,7 @@
             <th>Nombre Completo</th>
             <th>Grupo</th>
             <th>Nombre y Nuip SIBC</th>
-            <th>Tel. SIBC</th>
+            <th>Tel o Cel SIBC</th>
             <th>Cert. SGS</th>
             <th>Cert. Sisbén</th>
             <th>Matr. Firmada</th>
