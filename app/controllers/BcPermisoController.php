@@ -42,7 +42,7 @@ class BcPermisoController extends ControllerBase
     				$this->flash->error("Este usuario no fue encontrado en la base de datos de prestadores.");
     				return $this->response->redirect("/");
     			}
-    			$permisos = BcPermiso::find(array("id_oferente = $oferente->id_oferente AND MONTH(fecha) = $mes_actual", "order" => "fecha ASC"));
+    			$permisos = BcPermiso::find(array("id_oferente = $oferente->id_usuario AND MONTH(fecha) = $mes_actual", "order" => "fecha ASC"));
     			$this->view->pick('bc_permiso/index_prestador');
     			break;
     		case 4:
@@ -106,7 +106,7 @@ class BcPermisoController extends ControllerBase
     				$this->flash->error("Este usuario no fue encontrado en la base de datos de prestadores.");
     				return $this->response->redirect("/");
     			}
-    			$permiso = BcPermiso::find(array("id_oferente = $oferente->id_oferente AND id_permiso = $id_permiso"));
+    			$permiso = BcPermiso::find(array("id_oferente = $oferente->id_usuario AND id_permiso = $id_permiso"));
 	    		if(strtotime($permiso[0]->fecha) > $fecha_limite && $permiso[0]->estado < 3){
 	    			$this->view->accion_permiso = "<a style='margin-left: 3px;' href='#eliminar_elemento' data-toggle = 'modal' class='btn btn-danger regresar eliminar_fila' data-id = '". $permiso[0]->id_permiso ."' id='bc_permiso/eliminar/".$permiso[0]->id_permiso."'><i class='glyphicon glyphicon-remove'></i> Anular Permiso</a>";
 	    		}
@@ -194,7 +194,7 @@ class BcPermisoController extends ControllerBase
     				$this->flash->error("Este usuario no fue encontrado en la base de datos de prestadores.");
     				return $this->response->redirect("/");
     			}
-    			$permisos = BcPermiso::find(array("id_oferente = $oferente->id_oferente AND fecha = '$fecha'", "order" => "fecha ASC"));
+    			$permisos = BcPermiso::find(array("id_oferente = $oferente->id_usuario AND fecha = '$fecha'", "order" => "fecha ASC"));
     			$this->view->pick('bc_permiso/index_prestador');
     			break;
     		case 4:
@@ -280,7 +280,7 @@ class BcPermisoController extends ControllerBase
     				$this->flash->error("Este usuario no fue encontrado en la base de datos de prestadores.");
     				return $this->response->redirect("/");
     			}
-    			$permisos = BcPermiso::find(array("id_oferente = $oferente->id_oferente AND fecha >= '$fecha_inicio' AND fecha <= '$fecha_final'", "order" => "fecha ASC"));
+    			$permisos = BcPermiso::find(array("id_oferente = $oferente->id_usuario AND fecha >= '$fecha_inicio' AND fecha <= '$fecha_final'", "order" => "fecha ASC"));
     			$this->view->pick('bc_permiso/index_prestador');
     			break;
     		case 4:
@@ -339,7 +339,7 @@ class BcPermisoController extends ControllerBase
     				$this->flash->error("Este usuario no fue encontrado en la base de datos de prestadores.");
     				return $this->response->redirect("/");
     			}
-    			$permisos = BcPermiso::find(array("id_oferente = $oferente->id_oferente AND MONTH(fecha) = $mes_actual", "order" => "fecha ASC"));
+    			$permisos = BcPermiso::find(array("id_oferente = $oferente->id_usuario AND MONTH(fecha) = $mes_actual", "order" => "fecha ASC"));
     			$this->view->pick('bc_permiso/index_prestador');
     			break;
     		case 4:
@@ -400,7 +400,7 @@ class BcPermisoController extends ControllerBase
     				$this->flash->error("Este usuario no fue encontrado en la base de datos de prestadores.");
     				return $this->response->redirect("/");
     			}
-    			$permisos = BcPermiso::find(array("id_oferente = $oferente->id_oferente", "order" => "fecha ASC"));
+    			$permisos = BcPermiso::find(array("id_oferente = $oferente->id_usuario", "order" => "fecha ASC"));
     			$this->view->pick('bc_permiso/index_prestador');
     			break;
     		case 4:
@@ -444,7 +444,7 @@ class BcPermisoController extends ControllerBase
     			$this->flash->error("Este usuario no fue encontrado en la base de datos de prestadores.");
     			return $this->response->redirect("/");
     		}
-    		$sedes = BcSedeContrato::find(array("id_oferente = $oferente->id_oferente", "group" => "id_sede_contrato"));
+    		$sedes = BcSedeContrato::find(array("id_oferente = $oferente->id_usuario", "group" => "id_sede_contrato"));
     	} else {
     		$sedes = BcSedeContrato::find(array("group" => "id_sede_contrato"));
     	}
@@ -855,7 +855,7 @@ class BcPermisoController extends ControllerBase
     			$this->flash->error("Este usuario no fue encontrado en la base de datos de prestadores.");
     			return $this->response->redirect('bc_permiso');
     		}
-    		$permiso = BcPermiso::findFirst(array("id_oferente = $oferente->id_oferente AND id_permiso = $id_permiso"));
+    		$permiso = BcPermiso::findFirst(array("id_oferente = $oferente->id_usuario AND id_permiso = $id_permiso"));
     	} else {
     		$permiso = BcPermiso::findFirst(array("id_permiso = $id_permiso"));
     	}
