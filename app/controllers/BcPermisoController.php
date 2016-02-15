@@ -37,7 +37,7 @@ class BcPermisoController extends ControllerBase
     	$aprobar_permiso = "";
     	switch ($this->user['id_componente']) {
     		case 3:
-    			$oferente = IbcUsuarioOferente::findFirstByid_usuario($this->id_usuario);
+    			$oferente = IbcUsuario::findFirstByid_usuario($this->id_usuario);
     			if(!$oferente){
     				$this->flash->error("Este usuario no fue encontrado en la base de datos de prestadores.");
     				return $this->response->redirect("/");
@@ -101,7 +101,7 @@ class BcPermisoController extends ControllerBase
     	$texto_anular = "";
     	switch ($this->user['id_componente']) {
     		case 3:
-    			$oferente = IbcUsuarioOferente::findFirstByid_usuario($this->id_usuario);
+    			$oferente = IbcUsuario::findFirstByid_usuario($this->id_usuario);
     			if(!$oferente){
     				$this->flash->error("Este usuario no fue encontrado en la base de datos de prestadores.");
     				return $this->response->redirect("/");
@@ -189,7 +189,7 @@ class BcPermisoController extends ControllerBase
     	$permisos = BcPermiso::find(array("fecha = '$fecha'", "order" => "fecha ASC"));
     	switch ($this->user['id_componente']) {
     		case 3:
-    			$oferente = IbcUsuarioOferente::findFirstByid_usuario($this->id_usuario);
+    			$oferente = IbcUsuario::findFirstByid_usuario($this->id_usuario);
     			if(!$oferente){
     				$this->flash->error("Este usuario no fue encontrado en la base de datos de prestadores.");
     				return $this->response->redirect("/");
@@ -275,7 +275,7 @@ class BcPermisoController extends ControllerBase
     	$permisos = BcPermiso::find(array("fecha >= '$fecha_inicio' AND fecha <= '$fecha_final'", "order" => "fecha ASC"));
     	switch ($this->user['id_componente']) {
     		case 3:
-    			$oferente = IbcUsuarioOferente::findFirstByid_usuario($this->id_usuario);
+    			$oferente = IbcUsuario::findFirstByid_usuario($this->id_usuario);
     			if(!$oferente){
     				$this->flash->error("Este usuario no fue encontrado en la base de datos de prestadores.");
     				return $this->response->redirect("/");
@@ -334,7 +334,7 @@ class BcPermisoController extends ControllerBase
     	$permisos = BcPermiso::find(array("MONTH(fecha) = $mes_actual", "order" => "fecha ASC"));
     	switch ($this->user['id_componente']) {
     		case 3:
-    			$oferente = IbcUsuarioOferente::findFirstByid_usuario($this->id_usuario);
+    			$oferente = IbcUsuario::findFirstByid_usuario($this->id_usuario);
     			if(!$oferente){
     				$this->flash->error("Este usuario no fue encontrado en la base de datos de prestadores.");
     				return $this->response->redirect("/");
@@ -395,7 +395,7 @@ class BcPermisoController extends ControllerBase
     	$permisos = BcPermiso::find(array("order" => "fecha ASC"));
     	switch ($this->user['id_componente']) {
     		case 3:
-    			$oferente = IbcUsuarioOferente::findFirstByid_usuario($this->id_usuario);
+    			$oferente = IbcUsuario::findFirstByid_usuario($this->id_usuario);
     			if(!$oferente){
     				$this->flash->error("Este usuario no fue encontrado en la base de datos de prestadores.");
     				return $this->response->redirect("/");
@@ -439,7 +439,7 @@ class BcPermisoController extends ControllerBase
     public function nuevoAction($id_categoria, $accion2)
     {
     	if($this->user['id_componente'] == 3){
-    		$oferente = IbcUsuarioOferente::findFirstByid_usuario($this->id_usuario);
+    		$oferente = IbcUsuario::findFirstByid_usuario($this->id_usuario);
     		if(!$oferente){
     			$this->flash->error("Este usuario no fue encontrado en la base de datos de prestadores.");
     			return $this->response->redirect("/");
@@ -850,7 +850,7 @@ class BcPermisoController extends ControllerBase
     	}
     	$id_permiso = $this->request->getPost("id_permiso");
     	if($this->user['id_componente'] == 3){
-    		$oferente = IbcUsuarioOferente::findFirstByid_usuario($this->id_usuario);
+    		$oferente = IbcUsuario::findFirstByid_usuario($this->id_usuario);
     		if(!$oferente){
     			$this->flash->error("Este usuario no fue encontrado en la base de datos de prestadores.");
     			return $this->response->redirect('bc_permiso');
