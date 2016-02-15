@@ -50,7 +50,11 @@ class BcPermisoController extends ControllerBase
     			$this->view->pick('bc_permiso/index_ibc');
     			break;
     		case 1:
-    			$this->view->pick('bc_permiso/index_interventor');
+    			if($this->user['nivel'] > 2){
+    				$this->view->pick('bc_permiso/index_ibc');
+    			} else {
+    				$this->view->pick('bc_permiso/index_interventor');
+    			}
     			break;
     		case 2:
     			$aprobar_texto = $this->elements->permiso("aprobar_bc");
@@ -109,7 +113,11 @@ class BcPermisoController extends ControllerBase
     			break;
     		case 1:
     			if($permiso[0]->estado == 0){
-    				$this->view->accion_permiso = "<a style='margin-left: 3px;' href='/sico/bc_permiso/aprobar/".$permiso[0]->id_permiso."' class='btn btn-success regresar'><i class='glyphicon glyphicon-ok'></i> Pre Aprobar Permiso</a><a style='margin-left: 3px;' href='#eliminar_elemento' data-toggle = 'modal' class='btn btn-danger regresar eliminar_fila' data-id = '". $permiso[0]->id_permiso ."' id='/sico/bc_permiso/eliminar/".$permiso[0]->id_permiso."'><i class='glyphicon glyphicon-remove'></i> Anular Permiso</a>";
+    				if($this->user['nivel'] > 2){
+    					$this->view->accion_permiso = "";
+    				} else {
+    					$this->view->accion_permiso = "<a style='margin-left: 3px;' href='/sico/bc_permiso/aprobar/".$permiso[0]->id_permiso."' class='btn btn-success regresar'><i class='glyphicon glyphicon-ok'></i> Pre Aprobar Permiso</a><a style='margin-left: 3px;' href='#eliminar_elemento' data-toggle = 'modal' class='btn btn-danger regresar eliminar_fila' data-id = '". $permiso[0]->id_permiso ."' id='/sico/bc_permiso/eliminar/".$permiso[0]->id_permiso."'><i class='glyphicon glyphicon-remove'></i> Anular Permiso</a>";
+    				}
     			}
     			break;
     		case 2:
@@ -194,7 +202,12 @@ class BcPermisoController extends ControllerBase
     			$this->view->pick('bc_permiso/index_ibc');
     			break;
     		case 1:
-    			$this->view->pick('bc_permiso/index_interventor');
+    			if($this->user['nivel'] > 2){
+    				$permisos = BcPermiso::find(array("estado = 2 AND fecha = '$fecha'", "order" => "fecha ASC"));
+    				$this->view->pick('bc_permiso/index_ibc');
+    			} else {
+    				$this->view->pick('bc_permiso/index_interventor');
+    			}
     			break;
     		case 2:
     			$this->view->pick('bc_permiso/index_bc');
@@ -275,7 +288,12 @@ class BcPermisoController extends ControllerBase
     			$this->view->pick('bc_permiso/index_ibc');
     			break;
     		case 1:
-    			$this->view->pick('bc_permiso/index_interventor');
+    			if($this->user['nivel'] > 2){
+    				$permisos = BcPermiso::find(array("estado = 2 AND fecha >= '$fecha_inicio' AND fecha <= '$fecha_final'", "order" => "fecha ASC"));
+    			$this->view->pick('bc_permiso/index_ibc');
+    			} else {
+    				$this->view->pick('bc_permiso/index_interventor');
+    			}
     			break;
     		case 2:
     			$this->view->pick('bc_permiso/index_bc');
@@ -329,7 +347,12 @@ class BcPermisoController extends ControllerBase
     			$this->view->pick('bc_permiso/index_ibc');
     			break;
     		case 1:
-    			$this->view->pick('bc_permiso/index_interventor');
+    			if($this->user['nivel'] > 2){
+    				$permisos = BcPermiso::find(array("estado = 2 AND MONTH(fecha) = $mes_actual", "order" => "fecha ASC"));
+    				$this->view->pick('bc_permiso/index_ibc');
+    			} else {
+    				$this->view->pick('bc_permiso/index_interventor');
+    			}
     			break;
     		case 2:
     			$this->view->pick('bc_permiso/index_bc');
@@ -385,7 +408,12 @@ class BcPermisoController extends ControllerBase
     			$this->view->pick('bc_permiso/index_ibc');
     			break;
     		case 1:
-    			$this->view->pick('bc_permiso/index_interventor');
+    			if($this->user['nivel'] > 2){
+    				$permisos = BcPermiso::find(array("estado = 2", "order" => "fecha ASC"));
+    				$this->view->pick('bc_permiso/index_ibc');
+    			} else {
+    				$this->view->pick('bc_permiso/index_interventor');
+    			}
     			break;
     		case 2:
     			$this->view->pick('bc_permiso/index_bc');
@@ -585,7 +613,7 @@ class BcPermisoController extends ControllerBase
     		$parts = explode('/', $row);
     		$mes = intval($parts[1]);
     		$count_meses = array_count_values($meses);
-    		$sede2 = BcPermiso::find("MONTH(fecha) = $mes AND categoria = 5 AND id_sede_contrato = $id_sede_contrato");
+    		$sede2 = BcPermiso::find("MONTH(fecha) = $mes AND categoria = 5 AND id_sede_contrato = $id_sede_contrato AND estado != 3");
     		
     		//Primero que no sea menor a la fecha actual + 10 días
     		if(strtotime($this->conversiones->fecha(1, $row)) < strtotime('+9 days')){
@@ -784,7 +812,7 @@ class BcPermisoController extends ControllerBase
     	$id_permiso = $this->request->getPost("id_permiso");
     	$permiso = BcPermiso::findFirstByid_permiso($id_permiso);
     	if (!$permiso) {
-    		$this->flash->error("El permiso no fue encontrado o no tiene privilegios para anularlo");
+    		$this->flash->error("El permiso no fue encontrado.");
     		return $this->response->redirect('bc_permiso');
     	}
     	$permiso_observacion = new BcPermisoObservacion();
@@ -815,6 +843,10 @@ class BcPermisoController extends ControllerBase
     {
     	if (!$this->request->isPost()) {
     		return $this->response->redirect('bc_permiso');
+    	}
+    	if($this->user['nivel'] > 2){
+    		$this->flash->error("Usted no tiene suficiente privilegios para realizar esta acción.");
+    		return $this->response->redirect("bc_permiso");
     	}
     	$id_permiso = $this->request->getPost("id_permiso");
     	if($this->user['id_componente'] == 3){
