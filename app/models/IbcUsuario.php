@@ -81,6 +81,9 @@ class IbcUsuario extends \Phalcon\Mvc\Model
     	$this->belongsTo('id_componente', 'IbcComponente', 'id_componente', array(
     			'reusable' => true
     	));
+    	$this->belongsTo('id_usuario', 'IbcUsuarioOferente', 'id_usuario', array(
+    			'reusable' => true
+    	));
     }
     
     public function validation()

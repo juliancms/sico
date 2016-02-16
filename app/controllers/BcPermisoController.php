@@ -444,7 +444,8 @@ class BcPermisoController extends ControllerBase
     			$this->flash->error("Este usuario no fue encontrado en la base de datos de prestadores.");
     			return $this->response->redirect("/");
     		}
-    		$sedes = BcSedeContrato::find(array("id_oferente = $oferente->id_usuario", "group" => "id_sede_contrato"));
+    		$id_oferente = $oferente->IbcUsuarioOferente->id_oferente;
+    		$sedes = BcSedeContrato::find(array("id_oferente = $id_oferente", "group" => "id_sede_contrato"));
     	} else {
     		$sedes = BcSedeContrato::find(array("group" => "id_sede_contrato"));
     	}
