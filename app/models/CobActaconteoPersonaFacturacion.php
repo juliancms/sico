@@ -324,7 +324,7 @@ class CobActaconteoPersonaFacturacion extends \Phalcon\Mvc\Model
     {
     	if($this->fechaRetiro !== '0000-00-00' && $this->fechaRetiro !== NULL){
     		return "RETIRADO ANTES DE LA FECHA DE CORTE";
-    	} else if($this->Motivo1->motivo) {
+    	} else if(isset($this->Motivo1->motivo)) {
     		return $this->Motivo1->motivo;
    		}
     }
@@ -338,7 +338,7 @@ class CobActaconteoPersonaFacturacion extends \Phalcon\Mvc\Model
     {
     	if($this->fechaRetiro !== '0000-00-00' && $this->fechaRetiro !== NULL){
     		return "RETIRADO ANTES DE LA FECHA DE CORTE";
-    	} else if($this->Motivo2->motivo) {
+    	} else if(isset($this->Motivo2->motivo)) {
     		return $this->Motivo2->motivo;
     	}
     }
@@ -352,7 +352,7 @@ class CobActaconteoPersonaFacturacion extends \Phalcon\Mvc\Model
     {
     	if($this->fechaRetiro !== '0000-00-00' && $this->fechaRetiro !== NULL){
     		return "RETIRADO ANTES DE LA FECHA DE CORTE";
-    	} else if($this->Motivo3->motivo) {
+    	} else if(isset($this->Motivo3->motivo)) {
     		return $this->Motivo3->motivo;
     	}
     }
