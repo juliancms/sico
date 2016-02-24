@@ -261,8 +261,8 @@ class CobVerificacionController extends ControllerBase
     	}
     	$cob_verificacion = CobVerificacion::findFirstByid_verificacion($id_verificacion);
     	if (!$cob_verificacion) {
-    		$this->flash->error("El periodo no fue encontrado");
-    		return $this->response->redirect("cob_periodo/");
+    		$this->flash->error("La verificación no fue encontrada");
+    		return $this->response->redirect("cob_verificacion/");
     	}
     	if($cob_verificacion->tipo == 3){
     		$actas = CobActaverificaciontelefonica::find(array(
@@ -378,6 +378,48 @@ class CobVerificacionController extends ControllerBase
     	}
     	$this->flash->success("El ruteo fue actualizado exitosamente");
     	return $this->response->redirect("cob_verificacion/rutear/$id_verificacion");
+    }
+    
+    /**
+     * Recorrido
+     *
+     * @param int $id_periodo
+     * @param int $recorrido
+     */
+    public function gdocumentalAction($id_verificacion)
+    {
+    	$cob_verificacion = CobVerificacion::findFirstByid_verificacion($id_verificacion);
+    	if (!$cob_verificacion) {
+    		$this->flash->error("La verificación no fue encontrada");
+    		return $this->response->redirect("cob_verificacion/");
+    	}
+    	if($cob_verificacion->tipo == 3){
+    		$actas = CobActaverificaciontelefonica::find(array(
+    				"id_verificacion = $id_verificacion"
+    		));
+    		
+    	} else if($cob_verificacion->tipo == 2){
+    		$actas = CobActaverificacioncomputo::find(array(
+    				"id_verificacion = $id_verificacion"
+    		));
+    	} else if($cob_verificacion->tipo == 1) {
+    		$actas = CobActaverificaciondocumentacion::find(array(
+    				"id_verificacion = $id_verificacion"
+    		));
+    	}
+    	if (!$actas) {
+    		$this->flash->error("No se encontraron actas");
+    		return $this->response->redirect("cob_verificacion/");
+    	}
+    	$this->assets
+    	->addJs('js/jquery.tablesorter.min.js')
+    	->addJs('js/jquery.tablesorter.widgets.js')
+    	->addJs('js/recorrido.js');
+    	$this->view->id_verificacion = $id_verificacion;
+    	$this->view->id_usuario = $this->id_usuario;
+    	$this->view->fecha_verificacion = $cob_verificacion->fecha;
+    	$this->view->actas = $actas;
+    	$this->view->nivel = $this->user['nivel'];
     }
 
 }

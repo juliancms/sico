@@ -330,6 +330,9 @@ class SecurityPlugin extends Plugin
     		),
     		'rutear' => array(
     				'nivelPermiso' => '2'
+    		),
+    		'gdocumental' => array(
+    				'nivelPermiso' => '2'
     		)
     	),
     	'cob_actaverificaciondocumentacion' => array(
