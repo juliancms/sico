@@ -53,7 +53,7 @@ class BcPermisoObservacion extends \Phalcon\Mvc\Model
     			return "Pendiente de revisión";
     			break;
     		case 1:
-    			return "Preaprobado por Interventoría";
+    			return "Revisado por Interventoría";
     			break;
     		case 2:
     			return "Aprobado por Buen Comienzo";
