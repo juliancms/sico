@@ -20,6 +20,7 @@
 		{{ btn_dia }}
 	</div>
 </div>
+{{ link_to("bc_permiso/nuevo", '<i class="glyphicon glyphicon-plus"></i> Nuevo Permiso', "class": "btn btn-primary menu-tab-first") }}
 {{ link_to("bc_permiso/revision", '<i class="glyphicon glyphicon-list-alt"></i> Revisar Total No Aprobados', "class": "btn btn-primary menu-tab-first") }}
 {% if (not(permisos is empty)) %}
 <!-- Modal -->
@@ -67,14 +68,14 @@
     ?>
     {% for permiso in permisos %}
         <tr data-estado="{{ permiso.estado }}" class="bg-{{ permiso.getEstadoStyle() }}">
-            <td><a rel="tooltip" title="Ver Detalles del Permiso" href="{{ url("bc_permiso/permiso/"~permiso.id_permiso) }}"><?php if ($permiso->estado == 0){ ?><a href="/sico/bc_permiso/aprobar/<?php echo $permiso->id_permiso; ?>" rel="tooltip" title="Pre Aprobar"><i class="glyphicon glyphicon-ok"></i></a> <a href="#eliminar_elemento" rel="tooltip" title="Anular" class="eliminar_fila" data-id = "{{ permiso.id_permiso }}" data-toggle = "modal" id="{{ url("bc_permiso/eliminar/"~permiso.id_permiso) }}"><i class="glyphicon glyphicon-remove"></i></a> <?php } ?>{{ permiso.id_permiso }}</a></td>
+            <td><a rel="tooltip" title="Ver Detalles del Permiso" href="{{ url("bc_permiso/permiso/"~permiso.id_permiso) }}"><?php if ($permiso->estado == 0 || $permiso->estado == 3){ ?><a href="/sico/bc_permiso/aprobar/<?php echo $permiso->id_permiso; ?>" rel="tooltip" title="Pre Aprobar"><i class="glyphicon glyphicon-ok"></i></a> <?php } ?><?php if ($permiso->estado == 0 || $permiso->estado == 3){ ?><a href="#eliminar_elemento" rel="tooltip" title="Anular" class="eliminar_fila" data-id = "{{ permiso.id_permiso }}" data-toggle = "modal" id="{{ url("bc_permiso/eliminar/"~permiso.id_permiso) }}"><i class="glyphicon glyphicon-remove"></i></a> <?php } ?>{{ permiso.id_permiso }}</a></td>
             <td><a rel="tooltip" title="Ver Detalles del Permiso" href="{{ url("bc_permiso/permiso/"~permiso.id_permiso) }}">{{ permiso.getEstado() }}</a></td>
             <td>{{ permiso.getCategoria() }}</td>
             <td>{{ permiso.BcSedeContrato.oferente_nombre }}</td>
             <td>{{ permiso.BcSedeContrato.id_contrato }} - {{ permiso.BcSedeContrato.modalidad_nombre }}</td>
             <td>{{ permiso.BcSedeContrato.id_sede }} - {{ permiso.BcSedeContrato.sede_nombre }}</td>
             <td>{{ permiso.titulo }}</td>
-            <td>{{ permiso.fecha }}</td>
+            <td><?php echo $this->conversiones->fecha(4, $permiso->fecha); ?></td>
             <td>{{ permiso.horaInicio }} - {{ permiso.horaFin }}</td>         
         </tr>
     {% endfor %}

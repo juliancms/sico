@@ -123,7 +123,7 @@ class Conversiones extends Component
 	 * 
 	 * El array $elementos debe de tener el siguiente formato:
 	 * $elementos = array ("id_columna" => array (id1, id2, id3...), "nombre_col2" => array(elemento1, elemento2, elemento3...));
-	 * NOTA: Todas las columnas deben de tener la misma cantidad de elementos
+	 * NOTA: El primer campo debe de ser el id de la tabla el resto pueden ser arrays o valores individuales
 	 * @return string
 	 * Produce un string similar a este:
 	 * UPDATE categories SET
@@ -147,9 +147,15 @@ class Conversiones extends Component
 		for($i = 1; $i < count($elementos); $i++){
 			$sql .= array_keys($elementos)[$i] . " = CASE " . $id_columna;
 			$j = 0;
-			foreach($elementos[array_keys($elementos)[$i]] as $row){
-				$sql .= " WHEN " . $elementos[array_keys($elementos)[0]][$j] . " THEN '" . $row . "'";
-				$j++;
+			if(is_array($elementos[array_keys($elementos)[$i]])){
+				foreach($elementos[array_keys($elementos)[$i]] as $row){
+					$sql .= " WHEN " . $elementos[array_keys($elementos)[0]][$j] . " THEN '" . $row . "'";
+					$j++;
+				}
+			} else {
+				foreach($elementos[array_keys($elementos)[0]] as $row){
+					$sql .= " WHEN " . $row . " THEN '" . $elementos[array_keys($elementos)[$i]] . "'";
+				}
 			}
 			$sql .= " END, ";
 		}

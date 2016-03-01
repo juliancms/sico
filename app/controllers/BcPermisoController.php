@@ -93,13 +93,18 @@ class BcPermisoController extends ControllerBase
     	if(!$id_permiso){
     		return $this->response->redirect("bc_permiso");
     	}
+    	$id_permiso = intval($id_permiso);
+    	$permiso = BcPermiso::find(array("id_permiso = $id_permiso"));
+    	if(!isset($permiso[0])){
+    		$this->flash->error("El permiso con ID <strong>$id_permiso</strong> no fue encontrado en la base de datos.");
+    		return $this->response->redirect("bc_permiso");
+    	}
     	$this->assets
     	->addJs('js/parsley.min.js')
     	->addJs('js/parsley.extend.js')
     	->addJs('js/permisos_lista.js');
     	$fecha_limite = strtotime(date('Y-m-d'). ' +1 days');
-    	$permiso = BcPermiso::find(array("id_permiso = $id_permiso"));
-    	$texto_anular = "";
+    	$texto_aprobar = "";
     	switch ($this->user['id_componente']) {
     		case 3:
     			$oferente = IbcUsuario::findFirstByid_usuario($this->id_usuario);
@@ -110,37 +115,40 @@ class BcPermisoController extends ControllerBase
     			$id_oferente = $oferente->IbcUsuarioOferente->id_oferente;
     			$permiso = BcPermiso::find(array("id_oferente = $id_oferente AND id_permiso = $id_permiso"));
 	    		if(strtotime($permiso[0]->fecha) > $fecha_limite && $permiso[0]->estado < 3){
-	    			$this->view->accion_permiso = "<a style='margin-left: 3px;' href='#eliminar_elemento' data-toggle = 'modal' class='btn btn-danger regresar eliminar_fila' data-id = '". $permiso[0]->id_permiso ."' id='bc_permiso/eliminar/".$permiso[0]->id_permiso."'><i class='glyphicon glyphicon-remove'></i> Anular Permiso</a>";
+	    			$this->view->accion_permiso = "<a style='margin-left: 3px;' href='#eliminar_elemento' data-toggle = 'modal' class='btn btn-danger regresar eliminar_fila' data-id = '". $permiso[0]->id_permiso ."'><i class='glyphicon glyphicon-remove'></i> Anular Permiso</a>";
 	    		}
     			break;
     		case 1:
+    			if($this->user['nivel'] > 2){
+    				$this->view->accion_permiso = "";
+    			}
     			if($permiso[0]->estado == 0){
-    				if($this->user['nivel'] > 2){
-    					$this->view->accion_permiso = "";
-    				} else {
-    					$this->view->accion_permiso = "<a style='margin-left: 3px;' href='/sico/bc_permiso/aprobar/".$permiso[0]->id_permiso."' class='btn btn-success regresar'><i class='glyphicon glyphicon-ok'></i> Pre Aprobar Permiso</a><a style='margin-left: 3px;' href='#eliminar_elemento' data-toggle = 'modal' class='btn btn-danger regresar eliminar_fila' data-id = '". $permiso[0]->id_permiso ."' id='/sico/bc_permiso/eliminar/".$permiso[0]->id_permiso."'><i class='glyphicon glyphicon-remove'></i> Anular Permiso</a>";
-    				}
+    				$this->view->accion_permiso = "<a style='margin-left: 3px;' href='/sico/bc_permiso/aprobar/".$permiso[0]->id_permiso."' class='btn btn-success regresar'><i class='glyphicon glyphicon-ok'></i> Pre Aprobar Permiso</a><a style='margin-left: 3px;' href='#eliminar_elemento' data-toggle = 'modal' class='btn btn-danger regresar eliminar_fila' data-id = '". $permiso[0]->id_permiso ."' id='/sico/bc_permiso/eliminar/".$permiso[0]->id_permiso."'><i class='glyphicon glyphicon-remove'></i> Anular Permiso</a>";
+    			} else if($permiso[0]->estado == 1){
+    				$this->view->accion_permiso = "<a style='margin-left: 3px;' href='#eliminar_elemento' data-toggle = 'modal' class='btn btn-danger regresar eliminar_fila' data-id = '". $permiso[0]->id_permiso ."'><i class='glyphicon glyphicon-remove'></i> Anular Permiso</a>";
+    			} else if($permiso[0]->estado == 3){
+    				$this->view->accion_permiso = "<a style='margin-left: 3px;' href='/sico/bc_permiso/aprobar/".$permiso[0]->id_permiso."' class='btn btn-success regresar'><i class='glyphicon glyphicon-ok'></i> Pre Aprobar Permiso</a><a style='margin-left: 3px;' href='#eliminar_elemento' data-toggle = 'modal' class='btn btn-danger regresar eliminar_fila' data-id = '". $permiso[0]->id_permiso ."' id='/sico/bc_permiso/eliminar/".$permiso[0]->id_permiso."'><i class='glyphicon glyphicon-remove'></i> Anular Permiso</a>";
     			}
     			break;
     		case 2:
     			if($permiso[0]->estado == 1){
-    				$this->view->accion_permiso = "<a style='margin-left: 3px;' href='/sico/bc_permiso/aprobar/".$permiso[0]->id_permiso."' class='btn btn-success regresar'><i class='glyphicon glyphicon-ok'></i> Aprobar Permiso</a><a style='margin-left: 3px;' href='#eliminar_elemento' data-toggle = 'modal' class='btn btn-danger regresar eliminar_fila' data-id = '". $permiso[0]->id_permiso ."' id='/sico/bc_permiso/eliminar/".$permiso[0]->id_permiso."'><i class='glyphicon glyphicon-remove'></i> Anular Permiso</a>";
+    				$this->view->accion_permiso = "<a style='margin-left: 3px;' href='#aprobar_permiso' rel='tooltip' title='Aprobar' class='btn btn-success regresar eliminar_fila' data-id = '".$permiso[0]->id_permiso."' data-toggle = 'modal'><i class='glyphicon glyphicon-ok'></i> Aprobar Permiso</a><a style='margin-left: 3px;' href='#eliminar_elemento' data-toggle = 'modal' class='btn btn-danger regresar eliminar_fila' data-id = '". $permiso[0]->id_permiso ."'><i class='glyphicon glyphicon-remove'></i> Anular Permiso</a>";
     			}
-    			$texto_anular = "Se recuerda a la entidad contar con los procedimientos de seguridad para estas salidas y garantizar la alimentación de los niños y las niñas como lo establece la minuta.";
+    			$texto_aprobar = "Se recuerda a la entidad contar con los procedimientos de seguridad para estas salidas y garantizar la alimentación de los niños y las niñas como lo establece la minuta.";
     			break;
     		case 4:
     			$this->view->accion_permiso = "";
     			break;
     	}
     	if (count($permiso) == 0) {
-    		$this->flash->notice("El permiso no fue encontrado en la base de datos");
+    		$this->flash->notice("El permiso con id <strong>$id_permiso</strong> no fue encontrado en la base de datos");
     		return $this->response->redirect("bc_permiso");
     	}
     	$this->assets
     	->addCss('css/observaciones.css');
     	$this->view->permiso = $permiso[0];
     	$this->view->pick("bc_permiso/permiso_" . $this->elements->getCategoriaEnlace($permiso[0]->categoria));
-    	$this->view->texto_anular = $texto_anular;
+    	$this->view->texto_aprobar = $texto_aprobar;
     }
     
     /**
@@ -153,13 +161,15 @@ class BcPermisoController extends ControllerBase
     	->addJs('js/parsley.extend.js')
     	->addJs('js/picnet.table.filter.min.js')
     	->addJs('js/permisos_lista.js');
-    	$anular_permiso = "";
+    	$texto_aprobar = "";
     	if($this->user['id_componente'] == 1){
     		$permisos = BcPermiso::find(array("estado = 0", "order" => "id_permiso ASC"));
+    		$this->assets->addJs('js/permisos_revision_interventor.js');
     		$this->view->pick('bc_permiso/revision_interventor');
     	} else if($this->user['id_componente'] == 2) {
     		$permisos = BcPermiso::find(array("estado = 1", "order" => "id_permiso ASC"));
-    		$anular_permiso = "Se recuerda a la entidad contar con los procedimientos de seguridad para estas salidas y garantizar la alimentación de los niños y las niñas como lo establece la minuta.";
+    		$texto_aprobar = "Se recuerda a la entidad contar con los procedimientos de seguridad para estas salidas y garantizar la alimentación de los niños y las niñas como lo establece la minuta.";
+    		$this->assets->addJs('js/permisos_revision_bc.js');
     		$this->view->pick('bc_permiso/revision_bc');
     	}
     	if (count($permisos) == 0) {
@@ -167,7 +177,7 @@ class BcPermisoController extends ControllerBase
     		return $this->response->redirect("bc_permiso");
     	}
     	$this->view->permisos = $permisos;
-    	$this->view->anular_permiso = $anular_permiso;
+    	$this->view->texto_aprobar = $texto_aprobar;
     }
     
     /**
@@ -596,7 +606,7 @@ class BcPermisoController extends ControllerBase
     		}
     		return $this->response->redirect("bc_permiso/nuevo/incidente");
     	}
-    	$this->flash->success("El permiso se creó exitosamente.");
+    	$this->flash->success("El permiso con ID <strong>$bc_permiso->id_permiso</strong> se creó exitosamente.");
     	return $this->response->redirect("bc_permiso");
     }
     
@@ -730,7 +740,7 @@ class BcPermisoController extends ControllerBase
     			return $this->response->redirect("bc_permiso/nuevo");
     		}
     	}
-    	$this->flash->success("El permiso fue creado exitosamente");
+    	$this->flash->success("El permiso con ID <strong>$bc_permiso->id_permiso</strong> fue creado exitosamente");
     	return $this->response->redirect("bc_permiso/");
     }
     
@@ -778,22 +788,34 @@ class BcPermisoController extends ControllerBase
      */
     public function aprobarAction($id_permiso)
     {
+    	
     	if($this->user['nivel'] > 2){
     		$this->flash->error("Usted no tiene suficiente privilegios para realizar esta acción.");
     		return $this->response->redirect("bc_permiso");
     	}
     	$permiso = BcPermiso::findFirstByid_permiso($id_permiso);
     	if (!$permiso) {
-    		$this->flash->notice("El permiso no fue encontrado en la base de datos.");
+    		$this->flash->notice("El permiso con ID <strong>$id_permiso</strong> no fue encontrado en la base de datos.");
     		return $this->response->redirect("bc_permiso");
     	}
     	$permiso_observacion = new BcPermisoObservacion();
+    	//id_componente 1 (Cobertura); id_componente 2 (Secretaría Buen Comienzo)
     	if($this->user['id_componente'] == 1){
-    		$permiso->estado = 1;
-    		$permiso_observacion->estado = 1;
+    		if($permiso->estado == 0 || $permiso->estado == 3){
+	    		$permiso->estado = 1;
+	    		$permiso_observacion->estado = 1;
+    		} else {
+    			$this->flash->notice("Este permiso con ID <strong>$id_permiso</strong> no puede ser aprobado porque ya fue aprobado o no fue anulado por usted, por favor revíselo he inténtelo nuevamente.");
+    			return $this->response->redirect("bc_permiso");
+    		}
     	} else if($this->user['id_componente'] == 2) {
-    		$permiso->estado = 2;
-    		$permiso_observacion->estado = 2;
+    		if($permiso->estado == 1 || $permiso->estado == 4){
+    			$permiso->estado = 2;
+    			$permiso_observacion->estado = 2;
+    		} else {
+    			$this->flash->notice("El permiso con ID <strong>$id_permiso</strong> no puede ser aprobado porque no ha sido Revisado por Interventoría, ya fue aprobado, o fue anulado por alguien diferente a usted, por favor revíselo he inténtelo nuevamente.");
+    			return $this->response->redirect("bc_permiso");
+    		}
     	}
     	$permiso->save();
     	$permiso_observacion->id_permiso = $id_permiso;
@@ -801,12 +823,13 @@ class BcPermisoController extends ControllerBase
     	$permiso_observacion->fechahora = date("Y-m-d H:i:s");
     	$permiso_observacion->observacion = $this->request->getPost("observacion");
     	$permiso_observacion->save();
-    	$this->flash->success("El permiso fue aprobado exitosamente");
+    	$this->flash->success("El permiso con ID <strong>$id_permiso</strong> fue aprobado exitosamente");
     	return $this->response->redirect('bc_permiso');
     }
     
     /**
      * Aprobar permiso por parte de Buen Comienzo
+     * Se diferencia de las demás aprobaciones porque en Secreataría colocan observación al aprobar
      *
      *
      * @param string $id_carga
@@ -819,10 +842,11 @@ class BcPermisoController extends ControllerBase
     	$id_permiso = $this->request->getPost("id_permiso");
     	$permiso = BcPermiso::findFirstByid_permiso($id_permiso);
     	if (!$permiso) {
-    		$this->flash->error("El permiso no fue encontrado.");
+    		$this->flash->error("El permiso con ID <strong>$id_permiso</strong> no fue encontrado.");
     		return $this->response->redirect('bc_permiso');
     	}
     	$permiso_observacion = new BcPermisoObservacion();
+    	//id_componente 1 (Cobertura); id_componente 2 (Buen Comienzo)
     	if($this->user['id_componente'] == 1){
     		$permiso->estado = 1;
     		$permiso_observacion->estado = 1;
@@ -836,7 +860,7 @@ class BcPermisoController extends ControllerBase
     	$permiso_observacion->fechahora = date("Y-m-d H:i:s");
     	$permiso_observacion->observacion = $this->request->getPost("observacion");
     	$permiso_observacion->save();
-    	$this->flash->success("El permiso fue aprobado exitosamente");
+    	$this->flash->success("El permiso con ID <strong>$id_permiso</strong> fue aprobado exitosamente");
         return $this->response->redirect('bc_permiso');
     }
     
@@ -844,18 +868,14 @@ class BcPermisoController extends ControllerBase
      * Anular permiso
      * 
      *
-     * @param string $id_carga
      */
     public function anularAction()
     {
     	if (!$this->request->isPost()) {
     		return $this->response->redirect('bc_permiso');
     	}
-    	if($this->user['nivel'] > 2){
-    		$this->flash->error("Usted no tiene suficiente privilegios para realizar esta acción.");
-    		return $this->response->redirect("bc_permiso");
-    	}
     	$id_permiso = $this->request->getPost("id_permiso");
+    	//id_componente: 1 (Cobertura); 2 (Buen Comienzo); 3 (Oferente)
     	if($this->user['id_componente'] == 3){
     		$oferente = IbcUsuario::findFirstByid_usuario($this->id_usuario);
     		if(!$oferente){
@@ -864,14 +884,27 @@ class BcPermisoController extends ControllerBase
     		}
     		$id_oferente = $oferente->IbcUsuarioOferente->id_oferente;
     		$permiso = BcPermiso::findFirst(array("id_oferente = $id_oferente AND id_permiso = $id_permiso"));
-    	} else {
+    		$estado = 5;
+    	} else if($this->user['id_componente'] == 2){
     		$permiso = BcPermiso::findFirst(array("id_permiso = $id_permiso"));
+    		$estado = 4;
+    	} else if($this->user['id_componente'] == 1){
+    		if($this->user['nivel'] > 2){
+    			$this->flash->error("Usted no tiene suficiente privilegios para realizar esta acción.");
+    			return $this->response->redirect("bc_permiso");
+    		}
+    		$permiso = BcPermiso::findFirst(array("id_permiso = $id_permiso"));
+    		$estado = 3;
     	}
    		if (!$permiso) {
-            $this->flash->error("El permiso no fue encontrado o no tiene privilegios para anularlo");
+            $this->flash->error("El permiso con ID <strong>$id_permiso</strong> no fue encontrado o no tiene privilegios para anularlo");
             return $this->response->redirect("bc_permiso/");
         }
-        $permiso->estado = 3;
+        if($permiso->estado == $estado){
+        	$this->flash->error("El permiso con ID <strong>$id_permiso</strong> ya se encuentra anulado.");
+        	return $this->response->redirect("bc_permiso/");
+        }
+        $permiso->estado = $estado;
         if (!$permiso->save()) {
         	foreach ($permiso->getMessages() as $message) {
         		$this->flash->error($message);
@@ -882,10 +915,55 @@ class BcPermisoController extends ControllerBase
         $permiso_observacion->id_permiso = $id_permiso;
         $permiso_observacion->id_usuario = $this->id_usuario;
         $permiso_observacion->fechahora = date("Y-m-d H:i:s");
-        $permiso_observacion->estado = 3;
+        $permiso_observacion->estado = $estado;
         $permiso_observacion->observacion = $this->request->getPost("observacion");
         $permiso_observacion->save();
-        $this->flash->success("El permiso fue anulado exitosamente");
+        $this->flash->success("El permiso con ID <strong>$id_permiso</strong> fue anulado exitosamente");
         return $this->response->redirect('bc_permiso');
+    }
+    public function modificar_permisosAction(){
+    	if (!$this->request->isPost()) {
+    		return $this->response->redirect('bc_permiso/revision');
+    	}
+    	if($this->request->getPost("estado") == 0){
+    		$this->flash->error("Debes de seleccionar un estado por el cual vas a cambiar el permiso.");
+    		return $this->response->redirect('bc_permiso/revision');
+    	}
+    	$elementos = array(
+    			'id_permiso' => $this->request->getPost("id_permiso"),
+    			'estado' => $this->request->getPost("estado")
+    	);
+    	$db = $this->getDI()->getDb();
+    	$sql = $this->conversiones->multipleupdate("bc_permiso", $elementos, "id_permiso");
+    	$query = $db->query($sql);
+    	if (!$query) {
+    		foreach ($query->getMessages() as $message) {
+    			$this->flash->error($message);
+    		}
+    		return $this->response->redirect("bc_permiso/revision");
+    	}
+    	if($this->request->getPost("observacion") == NULL){
+    		$observacion = "";
+    	} else {
+    		$observacion = $this->request->getPost("observacion");
+    	}
+    	
+    	$elementos = array(
+    			'id_permiso' => $this->request->getPost("id_permiso"),
+    			'estado' => $this->request->getPost("estado"),
+    			'id_usuario' => $this->id_usuario,
+    			'fechahora' => date("Y-m-d H:i:s"),
+    			'observacion' => $observacion
+    	);
+    	$sql = $this->conversiones->multipleinsert("bc_permiso_observacion", $elementos);
+    	$query = $db->query($sql);
+    	if (!$query) {
+    		foreach ($query->getMessages() as $message) {
+    			$this->flash->error($message);
+    		}
+    		return $this->response->redirect("bc_permiso/revision");
+    	}
+    	$this->flash->success("Los permisos fueron modificados exitosamente");
+    	return $this->response->redirect('bc_permiso/revision');
     }
 }

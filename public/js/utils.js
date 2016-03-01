@@ -8,3 +8,13 @@ $(".eliminar_fila").click (
     	$("#boton_eliminar").attr("href", enlace);
     }
 );
+$(".alert").fadeOut();
+$(".alert").fadeIn();
+$(".alert").fadeOut();
+$(".alert").fadeIn();
+$(".alert").fadeOut();
+$(".alert").fadeIn();
+$(".alert").fadeOut();
+$(".alert").fadeIn();
+$(".alert").fadeOut();
+$(".alert").fadeIn();

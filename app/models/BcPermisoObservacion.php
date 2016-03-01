@@ -59,7 +59,13 @@ class BcPermisoObservacion extends \Phalcon\Mvc\Model
     			return "Aprobado por Buen Comienzo";
     			break;
     		case 3:
-    			return "Anulado";
+    			return "Anulado por Interventoría";
+    			break;
+    		case 4:
+    			return "Anulado por Buen Comienzo";
+    			break;
+    		case 5:
+    			return "Anulado por Prestador";
     			break;
     	}
     }
@@ -82,6 +88,12 @@ class BcPermisoObservacion extends \Phalcon\Mvc\Model
     			return "success";
     			break;
     		case 3:
+    			return "danger";
+    			break;
+    		case 4:
+    			return "danger";
+    			break;
+    		case 5:
     			return "danger";
     			break;
     	}

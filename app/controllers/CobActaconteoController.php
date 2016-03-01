@@ -650,11 +650,11 @@ class CobActaconteoController extends ControllerBase
     		$this->flash->error("<i class='glyphicon glyphicon-exclamation-sign'></i> El acta no puede ser guardada porque ya ha sido consolidada, si necesita modificar una asistencia realice un ajuste.");
     		return $this->response->redirect("cob_actaconteo/datos/$acta->id_actaconteo");
     	} else if($acta->estado > 2){
-    		$this->flash->error("<i class='glyphicon glyphicon-exclamation-sign'></i> El acta se encuentra en estado <b>Cerrada por Auxiliar</b>, si realizar un cambio contacte con su coordinador.");
+    		$this->flash->error("<i class='glyphicon glyphicon-exclamation-sign'></i> El acta se encuentra en estado <b>Cerrada por Auxiliar</b>, si desea realizar un cambio contacte con su coordinador.");
     		return $this->response->redirect("cob_actaconteo/datos/$acta->id_actaconteo");
     	} else if($acta->estado > 1){
     		if($nivel == 3){
-    			$this->flash->error("<i class='glyphicon glyphicon-exclamation-sign'></i> El acta se encuentra en estado <b>Cerrada por Interventor</b>, si realizar un cambio contacte con su coordinador.");
+    			$this->flash->error("<i class='glyphicon glyphicon-exclamation-sign'></i> El acta se encuentra en estado <b>Cerrada por Interventor</b>, si desea realizar un cambio contacte con su coordinador.");
     			return $this->response->redirect("cob_actaconteo/datos/$acta->id_actaconteo");
     		}
     		return FALSE;

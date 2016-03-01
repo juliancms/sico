@@ -108,16 +108,22 @@ class BcPermiso extends \Phalcon\Mvc\Model
     {
     	switch ($this->estado) {
     		case 0:
-    			return "Pendiente de revisión";
+    			return "Pendiente de revisión y aprobación";
     			break;
     		case 1:
-    			return "Preaprobado por Interventoría";
+    			return "Revisado por Interventoría";
     			break;
     		case 2:
     			return "Aprobado por Buen Comienzo";
     			break;
     		case 3:
-    			return "Anulado";
+    			return "Anulado por Interventoría";
+    			break;
+    		case 4:
+    			return "Anulado por Buen Comienzo";
+    			break;
+    		case 5:
+    			return "Anulado por Prestador";
     			break;
     	}
     }
@@ -140,6 +146,12 @@ class BcPermiso extends \Phalcon\Mvc\Model
     			return "success";
     			break;
     		case 3:
+    			return "danger";
+    			break;
+    		case 4:
+    			return "danger";
+    			break;
+    		case 5:
     			return "danger";
     			break;
     	}
