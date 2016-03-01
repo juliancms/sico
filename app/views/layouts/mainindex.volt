@@ -31,6 +31,7 @@
           	<h4>Enlaces</h4>
           	<ul style="padding-left: 15px !important;">
           		<li><a href="http://www.interventoriabuencomienzo.org/webmail" target="_blank">Correo Institucional</a></li>
+          		<li><a href="http://www.interventoriabuencomienzo.org/delfi" target="_blank">delFI: Sistema de Información Financiera</a></li>
           		<li><a href="http://www.pascualbravo.edu.co/" target="_blank">Institución Universitaria Pascual Bravo</a></li>
           		<li><a href="http://www.medellin.gov.co/buencomienzo" target="_blank">Buen Comienzo</a></li>
           		<li><a href="http://www.medellin.gov.co" target="_blank">Alcaldía de Medellín</a></li>
