@@ -6,64 +6,49 @@
 {{ link_to("cob_ajuste/asignar", '<i class="glyphicon glyphicon-calendar"></i> Asignar ajustes a fecha', "class": "btn btn-primary menu-tab") }}
 {{ link_to("cob_ajuste/asignarperiodos", '<i class="glyphicon glyphicon-list-alt"></i> Asignar ajustes a periodo', "class": "btn btn-primary menu-tab") }}
 {{ link_to("cob_ajuste/reportes", '<i class="glyphicon glyphicon-list-alt"></i> Reportes', "class": "btn btn-primary menu-tab") }}
-{% if (not(cob_ajuste is empty)) %}
-<!-- Modal -->
-<div class="modal fade" id="eliminar_elemento" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Eliminar</h4>
-      </div>
-      <div class="modal-body">
-          <p>¿Estás seguro de que desea eliminar el ajuste de la base de datos?</p>
-          <p><div class="alert alert-danger"><i class="glyphicon glyphicon-warning-sign"></i> <strong>Atención: </strong>Después de eliminado no podrá ser recuperado y la información asociada se perderá.</div></p>
-      </div>
-      <div class="modal-footer">
-        <a class="btn btn-primary" id="boton_eliminar">Eliminar</a>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+{% if (not(cob_ajuste_noasignados is empty)) %}
 <table class="table table-bordered table-hover">
-    <thead>
-        <tr>{% if (nivel <= 1) %}<th>Acciones</th>{% endif %}
-        	<th>ID<input autocomplete='off' class='filter form-control input-sm' name='id' data-col='id'/></th>
-            <th>Periodo<input autocomplete='off' class='filter form-control input-sm' name='periodo' data-col='periodo'/></th>
-            <th>Contrato<input autocomplete='off' class='filter form-control input-sm' name='contrato' data-col='contrato'/></th>
-            <th>Modalidad<input autocomplete='off' class='filter form-control input-sm' name='modalidad' data-col='modalidad'/></th>
-            <th>Documento<input autocomplete='off' class='filter form-control input-sm' name='documento' data-col='documento'/></th>
-            <th>Oficio<input autocomplete='off' class='filter form-control input-sm' name='of' data-col='oficio'/></th>
-            <th>Nombre<input autocomplete='off' class='filter form-control input-sm' name='nombre' data-col='nombre'/></th>
-            <th>Certificar<input autocomplete='off' class='filter form-control input-sm' name='certificar' data-col='certificar'/></th>
-            <th>Observacion<input autocomplete='off' class='filter form-control input-sm' name='observacion' data-col='observacion'/></th>
-            <th>Fecha<input autocomplete='off' class='filter form-control input-sm' name='fecha' data-col='fecha'/></th>
-            <th>Usuario<input autocomplete='off' class='filter form-control input-sm' name='usuario' data-col='usuario'/></th>
-            <th>Fecha_Reporte<input autocomplete='off' class='filter form-control input-sm' name='fecha_reporte' data-col='fecha_reporte'/></th>
+	<thead>
+        <tr>
+            <th style="text-align: center;">Ajustes No Asignados</th>
          </tr>
     </thead>
     <tbody>
-    {% for cob_ajuste in cob_ajuste %}
-    	{% set nombre = {cob_ajuste.CobActaconteoPersonaFacturacion.primerNombre, cob_ajuste.CobActaconteoPersonaFacturacion.segundoNombre, cob_ajuste.CobActaconteoPersonaFacturacion.primerApellido, cob_ajuste.CobActaconteoPersonaFacturacion.segundoApellido} %}
+    	<tr><td>
+			{{ link_to("cob_ajuste/noasignados/", "Total no asignados", "class": "btn btn-primary btn-lg btn-block") }}
+    	</td></tr>
+    </tbody>
+</table>
+{% endif %}
+{% if (not(cob_ajuste_reporte is empty)) %}
+<table class="table table-bordered table-hover">
+	<thead>
         <tr>
-        {% if (nivel <= 1) %}
-        <td><a href="#eliminar_elemento" rel="tooltip" title="Eliminar" class="eliminar_fila" data-toggle = "modal" id="{{ url("cob_ajuste/eliminar/"~cob_ajuste.id_ajuste) }}"><i class="glyphicon glyphicon-trash"></i></a></td>
-		{% endif %}
-        <td>{{ cob_ajuste.id_ajuste }}</td>
-		<td><?php echo $this->conversiones->fecha(5, $cob_ajuste->CobPeriodo->fecha); ?></td>
-        <td>{{ cob_ajuste.CobActaconteoPersonaFacturacion.id_contrato }}</td>
-        <td>{{ cob_ajuste.CobActaconteo.modalidad_nombre }}</td>
-        <td>{{ cob_ajuste.CobActaconteoPersonaFacturacion.numDocumento }}</td>
-        <td>{{ cob_ajuste.radicado }}</td>
-        <td>{{ nombre|join(' ') }}</td>
-        <td>{{ cob_ajuste.getCertificarDetail() }}</td>
-        <td>{{ cob_ajuste.observacion }}</td>
-        <td>{{ cob_ajuste.datetime }}</td>
-        <td>{{ cob_ajuste.IbcUsuario.usuario }}</td>
-        <td>{{ cob_ajuste.getfecha() }}</td>
-        </tr>
-    {% endfor %}
+            <th style="text-align: center;">Ajustes fuera del periodo</th>
+         </tr>
+    </thead>
+    <tbody>
+    	<tr><td>
+	    {% for cob_ajuste_reporte in cob_ajuste_reporte %}
+			{{ link_to("cob_ajuste/reporte/"~cob_ajuste_reporte.fecha_ajuste_reportado, this.conversiones.fecha(3, cob_ajuste_reporte.fecha_ajuste_reportado), "class": "btn btn-primary btn-lg btn-block") }}
+	    {% endfor %}
+    	</td></tr>
+    </tbody>
+</table>
+{% endif %}
+{% if (not(cob_ajuste_periodo is empty)) %}
+<table class="table table-bordered table-hover">
+	<thead>
+        <tr>
+            <th style="text-align: center;">Ajustes dentro del periodo</th>
+         </tr>
+    </thead>
+    <tbody>
+    	<tr><td>
+	    {% for cob_ajuste_periodo in cob_ajuste_periodo %}
+			{{ link_to("cob_ajuste/periodo/"~cob_ajuste_periodo.id_periodo, cob_ajuste_periodo.CobPeriodo.getFechaDetail() ~" - " ~ cob_ajuste_periodo.CobPeriodo.getTipoperiodoDetail(), "class": "btn btn-primary btn-lg btn-block") }}
+	    {% endfor %}
+    	</td></tr>
     </tbody>
 </table>
 {% endif %}

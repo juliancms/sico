@@ -19,15 +19,72 @@ class CobAjusteController extends ControllerBase
     public function indexAction()
     {
         $this->persistent->parameters = null;
-        $cob_ajuste = CobAjuste::find();
-        if (count($cob_ajuste) == 0) {
-            $this->flash->notice("No se ha agregado ningún ajuste hasta el momento");
-            $cob_ajuste = null;
-        }
+        $cob_ajuste_periodo = CobAjuste::find(["ajusteDentroPeriodo = 1", "group" => "fecha_ajuste_reportado"]);
+        $cob_ajuste_noasignados = CobAjuste::find(["(ajusteDentroPeriodo IS NULL OR ajusteDentroPeriodo = 0) AND (fecha_ajuste_reportado IS NULL OR fecha_ajuste_reportado = '0000-00-00')"]);
+        $cob_ajuste_reporte = CobAjuste::find(["(ajusteDentroPeriodo IS NULL OR ajusteDentroPeriodo = 0) AND (fecha_ajuste_reportado IS NOT NULL OR fecha_ajuste_reportado != '0000-00-00')", "group" => "fecha_ajuste_reportado"]);
         $this->assets
         ->addJs('js/multifilter.min.js');
         $this->view->nivel = $this->user['nivel'];
-        $this->view->cob_ajuste = $cob_ajuste;
+        $this->view->cob_ajuste_periodo = $cob_ajuste_periodo;
+        $this->view->cob_ajuste_reporte = $cob_ajuste_reporte;
+        $this->view->cob_ajuste_noasignados = $cob_ajuste_noasignados;
+    }
+    
+    /**
+     * reporte action
+     */
+    public function reporteAction($fecha)
+    {
+    	$cob_ajuste = CobAjuste::find(["(ajusteDentroPeriodo IS NULL OR ajusteDentroPeriodo = 0) AND fecha_ajuste_reportado = '$fecha'"]);
+    	if (!$cob_ajuste) {
+    		$this->flash->error("No se encontraron ajustes");
+    	
+    		return $this->response->redirect("cob_ajuste/");
+    	}
+    	$this->assets
+    	->addJs('js/multifilter.min.js');
+    	$this->view->nivel = $this->user['nivel'];
+    	$this->view->cob_ajuste = $cob_ajuste;
+    	$this->view->h1 = "Ajustes Fuera del Periodo <small>Fecha Reporte ".$this->conversiones->fecha(3, $fecha)."</small>";
+    	$this->view->pick('cob_ajuste/lista');
+    }
+    
+    /**
+     * noasignados action
+     */
+    public function noasignadosAction($fecha)
+    {
+    	$cob_ajuste = CobAjuste::find(["(ajusteDentroPeriodo IS NULL OR ajusteDentroPeriodo = 0) AND (fecha_ajuste_reportado IS NULL OR fecha_ajuste_reportado = '0000-00-00')"]);
+    	if (!$cob_ajuste) {
+    		$this->flash->error("No se encontraron ajustes");
+    		 
+    		return $this->response->redirect("cob_ajuste/");
+    	}
+    	$this->assets
+    	->addJs('js/multifilter.min.js');
+    	$this->view->nivel = $this->user['nivel'];
+    	$this->view->cob_ajuste = $cob_ajuste;
+    	$this->view->h1 = "Ajustes No Asignados";
+    	$this->view->pick('cob_ajuste/lista');
+    }
+    
+    /**
+     * periodo action
+     */
+    public function periodoAction($id_periodo)
+    {
+    	$cob_ajuste = CobAjuste::find(["ajusteDentroPeriodo = 1 AND id_periodo = '$id_periodo'"]);
+    	if (!$cob_ajuste) {
+    		$this->flash->error("No se encontraron ajustes");
+    		 
+    		return $this->response->redirect("cob_ajuste/");
+    	}
+    	$this->assets
+    	->addJs('js/multifilter.min.js');
+    	$this->view->nivel = $this->user['nivel'];
+    	$this->view->cob_ajuste = $cob_ajuste;
+    	$this->view->h1 = "Ajustes Dentro del Periodo <small>".$cob_ajuste[0]->CobPeriodo->getFechaDetail()." - ".$cob_ajuste[0]->CobPeriodo->getTipoperiodoDetail()."</small>";
+    	$this->view->pick('cob_ajuste/lista');
     }
     
     /**

@@ -225,6 +225,12 @@ class SecurityPlugin extends Plugin
     	'cob_ajuste' => array(
     		'index' => array(
     				'nivelPermiso' => '2'
+    		),'noasignados' => array(
+    				'nivelPermiso' => '2'
+    		),'periodo' => array(
+    				'nivelPermiso' => '2'
+    		),'reporte' => array(
+    				'nivelPermiso' => '2'
     		),'nuevo' => array(
     				'nivelPermiso' => '2'
     		),'buscar' => array(
