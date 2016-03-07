@@ -778,7 +778,7 @@ class BcPermisoController extends ControllerBase
     				echo "Error";
     			}
     		}else {
-    			return "Error";
+    			echo "Error";
     		}
     	}
     }

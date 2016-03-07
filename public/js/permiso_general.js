@@ -1,3 +1,4 @@
+var tipo;
 $(".transporte").hide();
 $(".requiere_transporte").click (
 		function(){
@@ -34,13 +35,14 @@ $('form').datepair();
 
 $(".fileupload").change(function() {
 	var archivo = $(this);
-	var tipo =  $(archivo).attr("data-tipo");
+	tipo =  $(archivo).attr("data-tipo");
 	var url = window.location.protocol + "//" + window.location.host + "/sico/" + "bc_permiso/subir_archivo/" + $("table").attr("id") + "/" + tipo;
 	$(archivo).parent().find('#progress .progress-bar').css(
             "width", "0"
-        );	
-	$(".captura").remove();
-	var formData = new FormData($('#permiso_general_form')[0]);
+        );
+	$(archivo).parent().find('.captura').remove();
+	var formData = new FormData();
+	formData.append( 'file', $(archivo).get(0).files[0] );
 	    $.ajax( {
 	      url: url,
 	      type: 'POST',
