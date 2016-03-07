@@ -751,7 +751,7 @@ class BcPermisoController extends ControllerBase
     public function subir_archivoAction($id_sede_contrato, $tipo) {
     	
     	$this->view->disable();
-    	if($tipo == "img_pdf"){
+    	if($tipo == "imgpdf"){
     		$tipos = array("image/png", "image/jpeg", "image/jpg", "image/bmp", "image/gif", "application/pdf");
     	} else if($tipo == "xls"){
     		$tipos = array("application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");

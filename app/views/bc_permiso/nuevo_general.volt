@@ -114,7 +114,7 @@
 	<div class="form-group transporte">
     	<label class="col-sm-2 control-label" for="runtConductor">RUNT del Conductor</label>
 		<div class="col-sm-10 imagen_imppnt">
-			<input disabled="disabled" class="fileupload filestyle" data-tipo = "img_pdf" data-input="false" data-badge="false" type="file" name="archivo[]" multiple>
+			<input disabled="disabled" class="fileupload filestyle" data-tipo = "imgpdf" data-input="false" data-badge="false" type="file" name="archivo[]" multiple>
 		    <div id="progress" class="progress" style="margin: 0 !important;">
 		        <div class="progress-bar progress-bar-success"></div>
 		    </div>
@@ -124,7 +124,7 @@
 	<div class="form-group transporte">
     	<label class="col-sm-2 control-label" for="runtVehiculo">RUNT del Vehículo</label>
 		<div class="col-sm-10 imagen_imppnt">
-			<input disabled="disabled" class="fileupload filestyle" data-tipo = "img_pdf" data-input="false" data-badge="false" type="file" name="archivo[]" multiple>
+			<input disabled="disabled" class="fileupload filestyle" data-tipo = "imgpdf" data-input="false" data-badge="false" type="file" name="archivo[]" multiple>
 		    <div id="progress" class="progress" style="margin: 0 !important;">
 		        <div class="progress-bar progress-bar-success"></div>
 		    </div>
@@ -134,7 +134,7 @@
 	<div class="form-group transporte">
     	<label class="col-sm-2 control-label" for="polizaResponsabilidadCivil">Póliza Responsabilidad Civil</label>
 		<div class="col-sm-10 imagen_imppnt">
-			<input disabled="disabled" class="fileupload filestyle" data-tipo = "img_pdf" data-input="false" data-badge="false" type="file" name="archivo[]" multiple>
+			<input disabled="disabled" class="fileupload filestyle" data-tipo = "imgpdf" data-input="false" data-badge="false" type="file" name="archivo[]" multiple>
 		    <div id="progress" class="progress" style="margin: 0 !important;">
 		        <div class="progress-bar progress-bar-success"></div>
 		    </div>
@@ -144,7 +144,7 @@
 	<div class="form-group transporte">
     	<label class="col-sm-2 control-label" for="tarjetaOperacionVehiculo">Tarjeta de Operación del Vehículo</label>
 		<div class="col-sm-10 imagen_imppnt">
-			<input disabled="disabled" class="fileupload filestyle" data-tipo = "img_pdf" data-input="false" data-badge="false" type="file" name="archivo[]" multiple>
+			<input disabled="disabled" class="fileupload filestyle" data-tipo = "imgpdf" data-input="false" data-badge="false" type="file" name="archivo[]" multiple>
 		    <div id="progress" class="progress" style="margin: 0 !important;">
 		        <div class="progress-bar progress-bar-success"></div>
 		    </div>

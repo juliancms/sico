@@ -37,8 +37,9 @@ $(".fileupload").change(function() {
 	var tipo =  $(archivo).attr("data-tipo");
 	var url = window.location.protocol + "//" + window.location.host + "/sico/" + "bc_permiso/subir_archivo/" + $("table").attr("id") + "/" + tipo;
 	$(archivo).parent().find('#progress .progress-bar').css(
-            "width", "0%"
-        );																														
+            "width", "0"
+        );	
+	$(".captura").remove();
 	var formData = new FormData($('#permiso_general_form')[0]);
 	    $.ajax( {
 	      url: url,
@@ -47,18 +48,17 @@ $(".fileupload").change(function() {
 	      processData: false,
 	      contentType: false,
 	      success: function (data) {
-	    	  if(data == "img_pdf"){
-	    		  alert("El tipo de archivo debe de ser jpg, png, bmp, gif o pdf")
+	    	  if(data == "imgpdf"){
+	    		  alert("Error: El tipo de archivo debe de ser jpg, png, bmp, gif o pdf")
 	    	  } else if(data == "xls"){
-	    		  alert("El tipo de archivo debe de ser xls o xlsx (archivo de Excel)")
+	    		  alert("Error: El tipo de archivo debe de ser xls o xlsx (archivo de Excel)")
 	    	  } else if(data == "Error"){
 	    		  alert("Ocurrió un error la subir la imagen");
 	    	  } else {
 	    		  $(archivo).parent().find('#progress .progress-bar').css(
   	                "width", "100%"
-  	            );
-	    		  $(archivo).parent().find(".captura").html("Clic para ver");
-	    		  $(archivo).parent().find("href").html(window.location.protocol + "//" + window.location.host + "/sico/files/permisos/" + data);
+  	              );
+	    		  $(archivo).parent().append("<a class='captura' target='_blank' href='" + window.location.protocol + "//" + window.location.host + "/sico/files/permisos/" + data + "'>Clic para ver</a>");
   				  $(archivo).parent().find(".urlArchivo").val(data);
   		        }
 	    	  }
