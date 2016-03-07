@@ -430,11 +430,11 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     	//Página 1
     	$aiepi = "";
     	//Si el acta es I8H, LDK, PP ó JI se coloca el mensaje AIEPI
-    	//if($acta->id_modalidad == 1 || $acta->id_modalidad == 6 || $acta->id_modalidad == 7 || $acta->id_modalidad == 8){
-    		//$aiepi = "<br>SE ENCONTRARON ____ BENEFICIARIOS ATENDIDOS POR ____ DOCENTES Y ____ AUXILIARES DOCENTES.<br>SE PRESENTARON FORMATOS AIEPI DE LOS NIÑOS AUSENTES PARA SER REVISADOS POR LA INTERVENTORIA: <u>SÍ</u> - <u>NO</u><br>FIRMA RESPONSABLE DE LA SEDE ________________________________________";
-    	//} else if ($acta->id_modalidad == 3){
-    		//$aiepi = "<br>____/____/________ ASISTEN ____ GRUPOS, ATENDIDOS POR ____ DOCENTES<br>____/____/________ ASISTEN ____ GRUPOS, ATENDIDOS POR ____ DOCENTES<br>____/____/________ ASISTEN ____ GRUPOS, ATENDIDOS POR ____ DOCENTES<br>____/____/________ ASISTEN ____ GRUPOS, ATENDIDOS POR ____ DOCENTES<br>SE PRESENTARON FORMATOS AIEPI DE LOS NIÑOS AUSENTES PARA SER REVISADOS POR LA INTERVENTORIA: <u>SÍ</u> - <u>NO</u><br>FIRMA RESPONSABLE DE LA SEDE ________________________________________";
-    	//}
+    	if($acta->id_modalidad == 1 || $acta->id_modalidad == 6 || $acta->id_modalidad == 7 || $acta->id_modalidad == 8){
+    		$aiepi = "<br>SE ENCONTRARON ____ BENEFICIARIOS ATENDIDOS POR ____ DOCENTES Y ____ AUXILIARES DOCENTES.<br>SE PRESENTARON FORMATOS AIEPI DE LOS NIÑOS AUSENTES PARA SER REVISADOS POR LA INTERVENTORIA: <u>SÍ</u> - <u>NO</u><br>FIRMA RESPONSABLE DE LA SEDE ________________________________________";
+    	} else if ($acta->id_modalidad == 3){
+    		$aiepi = "<br>____/____/________ ASISTEN ____ GRUPOS, ATENDIDOS POR ____ DOCENTES<br>____/____/________ ASISTEN ____ GRUPOS, ATENDIDOS POR ____ DOCENTES<br>____/____/________ ASISTEN ____ GRUPOS, ATENDIDOS POR ____ DOCENTES<br>____/____/________ ASISTEN ____ GRUPOS, ATENDIDOS POR ____ DOCENTES<br>SE PRESENTARON FORMATOS AIEPI DE LOS NIÑOS AUSENTES PARA SER REVISADOS POR LA INTERVENTORIA: <u>SÍ</u> - <u>NO</u><br>FIRMA RESPONSABLE DE LA SEDE ________________________________________";
+    	}
     	$html .= $encabezado;
     	$html .= $totalizacion_asistencia;
     	$html .= "
@@ -477,11 +477,11 @@ class CobActaconteo extends \Phalcon\Mvc\Model
   		$fecha_lista = "";
   		$fecha_encabezado = "";
   		$fecha_encabezado2 = "";
-  		if($acta->id_modalidad == 3 || $acta->id_modalidad == 5 || $acta->id_modalidad == 7){
-  			$fecha_encabezado = "<div>4.5 FECHA VISITA</div>";
-  			$fecha_encabezado2 = "<div>5.5 FECHA VISITA</div>";
-  			$fecha_lista =  "<div></div>";
-  		}
+//   		if($acta->id_modalidad == 3 || $acta->id_modalidad == 5 || $acta->id_modalidad == 7){
+//   			$fecha_encabezado = "<div>4.5 FECHA VISITA</div>";
+//   			$fecha_encabezado2 = "<div>5.5 FECHA VISITA</div>";
+//   			$fecha_lista =  "<div></div>";
+//   		}
   		$encabezado_beneficiarios = "<div class='seccion' id='listado_beneficiarios'>
     		<div class='fila center bold'><div style='border:none; width: 100%'>4. LISTADO DE BENEFICIARIOS REPORTADOS EN EL SISTEMA DE INFORMACIÓN DE BUEN COMIENZO</div></div>
     		<div class='fila colb'><div style='width: 20px;'>#</div><div style='width: 80px;'>4.1 DOCUMENTO</div><div style='width: 200px'>4.2 NOMBRE COMPLETO</div><div style='width: 200px'>4.3 GRUPO</div><div style='width: 70px'>4.4 ASISTENCIA</div>$fecha_encabezado</div>";
@@ -522,7 +522,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
   			if($acta->id_modalidad != 12){
   				$encabezado_empleados = "<div class='seccion' id='listado_empleados'>
 	  			<div class='fila center bold'><div style='border:none; width: 100%'>6. LISTADO DE DOCENTES Y AUXILIARES EDUCATIVOS DE LA SEDE</div></div>
-	  			<div class='fila colb'><div style='width: 20px;'>#</div><div style='width: 120px;'>6.1 DOCUMENTO</div><div style='width: 200px'>6.2 NOMBRE COMPLETO</div><div style='width: 70px'>6.3 CARGO</div><div style='width: 70px'>6.4 ASISTENCIA</div><div style='width: 70px'>6.5 DOTACIÓN</div><div>6.6 FECHA VISITA</div></div>";
+	  			<div class='fila colb'><div style='width: 20px;'>#</div><div style='width: 120px;'>6.1 DOCUMENTO</div><div style='width: 200px'>6.2 NOMBRE COMPLETO</div><div style='width: 70px'>6.3 CARGO</div><div style='width: 70px'>6.4 ASISTENCIA</div><div style='width: 70px'>6.5 DOTACIÓN</div></div>";
   				$html .= $encabezado;
   				$html .= $encabezado_empleados;
   				$id_periodo_anterior = CobActaconteoEmpleado::maximum(array("column" => "id_periodo", "conditions" => "id_periodo < '$acta->id_periodo' AND id_contrato = '$acta->id_contrato'"));
@@ -543,18 +543,18 @@ class CobActaconteo extends \Phalcon\Mvc\Model
   							$html .= $encabezado;
   							$html .= $encabezado_empleados;
   						}
-  						$html .="<div class='fila colb'><div style='width: 20px;'>$i</div><div style='width: 120px;'>$row->numDocumento</div><div style='width: 200px'>$row->nombre</div><div style='width: 70px;'>".$row->getCargoEmpleado()."</div><div style='width: 70px'></div><div style='width: 70px'></div><div style='width: 70px'></div></div>";
+  						$html .="<div class='fila colb'><div style='width: 20px;'>$i</div><div style='width: 120px;'>$row->numDocumento</div><div style='width: 200px'>$row->nombre</div><div style='width: 70px;'>".$row->getCargoEmpleado()."</div><div style='width: 70px'></div><div style='width: 70px'></div></div>";
   						$i++;
   						$j++;
   					}  				
   					for($i = $j; $i <= 30; $i++){
   						$i = ($i<10) ? "0" .$i : $i;
-  						$html .="<div class='fila colb'><div style='width: 20px;'>$i</div><div style='width: 120px;'></div><div style='width: 200px'></div><div style='width: 70px;'></div><div style='width: 70px'></div><div style='width: 70px'></div><div style='width: 70px'></div></div>";
+  						$html .="<div class='fila colb'><div style='width: 20px;'>$i</div><div style='width: 120px;'></div><div style='width: 200px'></div><div style='width: 70px;'></div><div style='width: 70px'></div><div style='width: 70px'></div></div>";
   					}
   				} else {
   					for($i = 1; $i <= 30; $i++){
   						$i = ($i<10) ? "0" .$i : $i;
-  						$html .="<div class='fila colb'><div style='width: 20px;'>$i</div><div style='width: 120px;'></div><div style='width: 200px'></div><div style='width: 70px;'></div><div style='width: 70px'></div><div style='width: 70px'></div><div style='width: 70px'></div></div>";
+  						$html .="<div class='fila colb'><div style='width: 20px;'>$i</div><div style='width: 120px;'></div><div style='width: 200px'></div><div style='width: 70px;'></div><div style='width: 70px'></div><div style='width: 70px'></div></div>";
   					}
   				}
 	  			$p++;
