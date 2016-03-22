@@ -398,6 +398,8 @@ class SecurityPlugin extends Plugin
     		),
     		'crear_incidente' => array(
     				'nivelPermiso' => '4'
+    		),'crear_general' => array(
+    				'nivelPermiso' => '4'
     		),
     		'subir_archivo' => array(
     				'nivelPermiso' => '4'

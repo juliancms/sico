@@ -24,15 +24,57 @@
 	<div class="form-group">
         <label class="col-sm-2 control-label" for="titulo">Nombre Evento</label>
         <div class="col-sm-10">
-                {{ text_field("titulo", "maxlength" : "25", "parsley-maxlength" : "25", "class" : "form-control required") }}
+                {{ text_field("titulo", "maxlength" : "25", "parsley-maxlength" : "25", "class" : "form-control required", "autocomplete" : "on") }}
                 <div class="max">25 caracteres máximo</div>
         </div>
     </div>
     <div class="form-group">
-        <label class="col-sm-2 control-label" for="fecha">Fecha (dd/mm/aaaa)</label>
+        <label class="col-sm-2 control-label" for="tipo_permiso">¿Repetir?</label>
+        <div class="col-sm-10">
+            <select id="tipo_permiso" name="tipo_permiso" class="form-control">
+					<option value="0">No repetir</option>
+					<option value="1">Repetir Semanalmente</option>
+					<option value="2">Repetir Quincenalmente</option>
+			</select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label" for="fecha">Fecha</label>
         <div class="col-sm-10">
                 {{ text_field("fecha", "type" : "date", "class" : "form-control tipo-fecha required", "placeholder" : "dd/mm/aaaa", "parsley-type" : "dateIso", "data-date-format" : "dd/mm/yyyy") }}
         </div>
+    </div>
+    <div class="form-group" style="display:none">
+        <label class="col-sm-2 control-label" for="fecha_inicio_permiso">Fecha Inicio</label>
+        <div class="col-sm-10">
+                {{ text_field("fecha_inicio_permiso", "type" : "date", "class" : "form-control tipo-fecha required", "placeholder" : "dd/mm/aaaa", "parsley-type" : "dateIso", "data-date-format" : "dd/mm/yyyy", "disabled" : "disabled") }}
+        </div>
+    </div>
+    <div class="form-group" style="display:none">
+        <label class="col-sm-2 control-label" for="fecha_fin_permiso">Fecha Fin</label>
+        <div class="col-sm-10">
+                {{ text_field("fecha_fin_permiso", "type" : "date", "class" : "form-control tipo-fecha required", "placeholder" : "dd/mm/aaaa", "parsley-type" : "dateIso", "data-date-format" : "dd/mm/yyyy", "disabled" : "disabled") }}
+        </div>
+    </div>
+    <div class="form-group" style="display:none">
+        <label class="col-sm-2 control-label dias_permiso" for="dias_permiso">Días Permiso</label>
+        <div class="col-sm-10">
+				<label class="checkbox-inline">
+				  <input class="dia" type="checkbox" name="dias[]" id="Monday" value="Monday" disabled="disabled"> Lun
+				</label>
+				<label class="checkbox-inline">
+				  <input class="dia" type="checkbox" name="dias[]" id="Tuesday" value="Tuesday" disabled="disabled"> Mar
+				</label>
+				<label class="checkbox-inline">
+				  <input class="dia" type="checkbox" name="dias[]" id="Wednesday" value="Wednesday" disabled="disabled"> Mié
+				</label>
+				<label class="checkbox-inline">
+				  <input class="dia" type="checkbox" name="dias[]" id="Thursday" value="Thursday" disabled="disabled"> Jue
+				</label>
+				<label class="checkbox-inline">
+				  <input class="dia" type="checkbox" name="dias[]" parsley-mincheck="1" id="Friday" value="Friday" disabled="disabled"> Vie
+				</label>	      
+		</div>
     </div>
     <div class="form-group">
         <label class="col-sm-2 control-label" for="horaInicio">Hora Inicio</label>
@@ -56,35 +98,35 @@
     <div class="form-group">
         <label class="col-sm-2 control-label" for="actores">Actores que Apoyan el Evento</label>
         <div class="col-sm-10">
-                {{ text_field("actores", "maxlength" : "50", "parsley-maxlength" : "50", "class" : "form-control required") }}
+                {{ text_field("actores", "maxlength" : "50", "parsley-maxlength" : "50", "class" : "form-control required", "autocomplete" : "on") }}
                 <div class="max">50 caracteres máximo</div>
         </div>
     </div>
     <div class="form-group">
         <label class="col-sm-2 control-label" for="direccionEvento">Dirección y Lugar del Evento</label>
         <div class="col-sm-10">
-                {{ text_field("direccionEvento", "maxlength" : "80", "parsley-maxlength" : "80", "class" : "form-control required") }}
+                {{ text_field("direccionEvento", "maxlength" : "80", "parsley-maxlength" : "80", "class" : "form-control required", "autocomplete" : "on") }}
                 <div class="max">80 caracteres máximo</div>
         </div>
     </div>
     <div class="form-group">
         <label class="col-sm-2 control-label" for="personaContactoEvento">Persona Contacto del Escenario</label>
         <div class="col-sm-10">
-                {{ text_field("personaContactoEvento", "maxlength" : "80", "parsley-maxlength" : "80", "class" : "form-control required") }}
+                {{ text_field("personaContactoEvento", "maxlength" : "80", "parsley-maxlength" : "80", "class" : "form-control required", "autocomplete" : "on") }}
                 <div class="max">80 caracteres máximo</div>
         </div>
     </div>
     <div class="form-group">
         <label class="col-sm-2 control-label" for="telefonoContactoEvento">Teléfonos de la Persona de Contacto</label>
         <div class="col-sm-10">
-                {{ text_field("telefonoContactoEvento", "maxlength" : "80", "parsley-maxlength" : "80", "class" : "form-control required") }}
+                {{ text_field("telefonoContactoEvento", "maxlength" : "80", "parsley-maxlength" : "80", "class" : "form-control required", "autocomplete" : "on") }}
                 <div class="max">80 caracteres máximo</div>
         </div>
     </div>
     <div class="form-group">
         <label class="col-sm-2 control-label" for="emailContactoEvento">Email de la Persona de Contacto</label>
         <div class="col-sm-10">
-                {{ email_field("emailContactoEvento", "maxlength" : "80", "parsley-maxlength" : "80", "class" : "form-control required") }}
+                {{ email_field("emailContactoEvento", "maxlength" : "80", "parsley-maxlength" : "80", "class" : "form-control required", "autocomplete" : "on") }}
                 <div class="max">80 caracteres máximo</div>
         </div>
     </div>

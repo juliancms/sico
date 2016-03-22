@@ -1,4 +1,26 @@
 var tipo;
+$("select#tipo_permiso").change(function(){
+    var select = $("select#tipo_permiso").val();
+    if(select == 0){
+        $('#fecha').parent().parent().fadeIn();
+        $('#fecha').removeAttr("disabled");
+        $('#fecha_inicio_permiso').parent().parent().fadeOut();
+        $('#fecha_fin_permiso').parent().parent().fadeOut();
+        $('#fecha_inicio_permiso').attr("disabled", "disabled");
+        $('#fecha_fin_permiso').attr("disabled", "disabled");
+        $('.dias_permiso').parent().fadeOut();
+        $('.dia').attr("disabled", "disabled");
+    } else {
+    	$('#fecha').parent().parent().fadeOut();
+    	$('#fecha').attr("disabled", "disabled");
+        $('#fecha_inicio_permiso').parent().parent().fadeIn();
+        $('#fecha_inicio_permiso').removeAttr("disabled");
+        $('#fecha_fin_permiso').parent().parent().fadeIn();
+        $('#fecha_fin_permiso').removeAttr("disabled");
+        $('.dias_permiso').parent().fadeIn();
+        $('.dia').removeAttr("disabled");
+    }
+});
 $(".transporte").hide();
 $(".requiere_transporte").click (
 		function(){
@@ -15,6 +37,7 @@ $('#permiso_general_form .tipo-fecha').datepicker({
     format: "dd/mm/yyyy",
     datesDisabled: festivos,
     weekStart: 0,
+    autoclose: true,
     startDate: $('#fecha_inicio').val(),
     endDate: $('#fecha_fin').val(),
     language: "es",

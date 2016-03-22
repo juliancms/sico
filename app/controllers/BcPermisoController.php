@@ -63,7 +63,7 @@ class BcPermisoController extends ControllerBase
     			break;
     	}
         if (count($permisos) == 0) {
-        	$this->flash->notice("No se existen permisos para este mes");
+        	$this->flash->notice("No existen permisos para este mes");
         	$permisos = null;
         }
         if($mes_actual == 1){
@@ -599,6 +599,7 @@ class BcPermisoController extends ControllerBase
     	$bc_permiso->id_sede_contrato = $sede->id_sede_contrato;
     	$bc_permiso->titulo = $this->request->getPost("titulo");
     	$bc_permiso->fecha = $this->conversiones->fecha(1, $this->request->getPost("fecha"));
+    	$bc_permiso->fechahora = date('Y-m-d H:i:s');
     	$bc_permiso->observaciones = $this->request->getPost("observaciones");
     	if (!$bc_permiso->save()) {
     		foreach ($bc_permiso->getMessages() as $message) {
@@ -662,6 +663,7 @@ class BcPermisoController extends ControllerBase
     	$fechas = $this->conversiones->array_fechas(1, $this->request->getPost("fecha"));
     	$elementos = array(
     			'fecha' => $fechas,
+    			'fechahora' => date('Y-m-d H:i:s'),
     			'id_oferente' => $sede->id_oferente,
     			'categoria' => '5',
     			'estado' => '0',
@@ -691,21 +693,97 @@ class BcPermisoController extends ControllerBase
     		$this->flash->notice("No se encontró la sede, por favor inténtelo nuevamente o contacte con el administrador");
     		return $this->response->redirect("/bc_permiso/nuevo");
     	}
-    	$bc_permiso = new BcPermiso();
-    	$bc_permiso->id_oferente = $sede->id_oferente;
-    	$bc_permiso->categoria = $id_categoria;
-    	$bc_permiso->estado = '0';
-    	$bc_permiso->id_sede_contrato = $sede->id_sede_contrato;
-    	$bc_permiso->titulo = $this->request->getPost("titulo");
-    	$bc_permiso->fecha = $this->conversiones->fecha(1, $this->request->getPost("fecha"));
-    	$bc_permiso->horaInicio = $this->request->getPost("horaInicio");
-    	$bc_permiso->horaFin = $this->request->getPost("horaFin");
-    	$bc_permiso->observaciones = $this->request->getPost("observaciones");
-    	if (!$bc_permiso->save()) {
-    		foreach ($bc_permiso->getMessages() as $message) {
-    			$this->flash->error($message);
+    	$tipo_permiso = $this->request->getPost("tipo_permiso");
+    	if($tipo_permiso == 0){
+    		$bc_permiso = new BcPermiso();
+    		$bc_permiso->fechahora = date('Y-m-d H:i:s');
+    		$bc_permiso->id_oferente = $sede->id_oferente;
+    		$bc_permiso->categoria = $id_categoria;
+    		$bc_permiso->estado = '0';
+    		$bc_permiso->id_sede_contrato = $sede->id_sede_contrato;
+    		$bc_permiso->titulo = $this->request->getPost("titulo");
+    		$bc_permiso->fecha = $this->conversiones->fecha(1, $this->request->getPost("fecha"));
+    		$bc_permiso->horaInicio = $this->request->getPost("horaInicio");
+    		$bc_permiso->horaFin = $this->request->getPost("horaFin");
+    		$bc_permiso->observaciones = $this->request->getPost("observaciones");
+    		if (!$bc_permiso->save()) {
+    			foreach ($bc_permiso->getMessages() as $message) {
+    				$this->flash->error($message);
+    			}
+    			return $this->response->redirect("bc_permiso/nuevo");
     		}
-    		return $this->response->redirect("bc_permiso/nuevo");
+    		$mensaje_success = "El permiso con ID <strong>$bc_permiso->id_permiso</strong> fue creado exitosamente";
+    	} else if($tipo_permiso == 1 || $tipo_permiso == 2){
+    		$fecha_inicio = $this->conversiones->fecha(1, $this->request->getPost("fecha_inicio_permiso"));
+    		$fecha_fin = $this->conversiones->fecha(1, $this->request->getPost("fecha_fin_permiso"));
+    		$dias = $this->request->getPost('dias');
+    		$fechas = array();
+    		foreach($dias as $dia){
+    			$fecha_actual = $fecha_inicio;
+    			//Si el día de la fecha inicio es igual al día se convierte en fecha actual
+    			if(date('l', strtotime($fecha_inicio)) == $dia){
+    				$fecha_actual = $fecha_inicio;
+    			} else {
+    				$fecha_actual = date("Y-m-d", strtotime("$fecha_inicio next $dia"));
+    			}
+    			//Mientras que la próxima semana sea menor o igual a la fecha fin se agrega la fecha actual
+    			while(strtotime($fecha_actual) <= strtotime($fecha_fin)){
+    				//Si no es festivo se agrega la fecha actual
+    				if(!in_array($fecha_actual, $this->elements->festivos_array())){
+    					$fechas[] = $fecha_actual;
+    				}
+    				$fecha_actual = strtotime($fecha_actual . " + ".$tipo_permiso." week");
+    				$fecha_actual = date("Y-m-d", $fecha_actual);
+    			}
+    		}
+    		if(!$fechas){
+	    		$this->view->titulo = $this->request->getPost("titulo");
+	    		$this->view->observaciones = $this->request->getPost("observaciones");
+	    		$this->view->actores = $this->request->getPost("actores");
+	    		$this->view->direccionEvento = $this->request->getPost("direccionEvento");
+	    		$this->view->personaContactoEvento = $this->request->getPost("personaContactoEvento");
+	    		$this->view->telefonoContactoEvento = $this->request->getPost("telefonoContactoEvento");
+	    		$this->view->emailContactoEvento = $this->request->getPost("emailContactoEvento");
+	    		$this->flash->error("No se creó el permiso porque el rango de fechas y los días seleccionados no contienen fechas disponibles, por favor revisa nuevamente o contacta al administrador.");
+	    		$this->dispatcher->forward(
+	    				array(
+	    						"controller" => "bc_permiso",
+	    						"action" => "nuevo",
+	    						"params" => array($this->elements->getCategoriaNombre($id_categoria), $id_sede_contrato)
+	    				)
+	    		);
+	    		return; break;
+    		}
+    		$i = 0;
+    		foreach($fechas as $row){
+    			$bc_permiso = new BcPermiso();
+    			$bc_permiso->fechahora = date('Y-m-d H:i:s');
+    			$bc_permiso->id_oferente = $sede->id_oferente;
+    			$bc_permiso->categoria = $id_categoria;
+    			$bc_permiso->estado = '0';
+    			$bc_permiso->id_sede_contrato = $sede->id_sede_contrato;
+    			$bc_permiso->titulo = $this->request->getPost("titulo");
+    			$bc_permiso->fecha = $row;
+    			$bc_permiso->horaInicio = $this->request->getPost("horaInicio");
+    			$bc_permiso->horaFin = $this->request->getPost("horaFin");
+    			$bc_permiso->observaciones = $this->request->getPost("observaciones");
+    			if (!$bc_permiso->save()) {
+    				foreach ($bc_permiso->getMessages() as $message) {
+    					$this->flash->error($message);
+    				}
+    				return $this->response->redirect("bc_permiso/nuevo");
+    			}
+    			if($i == 0){
+    				$id_permiso_vinculado = $bc_permiso->id_permiso;
+    			} else {
+    				$bc_permiso_vinculado = new BcPermisoVinculado();
+    				$bc_permiso_vinculado->id_permiso_padre = $id_permiso_vinculado;
+    				$bc_permiso_vinculado->id_permiso = $bc_permiso->id_permiso;
+    				$bc_permiso_vinculado->save();
+    			}
+    			$i++;
+    		}
+    		$mensaje_success = "Los permisos fueron creados exitosamente";
     	}
     	$bc_permiso_general = new BcPermisoGeneral();
     	$bc_permiso_general->id_permiso = $bc_permiso->id_permiso;
@@ -724,7 +802,6 @@ class BcPermisoController extends ControllerBase
     		return $this->response->redirect("bc_permiso/nuevo");
     	}
     	if($this->request->getPost("requiereTransporte") == 1){
-    		
     		$bc_permiso_general_transporte = new BcPermisoGeneralTransporte();
     		$bc_permiso_general_transporte->id_permiso = $bc_permiso->id_permiso;
     		$bc_permiso_general_transporte->runtConductor = $this->request->getPost("runtConductor");
@@ -740,7 +817,7 @@ class BcPermisoController extends ControllerBase
     			return $this->response->redirect("bc_permiso/nuevo");
     		}
     	}
-    	$this->flash->success("El permiso con ID <strong>$bc_permiso->id_permiso</strong> fue creado exitosamente");
+    	$this->flash->success($mensaje_success);
     	return $this->response->redirect("bc_permiso/");
     }
     

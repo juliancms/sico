@@ -674,6 +674,26 @@ class Elements extends Component
     			return "general";
     	}
     }
+    public function getCategoriaNombre($id_categoria)
+    {
+    	switch ($id_categoria) {
+    		case "1":
+    			return "incidente";
+    			break;
+    		case "2":
+    			return "salida_pedagogica";
+    			break;
+    		case "3":
+    			return "movilizacion_social";
+    			break;
+    		case "4":
+    			return "salida_ludoteka";
+    			break;
+    		case "5":
+    			return "jornada_planeacion";
+    			break;
+    	}
+    }
     public function permiso($accion){
     	switch ($accion) {
     		case "aprobar_bc":
@@ -682,5 +702,8 @@ class Elements extends Component
     }
     public function festivos(){
     	return "20/03/2016,21/03/2016,24/03/2016,25/03/2016,01/05/2016,09/05/2016,30/05/2016,06/06/2016,04/07/2016,20/07/2016,07/08/2016,15/08/2016,17/10/2016,07/11/2016,14/11/2016,08/12/2016,25/12/2016";
+    }
+    public function festivos_array(){
+    	return array("2016-03-20", "2016-03-21", "2016-03-24", "2016-03-25", "2016-05-01", "2016-05-09", "2016-05-30", "2016-06-06", "2016-07-04", "2016-07-20", "2016-08-07", "2016-08-15", "2016-10-17", "2016-11-07", "2016-11-14", "2016-12-08", "2016-12-25");
     }
 }
