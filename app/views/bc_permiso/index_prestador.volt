@@ -1,26 +1,28 @@
 
 {{ content() }}
 <h1>Permisos - {{ titulo }}</h1>
-<div class="pull-right form-inline">
-	<div class="input-group">
-      <input name="buscar" type="text" class="form-control buscar-permiso-input" placeholder="Buscar por ID...">
-      <span class="input-group-btn">
-        <a class="btn btn-primary buscar-permiso-btn" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Buscar</a>
-      </span>
-    </div><!-- /input-group -->
-	<div class="btn-group">
-		{{ btn_anterior }}
-		<a class="btn btn-default" data-calendar-nav="today">{{ titulo }}</a>
-		{{ btn_siguiente }}
-	</div>
+<div class="form-inline">
 	<div class="btn-group">
 		{{ btn_anio }}
 		{{ btn_mes }}
 		{{ btn_semana }}
 		{{ btn_dia }}
 	</div>
+	<div class="btn-group">
+		{{ btn_anterior }}
+		<a class="btn btn-default" data-calendar-nav="today">{{ titulo }}</a>
+		{{ btn_siguiente }}
+	</div>
+	<div class="input-group">
+    <input name="buscar" type="text" class="form-control buscar-permiso-input" placeholder="Buscar por ID...">
+    <span class="input-group-btn">
+      <a class="btn btn-primary buscar-permiso-btn" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Buscar</a>
+    </span>
+  </div><!-- /input-group -->
 </div>
-{{ link_to("bc_permiso/nuevo", '<i class="glyphicon glyphicon-plus"></i> Nuevo Permiso', "class": "btn btn-primary menu-tab-first") }}
+<div class="form-inline" style="padding-top: 5px">
+	{{ link_to("bc_permiso/nuevo", '<i class="glyphicon glyphicon-plus"></i> Nuevo Permiso', "class": "btn btn-primary menu-tab-first") }}
+</div>
 {% if (not(permisos is empty)) %}
 <!-- Modal -->
 <div class="modal fade" id="eliminar_elemento" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -75,7 +77,7 @@
             <td>{{ permiso.BcSedeContrato.id_sede }} - {{ permiso.BcSedeContrato.sede_nombre }}</td>
             <td>{{ permiso.titulo }}</td>
             <td><?php echo $this->conversiones->fecha(4, $permiso->fecha); ?></td>
-            <td>{{ permiso.horaInicio }} - {{ permiso.horaFin }}</td>         
+            <td>{{ permiso.horaInicio }} - {{ permiso.horaFin }}</td>
         </tr>
     {% endfor %}
     </tbody>
