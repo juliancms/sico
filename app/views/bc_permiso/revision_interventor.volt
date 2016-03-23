@@ -59,8 +59,8 @@
             <td>{{ permiso.BcSedeContrato.id_contrato }} - {{ permiso.BcSedeContrato.modalidad_nombre }}</td>
             <td>{{ permiso.BcSedeContrato.id_sede }} - {{ permiso.BcSedeContrato.sede_nombre }}</td>
             <td>{{ permiso.titulo }}</td>
-            <td>{{ permiso.fecha }}</td>
-            <td>{{ permiso.horaInicio }} - {{ permiso.horaFin }}</td>         
+            <td><?php echo $this->conversiones->fecha(4, $permiso->fecha); ?></td>
+            <td>{{ permiso.horaInicio }} - {{ permiso.horaFin }}</td>
         </tr>
     {% endfor %}
     </tbody>
@@ -86,7 +86,7 @@
             <span class="input-group-btn">
             	<a class="btn btn-primary submit">Guardar</a>
            	</span>
-           	
+
 			</div>
 	      </div>
 	      </form>
