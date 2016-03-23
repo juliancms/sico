@@ -23,6 +23,22 @@ $("#btn_jornadas").click (
 		$(".salidas").fadeOut();
 	}
 );
+$("#btn_lote_salidas").click (
+	function(){
+		$(".lote_salidas").removeAttr("disabled");
+		$(".lote_salidas").fadeIn();
+		$(".lote_jornadas").attr("disabled", "disabled");
+		$(".lote_jornadas").fadeOut();
+	}
+);
+$("#btn_lote_jornadas").click (
+	function(){
+		$(".lote_jornadas").removeAttr("disabled");
+		$(".lote_jornadas").fadeIn();
+		$(".lote_salidas").attr("disabled", "disabled");
+		$(".lote_salidas").fadeOut();
+	}
+);
 $(".checkall").click (
 		function(){
 			$('input:checkbox:visible').prop('checked', true);
@@ -43,17 +59,16 @@ $(".uncheck").click (
 $("select#estado_bc").change(function(){
     var estado_select = $("select#estado_bc").val();
     if(estado_select == 4){
-        $('.campo_motivo').fadeIn();
-        $(".campo_motivo input").removeAttr("disabled");
-        $('.campo_motivo span').css("color", "#d9534f");
-        $('.campo_motivo span').html("anular");
+        $('.campo_motivo_anular').fadeIn();
+        $(".campo_motivo_anular input").removeAttr("disabled");
+				$('.campo_motivo_aprobar').fadeOut();
+				$(".campo_motivo_aprobar input").attr("disabled", "disabled");
     }
     else if(estado_select == 2) {
-    	$('.campo_motivo').fadeIn();
-        $(".campo_motivo input").removeAttr("disabled");
-        $('.campo_motivo span').css("color", "#5cb85c");
-        $('.campo_motivo span').html("aprobar");
-        $('.campo_motivo input').val("Se recuerda a la entidad contar con los procedimientos de seguridad para estas salidas y garantizar la alimentación de los niños y las niñas como lo establece la minuta.");
+    	$('.campo_motivo_aprobar').fadeIn();
+      $(".lote_salidas").removeAttr("disabled");
+			$('.campo_motivo_anular').fadeOut();
+			$(".campo_motivo_anular input").attr("disabled", "disabled");
 
     } else {
     	$('.campo_motivo').fadeOut();

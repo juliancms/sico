@@ -106,7 +106,20 @@
       		<div class="col-md-12 error_permisos"></div>
       	</div>
       	<div class="row">
-      		<div class="col-md-12 campo_motivo" style="display: none;">Escribe el motivo por el cual vas a <span style='font-weight: bold' class='motivo'></span> los permisos:<input type="text" name="observacion" class="form-control required" disabled="disabled"></div>
+      		<div class="col-md-12 campo_motivo_anular" style="display: none;">Escribe el motivo por el cual vas a <span style='font-weight: bold; color: #d9534f' class='motivo'>Anular</span> los permisos:<input type="text" name="observacion" class="form-control required" disabled="disabled"></div>
+          <div class="col-md-12 campo_motivo_aprobar" style="display: none;">
+            Escribe el motivo por el cual vas a <span style='font-weight: bold; color: #5cb85c' class='motivo'>Aprobar</span> los permisos:
+            <input type="text" name="observacion" class="form-control required lote_salidas" disabled="disabled" value="{{ texto_aprobar['aprobar_salida'] }}">
+            <input type="text" name="observacion" class="form-control required lote_jornadas" disabled="disabled" value="{{ texto_aprobar['aprobar_jornada'] }}" style="display:none">
+            <div class="btn-group" data-toggle="buttons">
+              <label class="btn btn-xs btn-primary active" id="btn_lote_salidas">
+                <input type="radio" name="options" autocomplete="off" checked> Mensaje Salidas
+              </label>
+              <label class="btn btn-xs btn-primary" id="btn_lote_jornadas">
+                <input type="radio" name="options" autocomplete="off"> Mensaje Jornadas
+              </label>
+            </div>
+          </div>
       	</div>
       	<div class="row">
 	      <div class="col-lg-12">
