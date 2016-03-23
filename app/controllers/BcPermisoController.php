@@ -58,7 +58,7 @@ class BcPermisoController extends ControllerBase
     			}
     			break;
     		case 2:
-    			$aprobar_texto = $this->elements->permiso("aprobar_bc");
+    			$texto_aprobar = $this->elements->texto_aprobar();
     			$this->view->pick('bc_permiso/index_bc');
     			break;
     	}
@@ -82,7 +82,7 @@ class BcPermisoController extends ControllerBase
         $this->view->btn_dia = "<a href='/sico/bc_permiso/dia/". $fecha_actual ."' class='btn btn-warning'>Día</a>";
         $this->view->titulo = $this->conversiones->fecha(8, date('Y-m-d'));
         $this->view->permisos = $permisos;
-        $this->view->aprobar_texto = $aprobar_texto;
+        $this->view->texto_aprobar = $texto_aprobar = $this->elements->texto_aprobar();
     }
 
     /**
@@ -134,7 +134,7 @@ class BcPermisoController extends ControllerBase
     			if($permiso[0]->estado == 1){
     				$this->view->accion_permiso = "<a style='margin-left: 3px;' href='#aprobar_permiso' rel='tooltip' title='Aprobar' class='btn btn-success regresar eliminar_fila' data-id = '".$permiso[0]->id_permiso."' data-toggle = 'modal'><i class='glyphicon glyphicon-ok'></i> Aprobar Permiso</a><a style='margin-left: 3px;' href='#eliminar_elemento' data-toggle = 'modal' class='btn btn-danger regresar eliminar_fila' data-id = '". $permiso[0]->id_permiso ."'><i class='glyphicon glyphicon-remove'></i> Anular Permiso</a>";
     			}
-    			$texto_aprobar = "Se recuerda a la entidad contar con los procedimientos de seguridad para estas salidas y garantizar la alimentación de los niños y las niñas como lo establece la minuta.";
+    			$texto_aprobar = $this->elements->texto_aprobar();
     			break;
     		case 4:
     			$this->view->accion_permiso = "";
@@ -199,6 +199,7 @@ class BcPermisoController extends ControllerBase
     	$dia_anterior = date("Y-m-d", strtotime($fecha. ' - 1 day'));
     	$dia_siguiente = date("Y-m-d", strtotime($fecha. ' + 1 day'));
     	$permisos = BcPermiso::find(array("fecha = '$fecha'", "order" => "fecha ASC"));
+			$texto_aprobar = "";
     	switch ($this->user['id_componente']) {
     		case 3:
     			$oferente = IbcUsuario::findFirstByid_usuario($this->id_usuario);
@@ -224,6 +225,7 @@ class BcPermisoController extends ControllerBase
     			break;
     		case 2:
     			$this->view->pick('bc_permiso/index_bc');
+					$texto_aprobar = $this->elements->texto_aprobar();
     			break;
     	}
     	if (count($permisos) == 0) {
@@ -245,6 +247,7 @@ class BcPermisoController extends ControllerBase
     	$this->view->btn_semana = "<a href='/sico/bc_permiso/semana/" . $semana . "' class='btn btn-warning'>Semana</a>";
     	$this->view->btn_dia = "<a class='btn btn-warning active'>Día</a>";
     	$this->view->titulo = $this->conversiones->fecha(4, $fecha);
+			$this->view->texto_aprobar = $texto_aprobar;
     	$this->view->permisos = $permisos;
     }
 
@@ -284,7 +287,7 @@ class BcPermisoController extends ControllerBase
     	} else {
     		$this->view->btn_siguiente = "<a href='/sico/bc_permiso/semana/". $semana_siguiente ."' class='btn btn-primary'>Siguiente &gt;&gt;</a>";
     	}
-
+			$texto_aprobar;
     	$permisos = BcPermiso::find(array("fecha >= '$fecha_inicio' AND fecha <= '$fecha_final'", "order" => "fecha ASC"));
     	switch ($this->user['id_componente']) {
     		case 3:
@@ -311,6 +314,7 @@ class BcPermisoController extends ControllerBase
     			break;
     		case 2:
     			$this->view->pick('bc_permiso/index_bc');
+					$texto_aprobar = $this->elements->texto_aprobar();
     			break;
     	}
     	if (count($permisos) == 0) {
@@ -322,6 +326,7 @@ class BcPermisoController extends ControllerBase
     	$this->view->btn_semana = "<a class='btn btn-warning active'>Semana</a>";
     	$this->view->btn_dia = "<a href='/sico/bc_permiso/dia/". $fecha_inicio ."' class='btn btn-warning'>Día</a>";
     	$this->view->titulo = $this->conversiones->fecha(10, $fecha_inicio) . " - " . $this->conversiones->fecha(10, $fecha_final);
+			$this->view->texto_aprobar = $texto_aprobar;
     	$this->view->permisos = $permisos;
     }
 
@@ -345,6 +350,7 @@ class BcPermisoController extends ControllerBase
     	$mes_siguiente = sprintf("%02d", $mes_siguiente);
     	$mes_anterior = intval($mes_actual) - 1;
     	$mes_anterior = sprintf("%02d",$mes_anterior);
+			$texto_aprobar = "";
     	$permisos = BcPermiso::find(array("MONTH(fecha) = $mes_actual", "order" => "fecha ASC"));
     	switch ($this->user['id_componente']) {
     		case 3:
@@ -371,6 +377,7 @@ class BcPermisoController extends ControllerBase
     			break;
     		case 2:
     			$this->view->pick('bc_permiso/index_bc');
+					$texto_aprobar = $this->elements->texto_aprobar();
     			break;
     	}
     	if (count($permisos) == 0) {
@@ -392,6 +399,7 @@ class BcPermisoController extends ControllerBase
     	$this->view->btn_semana = "<a href='/sico/bc_permiso/semana/". $semana ."' class='btn btn-warning'>Semana</a>";
     	$this->view->btn_dia = "<a href='/sico/bc_permiso/dia/". $semana ."' class='btn btn-warning'>Día</a>";
     	$this->view->titulo = $this->conversiones->fecha(8, $fecha_actual);
+			$this->view->texto_aprobar = $texto_aprobar;
     	$this->view->permisos = $permisos;
     }
 
@@ -408,6 +416,7 @@ class BcPermisoController extends ControllerBase
     	$fecha_actual = date("Y-01-01");
     	$date = new DateTime($fecha_actual);
     	$permisos = BcPermiso::find(array("order" => "fecha ASC"));
+			$texto_aprobar = "";
     	switch ($this->user['id_componente']) {
     		case 3:
     			$oferente = IbcUsuario::findFirstByid_usuario($this->id_usuario);
@@ -433,6 +442,7 @@ class BcPermisoController extends ControllerBase
     			break;
     		case 2:
     			$this->view->pick('bc_permiso/index_bc');
+					$texto_aprobar = $this->elements->texto_aprobar();
     			break;
     	}
     	if (count($permisos) == 0) {
@@ -446,6 +456,7 @@ class BcPermisoController extends ControllerBase
     	$this->view->btn_semana = "<a href='/sico/bc_permiso/semana/". date("Y") ."-01-01' class='btn btn-warning'>Semana</a>";
     	$this->view->btn_dia = "<a href='/sico/bc_permiso/dia/". date("Y") ."-01-01' class='btn btn-warning'>Día</a>";
     	$this->view->titulo = "Año " . date('Y');
+			$this->view->texto_aprobar = $texto_aprobar;
     	$this->view->permisos = $permisos;
     }
 

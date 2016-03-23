@@ -7,22 +7,6 @@ $(".permiso_check").click (
 		$("#num_check").html(checked);
 	}
 );
-$("#btn_salidas").click (
-	function(){
-		$(".salidas").removeAttr("disabled");
-		$(".salidas").fadeIn();
-		$(".jornadas").attr("disabled", "disabled");
-		$(".jornadas").fadeOut();
-	}
-);
-$("#btn_jornadas").click (
-	function(){
-		$(".jornadas").removeAttr("disabled");
-		$(".jornadas").fadeIn();
-		$(".salidas").attr("disabled", "disabled");
-		$(".salidas").fadeOut();
-	}
-);
 $("#btn_lote_salidas").click (
 	function(){
 		$(".lote_salidas").removeAttr("disabled");
