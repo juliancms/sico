@@ -52,7 +52,6 @@
             <th>ID Permiso</th>
             <th filter-type='ddl'>Estado</th>
             <th filter-type='ddl'>Categoría</th>
-            <th>Prestador</th>
             <th>Contrato-Modalidad</th>
             <th>ID-Sede</th>
             <th>Título</th>
@@ -72,7 +71,6 @@
             <td><a rel="tooltip" title="Ver Detalles del Permiso" href="{{ url("bc_permiso/permiso/"~permiso.id_permiso) }}"><?php if (strtotime($permiso->fecha) > $fecha_limite && $permiso->estado < 3){ ?><a href="#eliminar_elemento" rel="tooltip" title="Anular" class="eliminar_fila" data-id = "{{ permiso.id_permiso }}" data-toggle = "modal" id="{{ url("bc_permiso/eliminar/"~permiso.id_permiso) }}"><i class="glyphicon glyphicon-remove"></i></a> <?php } ?>{{ permiso.id_permiso }}</a></td>
             <td><a rel="tooltip" title="Ver Detalles del Permiso" href="{{ url("bc_permiso/permiso/"~permiso.id_permiso) }}">{{ permiso.getEstado() }}</a></td>
             <td>{{ permiso.getCategoria() }}</td>
-            <td>{{ permiso.BcSedeContrato.oferente_nombre }}</td>
             <td>{{ permiso.BcSedeContrato.id_contrato }} - {{ permiso.BcSedeContrato.modalidad_nombre }}</td>
             <td>{{ permiso.BcSedeContrato.id_sede }} - {{ permiso.BcSedeContrato.sede_nombre }}</td>
             <td>{{ permiso.titulo }}</td>
