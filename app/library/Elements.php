@@ -41,7 +41,7 @@ class Elements extends Component
 				'icon' => 'glyphicon-briefcase'
 		)
 	);
-	
+
 	private $_actametroMenu = array(
 			'acta' => array(
 					'caption' => 'Acta',
@@ -59,7 +59,7 @@ class Elements extends Component
 					'icon' => 'glyphicon-saved'
 			)
 	);
-	
+
 	private $_actacomputoMenu = array(
 			'acta' => array(
 					'caption' => 'Acta',
@@ -72,7 +72,7 @@ class Elements extends Component
 					'icon' => 'glyphicon-file'
 			)
 	);
-	
+
 	private $_mensajeMenu = array(
 			'anuncios' => array(
 					'caption' => 'Anuncios',
@@ -82,7 +82,7 @@ class Elements extends Component
 					'caption' => 'Mensajes',
 					'action' => 'mensajes'
 			)
-			
+
 	);
     private $_headerMenu = array(
             'ibc_mensaje' => array(
@@ -102,7 +102,7 @@ class Elements extends Component
     				'action' => 'index'
     		)
     );
-    
+
     private $_headerMenuOferente = array(
     		'ibc_mensaje' => array(
     				'caption' => 'Comunicaciones',
@@ -125,7 +125,7 @@ class Elements extends Component
     				'action' => 'index'
     		)
     );
-    
+
     private $_headerMenuPermisosBC = array(
     		'ibc_mensaje' => array(
     				'caption' => 'Comunicaciones',
@@ -136,7 +136,7 @@ class Elements extends Component
     				'action' => 'index'
     		)
     );
-    
+
     private $_headerMenuComponente = array(
     		'ibc_mensaje' => array(
     				'caption' => 'Comunicaciones',
@@ -156,7 +156,7 @@ class Elements extends Component
             'any' => false
         )
     );
-    
+
     private $_MenuInicio = array(
     		'index' => array(
     				'caption' => 'Inicio',
@@ -191,14 +191,14 @@ class Elements extends Component
             echo '<ul class="nav navbar-nav navbar-left">';
             if($user['id_usuario_cargo'] == 6){
             	$menu = $this->_headerMenuOferente;
-            	
+
             } else if($user['id_usuario_cargo'] == 8){
             	$menu = $this->_headerMenuPermisosBC;
             } else if($user['id_usuario_cargo'] == 7){
             	$menu = $this->_headerMenuComponente;
             } else {
             	$menu = $this->_headerMenu;
-            	
+
             	if($user['nivel'] <= 1){
             		$menu ['bc_carga'] = array ('caption' => 'Cargas', 'action' => 'index');
             	}
@@ -279,7 +279,7 @@ class Elements extends Component
         }
 
     }
-    
+
     /**
      * Builds header menu with left and right items
      *
@@ -295,7 +295,7 @@ class Elements extends Component
    			} else {
    				echo $this->tag->linkTo(array($option['controller'] . '/' . $action, $option['caption'], 'class' => 'list-group-item'));
    			}
-   		}    		
+   		}
     }
 
     /**
@@ -317,7 +317,7 @@ class Elements extends Component
         }
         echo '</ul>';
     }
-    
+
     /**
      * Construye el menú superior de las actas
      *
@@ -339,7 +339,7 @@ class Elements extends Component
     	}
     	echo "</ul>";
     }
-    
+
     /**
      * Construye el menú superior de las actas
      *
@@ -395,7 +395,7 @@ class Elements extends Component
     	}
 		echo "</div><div class='clear'></clear>";
     }
-    
+
     /**
      * Construye el menú superior de las actas
      *
@@ -449,7 +449,7 @@ class Elements extends Component
     	}
     	echo "</div><div class='clear'></clear>";
     }
-    
+
     /**
      * Construye el menú superior de las actas
      *
@@ -500,7 +500,7 @@ class Elements extends Component
     	}
     	echo "</div><div class='clear'></clear>";
     }
-    
+
     /**
      * Construye el menú superior de las actas
      *
@@ -551,7 +551,7 @@ class Elements extends Component
     	}
     	echo "</div><div class='clear'></clear>";
     	}
-    
+
     public function errorFecha($error, $limite){
     	switch ($error) {
     		case "0":
@@ -565,8 +565,8 @@ class Elements extends Component
     		default:
     			return "";
     	}
-    }	
-   	
+    }
+
     /**
      * Selects para formularios
      */
@@ -632,7 +632,7 @@ class Elements extends Component
     			return array();
     	}
     }
-    
+
     /**
      * Selects para formularios
      */
@@ -696,10 +696,18 @@ class Elements extends Component
     }
     public function permiso($accion){
     	switch ($accion) {
-    		case "aprobar_bc":
+    		case "aprobar_bc_salida":
     			return "Se recuerda a la entidad contar con los procedimientos de seguridad para estas salidas y garantizar la alimentación de los niños y las niñas como lo establece la minuta.";
+				case "aprobar_bc_jornada":
+					return "Se recuerda a la entidad informar a las familias sobre estas jornadas.";
     	}
     }
+		public function texto_aprobar(){
+			return array(
+				"aprobar_salida" => "Se recuerda a la entidad contar con los procedimientos de seguridad para estas salidas y garantizar la alimentación de los niños y las niñas como lo establece la minuta.",
+				"aprobar_jornada" => "Se recuerda a la entidad informar a las familias sobre estas jornadas."
+			);
+		}
     public function festivos(){
     	return "20/03/2016,21/03/2016,24/03/2016,25/03/2016,01/05/2016,09/05/2016,30/05/2016,06/06/2016,04/07/2016,20/07/2016,07/08/2016,15/08/2016,17/10/2016,07/11/2016,14/11/2016,08/12/2016,25/12/2016";
     }

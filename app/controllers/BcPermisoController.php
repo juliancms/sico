@@ -1,9 +1,9 @@
 <?php
- 
+
 use Phalcon\Mvc\Model\Criteria;
 
 class BcPermisoController extends ControllerBase
-{    
+{
 	public $user;
     public function initialize()
     {
@@ -84,7 +84,7 @@ class BcPermisoController extends ControllerBase
         $this->view->permisos = $permisos;
         $this->view->aprobar_texto = $aprobar_texto;
     }
-    
+
     /**
      * permiso action
      */
@@ -150,7 +150,7 @@ class BcPermisoController extends ControllerBase
     	$this->view->pick("bc_permiso/permiso_" . $this->elements->getCategoriaEnlace($permiso[0]->categoria));
     	$this->view->texto_aprobar = $texto_aprobar;
     }
-    
+
     /**
      * permiso action
      */
@@ -168,7 +168,7 @@ class BcPermisoController extends ControllerBase
     		$this->view->pick('bc_permiso/revision_interventor');
     	} else if($this->user['id_componente'] == 2) {
     		$permisos = BcPermiso::find(array("estado = 1", "order" => "id_permiso ASC"));
-    		$texto_aprobar = "Se recuerda a la entidad contar con los procedimientos de seguridad para estas salidas y garantizar la alimentación de los niños y las niñas como lo establece la minuta.";
+    		$texto_aprobar = $this->elements->texto_aprobar();
     		$this->assets->addJs('js/permisos_revision_bc.js');
     		$this->view->pick('bc_permiso/revision_bc');
     	}
@@ -179,7 +179,7 @@ class BcPermisoController extends ControllerBase
     	$this->view->permisos = $permisos;
     	$this->view->texto_aprobar = $texto_aprobar;
     }
-    
+
     /**
      * semana action
      */
@@ -247,7 +247,7 @@ class BcPermisoController extends ControllerBase
     	$this->view->titulo = $this->conversiones->fecha(4, $fecha);
     	$this->view->permisos = $permisos;
     }
-    
+
     /**
      * semana action
      */
@@ -273,18 +273,18 @@ class BcPermisoController extends ControllerBase
     		$semana_anterior = date("Y-m-d", strtotime($fecha_final. ' - 13 days'));
     		if(date("Y", strtotime($semana_anterior)) < date("Y")){
     			$semana_anterior = date("Y") . "-01-01";
-    			
+
     		}
     		$this->view->btn_anterior = "<a href='/sico/bc_permiso/semana/" . $semana_anterior . "' class='btn btn-primary'>&lt;&lt; Anterior</a>";
     	}
     	$semana_siguiente = date("Y-m-d", strtotime($fecha_final. ' + 1 day'));
     	if(date("Y", strtotime($semana_siguiente)) > date("Y")){
     		$this->view->btn_siguiente = "<a disabled='disabled' class='btn btn-primary'>Siguiente &gt;&gt;</a>";
-    		 
+
     	} else {
     		$this->view->btn_siguiente = "<a href='/sico/bc_permiso/semana/". $semana_siguiente ."' class='btn btn-primary'>Siguiente &gt;&gt;</a>";
     	}
-    	
+
     	$permisos = BcPermiso::find(array("fecha >= '$fecha_inicio' AND fecha <= '$fecha_final'", "order" => "fecha ASC"));
     	switch ($this->user['id_componente']) {
     		case 3:
@@ -324,7 +324,7 @@ class BcPermisoController extends ControllerBase
     	$this->view->titulo = $this->conversiones->fecha(10, $fecha_inicio) . " - " . $this->conversiones->fecha(10, $fecha_final);
     	$this->view->permisos = $permisos;
     }
-    
+
     /**
      * mes action
      */
@@ -394,7 +394,7 @@ class BcPermisoController extends ControllerBase
     	$this->view->titulo = $this->conversiones->fecha(8, $fecha_actual);
     	$this->view->permisos = $permisos;
     }
-    
+
     /**
      * anio action
      */
@@ -496,7 +496,7 @@ class BcPermisoController extends ControllerBase
     			->addJs('js/permiso_incidente.js');
     			$this->view->pick('bc_permiso/nuevo_incidente');
     		}
-    		
+
     	} else if($id_categoria == 'jornada_planeacion'){
     		if(!$accion2){
     			$this->assets
@@ -530,9 +530,9 @@ class BcPermisoController extends ControllerBase
     			->addCss('css/bootstrap-datepicker.min.css')
     			->addJs('js/jornada_planeacion.js');
     			$this->view->pick('bc_permiso/nuevo_jornada_planeacion');
-    			
+
     		}
-    		
+
     	} else if($id_categoria == "salida_pedagogica" || $id_categoria == "movilizacion_social" || $id_categoria == "salida_ludoteka"){
     		$this->view->titulo = $this->elements->getCategoriaPermiso($id_categoria)['titulo'];
     		$this->view->enlace = $this->elements->getCategoriaPermiso($id_categoria)['enlace'];
@@ -563,11 +563,11 @@ class BcPermisoController extends ControllerBase
     			->addJs('js/bootstrap-filestyle.min.js')
     			->addJs('js/permiso_general.js');
     			$this->view->pick('bc_permiso/nuevo_general');
-    			
+
     		}
     	}
     }
-    
+
     public function crear_incidenteAction($id_sede_contrato){
     	if (!$this->request->isPost()) {
     		return $this->response->redirect("bc_permiso/nuevo");
@@ -610,7 +610,7 @@ class BcPermisoController extends ControllerBase
     	$this->flash->success("El permiso con ID <strong>$bc_permiso->id_permiso</strong> se creó exitosamente.");
     	return $this->response->redirect("bc_permiso");
     }
-    
+
     public function crear_jornada_planeacionAction($id_sede_contrato){
     	if (!$this->request->isPost()) {
     		return $this->response->redirect("bc_permiso/nuevo");
@@ -632,7 +632,7 @@ class BcPermisoController extends ControllerBase
     		$mes = intval($parts[1]);
     		$count_meses = array_count_values($meses);
     		$sede2 = BcPermiso::find("MONTH(fecha) = $mes AND categoria = 5 AND id_sede_contrato = $id_sede_contrato AND estado != 3");
-    		
+
     		//Primero que no sea menor a la fecha actual + 10 días
     		if(strtotime($this->conversiones->fecha(1, $row)) < strtotime('+9 days')){
     			$error[] = 1;
@@ -669,7 +669,7 @@ class BcPermisoController extends ControllerBase
     			'estado' => '0',
     			'id_sede_contrato' => $sede->id_sede_contrato,
 	    		'horaInicio' => $this->request->getPost("horaInicio"),
-	    		'horaFin' => $this->request->getPost("horaFin")    			
+	    		'horaFin' => $this->request->getPost("horaFin")
 	    );
     	$db = $this->getDI()->getDb();
     	$sql = $this->conversiones->multipleinsert("bc_permiso", $elementos);
@@ -683,7 +683,7 @@ class BcPermisoController extends ControllerBase
     	$this->flash->success("Los permisos se crearon exitosamente");
     	return $this->response->redirect("bc_permiso/");
     }
-    
+
     public function crear_generalAction($id_sede_contrato, $id_categoria){
     	if (!$this->request->isPost()) {
     		return $this->response->redirect("bc_permiso/nuevo");
@@ -820,13 +820,13 @@ class BcPermisoController extends ControllerBase
     	$this->flash->success($mensaje_success);
     	return $this->response->redirect("bc_permiso/");
     }
-    
+
     /**
      * Subir adicional
      *
      */
     public function subir_archivoAction($id_sede_contrato, $tipo) {
-    	
+
     	$this->view->disable();
     	if($tipo == "imgpdf"){
     		$tipos = array("image/png", "image/jpeg", "image/jpg", "image/bmp", "image/gif", "application/pdf");
@@ -850,7 +850,7 @@ class BcPermisoController extends ControllerBase
     			if($isUploaded){
     				chmod($path, 0777);
     				echo $nombre;
-    
+
     			} else {
     				echo "Error";
     			}
@@ -859,13 +859,13 @@ class BcPermisoController extends ControllerBase
     		}
     	}
     }
-    
+
     /**
      * permiso action
      */
     public function aprobarAction($id_permiso)
     {
-    	
+
     	if($this->user['nivel'] > 2){
     		$this->flash->error("Usted no tiene suficiente privilegios para realizar esta acción.");
     		return $this->response->redirect("bc_permiso");
@@ -903,7 +903,7 @@ class BcPermisoController extends ControllerBase
     	$this->flash->success("El permiso con ID <strong>$id_permiso</strong> fue aprobado exitosamente");
     	return $this->response->redirect('bc_permiso');
     }
-    
+
     /**
      * Aprobar permiso por parte de Buen Comienzo
      * Se diferencia de las demás aprobaciones porque en Secreataría colocan observación al aprobar
@@ -940,10 +940,10 @@ class BcPermisoController extends ControllerBase
     	$this->flash->success("El permiso con ID <strong>$id_permiso</strong> fue aprobado exitosamente");
         return $this->response->redirect('bc_permiso');
     }
-    
+
     /**
      * Anular permiso
-     * 
+     *
      *
      */
     public function anularAction()
@@ -1024,7 +1024,7 @@ class BcPermisoController extends ControllerBase
     	} else {
     		$observacion = $this->request->getPost("observacion");
     	}
-    	
+
     	$elementos = array(
     			'id_permiso' => $this->request->getPost("id_permiso"),
     			'estado' => $this->request->getPost("estado"),

@@ -7,6 +7,22 @@ $(".permiso_check").click (
 		$("#num_check").html(checked);
 	}
 );
+$("#btn_salidas").click (
+	function(){
+		$(".salidas").removeAttr("disabled");
+		$(".salidas").fadeIn();
+		$(".jornadas").attr("disabled", "disabled");
+		$(".jornadas").fadeOut();
+	}
+);
+$("#btn_jornadas").click (
+	function(){
+		$(".jornadas").removeAttr("disabled");
+		$(".jornadas").fadeIn();
+		$(".salidas").attr("disabled", "disabled");
+		$(".salidas").fadeOut();
+	}
+);
 $(".checkall").click (
 		function(){
 			$('input:checkbox:visible').prop('checked', true);
@@ -38,7 +54,7 @@ $("select#estado_bc").change(function(){
         $('.campo_motivo span').css("color", "#5cb85c");
         $('.campo_motivo span').html("aprobar");
         $('.campo_motivo input').val("Se recuerda a la entidad contar con los procedimientos de seguridad para estas salidas y garantizar la alimentación de los niños y las niñas como lo establece la minuta.");
-        
+
     } else {
     	$('.campo_motivo').fadeOut();
     	$(".campo_motivo input").attr("disabled", "disabled");
