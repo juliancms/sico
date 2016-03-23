@@ -36,7 +36,7 @@
             <th filter-type='ddl'>Categoría</th>
             <th>Prestador</th>
             <th>Contrato-Modalidad</th>
-            <th filter-type='ddl'>ID-Sede</th>
+            <th>ID-Sede</th>
             <th>Título</th>
             <th>Fecha</th>
             <th>Horas</th>
