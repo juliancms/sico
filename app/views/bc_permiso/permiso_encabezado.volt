@@ -54,7 +54,7 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<a href='/sico/bc_permiso' class='btn btn-primary regresar'><i class='glyphicon glyphicon-chevron-left'></i> Lista de Permisos</a>{{ accion_permiso }}<br><br>
+<a href='/sico/bc_permiso/mes' class='btn btn-primary regresar'><i class='glyphicon glyphicon-chevron-left'></i> Lista de Permisos</a>{{ accion_permiso }}<br><br>
 <table class='table table-bordered table-hover'>
 	<thead>
 		<tr>
