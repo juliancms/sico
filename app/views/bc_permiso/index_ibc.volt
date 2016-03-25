@@ -39,9 +39,6 @@
     	<tr><th style="margin: 0; padding: 0; border: 0" colspan="9"><a id='cleanfilters' class='btn btn-primary btn-sm btn-block'>Limpiar Filtros</a></th></tr>
     </thead>
     <tbody>
-    <?php
-    $fecha_limite = strtotime(date('Y-m-d'). ' +1 days');
-    ?>
     {% for permiso in permisos %}
         <tr>
             <td><a rel="tooltip" title="Ver Detalles del Permiso" href="{{ url("bc_permiso/permiso/"~permiso.id_permiso) }}">{{ permiso.id_permiso }}</a></td>
