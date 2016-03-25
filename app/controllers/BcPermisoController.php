@@ -58,6 +58,8 @@ class BcPermisoController extends ControllerBase
     	->addJs('js/permisos_lista.js');
     	$fecha_limite = strtotime(date('Y-m-d'). ' +1 days');
     	$texto_aprobar = "";
+			$id_sede_contrato = $permiso[0]->id_sede_contrato;
+			$permisos = BcPermiso::find(array("id_permiso <> $id_permiso AND id_sede_contrato = $id_sede_contrato", "order" => "fecha ASC"));
     	switch ($this->user['id_componente']) {
     		case 3:
     			$oferente = IbcUsuario::findFirstByid_usuario($this->id_usuario);
@@ -73,6 +75,7 @@ class BcPermisoController extends ControllerBase
     			break;
     		case 1:
     			if($this->user['nivel'] > 2){
+						$permisos = BcPermiso::find(array("id_permiso <> $id_permiso AND id_sede_contrato = $id_sede_contrato AND estado = 2", "order" => "fecha ASC"));
     				$this->view->accion_permiso = "";
     			}
     			if($permiso[0]->estado == 0){
@@ -94,6 +97,7 @@ class BcPermisoController extends ControllerBase
     			$texto_aprobar = $this->elements->texto_aprobar();
     			break;
     		case 4:
+					$permisos = BcPermiso::find(array("id_permiso <> $id_permiso AND id_sede_contrato = $id_sede_contrato AND estado = 2", "order" => "fecha ASC"));
     			$this->view->accion_permiso = "";
     			break;
     	}
@@ -103,6 +107,7 @@ class BcPermisoController extends ControllerBase
     	}
     	$this->assets
     	->addCss('css/observaciones.css');
+			$this->view->permisos = $permisos;
     	$this->view->permiso = $permiso[0];
     	$this->view->pick("bc_permiso/permiso_" . $this->elements->getCategoriaEnlace($permiso[0]->categoria));
     	$this->view->texto_aprobar = $texto_aprobar;
