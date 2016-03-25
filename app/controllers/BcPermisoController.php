@@ -18,71 +18,24 @@ class BcPermisoController extends ControllerBase
      */
     public function indexAction()
     {
-    	$this->assets
-    	->addJs('js/parsley.min.js')
-    	->addJs('js/parsley.extend.js')
-    	->addJs('js/picnet.table.filter.min.js')
-    	->addJs('js/permisos_lista.js');
-    	$fecha_actual = date('Y-m-d');
-    	$semana = $fecha_actual;
-    	if(date("w", strtotime($fecha_actual)) != 0){
-    		$semana = date("Y-m-d", strtotime($fecha_actual. ' next Sunday'));
-    	}
-    	$mes_actual = date('m');
-    	$mes_siguiente = intval($mes_actual) + 1;
-    	$mes_siguiente = sprintf("%02d", $mes_siguiente);
-    	$mes_anterior = intval($mes_actual) - 1;
-    	$mes_anterior = sprintf("%02d",$mes_anterior);
-    	$permisos = BcPermiso::find(array("MONTH(fecha) = $mes_actual", "order" => "fecha ASC"));
-    	$aprobar_permiso = "";
-    	switch ($this->user['id_componente']) {
+			switch ($this->user['id_componente']) {
     		case 3:
-    			$oferente = IbcUsuario::findFirstByid_usuario($this->id_usuario);
-    			if(!$oferente){
-    				$this->flash->error("Este usuario no fue encontrado en la base de datos de prestadores.");
-    				return $this->response->redirect("/");
-    			}
-    			$id_oferente = $oferente->IbcUsuarioOferente->id_oferente;
-    			$permisos = BcPermiso::find(array("id_oferente = $id_oferente AND MONTH(fecha) = $mes_actual", "order" => "fecha ASC"));
-    			$this->view->pick('bc_permiso/index_prestador');
+					return $this->response->redirect("bc_permiso/mes");
     			break;
     		case 4:
-    			$permisos = BcPermiso::find(array("estado = 2", "order" => "fecha ASC"));
-    			$this->view->pick('bc_permiso/index_ibc');
+					return $this->response->redirect("bc_permiso/mes");
     			break;
     		case 1:
     			if($this->user['nivel'] > 2){
-    				$this->view->pick('bc_permiso/index_ibc');
+						return $this->response->redirect("bc_permiso/mes");
     			} else {
-    				$this->view->pick('bc_permiso/index_interventor');
+						return $this->response->redirect("bc_permiso/revision");
     			}
     			break;
     		case 2:
-    			$texto_aprobar = $this->elements->texto_aprobar();
-    			$this->view->pick('bc_permiso/index_bc');
+    			return $this->response->redirect("bc_permiso/revision");
     			break;
     	}
-        if (count($permisos) == 0) {
-        	$this->flash->notice("No existen permisos para este mes");
-        	$permisos = null;
-        }
-        if($mes_actual == 1){
-        	$this->view->btn_anterior = "<a disabled='disabled' class='btn btn-primary'>&lt;&lt; Anterior</a>";
-        } else {
-        	$this->view->btn_anterior = "<a href='/sico/bc_permiso/mes/". $mes_anterior ."'class='btn btn-primary'>&lt;&lt; Anterior</a>";
-        }
-        if($mes_actual == 12){
-        	$this->view->btn_siguiente = "<a disabled='disabled' class='btn btn-primary'>Siguiente &gt;&gt;</a>";
-        } else {
-        	$this->view->btn_siguiente = "<a href='/sico/bc_permiso/mes/". $mes_siguiente ."' class='btn btn-primary'>Siguiente &gt;&gt;</a>";
-        }
-        $this->view->btn_anio = "<a href='/sico/bc_permiso/anio/' class='btn btn-warning'>Año</button>";
-        $this->view->btn_mes = "<a class='btn btn-warning active'>Mes</a>";
-        $this->view->btn_semana = "<a href='/sico/bc_permiso/semana/". $semana ."' class='btn btn-warning'>Semana</a>";
-        $this->view->btn_dia = "<a href='/sico/bc_permiso/dia/". $fecha_actual ."' class='btn btn-warning'>Día</a>";
-        $this->view->titulo = $this->conversiones->fecha(8, date('Y-m-d'));
-        $this->view->permisos = $permisos;
-        $this->view->texto_aprobar = $texto_aprobar = $this->elements->texto_aprobar();
     }
 
     /**
@@ -189,6 +142,9 @@ class BcPermisoController extends ControllerBase
      */
     public function diaAction($fecha)
     {
+			if(!$fecha){
+				$fecha = date("Y-m-d");
+			}
     	$this->assets
     	->addJs('js/parsley.min.js')
     	->addJs('js/parsley.extend.js')
@@ -260,13 +216,16 @@ class BcPermisoController extends ControllerBase
      */
     public function semanaAction($fecha_inicio)
     {
+			if(!$fecha_inicio){
+				$fecha_inicio = date("Y-m-d", strtotime(date("Y-m-d"). ' last Sunday'));
+			}
     	$this->assets
     	->addJs('js/parsley.min.js')
     	->addJs('js/parsley.extend.js')
     	->addJs('js/picnet.table.filter.min.js')
     	->addJs('js/permisos_lista.js');
     	$date = new DateTime($fecha_inicio);
-		$fecha_inicio_comparacion = date("Y") . "-01-01";
+			$fecha_inicio_comparacion = date("Y") . "-01-01";
     	if($fecha_inicio == $fecha_inicio_comparacion){
     		//Si es sabado fecha final sera la misma, de lo contrario será el próximo sábado
     		$this->view->btn_anterior = "<a disabled='disabled' class='btn btn-primary'>&lt;&lt; Anterior</a>";
@@ -339,6 +298,9 @@ class BcPermisoController extends ControllerBase
      */
     public function mesAction($mes_actual)
     {
+			if(!$mes_actual){
+				$mes_actual = date('m');
+			}
     	$this->assets
     	->addJs('js/parsley.min.js')
     	->addJs('js/parsley.extend.js')
