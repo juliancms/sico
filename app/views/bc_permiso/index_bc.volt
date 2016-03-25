@@ -103,7 +103,7 @@
     ?>
     {% for permiso in permisos %}
         <tr data-estado="{{ permiso.estado }}" class="bg-{{ permiso.getEstadoStyle() }}">
-            <td><a rel="tooltip" title="Ver Detalles del Permiso" href="{{ url("bc_permiso/permiso/"~permiso.id_permiso) }}"><?php if ($permiso->estado == 1){ ?><a href="#aprobar_permiso" rel="tooltip" title="Aprobar" class="eliminar_fila" data-id = "{{ permiso.id_permiso }}" data-toggle = "modal"><i class="glyphicon glyphicon-ok"></i></a> <a href="#eliminar_elemento" rel="tooltip" title="Anular" class="eliminar_fila" data-id = "{{ permiso.id_permiso }}" data-toggle = "modal" id="{{ url("bc_permiso/eliminar/"~permiso.id_permiso) }}"><i class="glyphicon glyphicon-remove"></i></a> <?php } ?>{{ permiso.id_permiso }}</a></td>
+            <td><a rel="tooltip" title="Ver Detalles del Permiso" href="{{ url("bc_permiso/permiso/"~permiso.id_permiso) }}"><?php if ($permiso->estado == 1 || $permiso->estado == 4){ ?><a href="#aprobar_permiso" rel="tooltip" title="Aprobar" class="eliminar_fila" data-id = "{{ permiso.id_permiso }}" data-toggle = "modal"><i class="glyphicon glyphicon-ok"></i></a> <?php } if ($permiso->estado == 1 || $permiso->estado == 2){ ?><a href="#eliminar_elemento" rel="tooltip" title="Anular" class="eliminar_fila" data-id = "{{ permiso.id_permiso }}" data-toggle = "modal" id="{{ url("bc_permiso/eliminar/"~permiso.id_permiso) }}"><i class="glyphicon glyphicon-remove"></i></a> <?php } ?>{{ permiso.id_permiso }}</a></td>
             <td><a rel="tooltip" title="Ver Detalles del Permiso" href="{{ url("bc_permiso/permiso/"~permiso.id_permiso) }}">{{ permiso.getEstado() }}</a></td>
             <td>{{ permiso.getCategoria() }}</td>
             <td>{{ permiso.BcSedeContrato.oferente_nombre }}</td>

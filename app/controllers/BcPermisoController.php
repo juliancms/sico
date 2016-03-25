@@ -133,7 +133,11 @@ class BcPermisoController extends ControllerBase
     		case 2:
     			if($permiso[0]->estado == 1){
     				$this->view->accion_permiso = "<a style='margin-left: 3px;' href='#aprobar_permiso' rel='tooltip' title='Aprobar' class='btn btn-success regresar eliminar_fila' data-id = '".$permiso[0]->id_permiso."' data-toggle = 'modal'><i class='glyphicon glyphicon-ok'></i> Aprobar Permiso</a><a style='margin-left: 3px;' href='#eliminar_elemento' data-toggle = 'modal' class='btn btn-danger regresar eliminar_fila' data-id = '". $permiso[0]->id_permiso ."'><i class='glyphicon glyphicon-remove'></i> Anular Permiso</a>";
-    			}
+    			} else if($permiso[0]->estado == 4){
+						$this->view->accion_permiso = "<a style='margin-left: 3px;' href='#aprobar_permiso' rel='tooltip' title='Aprobar' class='btn btn-success regresar eliminar_fila' data-id = '".$permiso[0]->id_permiso."' data-toggle = 'modal'><i class='glyphicon glyphicon-ok'></i> Aprobar Permiso</a>";
+					} else if($permiso[0]->estado == 2){
+						$this->view->accion_permiso = "<a style='margin-left: 3px;' href='#eliminar_elemento' data-toggle = 'modal' class='btn btn-danger regresar eliminar_fila' data-id = '". $permiso[0]->id_permiso ."'><i class='glyphicon glyphicon-remove'></i> Anular Permiso</a>";
+					}
     			$texto_aprobar = $this->elements->texto_aprobar();
     			break;
     		case 4:
