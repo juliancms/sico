@@ -15,7 +15,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
      * @var integer
      */
     public $id_periodo;
-    
+
     /**
      *
      * @var integer
@@ -111,8 +111,8 @@ class CobActaconteo extends \Phalcon\Mvc\Model
      * @var integer
      */
     public $estado;
-    
-    
+
+
     //Virtual Foreign Key para poder acceder a la fecha de corte del acta
 	public function initialize()
 	{
@@ -140,7 +140,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
 				)
 		));
 	}
-    
+
     public function generarActasRcarga($cob_periodo, $carga, $facturacion, $recorrido_anterior) {
     	$recorrido = $recorrido_anterior + 1;
     	$db = $this->getDI()->getDb();
@@ -150,7 +150,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
         $archivo_mat = $config->application->basePath . "public/files/bc_bd/" . $carga->nombreMat;
     	$db->query("CREATE TEMPORARY TABLE $tabla_mat (certificacionRecorridos INT, fechaInicioAtencion DATE, fechaRetiro DATE, fechaRegistro DATE, id_sede_contrato BIGINT, id_contrato BIGINT, id_modalidad INT, modalidad_nombre VARCHAR(50), id_sede INT, sede_nombre VARCHAR(80), sede_barrio VARCHAR(80), sede_direccion VARCHAR(80), sede_telefono VARCHAR(80), id_oferente INT, oferente_nombre VARCHAR(100), id_persona INT, numDocumento VARCHAR(100), primerNombre VARCHAR(20), segundoNombre VARCHAR(20), primerApellido VARCHAR(20), segundoApellido VARCHAR(20), id_grupo BIGINT, grupo VARCHAR(80), fechaNacimiento DATE, peso VARCHAR(10), estatura VARCHAR(10), fechaControl DATE, cuartoupaJI INT, codigoHCB BIGINT, nombreHCB VARCHAR(100), direccionHCB VARCHAR(100), comunaCorregimientoHCB VARCHAR(100) ) CHARACTER SET utf8 COLLATE utf8_bin");
     	$db->query("LOAD DATA INFILE '$archivo_mat' IGNORE INTO TABLE $tabla_mat FIELDS TERMINATED BY ';' LINES TERMINATED BY '\n' IGNORE 1 LINES (@ID_MATRICULA, @FECHA_INICIO_ATENCION, @FECHA_RETIRO, @MOTIVO_RETIRO, @FECHA_REGISTRO_MATRICULA, @ID_PRESTADOR, @PRESTADOR_SERVICIO, @NUMERO_CONTRATO, @ID_MODALIDAD_ORIGEN, @NOMBRE_MODALIDAD, @ID_SEDE, @NOMBRE_SEDE, @ID_BARRIO_SEDE, @NOMBRE_BARRIO_SEDE, @DIRECCION_SEDE, @TELEFONO_SEDE, @ID_SEDE_CONTRATO, @COORDINADOR_MODALIDAD, @ID_GRUPO, @NOMBRE_GRUPO, @AGENTE_EDUCATIVO, @ID_PERSONA, @TIPO_DOCUMENTO, @NUMERO_DOCUMENTO, @PRIMER_NOMBRE, @SEGUNDO_NOMBRE, @PRIMER_APELLIDO, @SEGUNDO_APELLIDO, @FECHA_NACIMIENTO, @GENERO, @ZONA_BENEFICIARIO, @DIRECCION_BENEFICIARIO, @ID_BARRIO_BENEFICIARIO, @NOMBRE_BARRIO_BENEFICIARIO, @TELEFONO_BENEFICIARIO, @CELULAR_BENEFICIARIO, @PUNTAJE_SISBEN, @NUMERO_FICHA, @VICTIMA_CA, @ESQUEMA_VACUNACION, @TIPO_DISCAPACIDAD, @CAPACIDAD_EXCEPCIONAL, @AFILIACION_SGSSS, @ENTIDAD_SALUD, @ASISTE_CXD, @NOMBRE_ETNIA, @OTROS_BENEFICIOS, @RADICADO, @AUTORIZADO, @FECHA_RADICADO, @CICLO_VITAL_MADRE, @EDAD_GESTACIONAL, @PESO, @ESTATURA, @FECHA_CONTROL, @OBSERVACION, @FECHA_DIGITACION_SEG, @FECHA_MODIFICACION_SEG, @USUARIO_REGISTRO_SEG, @TIPO_BENEFICIARIO, @FECHA_REGISTRO_BENEFICIARIO, @ID_CIERRE_GRUPO, @EN_EDUCATIVO, @FECHA_CIERRE_GRUPO, @CODIGO_HCB, @NOMBRE_HCB, @DOCUMENTO_MCB, @PRIMER_NOMBRE_MCB, @SEGUNDO_NOMBRE_MCB, @PRIMER_APELLIDO_MCB, @SEGUNDO_APELLIDO_MCB, @DIRECCION_HCB, @BARRIO_VEREDA_HCB, @COMUNA_CORREGIMIENTO_HCB, @ZONA_HCB, @CENTRO_ZONAL_HCB, @NOMBRE_ASOCIACION, @CUARTOUPA_JI) SET id_sede_contrato = @ID_SEDE_CONTRATO, id_contrato = @NUMERO_CONTRATO, id_modalidad = @ID_MODALIDAD_ORIGEN, modalidad_nombre = @NOMBRE_MODALIDAD, id_sede = @ID_SEDE, sede_nombre = REPLACE(@NOMBRE_SEDE, '\"',\"\"), sede_barrio = @NOMBRE_BARRIO_SEDE, sede_direccion = @DIRECCION_SEDE, sede_telefono = @TELEFONO_SEDE, id_oferente = @ID_PRESTADOR, oferente_nombre = REPLACE(@PRESTADOR_SERVICIO, '\"',\"\"), id_persona = @ID_PERSONA, numDocumento = @NUMERO_DOCUMENTO, primerNombre = TRIM(REPLACE(@PRIMER_NOMBRE, '\"',\"\")), segundoNombre = TRIM(REPLACE(@SEGUNDO_NOMBRE, '\"',\"\")), primerApellido = TRIM(REPLACE(@PRIMER_APELLIDO, '\"',\"\")), segundoApellido = TRIM(REPLACE(@SEGUNDO_APELLIDO, '\"',\"\")), id_grupo = @ID_GRUPO, grupo = REPLACE(@NOMBRE_GRUPO, '\"',\"\"), fechaInicioAtencion = @FECHA_INICIO_ATENCION, fechaRegistro = @FECHA_REGISTRO_MATRICULA, fechaRetiro = @FECHA_RETIRO, fechaNacimiento = @FECHA_NACIMIENTO, peso = @PESO, estatura = @ESTATURA, fechaControl = @FECHA_CONTROL, cuartoupaJI = @CUARTOUPA_JI, codigoHCB = @CODIGO_HCB, nombreHCB = @NOMBRE_HCB, direccionHCB = @DIRECCION_HCB, comunaCorregimientoHCB = @COMUNA_CORREGIMIENTO_HCB");
-        
+
         //Inicio generar actas PP
         if($cob_periodo->tipo == 1){
         	//Actualizar si cambia contrato de Mundo Mejor
@@ -167,15 +167,16 @@ class CobActaconteo extends \Phalcon\Mvc\Model
 	    	$db->query("DELETE FROM $tabla_pp WHERE otrosBeneficios NOT LIKE '%ID%'");
 	    	$db->query("UPDATE $tabla_pp SET id_sede = SUBSTRING_INDEX(otrosBeneficios,'ID',-1) WHERE 1");
 	    	$db->query("UPDATE $tabla_pp, bc_sede_contrato SET $tabla_pp.id_sede_contrato = bc_sede_contrato.id_sede_contrato, $tabla_pp.sede_nombre = bc_sede_contrato.sede_nombre, $tabla_pp.sede_barrio = bc_sede_contrato.sede_barrio, $tabla_pp.sede_direccion = bc_sede_contrato.sede_direccion, $tabla_pp.sede_telefono = bc_sede_contrato.sede_telefono WHERE $tabla_pp.id_sede = bc_sede_contrato.id_sede AND bc_sede_contrato.id_contrato = $id_contrato_mundomejor");
+        $db->query("DELETE FROM $tabla_mat WHERE id_modalidad = 8");
 	    	$db->query("INSERT IGNORE INTO $tabla_mat (id_contrato, id_sede_contrato, id_modalidad, modalidad_nombre, id_sede, sede_nombre, sede_barrio, sede_direccion, sede_telefono, id_oferente, oferente_nombre, id_persona, numDocumento, primerNombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, peso, estatura, fechaControl) SELECT $id_contrato_mundomejor, id_sede_contrato, $id_modalidad_mundomejor, '$modalidad_nombre_mundomejor', id_sede, sede_nombre, sede_barrio, sede_direccion, sede_telefono, $id_oferente_mundomejor, '$oferente_nombre_mundomejor', id_persona, numDocumento, primerNombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, peso, estatura, fechaControl FROM $tabla_pp");
         }
         //Fin generar actas PP
-        
+
         $modalidades = "";
         foreach(CobActaconteo::find(array("id_periodo = $cob_periodo->id_periodo AND recorrido = $recorrido_anterior", "columns" => "id_modalidad", "group" => "id_modalidad"))->toArray() as $row){
-        	$modalidades = $modalidades . $row['id_modalidad'] . ","; 
+        	$modalidades = $modalidades . $row['id_modalidad'] . ",";
         }
-        $modalidades = substr($modalidades, 0, -1);        
+        $modalidades = substr($modalidades, 0, -1);
         $db->query("DELETE FROM $tabla_mat WHERE id_modalidad NOT IN ($modalidades)");
         if($cob_periodo->tipo == 4){
         	$db->query("UPDATE $tabla_mat SET id_sede_contrato = CONCAT_WS('',codigoHCB,id_contrato), id_sede = codigoHCB, sede_nombre = nombreHCB, sede_direccion = direccionHCB, sede_barrio = comunaCorregimientoHCB, sede_telefono = NULL WHERE 1");
@@ -190,7 +191,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
         	$db->query("UPDATE cob_periodo SET id_carga_facturacion = $carga->id_carga WHERE id_periodo = $cob_periodo->id_periodo");
         	$db->query("UPDATE cob_actaconteo_persona, cob_actaconteo_persona_facturacion SET cob_actaconteo_persona.id_actaconteo_persona_facturacion = cob_actaconteo_persona_facturacion.id_actaconteo_persona_facturacion WHERE cob_actaconteo_persona.id_contrato = cob_actaconteo_persona_facturacion.id_contrato AND cob_actaconteo_persona.numDocumento = cob_actaconteo_persona_facturacion.numDocumento AND cob_actaconteo_persona.id_periodo = $cob_periodo->id_periodo AND cob_actaconteo_persona_facturacion.id_periodo = $cob_periodo->id_periodo");
         	$db->query("UPDATE cob_actaconteo_persona_facturacion, cob_actaconteo_persona SET cob_actaconteo_persona_facturacion.acta1 = cob_actaconteo_persona.id_actaconteo, cob_actaconteo_persona_facturacion.asistencia1 = cob_actaconteo_persona.asistencia, cob_actaconteo_persona_facturacion.id_actaconteo_persona1 = cob_actaconteo_persona.id_actaconteo_persona WHERE cob_actaconteo_persona_facturacion.id_actaconteo_persona_facturacion = cob_actaconteo_persona.id_actaconteo_persona_facturacion AND cob_actaconteo_persona.recorrido = 1 AND cob_actaconteo_persona.id_periodo = $cob_periodo->id_periodo AND cob_actaconteo_persona_facturacion.id_periodo = $cob_periodo->id_periodo");
-        	$db->query("UPDATE cob_actaconteo_persona_facturacion, cob_actaconteo_persona SET cob_actaconteo_persona_facturacion.acta2 = cob_actaconteo_persona.id_actaconteo, cob_actaconteo_persona_facturacion.asistencia2 = cob_actaconteo_persona.asistencia, cob_actaconteo_persona_facturacion.id_actaconteo_persona2 = cob_actaconteo_persona.id_actaconteo_persona WHERE cob_actaconteo_persona_facturacion.id_actaconteo_persona_facturacion = cob_actaconteo_persona.id_actaconteo_persona_facturacion AND cob_actaconteo_persona.recorrido = 2 AND cob_actaconteo_persona.id_periodo = $cob_periodo->id_periodo AND cob_actaconteo_persona_facturacion.id_periodo = $cob_periodo->id_periodo");        	
+        	$db->query("UPDATE cob_actaconteo_persona_facturacion, cob_actaconteo_persona SET cob_actaconteo_persona_facturacion.acta2 = cob_actaconteo_persona.id_actaconteo, cob_actaconteo_persona_facturacion.asistencia2 = cob_actaconteo_persona.asistencia, cob_actaconteo_persona_facturacion.id_actaconteo_persona2 = cob_actaconteo_persona.id_actaconteo_persona WHERE cob_actaconteo_persona_facturacion.id_actaconteo_persona_facturacion = cob_actaconteo_persona.id_actaconteo_persona_facturacion AND cob_actaconteo_persona.recorrido = 2 AND cob_actaconteo_persona.id_periodo = $cob_periodo->id_periodo AND cob_actaconteo_persona_facturacion.id_periodo = $cob_periodo->id_periodo");
         }
         $db->query("DELETE FROM $tabla_mat WHERE fechaRetiro > 0000-00-00");
         $eliminar = CobActaconteoPersona::find(["id_periodo = $cob_periodo->id_periodo AND recorrido < $recorrido AND (asistencia = 1 OR asistencia = 7 OR asistencia = 9 OR asistencia = 10)"]);
@@ -210,7 +211,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
         $db->query("DROP TABLE $tabla_pp");
     	return TRUE;
     }
-        
+
     public function generarActasR1($cob_periodo, $carga, $modalidades, $facturacion) {
     	$db = $this->getDI()->getDb();
     	$config = $this->getDI()->getConfig();
@@ -219,7 +220,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     	$archivo_mat = $config->application->basePath . "public/files/bc_bd/" . $carga->nombreMat;
     	$db->query("CREATE TEMPORARY TABLE $tabla_mat (certificacionRecorridos INT, fechaInicioAtencion DATE, fechaRetiro DATE, fechaRegistro DATE, id_sede_contrato BIGINT, id_contrato BIGINT, id_modalidad INT, modalidad_nombre VARCHAR(50), id_sede INT, sede_nombre VARCHAR(80), sede_barrio VARCHAR(80), sede_direccion VARCHAR(80), sede_telefono VARCHAR(80), id_oferente INT, oferente_nombre VARCHAR(100), id_persona INT, numDocumento VARCHAR(100), primerNombre VARCHAR(20), segundoNombre VARCHAR(20), primerApellido VARCHAR(20), segundoApellido VARCHAR(20), id_grupo BIGINT, grupo VARCHAR(80), fechaNacimiento DATE, peso VARCHAR(10), estatura VARCHAR(10), fechaControl DATE, cuartoupaJI INT, codigoHCB BIGINT, nombreHCB VARCHAR(100), direccionHCB VARCHAR(100), comunaCorregimientoHCB VARCHAR(100) ) CHARACTER SET utf8 COLLATE utf8_bin");
     	$db->query("LOAD DATA INFILE '$archivo_mat' IGNORE INTO TABLE $tabla_mat FIELDS TERMINATED BY ';' LINES TERMINATED BY '\n' IGNORE 1 LINES (@ID_MATRICULA, @FECHA_INICIO_ATENCION, @FECHA_RETIRO, @MOTIVO_RETIRO, @FECHA_REGISTRO_MATRICULA, @ID_PRESTADOR, @PRESTADOR_SERVICIO, @NUMERO_CONTRATO, @ID_MODALIDAD_ORIGEN, @NOMBRE_MODALIDAD, @ID_SEDE, @NOMBRE_SEDE, @ID_BARRIO_SEDE, @NOMBRE_BARRIO_SEDE, @DIRECCION_SEDE, @TELEFONO_SEDE, @ID_SEDE_CONTRATO, @COORDINADOR_MODALIDAD, @ID_GRUPO, @NOMBRE_GRUPO, @AGENTE_EDUCATIVO, @ID_PERSONA, @TIPO_DOCUMENTO, @NUMERO_DOCUMENTO, @PRIMER_NOMBRE, @SEGUNDO_NOMBRE, @PRIMER_APELLIDO, @SEGUNDO_APELLIDO, @FECHA_NACIMIENTO, @GENERO, @ZONA_BENEFICIARIO, @DIRECCION_BENEFICIARIO, @ID_BARRIO_BENEFICIARIO, @NOMBRE_BARRIO_BENEFICIARIO, @TELEFONO_BENEFICIARIO, @CELULAR_BENEFICIARIO, @PUNTAJE_SISBEN, @NUMERO_FICHA, @VICTIMA_CA, @ESQUEMA_VACUNACION, @TIPO_DISCAPACIDAD, @CAPACIDAD_EXCEPCIONAL, @AFILIACION_SGSSS, @ENTIDAD_SALUD, @ASISTE_CXD, @NOMBRE_ETNIA, @OTROS_BENEFICIOS, @RADICADO, @AUTORIZADO, @FECHA_RADICADO, @CICLO_VITAL_MADRE, @EDAD_GESTACIONAL, @PESO, @ESTATURA, @FECHA_CONTROL, @OBSERVACION, @FECHA_DIGITACION_SEG, @FECHA_MODIFICACION_SEG, @USUARIO_REGISTRO_SEG, @TIPO_BENEFICIARIO, @FECHA_REGISTRO_BENEFICIARIO, @ID_CIERRE_GRUPO, @EN_EDUCATIVO, @FECHA_CIERRE_GRUPO, @CODIGO_HCB, @NOMBRE_HCB, @DOCUMENTO_MCB, @PRIMER_NOMBRE_MCB, @SEGUNDO_NOMBRE_MCB, @PRIMER_APELLIDO_MCB, @SEGUNDO_APELLIDO_MCB, @DIRECCION_HCB, @BARRIO_VEREDA_HCB, @COMUNA_CORREGIMIENTO_HCB, @ZONA_HCB, @CENTRO_ZONAL_HCB, @NOMBRE_ASOCIACION, @CUARTOUPA_JI) SET id_sede_contrato = @ID_SEDE_CONTRATO, id_contrato = @NUMERO_CONTRATO, id_modalidad = @ID_MODALIDAD_ORIGEN, modalidad_nombre = @NOMBRE_MODALIDAD, id_sede = @ID_SEDE, sede_nombre = REPLACE(@NOMBRE_SEDE, '\"',\"\"), sede_barrio = @NOMBRE_BARRIO_SEDE, sede_direccion = @DIRECCION_SEDE, sede_telefono = @TELEFONO_SEDE, id_oferente = @ID_PRESTADOR, oferente_nombre = REPLACE(@PRESTADOR_SERVICIO, '\"',\"\"), id_persona = @ID_PERSONA, numDocumento = @NUMERO_DOCUMENTO, primerNombre = TRIM(REPLACE(@PRIMER_NOMBRE, '\"',\"\")), segundoNombre = TRIM(REPLACE(@SEGUNDO_NOMBRE, '\"',\"\")), primerApellido = TRIM(REPLACE(@PRIMER_APELLIDO, '\"',\"\")), segundoApellido = TRIM(REPLACE(@SEGUNDO_APELLIDO, '\"',\"\")), id_grupo = @ID_GRUPO, grupo = REPLACE(@NOMBRE_GRUPO, '\"',\"\"), fechaInicioAtencion = @FECHA_INICIO_ATENCION, fechaRegistro = @FECHA_REGISTRO_MATRICULA, fechaRetiro = @FECHA_RETIRO, fechaNacimiento = @FECHA_NACIMIENTO, peso = @PESO, estatura = @ESTATURA, fechaControl = @FECHA_CONTROL, cuartoupaJI = @CUARTOUPA_JI, codigoHCB = @CODIGO_HCB, nombreHCB = @NOMBRE_HCB, direccionHCB = @DIRECCION_HCB, comunaCorregimientoHCB = @COMUNA_CORREGIMIENTO_HCB");
-    	
+
     	//Inicio generar actas PP
         if($cob_periodo->tipo == 1){
         	//Actualizar si cambia contrato de Mundo Mejor
@@ -236,10 +237,11 @@ class CobActaconteo extends \Phalcon\Mvc\Model
 	    	$db->query("DELETE FROM $tabla_pp WHERE otrosBeneficios NOT LIKE '%ID%'");
 	    	$db->query("UPDATE $tabla_pp SET id_sede = SUBSTRING_INDEX(otrosBeneficios,'ID',-1) WHERE 1");
 	    	$db->query("UPDATE $tabla_pp, bc_sede_contrato SET $tabla_pp.id_sede_contrato = bc_sede_contrato.id_sede_contrato, $tabla_pp.sede_nombre = bc_sede_contrato.sede_nombre, $tabla_pp.sede_barrio = bc_sede_contrato.sede_barrio, $tabla_pp.sede_direccion = bc_sede_contrato.sede_direccion, $tabla_pp.sede_telefono = bc_sede_contrato.sede_telefono WHERE $tabla_pp.id_sede = bc_sede_contrato.id_sede AND bc_sede_contrato.id_contrato = $id_contrato_mundomejor");
+        $db->query("DELETE FROM $tabla_mat WHERE id_modalidad = 8");
 	    	$db->query("INSERT IGNORE INTO $tabla_mat (id_contrato, id_sede_contrato, id_modalidad, modalidad_nombre, id_sede, sede_nombre, sede_barrio, sede_direccion, sede_telefono, id_oferente, oferente_nombre, id_persona, numDocumento, primerNombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, peso, estatura, fechaControl) SELECT $id_contrato_mundomejor, id_sede_contrato, $id_modalidad_mundomejor, '$modalidad_nombre_mundomejor', id_sede, sede_nombre, sede_barrio, sede_direccion, sede_telefono, $id_oferente_mundomejor, '$oferente_nombre_mundomejor', id_persona, numDocumento, primerNombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, peso, estatura, fechaControl FROM $tabla_pp");
         }
         //Fin generar actas PP
-    	
+
     	$db->query("DELETE FROM $tabla_mat WHERE id_modalidad NOT IN ($modalidades)");
     	if($cob_periodo->tipo == 4){
     		$db->query("UPDATE $tabla_mat SET id_sede_contrato = CONCAT_WS('',codigoHCB,id_contrato), id_sede = codigoHCB, sede_nombre = nombreHCB, sede_direccion = direccionHCB, sede_barrio = comunaCorregimientoHCB, sede_telefono = NULL WHERE 1");
@@ -255,7 +257,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     		$db->query("UPDATE cob_actaconteo_persona, cob_actaconteo_persona_facturacion SET cob_actaconteo_persona.id_actaconteo_persona_facturacion = cob_actaconteo_persona_facturacion.id_actaconteo_persona_facturacion WHERE cob_actaconteo_persona.id_contrato = cob_actaconteo_persona_facturacion.id_contrato AND cob_actaconteo_persona.numDocumento = cob_actaconteo_persona_facturacion.numDocumento AND cob_actaconteo_persona.id_periodo = $cob_periodo->id_periodo AND cob_actaconteo_persona_facturacion.id_periodo = $cob_periodo->id_periodo");
 			$db->query("UPDATE cob_actaconteo_persona_facturacion, cob_actaconteo_persona SET cob_actaconteo_persona_facturacion.acta1 = cob_actaconteo_persona.id_actaconteo, cob_actaconteo_persona_facturacion.asistencia1 = cob_actaconteo_persona.asistencia WHERE cob_actaconteo_persona_facturacion.id_actaconteo_persona_facturacion = cob_actaconteo_persona.id_actaconteo_persona_facturacion AND cob_actaconteo_persona.recorrido = 1 AND cob_actaconteo_persona.id_periodo = $cob_periodo->id_periodo AND cob_actaconteo_persona_facturacion.id_periodo = $cob_periodo->id_periodo");
 			$db->query("UPDATE cob_actaconteo_persona_facturacion, cob_actaconteo_persona SET cob_actaconteo_persona_facturacion.acta2 = cob_actaconteo_persona.id_actaconteo, cob_actaconteo_persona_facturacion.asistencia2 = cob_actaconteo_persona.asistencia WHERE cob_actaconteo_persona_facturacion.id_actaconteo_persona_facturacion = cob_actaconteo_persona.id_actaconteo_persona_facturacion AND cob_actaconteo_persona.recorrido = 2 AND cob_actaconteo_persona.id_periodo = $cob_periodo->id_periodo AND cob_actaconteo_persona_facturacion.id_periodo = $cob_periodo->id_periodo");
-    		
+
     	}
     	$db->query("DELETE FROM $tabla_mat WHERE fechaRetiro > 0000-00-00");
     	$db->query("REPLACE INTO bc_sede_contrato (id_sede_contrato, id_oferente, oferente_nombre, id_contrato, id_sede, sede_nombre, sede_barrio, sede_direccion, sede_telefono, id_modalidad, modalidad_nombre, estado) SELECT id_sede_contrato, id_oferente, oferente_nombre, id_contrato, id_sede, sede_nombre, sede_barrio, sede_direccion, sede_telefono, id_modalidad, modalidad_nombre, '1' FROM $tabla_mat");
@@ -264,7 +266,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     	$db->query("DROP TABLE $tabla_mat");
     	return TRUE;
     }
-    
+
     public function generarActasFacturacion($cob_periodo, $recorrido_anterior) {
     	$recorrido = $recorrido_anterior + 1;
     	$carga = BcCarga::findFirstByid_carga($cob_periodo->id_carga_facturacion);
@@ -313,6 +315,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     		$db->query("DELETE FROM $tabla_pp WHERE otrosBeneficios NOT LIKE '%ID%'");
     		$db->query("UPDATE $tabla_pp SET id_sede = SUBSTRING_INDEX(otrosBeneficios,'ID',-1) WHERE 1");
     		$db->query("UPDATE $tabla_pp, bc_sede_contrato SET $tabla_pp.id_sede_contrato = bc_sede_contrato.id_sede_contrato, $tabla_pp.sede_nombre = bc_sede_contrato.sede_nombre, $tabla_pp.sede_barrio = bc_sede_contrato.sede_barrio, $tabla_pp.sede_direccion = bc_sede_contrato.sede_direccion, $tabla_pp.sede_telefono = bc_sede_contrato.sede_telefono WHERE $tabla_pp.id_sede = bc_sede_contrato.id_sede AND bc_sede_contrato.id_contrato = $id_contrato_mundomejor");
+        $db->query("DELETE FROM $tabla_mat WHERE id_modalidad = 8");
     		$db->query("INSERT IGNORE INTO $tabla_mat (id_contrato, id_sede_contrato, id_modalidad, modalidad_nombre, id_sede, sede_nombre, sede_barrio, sede_direccion, sede_telefono, id_oferente, oferente_nombre, id_persona, numDocumento, primerNombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, peso, estatura, fechaControl) SELECT $id_contrato_mundomejor, id_sede_contrato, $id_modalidad_mundomejor, '$modalidad_nombre_mundomejor', id_sede, sede_nombre, sede_barrio, sede_direccion, sede_telefono, $id_oferente_mundomejor, '$oferente_nombre_mundomejor', id_persona, numDocumento, primerNombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, peso, estatura, fechaControl FROM $tabla_pp");
     	//Fin generar actas PP
     		$db->query("DELETE FROM $tabla_mat WHERE id_oferente = 0");
@@ -329,7 +332,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     	$db->query("DROP TABLE $tabla_mat");
     	return TRUE;
     }
-        
+
     //Verificar este proceso
     public function duplicarActa($acta, $cob_periodo) {
     	$recorrido = $acta->recorrido + 1;
@@ -352,7 +355,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     	$db->query("DROP TABLE $tabla_mat");
     	return TRUE;
     }
-    
+
     public function cerrarPeriodo($id_periodo) {
     	$rows = CobActaconteoPersona::find(["id_periodo = $id_periodo AND (asistencia = 1 OR asistencia = 7)"]);
     	if(count($rows) > 0){
@@ -368,7 +371,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     	$db->query("DROP TABLE $tabla_mat");
     	return TRUE;
     }
-    
+
     public function generarActa($id_actaconteo){
     	$acta = CobActaconteo::findFirstByid_actaconteo($id_actaconteo);
     	if(!$acta || $acta == NULL){
@@ -413,7 +416,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     		<div class='clear'></div>
     	</div>";
     	$datos_acta = array();
-    	$datos_acta['datos'] = $acta; 
+    	$datos_acta['datos'] = $acta;
     	$html = "";
     	$html .= "<div id='imprimir'>"; // <acta>
     	//Página Prestador
@@ -473,7 +476,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
   		/*
   		 * Si el acta está en la modalidad Entorno Comunitario, Entorno Familiar o Jardines Infantiles
   		 * se imprimen las actas con la casilla de fecha de visita, de lo contrario la fecha se omite
-  		 */ 
+  		 */
   		$fecha_lista = "";
   		$fecha_encabezado = "";
   		$fecha_encabezado2 = "";
@@ -546,7 +549,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
   						$html .="<div class='fila colb'><div style='width: 20px;'>$i</div><div style='width: 120px;'>$row->numDocumento</div><div style='width: 200px'>$row->nombre</div><div style='width: 70px;'>".$row->getCargoEmpleado()."</div><div style='width: 70px'></div><div style='width: 70px'></div></div>";
   						$i++;
   						$j++;
-  					}  				
+  					}
   					for($i = $j; $i <= 30; $i++){
   						$i = ($i<10) ? "0" .$i : $i;
   						$html .="<div class='fila colb'><div style='width: 20px;'>$i</div><div style='width: 120px;'></div><div style='width: 200px'></div><div style='width: 70px;'></div><div style='width: 70px'></div><div style='width: 70px'></div></div>";
@@ -563,10 +566,10 @@ class CobActaconteo extends \Phalcon\Mvc\Model
   			}
   		}
   		$html .= "<div class='clear'></div>"; // </acta>
-    	$datos_acta['html'] = $html; 
+    	$datos_acta['html'] = $html;
     	return $datos_acta;
     }
-    
+
     /**
      * Returns a human representation of 'estado'
      *
@@ -595,7 +598,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     			break;
     	}
     }
-    
+
     /**
      * Returns a human representation of 'id_actaconteo'
      *
@@ -605,7 +608,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     {
     	return "ACO-03-". date("Y") . sprintf('%05d', $this->id_actaconteo);
     }
-    
+
     /**
      * Returns a human representation of 'id_actamuestreo'
      *
@@ -615,7 +618,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     {
     	return $this->id_actaconteo;
     }
-    
+
     /**
      * Contar beneficiarios
      *
@@ -625,7 +628,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     {
     	return count($this->CobActaconteoPersona);
     }
-    
+
     /**
      * Returns a human representation of 'url'
      *
@@ -635,5 +638,5 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     {
     	return "cob_actaconteo/ver/$this->id_actaconteo";
     }
-    
+
 }
