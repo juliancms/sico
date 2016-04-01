@@ -495,7 +495,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
         $mayor_5 = "";
         if($row->fechaNacimiento){
           $edad_nacimiento = date_create($row->fechaNacimiento);
-          $fecha_corte = date_create($cob_periodo->fecha);
+          $fecha_corte = date_create($acta->CobPeriodo->fecha);
           $interval = date_diff($edad_nacimiento, $fecha_corte);
           if ($interval->format('%y') >= 6){
       			$mayor5 = " style='font-weight:bold'";
@@ -508,7 +508,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
   			if($j == 31){
   				$j = 1;
   				$p++;
-  				$html .= "<div class='clear'></div></div>* Niños mayores o iguales a 5 años" . $pie_pagina;
+  				$html .= "<div class='clear'></div></div>* Niños mayores o iguales a 5 añoss" . $pie_pagina;
   				$html .= "<div class='paginacion'>PÁGINA $p</div>";
   				$html .= $encabezado;
   				$html .= $encabezado_beneficiarios;
