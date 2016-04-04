@@ -21,6 +21,48 @@
 <h3>3. Ingresa los campos del permiso</h3>
 <div id="festivos" style="display:none"><?php echo $this->elements->festivos(); ?></div>
 {{ form("bc_permiso/crear_general/"~id_sede_contrato~"/"~id_categoria, "id":"permiso_general_form", "method":"post", "class":"form-container form-horizontal", "parsley-validate" : "") }}
+<!-- Modal -->
+<div class="modal fade" id="modal_participantes" tabindex="-1" role="dialog" aria-labelledby="modal_participantes" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="modal_participantes">Agregar participantes</h4>
+      </div>
+      <div class="modal-body">
+				<p>Puede copiar los beneficiarios directamente desde un archivo en Excel, seleccionando los datos de las columnas 'Nombre completo' y 'Nuip' en ese mismo orden como se muestra en <a id="paso1">esta imagen</a> y pegándolos en el cuadro siguiente como se puede <a id="paso2">ver aquí</a>.</p>
+				{{ text_area("pegar_listado", "rows" : 2, "placeholder" : "Pegue aquí el listado de beneficiarios", "class" : "form-control", "style" : "margin-bottom: 5px;") }}
+				<table class="table table-bordered table-hover" id="listado_participantes_tabla">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Nombre Completo</th>
+							<th>Número de Documento</th>
+							<th>X</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php for ($i = 1; $i <= 300; $i++) { ?>
+							<tr style="display: none;">
+								<td><span class="number"><?php echo $i; ?></span></td>
+								<td>{{ text_field("nombreCompleto[]", "disabled" : "disabled", "placeholder" : "Nombre Completo", "class" : "nombreCompleto form-control required") }}<div class="error_nombre"></div></td>
+								<td>{{ text_field("numDocumento[]", "disabled" : "disabled", "placeholder" : "Número de documento", "class" : "numDocumento form-control required") }}<div class="error_documento"></div></td>
+								<td style="text-align:center;"><a class='btn btn-default eliminar_valor'><i class='glyphicon glyphicon-remove'></i></a></td>
+							</tr>
+						<?php } ?>
+					</tbody>
+				</table>
+				<div class="row container alerta_lote" style="padding-top: 10px; display: none;"></div>
+      </div>
+      <div class="modal-footer">
+				<a class="btn btn-success pull-left" id="agregar_item_adicional"><i class="glyphicon glyphicon-plus"></i> Agregar Ítem</a>
+				<a class="btn btn-success pull-left" id="limpiar_formulario"><i class="glyphicon glyphicon-refresh"></i> Limpiar Formulario</a>
+        <a class="btn btn-primary submit_listado"><i class="glyphicon glyphicon-save"></i> Guardar Listado</a>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 	<div class="form-group">
         <label class="col-sm-2 control-label" for="titulo">Nombre Evento</label>
         <div class="col-sm-10">
@@ -73,7 +115,7 @@
 				</label>
 				<label class="checkbox-inline">
 				  <input class="dia" type="checkbox" name="dias[]" parsley-mincheck="1" id="Friday" value="Friday" disabled="disabled"> Vie
-				</label>	      
+				</label>
 		</div>
     </div>
     <div class="form-group">
@@ -132,13 +174,14 @@
     </div>
     <div class="form-group">
     	<label class="col-sm-2 control-label" for="listadoNinios">Listado de Niños Participantes</label>
-		<div class="col-sm-10 imagen_imppnt">
-			<input class="fileupload filestyle" data-tipo = "xls" data-input="false" data-badge="false" type="file" name="archivo[]" multiple>
-		    <div id="progress" class="progress" style="margin: 0 !important;">
-		        <div class="progress-bar progress-bar-success"></div>
-		    </div>
-		    <input style="display:none" type='text' class='urlArchivo required' name='listadoNinios' value=''>
-		</div>
+			<div class="col-sm-2">
+				<div class="input-group">
+					<span class="input-group-addon"><span id="num_participantes">0</span> participantes agregados</span>
+					<span class="input-group-btn">
+						<a href="#modal_participantes" data-toggle = "modal" title="Agregar Participantes" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Agregar participantes</a>
+					</span>
+				</div>
+			</div>
 	</div>
 	<div class="form-group">
         <label class="col-sm-2 control-label" for="requiereTransporte">¿Requiere Transporte?</label>

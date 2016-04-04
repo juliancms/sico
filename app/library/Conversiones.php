@@ -12,7 +12,7 @@ class Conversiones extends Component
 
 	/**
 	 * fecha
-	 * 
+	 *
 	 * Tipos de formato de fecha:
 	 * 	1 = dd/mm/aaaa -> aaaa-mm-dd
 	 *  2 = aaaa-mm-dd -> dd/mm/aaaa
@@ -34,7 +34,7 @@ class Conversiones extends Component
 		$dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sábado");
 		$siglas_meses = array("EN","FE","MR","AB","MY","JN","JL","AG","SE","OC","NO","DI");
 		$meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
-		if($tipo_formato == 1) { 
+		if($tipo_formato == 1) {
 			$parts = explode('/', $fecha);
 			$nueva_fecha = "$parts[2]-$parts[1]-$parts[0]";
 			return $nueva_fecha;
@@ -77,7 +77,7 @@ class Conversiones extends Component
 			return $dias[date('w', strtotime($fecha))] . " " . $parts[2] . "/" . $meses[$parts[1]-1] . "/" . $parts[0];
 		}
 	}
-	
+
 	/**
 	 * hora
 	 *
@@ -99,7 +99,7 @@ class Conversiones extends Component
     			return "";
     	}
 	}
-	
+
 	/**
 	 * array_fechas
 	 *
@@ -113,34 +113,34 @@ class Conversiones extends Component
 		}
 		return $nuevas_fechas;
 	}
-	
-	
+
+
 	/**
 	 * multipleupdate
 	 * @param $tabla String
 	 * @param $elementos Array of Arrays
-	 * @param $id_columna 
-	 * 
+	 * @param $id_columna
+	 *
 	 * El array $elementos debe de tener el siguiente formato:
 	 * $elementos = array ("id_columna" => array (id1, id2, id3...), "nombre_col2" => array(elemento1, elemento2, elemento3...));
 	 * NOTA: El primer campo debe de ser el id de la tabla el resto pueden ser arrays o valores individuales
 	 * @return string
 	 * Produce un string similar a este:
 	 * UPDATE categories SET
-		    	display_order = CASE id
-		    	WHEN 1 THEN 32
-		    	WHEN 2 THEN 33
-		    	WHEN 3 THEN 34
-		    	END,
-		    	title = CASE id
-		    	WHEN 1 THEN 'New Title 1'
-		    	WHEN 2 THEN 'New Title 2'
-		    	WHEN 3 THEN 'New Title 3'
-		    	END
-		    	WHERE id IN (1,2,3)
+	 *	    	display_order = CASE id
+	 *    	WHEN 1 THEN 32
+	 *    	WHEN 2 THEN 33
+	 *    	WHEN 3 THEN 34
+	 *    	END,
+	 *    	title = CASE id
+	 *    	WHEN 1 THEN 'New Title 1'
+	 *    	WHEN 2 THEN 'New Title 2'
+	 *    	WHEN 3 THEN 'New Title 3'
+	 *    	END
+	 *    	WHERE id IN (1,2,3)
 	 * @author Julián Camilo Marín Sánchez
 	 */
-	
+
 	public function multipleupdate($tabla, $elementos, $id_columna){
 		$sql = "";
 		$sql .= "UPDATE $tabla SET ";
@@ -164,7 +164,7 @@ class Conversiones extends Component
 		$sql .= " WHERE " . $id_columna . " IN (" . implode(',', $elementos[array_keys($elementos)[0]]) . ")";
 		return $sql;
 	}
-	
+
 	/**
 	 * multipleinsert
 	 * @param $tabla String
@@ -174,15 +174,15 @@ class Conversiones extends Component
 	 * NOTA: El primer elemento debe de ser Array
 	 * Produce un string similar a este:
 	 * 	INSERT INTO example
-		  (example_id, name, value, other_value)
-		VALUES
-		  (100, 'Name 1', 'Value 1', 'Other 1'),
-		  (101, 'Name 2', 'Value 2', 'Other 2'),
-		  (102, 'Name 3', 'Value 3', 'Other 3'),
-		  (103, 'Name 4', 'Value 4', 'Other 4');
+	 *  (example_id, name, value, other_value)
+	 *  VALUES
+	 *	  (100, 'Name 1', 'Value 1', 'Other 1'),
+	 *	  (101, 'Name 2', 'Value 2', 'Other 2'),
+	 *	  (102, 'Name 3', 'Value 3', 'Other 3'),
+	 *	  (103, 'Name 4', 'Value 4', 'Other 4');
 	 * @author Julián Camilo Marín Sánchez
 	 */
-	
+
 	public function multipleinsert($tabla, $elementos){
 		$sql = "REPLACE INTO $tabla (".implode(",", array_keys($elementos)).") VALUES ";
 		$i = 0;
@@ -194,14 +194,14 @@ class Conversiones extends Component
 				} else {
 					$array[] = "'".$elementos[$row]."'";
 				}
-				
+
 			}
 			$sql .= "(".implode(",", $array)."),";
 			$i++;
 		}
 		return substr($sql, 0, -1);
 	}
-	
+
 	/**
 	 * multipledelete
 	 * @param $tabla String
@@ -212,11 +212,11 @@ class Conversiones extends Component
 	 * @return string
 	 * @author Julián Camilo Marín Sánchez
 	 */
-	
+
 	public function multipledelete($tabla, $id_columna, $elementos){
 		return "DELETE FROM $tabla WHERE $id_columna IN (" . $elementos . ")";
 	}
-	
+
 	/**
 	 * get_client_ip
 	 *
@@ -224,7 +224,7 @@ class Conversiones extends Component
 	 * @return string
 	 * @author Julián Camilo Marín Sánchez
 	 */
-	
+
 	public function get_client_ip() {
 		$ipaddress = '';
 		if ($_SERVER['HTTP_CLIENT_IP'])

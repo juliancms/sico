@@ -1,6 +1,7 @@
 <ul style="margin-bottom: 5px;" class="nav nav-tabs" role="tablist">
 	<li role="presentation" class="active"><a href="#historico" id="historico-tab" role="tab" data-toggle="tab" aria-controls="historico" aria-expanded="true">Histórico de Eventos</a></li>
-	<li role="presentation" class=""><a href="#otrospermisos" id="otrospermisos-tab" role="tab" data-toggle="tab" aria-controls="otrospermisos" aria-expanded="false">Otros Permisos</a></li>
+	{% if (not(permisos is empty)) %}<li role="presentation" class=""><a href="#otrospermisos" id="otrospermisos-tab" role="tab" data-toggle="tab" aria-controls="otrospermisos" aria-expanded="false">Otros Permisos</a></li>{% endif %}
+	{% if (not(listado_beneficiarios is empty)) %}<li role="presentation" class=""><a href="#listadoparticipantes" id="listadoparticipantes-tab" role="tab" data-toggle="tab" aria-controls="listadoparticipantes" aria-expanded="false">Listado de Participantes</a></li>{% endif %}
 </ul>
 <div class="tab-content">
 	<div role="tabpanel" class="tab-pane fade active in" id="historico" aria-labelledby="historico-tab">
@@ -19,8 +20,8 @@
 		   	</div>
 		<?php } ?>
 	</div>
+	{% if (not(permisos is empty)) %}
 	<div role="tabpanel" class="tab-pane fade" id="otrospermisos" aria-labelledby="otrospermisos-tab">
-		{% if (not(permisos is empty)) %}
 		<table class="table table-bordered table-hover" id="permisos_lista">
 		    <thead>
 		        <tr>
@@ -51,6 +52,26 @@
 		    {% endfor %}
 		    </tbody>
 		</table>
-		{% endif %}
 	</div>
+	{% endif %}
+	{% if (not(listado_beneficiarios is empty)) %}
+	<div role="tabpanel" class="tab-pane fade" id="listadoparticipantes" aria-labelledby="listadoparticipantes-tab">
+		<table class="table table-bordered table-hover" id="listado_participantes_lista">
+		    <thead>
+		        <tr>
+		            <th>Nombre Completo</th>
+								<th>Número de Identificación</th>
+		         </tr>
+		    </thead>
+		    <tbody>
+		    {% for beneficiario in listado_beneficiarios %}
+		        <tr>
+		            <td>{{ beneficiario.nombreCompleto }}</td>
+								<td>{{ beneficiario.numDocumento }}</td>
+		        </tr>
+		    {% endfor %}
+		    </tbody>
+		</table>
+	</div>
+	{% endif %}
 </div>

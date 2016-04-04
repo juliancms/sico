@@ -60,6 +60,7 @@ class BcPermisoController extends ControllerBase
     	$texto_aprobar = "";
 			$id_sede_contrato = $permiso[0]->id_sede_contrato;
 			$permisos = BcPermiso::find(array("id_permiso <> $id_permiso AND id_sede_contrato = $id_sede_contrato", "order" => "fecha ASC"));
+			$listado_beneficiarios = BcPermisoParticipante::find(array("id_permiso = $id_permiso", "order" => "nombreCompleto ASC"));
     	switch ($this->user['id_componente']) {
     		case 3:
     			$oferente = IbcUsuario::findFirstByid_usuario($this->id_usuario);
@@ -107,7 +108,12 @@ class BcPermisoController extends ControllerBase
     	}
     	$this->assets
     	->addCss('css/observaciones.css');
-			$this->view->permisos = $permisos;
+			if(count($listado_beneficiarios) > 0){
+				$this->view->listado_beneficiarios = $listado_beneficiarios;
+			}
+			if(count($permisos) > 0){
+				$this->view->permisos = $permisos;
+			}
     	$this->view->permiso = $permiso[0];
     	$this->view->pick("bc_permiso/permiso_" . $this->elements->getCategoriaEnlace($permiso[0]->categoria));
     	$this->view->texto_aprobar = $texto_aprobar;
@@ -434,7 +440,7 @@ class BcPermisoController extends ControllerBase
     /**
      * Formulario para la creación de un permiso
      */
-    public function nuevoAction($id_categoria, $accion2)
+    public function nuevoAction($id_categoria, $id_sede_contrato, $accion)
     {
     	if($this->user['id_componente'] == 3){
     		$oferente = IbcUsuario::findFirstByid_usuario($this->id_usuario);
@@ -454,20 +460,20 @@ class BcPermisoController extends ControllerBase
     	}
     	$this->view->sedes = $sedes;
     	if($id_categoria == 'incidente'){
-    		if(!$accion2){
+    		if(!$id_sede_contrato){
     			$this->assets
     			->addJs('js/multifilter.min.js');
     			$this->view->titulo = "Nuevo Permiso - Incidente";
     			$this->view->enlace = "incidente";
     			$this->view->pick('bc_permiso/seleccionar_sede');
     		} else {
-    			$sede = BcSedeContrato::findFirstByid_sede_contrato($accion2);
+    			$sede = BcSedeContrato::findFirstByid_sede_contrato($id_sede_contrato);
     			if(!$sede){
     				$this->flash->notice("No se encontró la sede, por favor inténtelo nuevamente o contacte con el administrador");
     				return $this->response->redirect("bc_permiso");
     			}
     			$this->view->sede = $sede;
-    			$this->view->id_sede_contrato = $accion2;
+    			$this->view->id_sede_contrato = $id_sede_contrato;
     			$this->assets
     			->addJs('js/parsley.min.js')
     			->addJs('js/parsley.extend.js')
@@ -480,14 +486,14 @@ class BcPermisoController extends ControllerBase
     		}
 
     	} else if($id_categoria == 'jornada_planeacion'){
-    		if(!$accion2){
+    		if(!$id_sede_contrato){
     			$this->assets
     			->addJs('js/multifilter.min.js');
     			$this->view->titulo = "Nuevo Permiso - Jornada de Planeación";
     			$this->view->enlace = "jornada_planeacion";
     			$this->view->pick('bc_permiso/seleccionar_sede');
     		} else {
-    			$sede = BcSedeContrato::findFirstByid_sede_contrato($accion2);
+    			$sede = BcSedeContrato::findFirstByid_sede_contrato($id_sede_contrato);
     			if(!$sede){
     				$this->flash->notice("No se encontró la sede, por favor inténtelo nuevamente o contacte con el administrador");
     				return $this->response->redirect("bc_permiso");
@@ -499,7 +505,7 @@ class BcPermisoController extends ControllerBase
     			}
     			$this->view->permisos_anuales = 12 * $limite_permisos;
     			$this->view->sede = $sede;
-    			$this->view->id_sede_contrato = $accion2;
+    			$this->view->id_sede_contrato = $id_sede_contrato;
     			$this->assets
     			->addJs('js/parsley.min.js')
     			->addJs('js/parsley.extend.js')
@@ -518,18 +524,18 @@ class BcPermisoController extends ControllerBase
     	} else if($id_categoria == "salida_pedagogica" || $id_categoria == "movilizacion_social" || $id_categoria == "salida_ludoteka"){
     		$this->view->titulo = $this->elements->getCategoriaPermiso($id_categoria)['titulo'];
     		$this->view->enlace = $this->elements->getCategoriaPermiso($id_categoria)['enlace'];
-    		if(!$accion2){
+    		if(!$id_sede_contrato){
     			$this->assets
     			->addJs('js/multifilter.min.js');
     			$this->view->pick('bc_permiso/seleccionar_sede');
     		} else {
-    			$sede = BcSedeContrato::findFirstByid_sede_contrato($accion2);
+    			$sede = BcSedeContrato::findFirstByid_sede_contrato($id_sede_contrato);
     			if(!$sede){
     				$this->flash->notice("No se encontró la sede, por favor inténtelo nuevamente o contacte con el administrador");
     				return $this->response->redirect("bc_permiso");
     			}
     			$this->view->sede = $sede;
-    			$this->view->id_sede_contrato = $accion2;
+    			$this->view->id_sede_contrato = $id_sede_contrato;
     			$this->view->id_categoria = $this->elements->getCategoriaPermiso($id_categoria)['id'];
     			$this->view->categoria = $id_categoria;
     			$this->assets
@@ -542,10 +548,11 @@ class BcPermisoController extends ControllerBase
     			->addJs('js/jquery.datepair.min.js')
     			->addCss('css/jquery.timepicker.css')
     			->addCss('css/bootstrap-datepicker.min.css')
+					->addCss('css/tooltipster.css')
     			->addJs('js/bootstrap-filestyle.min.js')
+					->addJs('js/jquery.tooltipster.min.js')
     			->addJs('js/permiso_general.js');
     			$this->view->pick('bc_permiso/nuevo_general');
-
     		}
     	}
     }
@@ -734,7 +741,7 @@ class BcPermisoController extends ControllerBase
 	    						"params" => array($this->elements->getCategoriaNombre($id_categoria), $id_sede_contrato)
 	    				)
 	    		);
-	    		return; break;
+	    		return;
     		}
     		$i = 0;
     		foreach($fechas as $row){
@@ -769,7 +776,6 @@ class BcPermisoController extends ControllerBase
     	}
     	$bc_permiso_general = new BcPermisoGeneral();
     	$bc_permiso_general->id_permiso = $bc_permiso->id_permiso;
-    	$bc_permiso_general->listadoNinios = $this->request->getPost("listadoNinios");
     	$bc_permiso_general->actores = $this->request->getPost("actores");
     	$bc_permiso_general->direccionEvento = $this->request->getPost("direccionEvento");
     	$bc_permiso_general->personaContactoEvento = $this->request->getPost("personaContactoEvento");
@@ -782,6 +788,22 @@ class BcPermisoController extends ControllerBase
     		}
     		$bc_permiso->delete();
     		return $this->response->redirect("bc_permiso/nuevo");
+    	}
+			$elementos = array(
+    			'numDocumento' => $this->request->getPost("numDocumento"),
+    			'nombreCompleto' => $this->request->getPost("nombreCompleto"),
+					'id_permiso' => $bc_permiso->id_permiso
+	    );
+    	$db = $this->getDI()->getDb();
+    	$sql = $this->conversiones->multipleinsert("bc_permiso_participante", $elementos);
+    	$query = $db->query($sql);
+			if (!$query) {
+    		foreach ($query->getMessages() as $message) {
+    			$this->flash->error($message);
+    		}
+				$bc_permiso->delete();
+				$bc_permiso_general->delete();
+    		return $this->response->redirect("bc_permiso/revision");
     	}
     	if($this->request->getPost("requiereTransporte") == 1){
     		$bc_permiso_general_transporte = new BcPermisoGeneralTransporte();
