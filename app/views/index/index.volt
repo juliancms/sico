@@ -4,12 +4,16 @@
 	  <!-- Botones inferiores -->
 	  <ol class="carousel-indicators">
 	    <li data-target="#carousel-inicio" data-slide-to="0" class="active"></li>
+			<li data-target="#carousel-inicio" data-slide-to="1"></li>
 	  </ol>
 	  <!-- Contenido de los slides -->
 	  <div class="carousel-inner" role="listbox">
 	    <div class="item active">
-	      {{ image("img/index/01.jpg", "alt": "Interventoría Buen Comienzo") }}
+	      {{ image("img/index/02.jpg", "alt": "Cronograma Información Financiera") }}
 	    </div>
+			<div class="item">
+  	    {{ image("img/index/01.jpg", "alt": "Interventoría Buen Comienzo") }}
+  	  </div>
 	  </div>
 	  <!-- Controles -->
 	  <a class="left carousel-control" href="#carousel-inicio" role="button" data-slide="prev">
