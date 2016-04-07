@@ -1,10 +1,10 @@
 <?php
- 
+
 use Phalcon\Mvc\Model\Criteria;
 use Phalcon\Paginator\Adapter\Model as Paginator;
 
 class CobVerificacionController extends ControllerBase
-{    
+{
 	public $user;
     public function initialize()
     {
@@ -38,7 +38,7 @@ class CobVerificacionController extends ControllerBase
     	$this->view->modalidades = $modalidades;
     	$this->view->cargas = BcCarga::find(['order' => 'fecha DESC']);
     }
-    
+
     /**
      * Ver
      *
@@ -51,7 +51,12 @@ class CobVerificacionController extends ControllerBase
     		$this->flash->error("La verificacion no fue encontrada");
     		return $this->response->redirect("cob_periodo/");
     	}
-    	if($cob_verificacion->tipo == 3) {
+      if($cob_verificacion->tipo == 4) {
+    		$actas = CobActath::find(array(
+    				"id_verificacion = $id_verificacion"
+    		));
+    	}
+    	else if($cob_verificacion->tipo == 3) {
     		$actas = CobActaverificaciontelefonica::find(array(
     				"id_verificacion = $id_verificacion"
     		));
@@ -100,7 +105,7 @@ class CobVerificacionController extends ControllerBase
             $this->tag->setDefault("fecha", $this->conversiones->fecha(2, $cob_verificacion->fecha));
         }
     }
-    
+
     /**
      * Creación de una nueva cob_verificacion
      */
@@ -137,17 +142,17 @@ class CobVerificacionController extends ControllerBase
     		if($actas){
     			$this->flash->success("La verificación fue creada exitosamente.");
     		}
-    		
+
     	} else if ($tipo == 3){
     		$actas = CobActaverificaciontelefonica::cargarBeneficiarios($carga, $modalidades, $cob_verificacion->id_verificacion);
     		if($actas){
     			$this->flash->success("La verificación fue creada exitosamente.");
     		}
-    		
+
     	}
     	return $this->response->redirect("cob_verificacion/");
-    }   
- 
+    }
+
     /**
      * Guarda el cob_verificacion editado
      *
@@ -169,7 +174,7 @@ class CobVerificacionController extends ControllerBase
 
         $cob_verificacion->fecha = $this->conversiones->fecha(1, $this->request->getPost("fecha"));
         $cob_verificacion->nombre = $this->request->getPost("nombre");
-        
+
 
         if (!$cob_verificacion->save()) {
 
@@ -207,7 +212,7 @@ class CobVerificacionController extends ControllerBase
         $this->flash->success("La verificacion fue eliminada correctamente");
         return $this->response->redirect("cob_verificacion/");
     }
-    
+
     /**
      * Recorrido
      *
@@ -248,14 +253,14 @@ class CobVerificacionController extends ControllerBase
     	$this->view->actas = $actas;
     	$this->view->interventores = IbcUsuario::find(['id_usuario_cargo = 3', 'order' => 'usuario asc']);
     }
-    
+
     /**
      * Guarda el cob_periodo editado
      *
      */
     public function ruteoguardarAction($id_verificacion)
     {
-    
+
     	if (!$this->request->isPost()) {
     		return $this->response->redirect("/");
     	}
@@ -333,14 +338,14 @@ class CobVerificacionController extends ControllerBase
     	$this->flash->success("El ruteo fue actualizado exitosamente");
     	return $this->response->redirect("cob_verificacion/rutear/$id_verificacion");
     }
-    
+
     /**
      * Rutea desde otro recorrido
      *
      */
     public function ruteodesdeotroguardarAction($id_verificacion)
     {
-    
+
     	if (!$this->request->isPost()) {
     		return $this->response->redirect("cob_verificacion/rutear/$id_verificacion");
     	}
@@ -359,8 +364,8 @@ class CobVerificacionController extends ControllerBase
     		));
     		$tabla_acta = "cob_actaconteo";
     	}
-    
-    
+
+
     	if (!$cob_periodo) {
     		$this->flash->error("El periodo no fue encontrado");
     		return $this->response->redirect("cob_periodo/");
@@ -379,7 +384,7 @@ class CobVerificacionController extends ControllerBase
     	$this->flash->success("El ruteo fue actualizado exitosamente");
     	return $this->response->redirect("cob_verificacion/rutear/$id_verificacion");
     }
-    
+
     /**
      * Recorrido
      *
@@ -397,7 +402,7 @@ class CobVerificacionController extends ControllerBase
     		$actas = CobActaverificaciontelefonica::find(array(
     				"id_verificacion = $id_verificacion"
     		));
-    		
+
     	} else if($cob_verificacion->tipo == 2){
     		$actas = CobActaverificacioncomputo::find(array(
     				"id_verificacion = $id_verificacion"

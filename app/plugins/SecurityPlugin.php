@@ -140,7 +140,7 @@ class SecurityPlugin extends Plugin
     		),
     		'actualizardatos' => array(
     				'nivelPermiso' => '4'
-    		)	
+    		)
     	),
     	'errores' => array(
     		'error401' => array(
@@ -151,7 +151,7 @@ class SecurityPlugin extends Plugin
     		),
     		'error500' => array(
     				'nivelPermiso' => '-2'
-    		)	
+    		)
     	),
     	'cob_actaconteo' => array(
     		'index' => array(
@@ -199,7 +199,7 @@ class SecurityPlugin extends Plugin
     		'totalcertificar' => array(
     				'nivelPermiso' => '1'
     		)
-    			
+
     	),'cob_actamuestreo' => array(
     		'index' => array(
     				'nivelPermiso' => '3'
@@ -213,7 +213,7 @@ class SecurityPlugin extends Plugin
     		'beneficiarios' => array(
     				'nivelPermiso' => '3'
     		)
-    			
+
     	),
     	'session' => array(
     		'start' => array(
@@ -386,6 +386,23 @@ class SecurityPlugin extends Plugin
     				'nivelPermiso' => '3'
     		)
     	),
+      'cob_actath' => array(
+    		'ver' => array(
+    				'nivelPermiso' => '3'
+    		),
+    		'datos' => array(
+    				'nivelPermiso' => '3'
+    		),
+    		'guardardatos' => array(
+    				'nivelPermiso' => '3'
+    		),
+    		'beneficiarios' => array(
+    				'nivelPermiso' => '3'
+    		),
+    		'guardarbeneficiarios' => array(
+    				'nivelPermiso' => '3'
+    		)
+    	),
     	'bc_permiso' => array(
     		'index' => array(
     				'nivelPermiso' => '4'
@@ -423,7 +440,7 @@ class SecurityPlugin extends Plugin
     				'nivelPermiso' => '2'
     		)
     	),
-    	
+
     );
 
     /**

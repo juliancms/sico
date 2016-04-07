@@ -60,6 +60,24 @@ class Elements extends Component
 			)
 	);
 
+	private $_actathMenu = array(
+			'acta' => array(
+					'caption' => 'Acta',
+					'action' => 'ver',
+					'icon' => 'glyphicon-list-alt'
+			),
+			'datos' => array(
+					'caption' => 'Datos',
+					'action' => 'datos',
+					'icon' => 'glyphicon-file'
+			),
+			'talentohumano' => array(
+					'caption' => 'Talento Humano',
+					'action' => 'talentohumano',
+					'icon' => 'glyphicon-saved'
+			)
+	);
+
 	private $_actacomputoMenu = array(
 			'acta' => array(
 					'caption' => 'Acta',
@@ -551,6 +569,57 @@ class Elements extends Component
     	}
     	echo "</div><div class='clear'></clear>";
     	}
+
+			/**
+	     * Construye el menú superior de las actas
+	     *
+	     * @return string
+	     */
+	    public function getActathmenu($acta)
+	    {
+	    	$user = $this->session->get('auth');
+	    	$actionName = $this->view->getActionName();
+	    	$controllerName = $this->view->getControllerName();
+	    	echo "<div class='no-imprimir'><h1>".ucfirst($actionName)." <small><span style='cursor:pointer;' data-toggle='collapse' data-target='#info_acta'>Acta No. $acta->id_acta <b class='caret'></b></span></small></h1>";
+	    	echo "<div id='info_acta' class='collapse'>";
+	    	echo "<table class='table table-bordered table-hover'>";
+	    	echo "<thead><tr>";
+	    	echo "<th>Prestador</th>";
+	    	echo "<th>Modalidad</th>";
+	    	echo "<th>Sede</th>";
+	    	echo "<th>Dirección</th>";
+	    	echo "<th>Teléfono</th>";
+	    	echo "<th>Interventor</th>";
+	    	echo "</tr></thead><tbody><tr>";
+	    	echo "<td>".$acta->oferente_nombre."</td>";
+	    	echo "<td>".$acta->modalidad_nombre."</td>";
+	    	echo "<td>".$acta->sede_nombre."</td>";
+	    	echo "<td>".$acta->sede_direccion."</td>";
+	    	echo "<td>".$acta->sede_telefono."</td>";
+	    	echo "<td>".$acta->id_usuario."</td>";
+	    	echo "</tr></tbody></table>";
+	    	echo "</div>";
+	    	echo "<a href='/sico/cob_verificacion/ver/$acta->id_verificacion' class='btn btn-primary regresar'><i class='glyphicon glyphicon-chevron-left'></i> Regresar</a>";
+	    	foreach ($this->_actathMenu as $menu) {
+	    		$action = $menu['action'];
+	    		$caption = $menu['caption'];
+	    		$icon = $menu['icon'];
+	    		if($actionName == $menu['action']){
+			    	echo "<a class='btn btn-primary menu-tab disabled'><i class='glyphicon $icon'></i> $caption</a>";
+			    } else {
+			    	echo "<a href='/sico/$controllerName/$action/$acta->id_acta' class='btn btn-primary menu-tab'><i class='glyphicon $icon'></i> $caption</a>";
+			    }
+	    	}
+	    	$uri = str_replace($this->url->getBaseUri(), '', str_replace($_SERVER["SCRIPT_NAME"], '', $_SERVER["REQUEST_URI"]));
+	    	//SI el acta pertenece al interventor o auxiliar y no está cerrada
+	    	if($acta->id_usuario != 0 && (($acta->id_usuario == $user['id_usuario'] && $acta->estado < 2) || ($acta->IbcUsuario->id_usuario_lider == $user['id_usuario'] && $acta->estado < 3))){
+	    	echo "<form class='menu-tab' action='/sico/$controllerName/cerrar/$acta->id_acta' method='post'><input type='hidden' name='uri' value='$uri'><input type='submit' class='btn btn-danger' value='Cerrar Acta'></form>";
+	    	}
+	    	if($acta->estado == 2 && $acta->IbcUsuario->id_usuario_lider == $user['id_usuario']){
+	    	echo "<form class='menu-tab' action='/sico/$controllerName/abrir/$acta->id_acta' method='post'><input type='hidden' name='uri' value='$uri'><input type='submit' class='btn btn-info' value='Abrir Acta'></form>";
+	    	}
+	    	echo "</div><div class='clear'></clear>";
+	    }
 
     public function errorFecha($error, $limite){
     	switch ($error) {
