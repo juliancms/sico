@@ -216,8 +216,7 @@ class CobVerificacionController extends ControllerBase
     /**
      * Recorrido
      *
-     * @param int $id_periodo
-     * @param int $recorrido
+     * @param int $id_verificacion
      */
     public function rutearAction($id_verificacion)
     {
@@ -226,7 +225,11 @@ class CobVerificacionController extends ControllerBase
     		$this->flash->error("La verificación no fue encontrada");
     		return $this->response->redirect("cob_periodo/");
     	}
-    	if($cob_verificacion->tipo == 3) {
+			if($cob_verificacion->tipo == 4) {
+    		$actas = CobActath::find(array(
+    				"id_verificacion = $id_verificacion"
+    	));
+			} else if($cob_verificacion->tipo == 3) {
     		$actas = CobActaverificaciontelefonica::find(array(
     				"id_verificacion = $id_verificacion"
     		));
@@ -269,7 +272,25 @@ class CobVerificacionController extends ControllerBase
     		$this->flash->error("La verificación no fue encontrada");
     		return $this->response->redirect("cob_verificacion/");
     	}
-    	if($cob_verificacion->tipo == 3){
+			if($cob_verificacion->tipo == 4){
+    		$actas = CobActath::find(array(
+    				"id_verificacion = $id_verificacion"
+    		));
+    		$db = $this->getDI()->getDb();
+    		$estado = array();
+    		foreach($this->request->getPost("contador_asignado") as $row){
+    			if($row == "NULL")
+    				$estado[] = 0;
+    			else
+    				$estado[] = 1;
+    		}
+    		$elementos = array(
+    				'id_actath' => $this->request->getPost("id_acta"),
+    				'estado' => $estado,
+    				'id_usuario' => $this->request->getPost("contador_asignado")
+    		);
+    		$sql = $this->conversiones->multipleupdate("cob_actath", $elementos, "id_actath");
+    	} else if($cob_verificacion->tipo == 3){
     		$actas = CobActaverificaciontelefonica::find(array(
     				"id_verificacion = $id_verificacion"
     		));
@@ -287,7 +308,7 @@ class CobVerificacionController extends ControllerBase
     				'id_usuario' => $this->request->getPost("contador_asignado")
     		);
     		$sql = $this->conversiones->multipleupdate("cob_actaverificaciontelefonica", $elementos, "id_actaverificaciontelefonica");
-    	} else if($cob_verificacion->tipo == 2){
+    	} else  if($cob_verificacion->tipo == 2){
     		$actas = CobActaverificacioncomputo::find(array(
     				"id_verificacion = $id_verificacion"
     		));
@@ -398,7 +419,12 @@ class CobVerificacionController extends ControllerBase
     		$this->flash->error("La verificación no fue encontrada");
     		return $this->response->redirect("cob_verificacion/");
     	}
-    	if($cob_verificacion->tipo == 3){
+			if($cob_verificacion->tipo == 4){
+    		$actas = CobActath::find(array(
+    				"id_verificacion = $id_verificacion"
+    		));
+
+    	} else if($cob_verificacion->tipo == 3){
     		$actas = CobActaverificaciontelefonica::find(array(
     				"id_verificacion = $id_verificacion"
     		));
