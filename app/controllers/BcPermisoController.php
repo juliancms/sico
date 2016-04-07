@@ -620,7 +620,7 @@ class BcPermisoController extends ControllerBase
     		$parts = explode('/', $row);
     		$mes = intval($parts[1]);
     		$count_meses = array_count_values($meses);
-    		$sede2 = BcPermiso::find("MONTH(fecha) = $mes AND categoria = 5 AND id_sede_contrato = $id_sede_contrato AND estado != 3");
+    		$sede2 = BcPermiso::find("MONTH(fecha) = $mes AND categoria = 5 AND id_sede_contrato = $id_sede_contrato AND estado < 3");
 
     		//Primero que no sea menor a la fecha actual + 10 días
     		if(strtotime($this->conversiones->fecha(1, $row)) < strtotime('+9 days')){
