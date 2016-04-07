@@ -135,7 +135,7 @@ class CobActath extends \Phalcon\Mvc\Model
     	</div>
     	<div class='fila col3e'>
     	<div>RUTA: <span style='font-weight: normal;'>".$acta->IbcUsuario->usuario."</span></div>
-    	<div class='col2da'>PRESTADOR: <span style='font-weight: normal;'>".substr($acta->oferente_nombre, 0, 35)."</span></div>
+    	<div class='col2da'>PRESTADOR: <span style='font-weight: normal;'>".substr($acta->oferente_nombre, 0, 34)."</span></div>
     	<div>SEDE: <span style='font-weight: normal;'>$acta->sede_nombre</span></div>
     	</div>
     	<div class='fila col3e'>
@@ -207,20 +207,34 @@ class CobActath extends \Phalcon\Mvc\Model
       			$j = 1;
       					$p++;
       					$html .= "<div class='clear'></div></div>VL: Vinculación laboral - Salario<br>PS: Prestación de servicios - Honorarios" . $pie_pagina;
-      						$html .= "<div class='paginacion'>PÁGINA $p</div>";
-  				$html .= $encabezado;
-      						$html .= $encabezado_talentohumano;
-      					}
+      					$html .= "<div class='paginacion'>PÁGINA $p</div>";
+  				      $html .= $encabezado;
+      					$html .= $encabezado_talentohumano;
+      			}
       					$html .="<div class='fila colb2'><div style='width: 20px;'>$i</div><div style='width: 60px;'><p><span class='label label-default'>SÍ</span><span class='label label-default'>NO</span><span class='label label-default'>N/A</span></p>$row->numDocumento</div><div style='width: 60px'><p><span class='label label-default'>SÍ</span><span class='label label-default'>NO</span><span class='label label-default'>N/A</span></p>$nombre_completo</div><div style='width: 70px;'><p><span class='label label-default'>SÍ</span><span class='label label-default'>NO</span><span class='label label-default'>N/A</span></p>$row->formacionAcademica</div><div style='width: 46px; padding-left: 0 !important; padding-right: 0 !important'><p><span class='label label-default'>SÍ</span><span class='label label-default'>NO</span><span class='label label-default'>N/A</span></p>$row->cargo</div><div style='width: 46px; padding-left: 0 !important; padding-right: 0 !important'><p><span class='label label-default'>SÍ</span><span class='label label-default'>NO</span><span class='label label-default'>N/A</span></p>$row->tipoContrato</div><div style='width: 46px; padding-left: 0 !important; padding-right: 0 !important;'><p><span class='label label-default'>SÍ</span><span class='label label-default'>NO</span><span class='label label-default'>N/A</span></p>$ ".number_format ($row->baseSalario, 0, ',', '.')."</div><div style='width: 46px; padding-left: 0 !important; padding-right: 0 !important'><p><span class='label label-default'>SÍ</span><span class='label label-default'>NO</span><span class='label label-default'>N/A</span></p>".$row->porcentajeDedicacion * 100 ." %</div><div style='width: 46px; padding-left: 0 !important; padding-right: 0 !important'><p><span class='label label-default'>SÍ</span><span class='label label-default'>NO</span><span class='label label-default'>N/A</span></p>".$this->conversiones->fecha(2, $row->fechaIngreso)."</div><div style='width: 40px'></div><div style='width: 30px'></div><div style='width: 100px'></div><div style='width: 60px'></div></div>";
       					$i++;
       					$j++;
       			}
       			$p++;
-      			$html .= "<div class='clear'></div></div>" . $pie_pagina;
-      			$html .= "<div class='paginacion'>PÁGINA $p</div>";
-      			$html .= "<div class='clear'></div>"; // </acta>
-    	$datos_acta['html'] = $html;
-        return $datos_acta;
+      			$html .= "<div class='clear'></div></div>VL: Vinculación laboral - Salario<br>PS: Prestación de servicios - Honorarios" . $pie_pagina;
+            $html .= "<div class='paginacion'>PÁGINA $p</div>";
+            $i = 1;
+            $j = 1;
+            $encabezado_talentohumano_adicional = "<div class='seccion'>
+            <div class='fila center bold'><div style='border:none; width: 100%'>4. LISTADO DE TALENTO HUMANO ADICIONAL AL REPORTADO EN EL SIST. DE INFORMACIÓN DELFI</div></div>
+            <div class='fila colb2 encabezadodoc'><div style='width: 20px;'>#</div><div style='width: 60px;'>4.1 DOCUMENTO</div><div style='width: 60px'>4.2 NOMBRE COMPLETO</div><div style='width: 70px'>4.3 FORMACIÓN ACADÉMICA</div><div style='width: 46px'>4.4 CARGO</div><div style='width: 46px'>4.5 TIPO CONTR.</div><div style='width: 46px'>4.6 BASE SALARIO</div><div style='width: 46px'>4.7  PCT DEDIC.</div><div style='width: 46px;'>4.8  FECHA INGRESO</div><div style='width: 40px;'>4.9 FECHA RETIRO</div><div style='width: 30px;'>4.10 ASISTE</div><div style='width: 100px'>4.11 OBSERVACIONES</div><div style='width: 60px'>4.12 FIRMA</div></div>";
+            $html .= $encabezado;
+            $html .= $encabezado_talentohumano_adicional;
+            $i = ($i<10) ? "0" .$i : $i;
+            for($i = 1; $i <= 6; $i++){
+  					$html .="<div class='fila colb2'><div style='width: 20px;'>$i</div><div style='width: 60px;'><p><span class='label label-default'>SÍ</span><span class='label label-default'>NO</span><span class='label label-default'>N/A</span></p></div><div style='width: 60px'><p><span class='label label-default'>SÍ</span><span class='label label-default'>NO</span><span class='label label-default'>N/A</span></p></div><div style='width: 70px;'><p><span class='label label-default'>SÍ</span><span class='label label-default'>NO</span><span class='label label-default'>N/A</span></p></div><div style='width: 46px; padding-left: 0 !important; padding-right: 0 !important'><p><span class='label label-default'>SÍ</span><span class='label label-default'>NO</span><span class='label label-default'>N/A</span></p></div><div style='width: 46px; padding-left: 0 !important; padding-right: 0 !important'><p><span class='label label-default'>SÍ</span><span class='label label-default'>NO</span><span class='label label-default'>N/A</span></p></div><div style='width: 46px; padding-left: 0 !important; padding-right: 0 !important;'><p><span class='label label-default'>SÍ</span><span class='label label-default'>NO</span><span class='label label-default'>N/A</span></p></div><div style='width: 46px; padding-left: 0 !important; padding-right: 0 !important'><p><span class='label label-default'>SÍ</span><span class='label label-default'>NO</span><span class='label label-default'>N/A</span></p></div><div style='width: 46px; padding-left: 0 !important; padding-right: 0 !important'><p><span class='label label-default'>SÍ</span><span class='label label-default'>NO</span><span class='label label-default'>N/A</span></p></div><div style='width: 40px'></div><div style='width: 30px'></div><div style='width: 100px'></div><div style='width: 60px'></div></div>";
+            }
+            $p++;
+          	$html .= "<div class='clear'></div></div>" . $pie_pagina;
+            $html .= "<div class='paginacion'>PÁGINA $p</div>";
+          	$html .= "<div class='clear'></div>"; // </acta>
+        	  $datos_acta['html'] = $html;
+            return $datos_acta;
     }
 
     public function cargarBeneficiarios($carga, $modalidades, $id_verificacion)

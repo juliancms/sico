@@ -388,7 +388,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     		</div>
     		<div class='fila col3e'>
     			<div>RUTA: <span style='font-weight: normal;'>".$acta->IbcUsuario->usuario."</span></div>
-    			<div class='col2da'>PRESTADOR: <span style='font-weight: normal;'>".substr($acta->oferente_nombre, 0, 35)."</span></div>
+    			<div class='col2da'>PRESTADOR: <span style='font-weight: normal;'>".substr($acta->oferente_nombre, 0, 34)."</span></div>
     			<div>SEDE: <span style='font-weight: normal;'>$acta->sede_nombre</span></div>
     		</div>
     		<div class='fila col3e'>
