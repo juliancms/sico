@@ -396,7 +396,7 @@ class SecurityPlugin extends Plugin
     		'guardardatos' => array(
     				'nivelPermiso' => '3'
     		),
-    		'beneficiarios' => array(
+    		'talentohumano' => array(
     				'nivelPermiso' => '3'
     		),
     		'guardarbeneficiarios' => array(

@@ -103,7 +103,7 @@ class CobActathPersona extends \Phalcon\Mvc\Model
      *
      * @var string
      */
-    public $fechaIngreso; 
+    public $fechaIngreso;
 
     /**
      *
@@ -176,4 +176,41 @@ class CobActathPersona extends \Phalcon\Mvc\Model
      * @var integer
      */
     public $fechaingresoCoincide;
+
+    /**
+     * Returns a human representation of 'estado'
+     *
+     * @return string
+     */
+    public function getsinonareDetail($value)
+    {
+    	switch ($value) {
+    		case 2:
+    			return " class='danger'";
+    			break;
+    		case 3:
+    			return " class='warning'";
+    			break;
+    		case 4:
+    			return " class='warning'";
+    			break;
+    		default:
+    			return "";
+    			break;
+    	}
+    }
+    /**
+     * Returns a human representation of 'fechaRetiro'
+     *
+     * @return string
+     */
+    public function getFechaRetiro()
+    {
+      $conversiones = $this->getDI()->getConversiones();
+    	if(!($this->fechaRetiro) || $this->fechaRetiro == "0000-00-00"){
+        return FALSE;
+      } else {
+        return $conversiones->fecha(2, $this->fechaRetiro);
+      }
+    }
 }

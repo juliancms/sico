@@ -16,6 +16,7 @@ $("#btn_jornadas").click (
 );
 var options1 = { clearFiltersControls: [$('#cleanfilters')] };
 $('#permisos_lista').tableFilter(options1);
+$('#cleanfilters').click();
 $(".buscar-permiso-btn").click (
 		function(){
 			var url = window.location.protocol + "//" + window.location.host + "/sico/" + "bc_permiso/permiso/" + $(".buscar-permiso-input").val();
