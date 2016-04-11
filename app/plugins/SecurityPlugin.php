@@ -399,6 +399,9 @@ class SecurityPlugin extends Plugin
     		'talentohumano' => array(
     				'nivelPermiso' => '3'
     		),
+        'adicionales' => array(
+    				'nivelPermiso' => '3'
+    		),
     		'guardarbeneficiarios' => array(
     				'nivelPermiso' => '3'
     		)

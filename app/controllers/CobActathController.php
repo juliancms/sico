@@ -37,7 +37,7 @@ class CobActathController extends ControllerBase
     /**
      * Datos
      *
-     * @param int $id_actaconteo
+     * @param int $id_actath
      */
     public function datosAction($id_actath)
     {
@@ -115,7 +115,6 @@ class CobActathController extends ControllerBase
     		return $this->response->redirect("cob_actath/");
     	}
     	$this->guardarActaCerrada($acta, $this->user['nivel']);
-    	$persona = new CobActathPersona();
 			$fechaRetiro = $this->conversiones->array_fechas(1, $this->request->getPost("fechaRetiro"));
     	$elementos = array(
     			'id_actath_persona' => $this->request->getPost("id_actath_persona"),
@@ -148,21 +147,20 @@ class CobActathController extends ControllerBase
     /**
      * talentohumano
      *
-     * @param int $id_actaconteo
+     * @param int $id_actath
      */
     public function talentohumanoAction($id_actath) {
     	if (!$this->request->isPost()) {
     		$acta = CobActath::findFirstByid_actath($id_actath);
     		if (!$acta) {
     			$this->flash->error("El acta no fue encontrada");
-    			return $this->response->redirect("cob_periodo/");
+    			return $this->response->redirect("cob_verificacion/");
     		}
     		$this->assets
     		->addJs('js/parsley.min.js')
     		->addJs('js/parsley.extend.js')
     		->addJs('js/talentohumano.js');
     		$this->view->nombre = array();
-    		$this->view->acta = $acta;
     		$this->view->talentohumano = $acta->getCobActathPersona(['order' => 'id_sede asc']);
     		$acta->id_acta = $id_actath;
     		$this->view->acta = $acta;
@@ -172,10 +170,104 @@ class CobActathController extends ControllerBase
     	}
     }
 
+		/**
+     * Adicionales
+     *
+     * @param int $id_actath
+     */
+    public function adicionalesAction($id_actath) {
+    	if (!$this->request->isPost()) {
+    		$acta = CobActath::findFirstByid_actath($id_actath);
+    		if (!$acta) {
+    			$this->flash->error("El acta no fue encontrada");
+    			return $this->response->redirect("cob_verificacion/");
+    		}
+    		$this->assets
+    		->addJs('js/bootstrap-filestyle.min.js')
+    		->addJs('js/parsley.min.js')
+    		->addJs('js/parsley.extend.js')
+    		->addJs('js/jquery.autoNumeric.js')
+    		->addJs('js/talentohumano-adicionales.js');
+    		$empleados = $acta->getCobActathPersona(['tipoPersona = 0', 'order' => 'id_sede asc']);
+    		$array_empleados = array();
+    		foreach($empleados as $row){
+    			$array_empleados[] = $row->numDocumento;
+    		}
+				$acta->id_acta = $id_actath;
+    		$this->view->adicionales = $acta->getCobActathPersona(['tipoPersona = 1', 'order' => 'id_sede asc']);
+    		$this->view->listado_empleados = implode(",", $array_empleados);
+    		$this->view->id_actath = $id_actath;
+    		$this->view->asistencia = $this->elements->getSelect("asistencia");
+				$this->view->cargo = $this->elements->getSelect("cargoth");
+				$this->view->tipoContrato = $this->elements->getSelect("tipoContrato");
+    		$this->view->acta = $acta;
+    		$this->actaCerrada($acta, $this->user['nivel']);
+    	}
+    }
+
+		/**
+     * Guardar Adicionales
+     *
+     */
+    public function guardaradicionalesAction($id_actath)
+    {
+    	if (!$this->request->isPost()) {
+    		return $this->response->redirect("cob_verificacion/");
+    	}
+    	$db = $this->getDI()->getDb();
+    	$acta = CobActath::findFirstByid_actath($id_actath);
+    	if (!$acta) {
+    		$this->flash->error("El acta $id_actath no existe");
+    		return $this->response->redirect("cob_verificacion/");
+    	}
+    	$this->guardarActaCerrada($acta, $this->user['nivel']);
+    	$eliminar_adicionales = $this->request->getPost("eliminar_adicionales");
+    	if($eliminar_adicionales){
+	    	$sql = $this->conversiones->multipledelete("cob_actath_persona", "id_actath_persona", $eliminar_adicionales);
+	    	$query = $db->query($sql);
+    	}
+    	if($this->request->getPost("num_documento")){
+				$fechaIngreso = $this->conversiones->array_fechas(1, $this->request->getPost("fechaIngreso"));
+				$fechaRetiro = $this->conversiones->array_fechas(1, $this->request->getPost("fechaRetiro"));
+				$porcentajeDedicacion = $this->conversiones->array_porcentaje($this->request->getPost("porcentajeDedicacion"));
+    		$elementos = array(
+    				'numDocumento' => $this->request->getPost("num_documento"),
+    				'primerNombre' => $this->request->getPost("primerNombre"),
+    				'segundoNombre' => $this->request->getPost("segundoNombre"),
+    				'primerApellido' => $this->request->getPost("primerApellido"),
+    				'segundoApellido' => $this->request->getPost("segundoApellido"),
+    				'formacionAcademica' => $this->request->getPost("formacionAcademica"),
+						'cargo' => $this->request->getPost("cargo"),
+						'tipoContrato' => $this->request->getPost("tipoContrato"),
+						'baseSalario' => $this->request->getPost("baseSalario"),
+						'porcentajeDedicacion' => $porcentajeDedicacion,
+						'fechaIngreso' => $fechaIngreso,
+						'fechaRetiro' => $fechaRetiro,
+    				'asistencia' => $this->request->getPost("asistencia"),
+    				'tipoPersona' => '1',
+    				'id_actath' => $id_actath,
+    				'id_verificacion' => $acta->id_verificacion,
+						'id_mes' => $acta->id_mes,
+						'id_sede' => $acta->id_sede,
+    				'id_contrato' => $acta->id_contrato
+    		);
+    		$sql = $this->conversiones->multipleinsert("cob_actath_persona", $elementos);
+    		$query = $db->query($sql);
+    		if (!$query) {
+    			foreach ($query->getMessages() as $message) {
+    				$this->flash->error($message);
+    			}
+    			return $this->response->redirect("cob_actath/adicionales/$id_actath");
+    		}
+    	}
+    	$this->flash->success("Los adicionales fueron actualizados exitosamente");
+    	return $this->response->redirect("cob_actath/adicionales/$id_actath");
+    }
+
     /**
      * Cierra un acta
      *
-     * @param int $id_actaconteo
+     * @param int $id_actath
      */
     public function cerrarAction($id_actath)
     {
@@ -224,7 +316,7 @@ class CobActathController extends ControllerBase
     /**
      * Abre un acta
      *
-     * @param int $id_actaconteo
+     * @param int $id_actath
      */
     public function abrirAction($id_actath)
     {
@@ -275,14 +367,14 @@ class CobActathController extends ControllerBase
     private function guardarActaCerrada($acta, $nivel){
     	if($acta->estado > 3){
     		$this->flash->error("<i class='glyphicon glyphicon-exclamation-sign'></i> El acta no puede ser guardada porque ya ha sido consolidada, si necesita modificar una asistencia realice un ajuste.");
-    		return $this->response->redirect("cob_actaconteo/datos/$acta->id_actaconteo");
+    		return $this->response->redirect("cob_actath/datos/$acta->id_actath");
     	} else if($acta->estado > 2){
     		$this->flash->error("<i class='glyphicon glyphicon-exclamation-sign'></i> El acta se encuentra en estado <b>Cerrada por Auxiliar</b>, si realizar un cambio contacte con su coordinador.");
-    		return $this->response->redirect("cob_actaconteo/datos/$acta->id_actaconteo");
+    		return $this->response->redirect("cob_actath/datos/$acta->id_actath");
     	} else if($acta->estado > 1){
     		if($nivel == 3){
     			$this->flash->error("<i class='glyphicon glyphicon-exclamation-sign'></i> El acta se encuentra en estado <b>Cerrada por Interventor</b>, si realizar un cambio contacte con su coordinador.");
-    			return $this->response->redirect("cob_actaconteo/datos/$acta->id_actaconteo");
+    			return $this->response->redirect("cob_actath/datos/$acta->id_actath");
     		}
     		return FALSE;
     	} else {

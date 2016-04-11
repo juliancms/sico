@@ -75,6 +75,16 @@ class Elements extends Component
 					'caption' => 'Talento Humano',
 					'action' => 'talentohumano',
 					'icon' => 'glyphicon-saved'
+			),
+			'adicionales' => array(
+					'caption' => 'Adicionales Nuevos',
+					'action' => 'adicionales',
+					'icon' => 'glyphicon-open'
+			),
+			'adicionales_listado' => array(
+					'caption' => 'Adicionales Listado',
+					'action' => 'adicionales_listado',
+					'icon' => 'glyphicon-open'
 			)
 	);
 
@@ -696,6 +706,29 @@ class Elements extends Component
     			break;
     		case "ciclovital":
     			return array("1" => "G", "2" => "L", "4" => "N", "5" => "NM", "6" => "NG", "0" => "N/A");
+    			break;
+				case "cargoth":
+	    		return array (
+	    		'COORDINADOR PEDAGÓGICO' => 'COORDINADOR PEDAGÓGICO',
+					'AGENTE EDUCATIVO PSICOSOCIAL' => 'AGENTE EDUCATIVO PSICOSOCIAL',
+					'AGENTE EDUCATIVO NUTRICIONISTA' => 'AGENTE EDUCATIVO NUTRICIONISTA',
+					'AGENTE EDUCATIVO DOCENTE-LICENCIADO' => 'AGENTE EDUCATIVO DOCENTE-LICENCIADO',
+					'AGENTE EDUCATIVO DOCENTE-NORMALISTA' => 'AGENTE EDUCATIVO DOCENTE-NORMALISTA',
+					'AUXILIAR EDUCATIVO' => 'AUXILIAR EDUCATIVO',
+					'PERSONAL SERVICIOS GENERALES' => 'PERSONAL SERVICIOS GENERALES',
+	    		'AUXILIAR DE NUTRICIÓN' => 'AUXILIAR DE NUTRICIÓN',
+					'AUXILIAR ADMINISTRATIVO' => 'AUXILIAR ADMINISTRATIVO',
+					'INGENIERO DE ALIMENTOS' => 'INGENIERO DE ALIMENTOS',
+					'PROFESIONAL EN CIENCIA Y TECNOLOGÍA DE LOS ALIMENTOS' => 'PROFESIONAL EN CIENCIA Y TECNOLOGÍA DE LOS ALIMENTOS',
+					'PRACTICANTE DE NUTRICIÓN Y DIETÉTICA' => 'PRACTICANTE DE NUTRICIÓN Y DIETÉTICA',
+					'AUXILIAR DE ENFERMERÍA' => 'AUXILIAR DE ENFERMERÍA',
+					'ENFERMERO PROFESIONAL' => 'ENFERMERO PROFESIONAL'
+					);
+	    		break;
+				case "tipoContrato":
+    			return array (
+    			'VL' => 'VL',
+    			'2' => 'PS');
     			break;
     		default:
     			return array();

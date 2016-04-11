@@ -114,6 +114,20 @@ class Conversiones extends Component
 		return $nuevas_fechas;
 	}
 
+	/**
+	 * array_fechas
+	 *
+	 * @return string
+	 * @author Julián Camilo Marín Sánchez
+	 */
+	public function array_porcentaje($porcentaje) {
+		$nuevas_porcentaje = array();
+		foreach($porcentaje as $row){
+			$nuevo_porcentaje[] = $row / 100;
+		}
+		return $nuevo_porcentaje;
+	}
+
 
 	/**
 	 * multipleupdate
