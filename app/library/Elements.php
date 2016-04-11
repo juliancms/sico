@@ -377,7 +377,7 @@ class Elements extends Component
     {
     	$user = $this->session->get('auth');
     	$actionName = $this->view->getActionName();
-    	echo "<div class='no-imprimir'><h1>".ucfirst($actionName)." <small><span style='cursor:pointer;' data-toggle='collapse' data-target='#info_acta'>Acta No. $acta->id_actaconteo <b class='caret'></b></span></small></h1>";
+    	echo "<div class='no-imprimir'><h1>".$this->_actathMenu[$actionName]['caption']." <small><span style='cursor:pointer;' data-toggle='collapse' data-target='#info_acta'>Acta No. $acta->id_actaconteo <b class='caret'></b></span></small></h1>";
     	echo "<div id='info_acta' class='collapse'>";
     	echo "<table class='table table-bordered table-hover'>";
     	echo "<thead><tr>";
@@ -433,7 +433,7 @@ class Elements extends Component
     {
     	$user = $this->session->get('auth');
     	$actionName = $this->view->getActionName();
-    	echo "<div class='no-imprimir'><h1>".ucfirst($actionName)." <small><span style='cursor:pointer;' data-toggle='collapse' data-target='#info_acta'>Acta No. $acta->id_actamuestreo <b class='caret'></b></span></small></h1>";
+    	echo "<div class='no-imprimir'><h1>".$this->_actathMenu[$actionName]['caption']." <small><span style='cursor:pointer;' data-toggle='collapse' data-target='#info_acta'>Acta No. $acta->id_actamuestreo <b class='caret'></b></span></small></h1>";
     	echo "<div id='info_acta' class='collapse'>";
     	echo "<table class='table table-bordered table-hover'>";
     	echo "<thead><tr>";
@@ -488,7 +488,7 @@ class Elements extends Component
     	$user = $this->session->get('auth');
     	$actionName = $this->view->getActionName();
     	$controllerName = $this->view->getControllerName();
-    	echo "<div class='no-imprimir'><h1>".ucfirst($actionName)." <small><span style='cursor:pointer;' data-toggle='collapse' data-target='#info_acta'>Acta No. $acta->id_acta <b class='caret'></b></span></small></h1>";
+    	echo "<div class='no-imprimir'><h1>".$this->_actathMenu[$actionName]['caption']." <small><span style='cursor:pointer;' data-toggle='collapse' data-target='#info_acta'>Acta No. $acta->id_acta <b class='caret'></b></span></small></h1>";
     	echo "<div id='info_acta' class='collapse'>";
     	echo "<table class='table table-bordered table-hover'>";
     	echo "<thead><tr>";
@@ -539,7 +539,7 @@ class Elements extends Component
     	$user = $this->session->get('auth');
     	$actionName = $this->view->getActionName();
     	$controllerName = $this->view->getControllerName();
-    	echo "<div class='no-imprimir'><h1>".ucfirst($actionName)." <small><span style='cursor:pointer;' data-toggle='collapse' data-target='#info_acta'>Acta No. $acta->id_acta <b class='caret'></b></span></small></h1>";
+    	echo "<div class='no-imprimir'><h1>".$this->_actathMenu[$actionName]['caption']." <small><span style='cursor:pointer;' data-toggle='collapse' data-target='#info_acta'>Acta No. $acta->id_acta <b class='caret'></b></span></small></h1>";
     	echo "<div id='info_acta' class='collapse'>";
     	echo "<table class='table table-bordered table-hover'>";
     	echo "<thead><tr>";
@@ -590,7 +590,7 @@ class Elements extends Component
 	    	$user = $this->session->get('auth');
 	    	$actionName = $this->view->getActionName();
 	    	$controllerName = $this->view->getControllerName();
-	    	echo "<div class='no-imprimir'><h1>".ucfirst($actionName)." <small><span style='cursor:pointer;' data-toggle='collapse' data-target='#info_acta'>Acta No. $acta->id_acta <b class='caret'></b></span></small></h1>";
+	    	echo "<div class='no-imprimir'><h1>".$this->_actathMenu[$actionName]['caption']." <small><span style='cursor:pointer;' data-toggle='collapse' data-target='#info_acta'>Acta No. $acta->id_acta <b class='caret'></b></span></small></h1>";
 	    	echo "<div id='info_acta' class='collapse'>";
 	    	echo "<table class='table table-bordered table-hover'>";
 	    	echo "<thead><tr>";
