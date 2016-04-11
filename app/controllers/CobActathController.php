@@ -264,6 +264,84 @@ class CobActathController extends ControllerBase
     	return $this->response->redirect("cob_actath/adicionales/$id_actath");
     }
 
+		/**
+     * adicionales_listado
+     *
+     * @param int $id_actath
+     */
+    public function adicionales_listadoAction($id_actath) {
+    	if (!$this->request->isPost()) {
+    		$acta = CobActath::findFirstByid_actath($id_actath);
+    		if (!$acta) {
+    			$this->flash->error("El acta no fue encontrada");
+    			return $this->response->redirect("cob_verificacion/");
+    		}
+    		$this->assets
+    		->addJs('js/parsley.min.js')
+    		->addJs('js/parsley.extend.js')
+    		->addJs('js/talentohumano-adicionaleslistado.js');
+    		$this->view->nombre = array();
+				$this->view->adicionales_listado = CobActathPersona::find("id_actath = $id_actath AND tipoPersona = 2");
+    		$this->view->talentohumano = CobActathPersona::find("id_contrato = $acta->id_contrato AND id_mes = $acta->id_mes AND id_sede <> $acta->id_sede AND tipoPersona = 0");
+    		$acta->id_acta = $id_actath;
+    		$this->view->acta = $acta;
+				$this->view->asistencia = $this->elements->getSelect("asistencia");
+    		$this->view->sinonare = $this->elements->getSelect("sinonare");
+    		$this->actaCerrada($acta, $this->user['nivel']);
+    	}
+    }
+
+		/**
+     * Guardar Talento Humano
+     *
+     */
+    public function guardaradicionales_listadoAction($id_actath)
+    {
+    	if (!$this->request->isPost()) {
+    		return $this->response->redirect("cob_actath/");
+    	}
+    	$db = $this->getDI()->getDb();
+    	$acta = CobActath::findFirstByid_actath($id_actath);
+    	if (!$acta) {
+    		$this->flash->error("El acta $id_actath no existe");
+    		return $this->response->redirect("cob_actath/");
+    	}
+    	$this->guardarActaCerrada($acta, $this->user['nivel']);
+			$fechaRetiro = $this->conversiones->array_fechas(1, $this->request->getPost("fechaRetiro"));
+    	$elementos = array(
+    			'id_actath_persona' => $this->request->getPost("id_actath_persona"),
+    			'cedulaCoincide' => $this->request->getPost("cedulaCoincide"),
+    			'nombreCoincide' => $this->request->getPost("nombreCoincide"),
+    			'formacionacademicaCoincide' => $this->request->getPost("formacionacademicaCoincide"),
+    			'cargoCoincide' => $this->request->getPost("cargoCoincide"),
+    			'tipocontratoCoincide' => $this->request->getPost("tipocontratoCoincide"),
+    			'salarioCoincide' => $this->request->getPost("salarioCoincide"),
+					'dedicacionCoincide' => $this->request->getPost("dedicacionCoincide"),
+					'fechaingresoCoincide' => $this->request->getPost("fechaingresoCoincide"),
+					'fechaRetiro' => $fechaRetiro,
+					'asistencia' => $this->request->getPost("asistencia"),
+					'observacion' => $this->request->getPost("observacion"),
+					'tipoPersona' => 2,
+					'id_actath' => $id_actath,
+					'id_verificacion' => $acta->id_verificacion,
+					'id_mes' => $acta->id_mes,
+					'id_sede' => $acta->id_sede,
+					'id_contrato' => $acta->id_contrato
+    	);
+    	$sql = $this->conversiones->multipleupdate("cob_actath_persona", $elementos, "id_actath_persona");
+    	$query = $db->query($sql);
+    	if (!$query) {
+    		foreach ($query->getMessages() as $message) {
+    			$this->flash->error($message);
+    		}
+    		return $this->response->redirect("cob_actath/adicionales_listado/$id_actath");
+    	}
+    	$acta->estado = 1;
+    	$acta->save();
+    	$this->flash->success("Los Adicionales de Listado fueron actualizados exitosamente");
+    	return $this->response->redirect("cob_actath/adicionales_listado/$id_actath");
+    }
+
     /**
      * Cierra un acta
      *

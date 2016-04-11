@@ -402,6 +402,9 @@ class SecurityPlugin extends Plugin
         'adicionales' => array(
     				'nivelPermiso' => '3'
     		),
+        'adicionales_listado' => array(
+    				'nivelPermiso' => '3'
+    		),
     		'guardarbeneficiarios' => array(
     				'nivelPermiso' => '3'
     		)
