@@ -701,6 +701,21 @@ class BcPermisoController extends ControllerBase
     			}
     			return $this->response->redirect("bc_permiso/nuevo");
     		}
+				$bc_permiso_general = new BcPermisoGeneral();
+				$bc_permiso_general->id_permiso = $bc_permiso->id_permiso;
+				$bc_permiso_general->actores = $this->request->getPost("actores");
+				$bc_permiso_general->direccionEvento = $this->request->getPost("direccionEvento");
+				$bc_permiso_general->personaContactoEvento = $this->request->getPost("personaContactoEvento");
+				$bc_permiso_general->telefonoContactoEvento = $this->request->getPost("telefonoContactoEvento");
+				$bc_permiso_general->emailContactoEvento = $this->request->getPost("emailContactoEvento");
+				$bc_permiso_general->requiereTransporte = $this->request->getPost("requiereTransporte");
+				if (!$bc_permiso_general->save()) {
+					foreach ($bc_permiso->getMessages() as $message) {
+						$this->flash->error($message);
+					}
+					$bc_permiso->delete();
+					return $this->response->redirect("bc_permiso/nuevo");
+				}
     		$mensaje_success = "El permiso con ID <strong>$bc_permiso->id_permiso</strong> fue creado exitosamente";
     	} else if($tipo_permiso == 1 || $tipo_permiso == 2){
     		$fecha_inicio = $this->conversiones->fecha(1, $this->request->getPost("fecha_inicio_permiso"));
@@ -762,6 +777,21 @@ class BcPermisoController extends ControllerBase
     				}
     				return $this->response->redirect("bc_permiso/nuevo");
     			}
+					$bc_permiso_general = new BcPermisoGeneral();
+		    	$bc_permiso_general->id_permiso = $bc_permiso->id_permiso;
+		    	$bc_permiso_general->actores = $this->request->getPost("actores");
+		    	$bc_permiso_general->direccionEvento = $this->request->getPost("direccionEvento");
+		    	$bc_permiso_general->personaContactoEvento = $this->request->getPost("personaContactoEvento");
+		    	$bc_permiso_general->telefonoContactoEvento = $this->request->getPost("telefonoContactoEvento");
+		    	$bc_permiso_general->emailContactoEvento = $this->request->getPost("emailContactoEvento");
+		    	$bc_permiso_general->requiereTransporte = $this->request->getPost("requiereTransporte");
+		    	if (!$bc_permiso_general->save()) {
+		    		foreach ($bc_permiso->getMessages() as $message) {
+		    			$this->flash->error($message);
+		    		}
+		    		$bc_permiso->delete();
+		    		return $this->response->redirect("bc_permiso/nuevo");
+		    	}
     			if($i == 0){
     				$id_permiso_vinculado = $bc_permiso->id_permiso;
     			} else {
@@ -770,40 +800,25 @@ class BcPermisoController extends ControllerBase
     				$bc_permiso_vinculado->id_permiso = $bc_permiso->id_permiso;
     				$bc_permiso_vinculado->save();
     			}
+					$elementos = array(
+		    			'numDocumento' => $this->request->getPost("numDocumento"),
+		    			'nombreCompleto' => $this->request->getPost("nombreCompleto"),
+							'id_permiso' => $bc_permiso->id_permiso
+			    );
+		    	$db = $this->getDI()->getDb();
+		    	$sql = $this->conversiones->multipleinsert("bc_permiso_participante", $elementos);
+		    	$query = $db->query($sql);
+					if (!$query) {
+		    		foreach ($query->getMessages() as $message) {
+		    			$this->flash->error($message);
+		    		}
+						$bc_permiso->delete();
+						$bc_permiso_general->delete();
+		    		return $this->response->redirect("bc_permiso/revision");
+		    	}
     			$i++;
     		}
     		$mensaje_success = "Los permisos fueron creados exitosamente";
-    	}
-    	$bc_permiso_general = new BcPermisoGeneral();
-    	$bc_permiso_general->id_permiso = $bc_permiso->id_permiso;
-    	$bc_permiso_general->actores = $this->request->getPost("actores");
-    	$bc_permiso_general->direccionEvento = $this->request->getPost("direccionEvento");
-    	$bc_permiso_general->personaContactoEvento = $this->request->getPost("personaContactoEvento");
-    	$bc_permiso_general->telefonoContactoEvento = $this->request->getPost("telefonoContactoEvento");
-    	$bc_permiso_general->emailContactoEvento = $this->request->getPost("emailContactoEvento");
-    	$bc_permiso_general->requiereTransporte = $this->request->getPost("requiereTransporte");
-    	if (!$bc_permiso_general->save()) {
-    		foreach ($bc_permiso->getMessages() as $message) {
-    			$this->flash->error($message);
-    		}
-    		$bc_permiso->delete();
-    		return $this->response->redirect("bc_permiso/nuevo");
-    	}
-			$elementos = array(
-    			'numDocumento' => $this->request->getPost("numDocumento"),
-    			'nombreCompleto' => $this->request->getPost("nombreCompleto"),
-					'id_permiso' => $bc_permiso->id_permiso
-	    );
-    	$db = $this->getDI()->getDb();
-    	$sql = $this->conversiones->multipleinsert("bc_permiso_participante", $elementos);
-    	$query = $db->query($sql);
-			if (!$query) {
-    		foreach ($query->getMessages() as $message) {
-    			$this->flash->error($message);
-    		}
-				$bc_permiso->delete();
-				$bc_permiso_general->delete();
-    		return $this->response->redirect("bc_permiso/revision");
     	}
     	if($this->request->getPost("requiereTransporte") == 1){
     		$bc_permiso_general_transporte = new BcPermisoGeneralTransporte();
