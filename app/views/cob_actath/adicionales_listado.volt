@@ -4,7 +4,7 @@
   <tbody>
 {% for talento in talentohumano %}
 {% set nombre = {talento.primerNombre, talento.segundoNombre, talento.primerApellido, talento.segundoApellido} %}
-      <tr id="{{ talento.numDocumento }}">
+      <tr id="ced{{ talento.numDocumento }}">
         <td><span class="number"></span></td>
         <td><input type="hidden" name="id_actath_persona[]" value="{{ talento.id_actath_persona }}">{{ talento.numDocumento }}</td>
           <td>{{ nombre|join(' ') }}</td>

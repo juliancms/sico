@@ -40,7 +40,7 @@ $('.input_agregar_ced').bind("enterKey",function(e){
 });
 function agregar_cedula(){
 	$(".error").html("");
-	var cedula = "#" + $(".input_agregar_ced").val();
+	var cedula = "#ced" + $(".input_agregar_ced").val();
 	var fila = $("#talentohumano_lista " + cedula).html();
 	var fila_repetida = $("#adicionales_listado " + cedula).html();
 	if(fila_repetida != undefined){
