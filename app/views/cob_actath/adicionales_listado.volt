@@ -65,17 +65,20 @@
       {% endfor %}
     </tbody>
 </table>
-{{ submit_button("Guardar", "class" : "btn btn-default pull-right") }}
+
 </form>
 <div class="row">
-<div class="col-lg-6">
-    <div class="input-group">
-      <input type="text" class="form-control input_agregar_ced" placeholder="Agregar por cédula...">
-      <span class="input-group-btn">
-        <button class="btn btn-primary agregar_cedula" type="button">Agregar</button>
-      </span>
-    </div><!-- /input-group -->
-</div><!-- /.col-lg-6 -->
+  <div class="col-lg-6">
+      <div class="input-group">
+        <input type="text" class="form-control input_agregar_ced" placeholder="Agregar por cédula...">
+        <span class="input-group-btn">
+          <button class="btn btn-primary agregar_cedula" type="button">Agregar</button>
+        </span>
+      </div><!-- /input-group -->
+  </div><!-- /.col-lg-6 -->
+  <div class="col-lg-4 pull-right">
+      {{ submit_button("Guardar", "class" : "btn btn-default pull-right") }}
+  </div><!-- /.col-lg-6 -->
 </div>
 <div class="error"></div>
 <div class='clear'></div>
