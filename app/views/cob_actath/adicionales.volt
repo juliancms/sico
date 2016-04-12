@@ -69,7 +69,7 @@
 					<td>{{ text_field("fechaIngreso[]", "value" : fechaIngreso, "disabled" : "disabled", "type" : "date", "class" : "form-control tipo-fecha fecha required", "placeholder" : "dd/mm/aaaa", "parsley-type" : "dateIso", "data-date-format" : "dd/mm/yyyy") }}</td>
 					<td>{{ text_field("fechaRetiro[]", "value" : fechaRetiro, "disabled" : "disabled", "type" : "date", "class" : "form-control tipo-fecha fecha", "placeholder" : "dd/mm/aaaa", "parsley-type" : "dateIso", "data-date-format" : "dd/mm/yyyy") }}</td>
 					<td>{{ select("asistencia[]", "value" : adicional.asistencia, "disabled" : "disabled", asistencia, "class" : "form-control asistencia required") }}</td>
-          <td>{{ text_area("observacion[]", "value" : adicional.observacionAdicional, "disabled" : "disabled", "rows" : "3", "class" : "form-control") }}</td>
+          <td>{{ text_area("observacion[]", "value" : adicional.observacion, "disabled" : "disabled", "rows" : "3", "class" : "form-control") }}</td>
           <td style="text-align:center;"><a id='{{ adicional.id_actath_persona }}' class='btn btn-default eliminar_guardado'><i class='glyphicon glyphicon-remove'></i></a><br><a class='btn btn-default editar_guardado'><i class='glyphicon glyphicon-edit'></i></a></td>
         </tr>
     {% endfor %}
