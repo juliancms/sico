@@ -1,5 +1,6 @@
 {{ content() }}
 {{ elements.getActamenu(acta) }}
+<div id="listado_ninos" style="display: none;">{{ listado_ninos }}</div>
 {{ form("cob_actaconteo/guardaradicionalescapturas/"~id_actaconteo, "method":"post", "parsley-validate" : "", "id" : "adicionales_form", "enctype" : "multipart/form-data" ) }}
 <table class="table table-bordered table-hover" id="{{ id_actaconteo }}">
     <thead>
@@ -13,7 +14,7 @@
             <th>Grupo</th>
             <th>Asistencia</th>
             <th>Captura SIBC</th>
-            <th>Observación</th>            
+            <th>Observación</th>
          </tr>
     </thead>
     <tbody>
@@ -27,7 +28,7 @@
         	<td>{{ adicional.primerApellido }}</td>
         	<td>{{ adicional.segundoApellido }}</td>
             <td>{{ adicional.grupo }}</td>
-            <td>{{ adicional.asistencia }}</td>                      
+            <td>{{ adicional.asistencia }}</td>
             <td class="imagen_imppnt">
 				<input class="fileupload filestyle" data-input="false" data-badge="false" type="file" name="adicional[]" multiple>
 			    <div id="progress" class="progress" style="margin: 0 !important;">
@@ -41,7 +42,7 @@
     {% endfor %}
     </tbody>
 </table>
-<div class="row container alert alert-danger alerta_lote" style="margin-top: 10px; display: none;"></div>    
+<div class="row container alert alert-danger alerta_lote" style="margin-top: 10px; display: none;"></div>
 <div class="row container" style="padding-top: 10px;">
   	<a class="btn btn-default pull-right submit_adicionales">Guardar</a>
 </div>

@@ -1,11 +1,11 @@
 <?php
- 
+
 use Phalcon\Mvc\Model\Criteria;
 
 class CobActaconteoController extends ControllerBase
-{    
+{
 	public $user;
-	
+
     public function initialize()
     {
         $this->tag->setTitle("Acta de Conteo");
@@ -23,7 +23,7 @@ class CobActaconteoController extends ControllerBase
     				"action" => "index"
     	));
     }
-    
+
     /**
      * Ver
      *
@@ -102,10 +102,10 @@ class CobActaconteoController extends ControllerBase
             $this->actaCerrada($acta, $this->user['nivel']);
         }
     }
-    
+
     /**
      * Guardar Datos
-     *  
+     *
      */
     public function guardardatosAction($id_actaconteo)
     {
@@ -140,7 +140,7 @@ class CobActaconteoController extends ControllerBase
         $this->flash->success("Los Datos Generales fueron actualizados exitosamente");
         return $this->response->redirect("cob_actaconteo/datos/$id_actaconteo");
     }
-    
+
     /**
      * Guardar Beneficiarios
      *
@@ -183,8 +183,8 @@ class CobActaconteoController extends ControllerBase
 	    			'id_actaconteo_persona' => $this->request->getPost("id_actaconteo_persona2"),
 	    			'motivo' => $this->request->getPost("motivo"),
 	    			'fecha' => $fechas,
-	    			'profesional' => $this->request->getPost("profesional"),    			
-	    			'telefono' => $this->request->getPost("telefono")    			
+	    			'profesional' => $this->request->getPost("profesional"),
+	    			'telefono' => $this->request->getPost("telefono")
 	    	);
 	    	$sql = $this->conversiones->multipleinsert("cob_actaconteo_persona_excusa", $elementos);
 	    	$query = $db->query($sql);
@@ -258,7 +258,7 @@ class CobActaconteoController extends ControllerBase
     	$this->flash->success("Los adicionales fueron actualizados exitosamente");
     	return $this->response->redirect("cob_actaconteo/adicionales/$id_actaconteo");
     }
-    
+
     /**
      * Guardar Empleados
      *
@@ -304,7 +304,7 @@ class CobActaconteoController extends ControllerBase
     	$this->flash->success("Los empleados fueron actualizados exitosamente");
     	return $this->response->redirect("cob_actaconteo/empleados/$id_actaconteo");
     }
-    
+
     /**
      * Guardar Adicionales
      *
@@ -335,7 +335,7 @@ class CobActaconteoController extends ControllerBase
     	$this->flash->success("Las capturas de los adicionales fueron actualizadas exitosamente");
     	return $this->response->redirect("cob_actaconteo/adicionalescapturas/$id_actaconteo");
     }
-    
+
     /**
      * Beneficiarios
      *
@@ -367,7 +367,7 @@ class CobActaconteoController extends ControllerBase
     		$this->actaCerrada($acta, $this->user['nivel']);
     	}
     }
-    
+
     /**
      * Adicionales
      *
@@ -400,7 +400,7 @@ class CobActaconteoController extends ControllerBase
     		$this->actaCerrada($acta, $this->user['nivel']);
     	}
     }
-    
+
     /**
      * Empleados
      *
@@ -435,7 +435,7 @@ class CobActaconteoController extends ControllerBase
     		$this->actaCerrada($acta, $this->user['nivel']);
     	}
     }
-    
+
     /**
      * Adicionales
      *
@@ -461,7 +461,7 @@ class CobActaconteoController extends ControllerBase
     		$this->view->acta = $acta;
     	}
     }
-    
+
     /**
      * Subir adicional
      *
@@ -486,7 +486,7 @@ class CobActaconteoController extends ControllerBase
 	    		if($isUploaded){
 	    			chmod($path, 0777);
 	    			echo $nombre;
-	    			
+
 	    		} else {
 	    			echo "Error";
 	    		}
@@ -518,7 +518,7 @@ class CobActaconteoController extends ControllerBase
         $this->flash->success("El acta fue eliminada correctamente");
         return $this->response->redirect("cob_actaconteo/");
     }
-    
+
     /**
      * Cierra un acta
      *
@@ -565,7 +565,7 @@ class CobActaconteoController extends ControllerBase
         		return $this->response->redirect($uri);
         	}
         	$this->flash->success("El acta fue cerrada exitosamente");
-        	return $this->response->redirect($uri);        
+        	return $this->response->redirect($uri);
         }
     }
     /**
@@ -599,7 +599,7 @@ class CobActaconteoController extends ControllerBase
     	$this->flash->success("El acta fue abierta exitosamente para el interventor");
     	return $this->response->redirect($uri);
     }
-    
+
     /**
      * Duplicar una acta
      */
@@ -625,7 +625,7 @@ class CobActaconteoController extends ControllerBase
     	}
     	return $this->response->redirect("cob_actaconteo/ver/$id_actaconteo");
     }
-        
+
     private function actaCerrada($acta, $nivel){
     	if($acta->estado > 3){
     		$estado = $acta->getEstadoDetail();

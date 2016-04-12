@@ -16,7 +16,7 @@ $('#duplicar_grupo').click(function() {
 });
 $(".eliminar_guardado").click (
 	function(){
-		eliminar_guardado($(this));        	
+		eliminar_guardado($(this));
 });
 $("#btn_varios_items").click (
 	function() {
@@ -126,11 +126,10 @@ function eliminar_valor(valor){
 }
 
 $(".fileupload").change(function() {
-	
 	var archivo = $(this);
 	$(archivo).parent().find('#progress .progress-bar').css(
             "width", "0%"
-        );																														
+        );
 	var formData = new FormData($('#adicionales_form')[0]);
 	    $.ajax( {
 	      url: url,
@@ -140,7 +139,7 @@ $(".fileupload").change(function() {
 	      contentType: false,
 	      success: function (data) {
 	    	  if(data == "Tipo"){
-	    		  alert("El tipo de imagen debe de ser jpg, png, bmp, o gif")
+	    		  alert("El tipo de imagen debe de ser jpg, png, bmp, o gif");
 	    	  } else if(data == "Error"){
 	    		  alert("Ocurrió un error la subir la imagen");
 	    	  } else {
