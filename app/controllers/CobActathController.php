@@ -244,6 +244,7 @@ class CobActathController extends ControllerBase
 						'fechaIngreso' => $fechaIngreso,
 						'fechaRetiro' => $fechaRetiro,
     				'asistencia' => $this->request->getPost("asistencia"),
+						'observacion' => $this->request->getPost("observacion"),
     				'tipoPersona' => '1',
     				'id_actath' => $id_actath,
     				'id_verificacion' => $acta->id_verificacion,
