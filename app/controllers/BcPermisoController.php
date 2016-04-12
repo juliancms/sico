@@ -857,6 +857,9 @@ class BcPermisoController extends ControllerBase
     			$uploads = $this->request->getUploadedFiles();
     			$isUploaded = false;
     			foreach($uploads as $upload){
+						if(!$upload->getName()){
+							continue;
+						}
     				if(in_array($upload->gettype(), $tipos)){
     					$nombre = $id_sede_contrato.date("ymdHis").".".$upload->getextension ();
     					$path = "files/permisos/".$nombre;

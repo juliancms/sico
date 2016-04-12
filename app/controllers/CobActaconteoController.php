@@ -453,7 +453,7 @@ class CobActaconteoController extends ControllerBase
     		->addJs('js/parsley.min.js')
     		->addJs('js/parsley.extend.js')
     		->addJs('js/jquery.autoNumeric.js')
-    		->addJs('js/adicionales.js');
+    		->addJs('js/adicionalescapturas.js');
     		$this->view->adicionales = $acta->getCobActaconteoPersona(['tipoPersona = 1', 'order' => 'grupo asc']);
     		$this->view->acta = $acta;
     		$this->view->id_actaconteo = $id_actaconteo;
@@ -474,8 +474,11 @@ class CobActaconteoController extends ControllerBase
 	    		$uploads = $this->request->getUploadedFiles();
 	    		$isUploaded = false;
 	    		foreach($uploads as $upload){
+						if(!$upload->getName()){
+							continue;
+						}
 	    			if(in_array($upload->gettype(), $tipos)){
-	    				$nombre = $id_actaconteo.date("ymdHis").".".$upload->getextension ();
+	    				$nombre = $id_actaconteo.date("ymdHis").".".$upload->getextension();
 		    			$path = "files/adicionales/".$nombre;
 		    			($upload->moveTo($path)) ? $isUploaded = true : $isUploaded = false;
 	    			} else {
