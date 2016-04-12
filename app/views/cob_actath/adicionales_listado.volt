@@ -65,8 +65,6 @@
       {% endfor %}
     </tbody>
 </table>
-
-</form>
 <div class="row">
   <div class="col-lg-6">
       <div class="input-group">
@@ -80,5 +78,6 @@
       {{ submit_button("Guardar", "class" : "btn btn-default pull-right") }}
   </div><!-- /.col-lg-6 -->
 </div>
+</form>
 <div class="error"></div>
 <div class='clear'></div>
