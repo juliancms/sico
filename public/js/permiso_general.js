@@ -61,14 +61,14 @@ function reasignar_keys(){
 }
 function agregar_item(valor) {
 	var n_filas = $( ".numDocumento[disabled!='disabled']" ).size();
-	if(n_filas !== 300){
+	if(n_filas !== 500){
 		$('#listado_participantes_tabla tbody tr:hidden:first').find("input").removeAttr("disabled");
 		$('#listado_participantes_tabla tbody tr:hidden:first').removeAttr("style");
 		$( '#permiso_general_form' ).parsley( 'destroy' );
 		$( '#permiso_general_form' ).parsley();
 		reasignar_keys();
 	} else {
-		$(".alerta_lote").html("<div class='alert alert-danger'><i class='glyphicon glyphicon-warning-sign'></i> Sólamente puedes guardar un máximo de 300 niños.</div>");
+		$(".alerta_lote").html("<div class='alert alert-danger'><i class='glyphicon glyphicon-warning-sign'></i> Sólamente puedes guardar un máximo de 500 niños.</div>");
 		$(".alerta_lote").fadeOut();
     	$(".alerta_lote").fadeIn();
 	}
