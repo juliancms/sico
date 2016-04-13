@@ -282,8 +282,8 @@ class CobActathController extends ControllerBase
     		->addJs('js/parsley.extend.js')
     		->addJs('js/talentohumano-adicionaleslistado.js');
     		$this->view->nombre = array();
-				$this->view->adicionales_listado = CobActathPersona::find("id_actath = $id_actath AND tipoPersona = 2");
-    		$this->view->talentohumano = CobActathPersona::find("id_contrato = $acta->id_contrato AND id_mes = $acta->id_mes AND id_sede <> $acta->id_sede AND tipoPersona = 0");
+				$this->view->adicionales_listado = CobActathPersonaListado::find("id_actath = $id_actath");
+    		$this->view->talentohumano = CobActathPersona::find("id_contrato = $acta->id_contrato AND id_mes = $acta->id_mes AND id_sede != $acta->id_sede AND tipoPersona = 0");
     		$acta->id_acta = $id_actath;
     		$this->view->acta = $acta;
 				$this->view->asistencia = $this->elements->getSelect("asistencia");
@@ -311,6 +311,7 @@ class CobActathController extends ControllerBase
 			$fechaRetiro = $this->conversiones->array_fechas(1, $this->request->getPost("fechaRetiro"));
     	$elementos = array(
     			'id_actath_persona' => $this->request->getPost("id_actath_persona"),
+					'numDocumento' => $this->request->getPost("numDocumento"),
     			'cedulaCoincide' => $this->request->getPost("cedulaCoincide"),
     			'nombreCoincide' => $this->request->getPost("nombreCoincide"),
     			'formacionacademicaCoincide' => $this->request->getPost("formacionacademicaCoincide"),
@@ -329,7 +330,7 @@ class CobActathController extends ControllerBase
 					'id_sede' => $acta->id_sede,
 					'id_contrato' => $acta->id_contrato
     	);
-    	$sql = $this->conversiones->multipleupdate("cob_actath_persona", $elementos, "id_actath_persona");
+    	$sql = $this->conversiones->multipleinsert("cob_actath_persona_listado", $elementos);
     	$query = $db->query($sql);
     	if (!$query) {
     		foreach ($query->getMessages() as $message) {

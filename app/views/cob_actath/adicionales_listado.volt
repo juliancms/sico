@@ -6,19 +6,19 @@
 {% set nombre = {talento.primerNombre, talento.segundoNombre, talento.primerApellido, talento.segundoApellido} %}
       <tr id="{{ talento.numDocumento }}">
         <td><span class="number"></span></td>
-        <td><input type="hidden" name="id_actath_persona[]" value="{{ talento.id_actath_persona }}">{{ talento.numDocumento }}</td>
+        <td><input type="hidden" name="id_actath_persona[]" value="{{ talento.id_actath_persona }}"><input type="hidden" name="numDocumento[]" value="{{ talento.numDocumento }}">{{ talento.numDocumento }}</td>
           <td>{{ nombre|join(' ') }}</td>
-          <td<?php echo $talento->getsinonareDetail($talento->cedulaCoincide); ?>>{{ select("cedulaCoincide[]", sinonare, "value" : talento.cedulaCoincide, "class" : "form-control sinonare required") }}</td>
-          <td<?php echo $talento->getsinonareDetail($talento->nombreCoincide); ?>>{{ select("nombreCoincide[]", sinonare, "value" : talento.nombreCoincide, "class" : "form-control sinonare required") }}</td>
-          <td<?php echo $talento->getsinonareDetail($talento->formacionacademicaCoincide); ?>>{{ select("formacionacademicaCoincide[]", sinonare, "value" : talento.formacionacademicaCoincide, "class" : "form-control sinonare required") }}</td>
-          <td<?php echo $talento->getsinonareDetail($talento->cargoCoincide); ?>>{{ select("cargoCoincide[]", sinonare, "value" : talento.cargoCoincide, "class" : "form-control sinonare required") }}</td>
-          <td<?php echo $talento->getsinonareDetail($talento->tipocontratoCoincide); ?>>{{ select("tipocontratoCoincide[]", sinonare, "value" : talento.tipocontratoCoincide, "class" : "form-control sinonare required") }}</td>
-          <td<?php echo $talento->getsinonareDetail($talento->salarioCoincide); ?>>{{ select("salarioCoincide[]", sinonare, "value" : talento.salarioCoincide, "class" : "form-control sinonare required") }}</td>
-          <td<?php echo $talento->getsinonareDetail($talento->dedicacionCoincide); ?>>{{ select("dedicacionCoincide[]", sinonare, "value" : talento.dedicacionCoincide, "class" : "form-control sinonare required") }}</td>
-          <td<?php echo $talento->getsinonareDetail($talento->fechaingresoCoincide); ?>>{{ select("fechaingresoCoincide[]", sinonare, "value" : talento.fechaingresoCoincide, "class" : "form-control sinonare required") }}</td>
-          <td>{{ text_field("fechaRetiro[]", "type" : "date", "class" : "form-control tipo-fecha", "placeholder" : "dd/mm/aaaa", "parsley-type" : "dateIso", "data-date-format" : "dd/mm/yyyy", "value": talento.getFechaRetiro()) }}</td>
-          <td>{{ select("asistencia[]", asistencia, "value" : talento.asistencia, "class" : "form-control asistencia required") }}</td>
-          <td>{{ text_field("observacion[]", "value" : talento.observacion, "class" : "form-control observacion") }}</td>
+          <td>{{ select("cedulaCoincide[]", sinonare, "class" : "form-control sinonare required") }}</td>
+          <td>{{ select("nombreCoincide[]", sinonare, "class" : "form-control sinonare required") }}</td>
+          <td>{{ select("formacionacademicaCoincide[]", sinonare, "class" : "form-control sinonare required") }}</td>
+          <td>{{ select("cargoCoincide[]", sinonare, "class" : "form-control sinonare required") }}</td>
+          <td>{{ select("tipocontratoCoincide[]", sinonare, "class" : "form-control sinonare required") }}</td>
+          <td>{{ select("salarioCoincide[]", sinonare, "class" : "form-control sinonare required") }}</td>
+          <td>{{ select("dedicacionCoincide[]", sinonare, "class" : "form-control sinonare required") }}</td>
+          <td>{{ select("fechaingresoCoincide[]", sinonare, "class" : "form-control sinonare required") }}</td>
+          <td>{{ text_field("fechaRetiro[]", "type" : "date", "class" : "form-control tipo-fecha", "placeholder" : "dd/mm/aaaa", "parsley-type" : "dateIso", "data-date-format" : "dd/mm/yyyy") }}</td>
+          <td>{{ select("asistencia[]", asistencia, "class" : "form-control asistencia required") }}</td>
+          <td>{{ text_field("observacion[]", "class" : "form-control observacion") }}</td>
       </tr>
 {% endfor %}
   </tbody>
@@ -45,10 +45,10 @@
     </thead>
     <tbody>
       {% for talento in adicionales_listado %}
-      {% set nombre = {talento.primerNombre, talento.segundoNombre, talento.primerApellido, talento.segundoApellido} %}
+      {% set nombre = {talento.CobActathPersona.primerNombre, talento.CobActathPersona.segundoNombre, talento.CobActathPersona.primerApellido, talento.CobActathPersona.segundoApellido} %}
             <tr id="{{ talento.numDocumento }}">
               <td><span class="number"></span></td>
-              <td><input type="hidden" name="id_actath_persona[]" value="{{ talento.id_actath_persona }}">{{ talento.numDocumento }}</td>
+              <td><input type="hidden" name="id_actath_persona[]" value="{{ talento.id_actath_persona }}"><input type="hidden" name="numDocumento[]" value="{{ talento.numDocumento }}">{{ talento.numDocumento }}</td>
                 <td>{{ nombre|join(' ') }}</td>
                 <td<?php echo $talento->getsinonareDetail($talento->cedulaCoincide); ?>>{{ select("cedulaCoincide[]", sinonare, "value" : talento.cedulaCoincide, "class" : "form-control sinonare required") }}</td>
                 <td<?php echo $talento->getsinonareDetail($talento->nombreCoincide); ?>>{{ select("nombreCoincide[]", sinonare, "value" : talento.nombreCoincide, "class" : "form-control sinonare required") }}</td>

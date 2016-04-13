@@ -1,6 +1,6 @@
 <?php
 
-class CobActathPersona extends \Phalcon\Mvc\Model
+class CobActathPersonaListado extends \Phalcon\Mvc\Model
 {
 
     /**
@@ -44,66 +44,6 @@ class CobActathPersona extends \Phalcon\Mvc\Model
      * @var integer
      */
     public $numDocumento;
-
-    /**
-     *
-     * @var string
-     */
-    public $primerNombre;
-
-    /**
-     *
-     * @var string
-     */
-    public $segundoNombre;
-
-    /**
-     *
-     * @var string
-     */
-    public $primerApellido;
-
-    /**
-     *
-     * @var string
-     */
-    public $segundoApellido;
-
-    /**
-     *
-     * @var string
-     */
-    public $formacionAcademica;
-
-    /**
-     *
-     * @var string
-     */
-    public $cargo;
-
-    /**
-     *
-     * @var string
-     */
-    public $tipoContrato;
-
-    /**
-     *
-     * @var integer
-     */
-    public $baseSalario;
-
-    /**
-     *
-     * @var string
-     */
-    public $porcentajeDedicacion;
-
-    /**
-     *
-     * @var string
-     */
-    public $fechaIngreso;
 
     /**
      *
@@ -182,6 +122,17 @@ class CobActathPersona extends \Phalcon\Mvc\Model
      * @var integer
      */
     public $tipoPersona;
+
+    //Virtual Foreign Key para poder acceder a la fecha de corte del acta
+    public function initialize()
+    {
+    	$this->belongsTo('id_verificacion', 'CobVerificacion', 'id_verificacion', array(
+    			'reusable' => true
+    	));
+      $this->belongsTo('id_actath_persona', 'CobActathPersona', 'id_actath_persona', array(
+    			'reusable' => true
+    	));
+    }
 
     /**
      * Returns a human representation of 'estado'
