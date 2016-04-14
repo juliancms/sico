@@ -199,7 +199,7 @@ class CobActath extends \Phalcon\Mvc\Model
       			<div class='fila colb2 encabezadodoc'><div style='width: 20px;'>#</div><div style='width: 60px;'>4.1 DOCUMENTO</div><div style='width: 60px'>4.2 NOMBRE COMPLETO</div><div style='width: 70px'>4.3 FORMACIÓN ACADÉMICA</div><div style='width: 46px'>4.4 CARGO</div><div style='width: 46px'>4.5 TIPO CONTR.</div><div style='width: 46px'>4.6 BASE SALARIO</div><div style='width: 46px'>4.7  PCT DEDIC.</div><div style='width: 46px;'>4.8  FECHA INGRESO</div><div style='width: 40px;'>4.9 FECHA RETIRO</div><div style='width: 30px;'>4.10 ASISTE</div><div style='width: 100px'>4.11 OBSERVACIONES</div><div style='width: 60px'>4.12 FIRMA</div></div>";
       			$html .= $encabezado;
       			$html .= $encabezado_talentohumano;
-      			foreach($acta->getCobActathPersona(['order' => 'id_sede asc']) as $row){
+      			foreach($acta->getCobActathPersona(['tipoPersona = 0', 'order' => 'id_sede asc']) as $row){
       			$nombre_completo = array($row->primerNombre, $row->segundoNombre, $row->primerApellido, $row->segundoApellido);
       			$nombre_completo = implode(" ", $nombre_completo);
       			$i = ($i<10) ? "0" .$i : $i;

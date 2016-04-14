@@ -161,7 +161,7 @@ class CobActathController extends ControllerBase
     		->addJs('js/parsley.extend.js')
     		->addJs('js/talentohumano.js');
     		$this->view->nombre = array();
-    		$this->view->talentohumano = $acta->getCobActathPersona(['order' => 'id_sede asc']);
+    		$this->view->talentohumano = $acta->getCobActathPersona(['tipoPersona = 0', 'order' => 'id_sede asc']);
     		$acta->id_acta = $id_actath;
     		$this->view->acta = $acta;
 				$this->view->asistencia = $this->elements->getSelect("asistencia");
