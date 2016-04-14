@@ -366,7 +366,7 @@ class CobActathController extends ControllerBase
         	$this->flash->error("No han sido digitados los datos del acta.");
         	$error = 1;
         }
-        if($acta->CobActathPersona[0]->nombreCedulaSibc == 0){
+        if($acta->CobActathPersona[0]->cedulaCoincide == 0){
         	if($error == 0)
         		$this->flash->notice("<i class='glyphicon glyphicon-exclamation-sign'></i> El acta no puede ser cerrada debido a que:");
         	$this->flash->error("No han sido digitados el talento humano del acta.");
