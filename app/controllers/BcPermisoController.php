@@ -716,6 +716,22 @@ class BcPermisoController extends ControllerBase
 					$bc_permiso->delete();
 					return $this->response->redirect("bc_permiso/nuevo");
 				}
+				$elementos = array(
+						'numDocumento' => $this->request->getPost("numDocumento"),
+						'nombreCompleto' => $this->request->getPost("nombreCompleto"),
+						'id_permiso' => $bc_permiso->id_permiso
+				);
+				$db = $this->getDI()->getDb();
+				$sql = $this->conversiones->multipleinsert("bc_permiso_participante", $elementos);
+				$query = $db->query($sql);
+				if (!$query) {
+					foreach ($query->getMessages() as $message) {
+						$this->flash->error($message);
+					}
+					$bc_permiso->delete();
+					$bc_permiso_general->delete();
+					return $this->response->redirect("bc_permiso/revision");
+				}
     		$mensaje_success = "El permiso con ID <strong>$bc_permiso->id_permiso</strong> fue creado exitosamente";
     	} else if($tipo_permiso == 1 || $tipo_permiso == 2){
     		$fecha_inicio = $this->conversiones->fecha(1, $this->request->getPost("fecha_inicio_permiso"));
@@ -820,6 +836,7 @@ class BcPermisoController extends ControllerBase
     		}
     		$mensaje_success = "Los permisos fueron creados exitosamente";
     	}
+
     	if($this->request->getPost("requiereTransporte") == 1){
     		$bc_permiso_general_transporte = new BcPermisoGeneralTransporte();
     		$bc_permiso_general_transporte->id_permiso = $bc_permiso->id_permiso;
