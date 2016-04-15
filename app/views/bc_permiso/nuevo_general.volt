@@ -42,7 +42,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<?php for ($i = 1; $i <= 300; $i++) { ?>
+						<?php for ($i = 1; $i <= 500; $i++) { ?>
 							<tr style="display: none;">
 								<td><span class="number"><?php echo $i; ?></span></td>
 								<td>{{ text_field("nombreCompleto[]", "disabled" : "disabled", "placeholder" : "Nombre Completo", "class" : "nombreCompleto form-control required") }}<div class="error_nombre"></div></td>
