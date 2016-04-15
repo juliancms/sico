@@ -8,15 +8,26 @@ $(".eliminar_guardado").click (
 $('#pegar_listado').on('input',function(e){
 	var data = $(this).val();
 	var rows = data.split("\n");
-	for(var y in rows) {
-    var cells = rows[y].split("\t");
-		if(cells[0]){
-			$('#listado_participantes_tabla tbody tr:hidden:first').find(".nombreCompleto").val(cells[0]);
-			$('#listado_participantes_tabla tbody tr:hidden:first').find(".numDocumento").val(cells[1]);
-			agregar_item($(this));
+	if(rows.length == 500){
+		$(".alerta_lote").html("<div class='alert alert-danger'><i class='glyphicon glyphicon-warning-sign'></i> Sólamente puedes guardar un máximo de 500 niños.</div>");
+		$("#pegar_listado").val("");
+		$(".alerta_lote").fadeOut();
+    $(".alerta_lote").fadeIn();
+	} else {
+		for(var y in rows) {
+	    var cells = rows[y].split("\t");
+			if(cells[0]){
+				$('#listado_participantes_tabla tbody tr:hidden:first').find(".nombreCompleto").val(cells[0]);
+				$('#listado_participantes_tabla tbody tr:hidden:first').find(".numDocumento").val(cells[1]);
+				$('#listado_participantes_tabla tbody tr:hidden:first').find("input").removeAttr("disabled");
+				$('#listado_participantes_tabla tbody tr:hidden:first').removeAttr("style");
+			}
 		}
+		$( '#permiso_general_form' ).parsley( 'destroy' );
+		$( '#permiso_general_form' ).parsley();
+		reasignar_keys();
+		$("#pegar_listado").val("");
 	}
-		 $("#pegar_listado").val("");
 })
 $("#limpiar_formulario").click (
     function() {
@@ -70,7 +81,7 @@ function agregar_item(valor) {
 	} else {
 		$(".alerta_lote").html("<div class='alert alert-danger'><i class='glyphicon glyphicon-warning-sign'></i> Sólamente puedes guardar un máximo de 500 niños.</div>");
 		$(".alerta_lote").fadeOut();
-    	$(".alerta_lote").fadeIn();
+    $(".alerta_lote").fadeIn();
 	}
 }
 function eliminar_valor(valor){
