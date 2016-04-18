@@ -15,7 +15,7 @@ class CobActamuestreo extends \Phalcon\Mvc\Model
      * @var integer
      */
     public $id_periodo;
-    
+
     /**
      *
      * @var integer
@@ -105,8 +105,8 @@ class CobActamuestreo extends \Phalcon\Mvc\Model
      * @var integer
      */
     public $estado;
-    
-    
+
+
     //Virtual Foreign Key para poder acceder a la fecha de corte del acta
 	public function initialize()
 	{
@@ -128,7 +128,7 @@ class CobActamuestreo extends \Phalcon\Mvc\Model
 				)
 		));
 	}
-	
+
 	public function muestra($id_periodo){
 		/**Autores: Lina Hurtado y Julián Marín**/
 		// Población
@@ -149,76 +149,41 @@ class CobActamuestreo extends \Phalcon\Mvc\Model
 		}
 		return round($muestra, 0);
 	}
-    
-    public function generarActasRcarga($cob_periodo, $carga, $facturacion, $recorrido_anterior) {
-    	$recorrido = $recorrido_anterior + 1;
-    	$db = $this->getDI()->getDb();
-    	$config = $this->getDI()->getConfig();
-    	$timestamp = new DateTime();
-        $tabla_mat = "m" . $timestamp->getTimestamp();
-        $archivo_mat = $config->application->basePath . "public/files/bc_bd/" . $carga->nombreMat;
-        $db->query("CREATE TEMPORARY TABLE $tabla_mat (certificacion INT, fechaInicioAtencion DATE, fechaRetiro DATE, fechaRegistro DATE, id_sede_contrato BIGINT, id_contrato BIGINT, id_modalidad INT, modalidad_nombre VARCHAR(50), id_sede INT, sede_nombre VARCHAR(80), sede_barrio VARCHAR(80), sede_direccion VARCHAR(80), sede_telefono VARCHAR(80), id_oferente INT, oferente_nombre VARCHAR(100), id_persona INT, numDocumento VARCHAR(100), primerNombre VARCHAR(20), segundoNombre VARCHAR(20), primerApellido VARCHAR(20), segundoApellido VARCHAR(20), id_grupo BIGINT, grupo VARCHAR(80), fechaNacimiento DATE, peso VARCHAR(10), estatura VARCHAR(10), fechaControl DATE) CHARACTER SET utf8 COLLATE utf8_bin");
-        $db->query("LOAD DATA INFILE '$archivo_mat' IGNORE INTO TABLE $tabla_mat FIELDS TERMINATED BY ';' LINES TERMINATED BY '\n' IGNORE 1 LINES (@ID_MATRICULA, @FECHA_INICIO_ATENCION, @FECHA_RETIRO, @MOTIVO_RETIRO, @FECHA_REGISTRO_MATRICULA, @ID_PRESTADOR, @PRESTADOR_SERVICIO, @NUMERO_CONTRATO, @ID_MODALIDAD_ORIGEN, @NOMBRE_MODALIDAD, @ID_SEDE, @NOMBRE_SEDE, @ID_BARRIO_SEDE, @NOMBRE_BARRIO_SEDE, @DIRECCION_SEDE, @TELEFONO_SEDE, @ID_SEDE_CONTRATO, @COORDINADOR_MODALIDAD, @ID_GRUPO, @NOMBRE_GRUPO, @AGENTE_EDUCATIVO, @ID_PERSONA, @TIPO_DOCUMENTO, @NUMERO_DOCUMENTO, @PRIMER_NOMBRE, @SEGUNDO_NOMBRE, @PRIMER_APELLIDO, @SEGUNDO_APELLIDO, @FECHA_NACIMIENTO, @GENERO, @ZONA_BENEFICIARIO, @DIRECCION_BENEFICIARIO, @ID_BARRIO_BENEFICIARIO, @NOMBRE_BARRIO_BENEFICIARIO, @TELEFONO_BENEFICIARIO, @CELULAR_BENEFICIARIO, @PUNTAJE_SISBEN, @NUMERO_FICHA, @VICTIMA_CA, @ESQUEMA_VACUNACION, @TIPO_DISCAPACIDAD, @CAPACIDAD_EXCEPCIONAL, @AFILIACION_SGSSS, @ENTIDAD_SALUD, @ASISTE_CXD, @NOMBRE_ETNIA, @OTROS_BENEFICIOS, @RADICADO, @AUTORIZADO, @FECHA_RADICADO, @CICLO_VITAL_MADRE, @EDAD_GESTACIONAL, @PESO, @ESTATURA, @FECHA_CONTROL, @OBSERVACION, @FECHA_DIGITACION_SEG, @FECHA_MODIFICACION_SEG, @USUARIO_REGISTRO_SEG, @TIPO_BENEFICIARIO, @FECHA_REGISTRO_BENEFICIARIO) SET id_sede_contrato = @ID_SEDE_CONTRATO, id_contrato = @NUMERO_CONTRATO, id_modalidad = @ID_MODALIDAD_ORIGEN, modalidad_nombre = @NOMBRE_MODALIDAD, id_sede = @ID_SEDE, sede_nombre = REPLACE(@NOMBRE_SEDE, '\"',\"\"), sede_barrio = @NOMBRE_BARRIO_SEDE, sede_direccion = @DIRECCION_SEDE, sede_telefono = @TELEFONO_SEDE, id_oferente = @ID_PRESTADOR, oferente_nombre = REPLACE(@PRESTADOR_SERVICIO, '\"',\"\"), id_persona = @ID_PERSONA, numDocumento = @NUMERO_DOCUMENTO, primerNombre = TRIM(REPLACE(@PRIMER_NOMBRE, '\"',\"\")), segundoNombre = TRIM(REPLACE(@SEGUNDO_NOMBRE, '\"',\"\")), primerApellido = TRIM(REPLACE(@PRIMER_APELLIDO, '\"',\"\")), segundoApellido = TRIM(REPLACE(@SEGUNDO_APELLIDO, '\"',\"\")), id_grupo = @ID_GRUPO, grupo = REPLACE(@NOMBRE_GRUPO, '\"',\"\"), fechaInicioAtencion = @FECHA_INICIO_ATENCION, fechaRegistro = @FECHA_REGISTRO_MATRICULA, fechaRetiro = @FECHA_RETIRO, fechaNacimiento = @FECHA_NACIMIENTO, peso = @PESO, estatura = @ESTATURA, fechaControl = @FECHA_CONTROL");
-        $modalidades = "";
-        foreach(CobActaconteo::find(array("id_periodo = $cob_periodo->id_periodo AND recorrido = $recorrido_anterior", "columns" => "id_modalidad", "group" => "id_modalidad"))->toArray() as $row){
-        	$modalidades = $modalidades . $row['id_modalidad'] . ","; 
-        }
-        $modalidades = substr($modalidades, 0, -1);        
-        $db->query("DELETE FROM $tabla_mat WHERE id_modalidad NOT IN ($modalidades)");
-        if($facturacion == 1){
-        	$db->query("DELETE FROM $tabla_mat WHERE fechaRetiro > 0000-00-00 AND DATE_SUB('$cob_periodo->fecha',INTERVAL 30 DAY) > fechaRetiro OR '$cob_periodo->fecha' < fechaRetiro");
-        	$db->query("UPDATE $tabla_mat SET certificacion = 2 WHERE fechaRetiro > 0000-00-00");
-        	$archivo_sed = $config->application->basePath . "public/files/bc_bd/" . $carga->nombreSedes;
-        	$db->query("LOAD DATA INFILE '$archivo_sed' IGNORE INTO TABLE cob_periodo_contratosedecupos FIELDS TERMINATED BY ';' LINES TERMINATED BY '\n' IGNORE 1 LINES (@ID_SEDE_CONTRATO, @ID_OFERENTE, @RAZON_SOCIAL, @ID_SEDE, @NOMBRE_SEDE, @TELEFONO, @DIRECCION, @ID_BARRIO_VEREDA, @NOMBRE_BARRIO_VEREDA, @ID_COMUNA, @NOMBRE_COMUNA_CORREGIMIENTO, @ZONA_UBICACION, @FECHA_INICIO_ATENCION, @NUMERO_CONTRATO, @ID_MODALIDAD_ORIGEN, @NOMBRE_MODALIDAD, @CUPOS_SEDE, @CUPOS_EN_USO, @CUPOS_SOSTENIBILIDAD, @CUPOS_AMPLIACION, @TOTAL_CUPOS_CONTRATO, @COORDX, @COORDY, @COORDINADOR, @PROPIEDAD_INMUEBLE, @AREA, @CAPACIDAD_ATENCION, @GRUPOS_ACTIVOS, @FECHA_FIN_CONTRATO, @FECHA_ADICION_CONTRATO) SET id_periodo = $cob_periodo->id_periodo, id_sede_contrato = @ID_SEDE_CONTRATO, cuposSede = @CUPOS_SEDE, cuposSostenibilidad = @CUPOS_SOSTENIBILIDAD, cuposAmpliacion = @CUPOS_AMPLIACION, cuposTotal = @TOTAL_CUPOS_CONTRATO");
-        	$db->query("INSERT IGNORE INTO cob_actaconteo_persona_facturacion (id_periodo, id_sede_contrato, id_contrato, id_sede, id_persona, numDocumento, primerNombre, segundoNombre, primerApellido, segundoApellido, id_grupo, grupo, fechaInicioAtencion, fechaRegistro, fechaRetiro, fechaNacimiento, peso, estatura, fechaControl, certificacion) SELECT $cob_periodo->id_periodo, id_sede_contrato, id_contrato, id_sede, id_persona, numDocumento, primerNombre, segundoNombre, primerApellido, segundoApellido, id_grupo, grupo, fechaInicioAtencion, fechaRegistro, fechaRetiro, fechaNacimiento, peso, estatura, fechaControl, certificacion FROM $tabla_mat");
-        	$db->query("UPDATE cob_periodo SET id_carga_facturacion = $carga->id_carga WHERE id_periodo = $cob_periodo->id_periodo");
-        }
-        $db->query("DELETE FROM $tabla_mat WHERE fechaRetiro > 0000-00-00");
-        $eliminar = CobActaconteoPersona::find(["id_periodo = $cob_periodo->id_periodo AND recorrido < $recorrido AND (asistencia = 1 OR asistencia = 7 OR asistencia = 9 OR asistencia = 10)"]);
-        if(count($eliminar) > 0){
-        	$sql = "DELETE FROM $tabla_mat WHERE CONCAT_WS('-',id_contrato,numDocumento) IN (";
-        	foreach($eliminar as $row){
-        		$sql .= "'$row->id_contrato-$row->numDocumento',";
-        	}
-        	$sql = substr($sql, 0, -1);
-        	$sql .= ")";
-        	$db->query($sql);
-        }
-        $db->query("INSERT IGNORE INTO bc_contrato (id_contrato, id_oferente, id_modalidad) SELECT id_contrato, id_oferente, id_modalidad FROM $tabla_mat");
-        $db->query("INSERT IGNORE INTO cob_actaconteo (id_periodo, id_carga, recorrido, id_sede_contrato, id_contrato, id_modalidad, modalidad_nombre, id_sede, sede_nombre, sede_barrio, sede_direccion, sede_telefono, id_oferente, oferente_nombre) SELECT $cob_periodo->id_periodo, $carga->id_carga, $recorrido, id_sede_contrato, id_contrato, id_modalidad, modalidad_nombre, id_sede, sede_nombre, sede_barrio, sede_direccion, sede_telefono, id_oferente, oferente_nombre FROM $tabla_mat");
-        $db->query("REPLACE INTO bc_sede_contrato (id_sede_contrato, id_oferente, oferente_nombre, id_contrato, id_sede, sede_nombre, sede_barrio, sede_direccion, sede_telefono, id_modalidad, modalidad_nombre, estado) SELECT id_sede_contrato, id_oferente, oferente_nombre, id_contrato, id_sede, sede_nombre, sede_barrio, sede_direccion, sede_telefono, id_modalidad, modalidad_nombre, '1' FROM $tabla_mat");
-        $db->query("INSERT IGNORE INTO cob_actaconteo_persona (id_actaconteo, id_periodo, recorrido, id_contrato, id_persona, numDocumento, primerNombre, segundoNombre, primerApellido, segundoApellido, id_grupo, grupo) SELECT (SELECT id_actaconteo FROM cob_actaconteo WHERE cob_actaconteo.id_sede_contrato = $tabla_mat.id_sede_contrato AND cob_actaconteo.id_periodo = $cob_periodo->id_periodo AND cob_actaconteo.recorrido = $recorrido), $cob_periodo->id_periodo, $recorrido, id_contrato, id_persona, numDocumento, primerNombre, segundoNombre, primerApellido, segundoApellido, id_grupo, grupo FROM $tabla_mat");
-        $db->query("DROP TABLE $tabla_mat");
-    	return TRUE;
-    }
-        
-    public function generarActasR1($cob_periodo, $carga, $modalidades, $facturacion) {
+
+    public function generarActasRcarga($cob_periodo, $carga, $recorrido_anterior) {
+      //Datos de METROSALUD
+      $id_contrato_metro = 4600063786;
+      $id_oferente_metro = 26;
+      $oferente_nombre_metro = "METROSALUD";
+      $id_modalidad_metro = 5;
+      $modalidad_nombre_metro = "ENTORNO FAMILIAR";
+
+      $recorrido = $recorrido_anterior + 1;
     	$db = $this->getDI()->getDb();
     	$config = $this->getDI()->getConfig();
     	$timestamp = new DateTime();
     	$tabla_mat = "m" . $timestamp->getTimestamp();
+      $tabla_sed = "s" . $timestamp->getTimestamp();
     	$archivo_mat = $config->application->basePath . "public/files/bc_bd/" . $carga->nombreMat;
-    	$db->query("CREATE TEMPORARY TABLE $tabla_mat (certificacion INT, fechaInicioAtencion DATE, fechaRetiro DATE, fechaRegistro DATE, id_sede_contrato BIGINT, id_contrato BIGINT, id_modalidad INT, modalidad_nombre VARCHAR(50), id_sede INT, sede_nombre VARCHAR(80), sede_barrio VARCHAR(80), sede_direccion VARCHAR(80), sede_telefono VARCHAR(80), id_oferente INT, oferente_nombre VARCHAR(100), id_persona INT, numDocumento VARCHAR(100), primerNombre VARCHAR(20), segundoNombre VARCHAR(20), primerApellido VARCHAR(20), segundoApellido VARCHAR(20), id_grupo BIGINT, grupo VARCHAR(80), fechaNacimiento DATE, peso VARCHAR(10), estatura VARCHAR(10), fechaControl DATE) CHARACTER SET utf8 COLLATE utf8_bin");
-    	$db->query("LOAD DATA INFILE '$archivo_mat' IGNORE INTO TABLE $tabla_mat FIELDS TERMINATED BY ';' LINES TERMINATED BY '\n' IGNORE 1 LINES (@ID_MATRICULA, @FECHA_INICIO_ATENCION, @FECHA_RETIRO, @MOTIVO_RETIRO, @FECHA_REGISTRO_MATRICULA, @ID_PRESTADOR, @PRESTADOR_SERVICIO, @NUMERO_CONTRATO, @ID_MODALIDAD_ORIGEN, @NOMBRE_MODALIDAD, @ID_SEDE, @NOMBRE_SEDE, @ID_BARRIO_SEDE, @NOMBRE_BARRIO_SEDE, @DIRECCION_SEDE, @TELEFONO_SEDE, @ID_SEDE_CONTRATO, @COORDINADOR_MODALIDAD, @ID_GRUPO, @NOMBRE_GRUPO, @AGENTE_EDUCATIVO, @ID_PERSONA, @TIPO_DOCUMENTO, @NUMERO_DOCUMENTO, @PRIMER_NOMBRE, @SEGUNDO_NOMBRE, @PRIMER_APELLIDO, @SEGUNDO_APELLIDO, @FECHA_NACIMIENTO, @GENERO, @ZONA_BENEFICIARIO, @DIRECCION_BENEFICIARIO, @ID_BARRIO_BENEFICIARIO, @NOMBRE_BARRIO_BENEFICIARIO, @TELEFONO_BENEFICIARIO, @CELULAR_BENEFICIARIO, @PUNTAJE_SISBEN, @NUMERO_FICHA, @VICTIMA_CA, @ESQUEMA_VACUNACION, @TIPO_DISCAPACIDAD, @CAPACIDAD_EXCEPCIONAL, @AFILIACION_SGSSS, @ENTIDAD_SALUD, @ASISTE_CXD, @NOMBRE_ETNIA, @OTROS_BENEFICIOS, @RADICADO, @AUTORIZADO, @FECHA_RADICADO, @CICLO_VITAL_MADRE, @EDAD_GESTACIONAL, @PESO, @ESTATURA, @FECHA_CONTROL, @OBSERVACION, @FECHA_DIGITACION_SEG, @FECHA_MODIFICACION_SEG, @USUARIO_REGISTRO_SEG, @TIPO_BENEFICIARIO, @FECHA_REGISTRO_BENEFICIARIO) SET id_sede_contrato = @ID_SEDE_CONTRATO, id_contrato = @NUMERO_CONTRATO, id_modalidad = @ID_MODALIDAD_ORIGEN, modalidad_nombre = @NOMBRE_MODALIDAD, id_sede = @ID_SEDE, sede_nombre = REPLACE(@NOMBRE_SEDE, '\"',\"\"), sede_barrio = @NOMBRE_BARRIO_SEDE, sede_direccion = @DIRECCION_SEDE, sede_telefono = @TELEFONO_SEDE, id_oferente = @ID_PRESTADOR, oferente_nombre = REPLACE(@PRESTADOR_SERVICIO, '\"',\"\"), id_persona = @ID_PERSONA, numDocumento = @NUMERO_DOCUMENTO, primerNombre = TRIM(REPLACE(@PRIMER_NOMBRE, '\"',\"\")), segundoNombre = TRIM(REPLACE(@SEGUNDO_NOMBRE, '\"',\"\")), primerApellido = TRIM(REPLACE(@PRIMER_APELLIDO, '\"',\"\")), segundoApellido = TRIM(REPLACE(@SEGUNDO_APELLIDO, '\"',\"\")), id_grupo = @ID_GRUPO, grupo = REPLACE(@NOMBRE_GRUPO, '\"',\"\"), fechaInicioAtencion = @FECHA_INICIO_ATENCION, fechaRegistro = @FECHA_REGISTRO_MATRICULA, fechaRetiro = @FECHA_RETIRO, fechaNacimiento = @FECHA_NACIMIENTO, peso = @PESO, estatura = @ESTATURA, fechaControl = @FECHA_CONTROL");
-    	$db->query("DELETE FROM $tabla_mat WHERE id_modalidad NOT IN ($modalidades)");
-    	
-    	if($facturacion == 1){
-    		$db->query("DELETE FROM $tabla_mat WHERE fechaRetiro > 0000-00-00 AND DATE_SUB('$cob_periodo->fecha',INTERVAL 30 DAY) > fechaRetiro OR '$cob_periodo->fecha' < fechaRetiro");
-    		$db->query("UPDATE $tabla_mat SET certificacion = 2 WHERE fechaRetiro > 0000-00-00");
-    		$archivo_sed = $config->application->basePath . "public/files/bc_bd/" . $carga->nombreSedes;
-    		$db->query("LOAD DATA INFILE '$archivo_sed' IGNORE INTO TABLE cob_periodo_contratosedecupos FIELDS TERMINATED BY ';' LINES TERMINATED BY '\n' IGNORE 1 LINES (@ID_SEDE_CONTRATO, @ID_OFERENTE, @RAZON_SOCIAL, @ID_SEDE, @NOMBRE_SEDE, @TELEFONO, @DIRECCION, @ID_BARRIO_VEREDA, @NOMBRE_BARRIO_VEREDA, @ID_COMUNA, @NOMBRE_COMUNA_CORREGIMIENTO, @ZONA_UBICACION, @FECHA_INICIO_ATENCION, @NUMERO_CONTRATO, @ID_MODALIDAD_ORIGEN, @NOMBRE_MODALIDAD, @CUPOS_SEDE, @CUPOS_EN_USO, @CUPOS_SOSTENIBILIDAD, @CUPOS_AMPLIACION, @TOTAL_CUPOS_CONTRATO, @COORDX, @COORDY, @COORDINADOR, @PROPIEDAD_INMUEBLE, @AREA, @CAPACIDAD_ATENCION, @GRUPOS_ACTIVOS, @FECHA_FIN_CONTRATO, @FECHA_ADICION_CONTRATO) SET id_periodo = $cob_periodo->id_periodo, id_sede_contrato = @ID_SEDE_CONTRATO, cuposSede = @CUPOS_SEDE, cuposSostenibilidad = @CUPOS_SOSTENIBILIDAD, cuposAmpliacion = @CUPOS_AMPLIACION, cuposTotal = @TOTAL_CUPOS_CONTRATO");
-    		$db->query("INSERT IGNORE INTO cob_actaconteo_persona_facturacion (id_periodo, id_sede_contrato, id_contrato, id_sede, id_persona, numDocumento, primerNombre, segundoNombre, primerApellido, segundoApellido, id_grupo, grupo, fechaInicioAtencion, fechaRegistro, fechaRetiro, fechaNacimiento, peso, estatura, fechaControl, certificacion) SELECT $cob_periodo->id_periodo, id_sede_contrato, id_contrato, id_sede, id_persona, numDocumento, primerNombre, segundoNombre, primerApellido, segundoApellido, id_grupo, grupo, fechaInicioAtencion, fechaRegistro, fechaRetiro, fechaNacimiento, peso, estatura, fechaControl, certificacion FROM $tabla_mat");
-    		$db->query("UPDATE cob_periodo SET id_carga_facturacion = $carga->id_carga WHERE id_periodo = $cob_periodo->id_periodo");
-    	}
-    	$db->query("DELETE FROM $tabla_mat WHERE fechaRetiro > 0000-00-00");
-    	$db->query("INSERT IGNORE INTO bc_contrato (id_contrato, id_oferente, id_modalidad) SELECT id_contrato, id_oferente, id_modalidad FROM $tabla_mat");
-    	$db->query("REPLACE INTO bc_sede_contrato (id_sede_contrato, id_oferente, oferente_nombre, id_contrato, id_sede, sede_nombre, sede_barrio, sede_direccion, sede_telefono, id_modalidad, modalidad_nombre, estado) SELECT id_sede_contrato, id_oferente, oferente_nombre, id_contrato, id_sede, sede_nombre, sede_barrio, sede_direccion, sede_telefono, id_modalidad, modalidad_nombre, '1' FROM $tabla_mat");
-    	$db->query("INSERT IGNORE INTO cob_actaconteo (id_periodo, id_carga, recorrido, id_sede_contrato, id_contrato, id_modalidad, modalidad_nombre, id_sede, sede_nombre, sede_barrio, sede_direccion, sede_telefono, id_oferente, oferente_nombre) SELECT $cob_periodo->id_periodo, $carga->id_carga, '1', id_sede_contrato, id_contrato, id_modalidad, modalidad_nombre, id_sede, sede_nombre, sede_barrio, sede_direccion, sede_telefono, id_oferente, oferente_nombre FROM $tabla_mat");
-    	$db->query("INSERT IGNORE INTO cob_actaconteo_persona (id_actaconteo, id_periodo, recorrido, id_contrato, id_persona, numDocumento, primerNombre, segundoNombre, primerApellido, segundoApellido, id_grupo, grupo) SELECT (SELECT id_actaconteo FROM cob_actaconteo WHERE cob_actaconteo.id_sede_contrato = $tabla_mat.id_sede_contrato AND cob_actaconteo.id_periodo = $cob_periodo->id_periodo AND cob_actaconteo.recorrido = 1), $cob_periodo->id_periodo, 1, id_contrato, id_persona, numDocumento, primerNombre, segundoNombre, primerApellido, segundoApellido, id_grupo, grupo FROM $tabla_mat");
+      $archivo_sed = $config->application->basePath . "public/files/bc_bd/" . $carga->nombreSedes;
+      $db->query("CREATE TEMPORARY TABLE $tabla_mat (tipoParticipante VARCHAR(20), tipoEncuentro VARCHAR(20), fechaEncuentro DATE, horaEncuentro TIME, id_contrato BIGINT, id_sede INT, sede_nombre VARCHAR(80), sede_barrio VARCHAR(80), sede_comuna VARCHAR(80), sede_direccion VARCHAR(80), sede_telefono VARCHAR(80), numDocumento VARCHAR(100), primerNombre VARCHAR(20), segundoNombre VARCHAR(20), primerApellido VARCHAR(20), segundoApellido VARCHAR(20), grupo VARCHAR(80), fechaNacimiento DATE) CHARACTER SET utf8 COLLATE utf8_bin");
+      $db->query("CREATE TEMPORARY TABLE $tabla_sed (grupo VARCHAR(80), tipoParticipante VARCHAR(20), tipoEncuentro VARCHAR(20), fechaEncuentro DATE, horaEncuentro TIME, id_sede INT, sede_nombre VARCHAR(80), sede_barrio VARCHAR(80), sede_comuna VARCHAR(80), sede_direccion VARCHAR(80), sede_telefono VARCHAR(80)) CHARACTER SET utf8 COLLATE utf8_bin");
+    	$db->query("LOAD DATA INFILE '$archivo_mat' IGNORE INTO TABLE $tabla_mat FIELDS TERMINATED BY ';' LINES TERMINATED BY '\n' IGNORE 1 LINES (@numDocumento, @primerNombre, @segundoNombre, @primerApellido, @segundoApellido, @fechaNacimiento, @grupo) SET numDocumento = @numDocumento, primerNombre = @primerNombre, segundoNombre = @segundoNombre, primerApellido = @primerApellido, segundoApellido = @segundoApellido, fechaNacimiento = @fechaNacimiento, grupo = @grupo");
+      $db->query("LOAD DATA INFILE '$archivo_sed' IGNORE INTO TABLE $tabla_sed FIELDS TERMINATED BY ';' LINES TERMINATED BY '\n' IGNORE 1 LINES (@idCalendario, @gestorZonal, @tipoEncuentro, @novedad, @fechaEncuentro, @horaEncuentro, @grupo, @tipoGrupo, @id_sede, @sede_telefono, @sede_telefono2, @sede_comuna, @sede_barrio, @tipoParticipante, @sede_nombre, @sede_direccion) SET grupo = @grupo, tipoParticipante = @tipoParticipante, tipoEncuentro = @tipoEncuentro, fechaEncuentro = @fechaEncuentro, horaEncuentro = @horaEncuentro, id_sede = @id_sede, sede_nombre = @sede_nombre, sede_barrio = @sede_barrio, sede_comuna = @sede_comuna, sede_direccion = @sede_direccion, sede_telefono = @sede_telefono");
+      //Elimino los grupos que no se cargan
+      $db->query("DELETE FROM $tabla_sed WHERE tipoEncuentro != 'NP' AND tipoEncuentro != 'LS' AND tipoEncuentro != 'MIXTO'");
+      //Cruzo el horario con los participantes
+      $db->query("UPDATE $tabla_mat, $tabla_sed SET $tabla_mat.tipoParticipante = $tabla_sed.tipoParticipante, $tabla_mat.tipoEncuentro = $tabla_sed.tipoEncuentro, $tabla_mat.fechaEncuentro = $tabla_sed.fechaEncuentro, $tabla_mat.horaEncuentro = $tabla_sed.horaEncuentro, $tabla_mat.id_contrato = $id_contrato_metro, $tabla_mat.id_sede = $tabla_sed.id_sede, $tabla_mat.sede_nombre = $tabla_sed.sede_nombre, $tabla_mat.sede_barrio = $tabla_sed.sede_barrio, $tabla_mat.sede_comuna = $tabla_sed.sede_comuna, $tabla_mat.sede_direccion = $tabla_sed.sede_direccion, $tabla_mat.sede_telefono = $tabla_sed.sede_telefono WHERE $tabla_mat.grupo LIKE CONCAT('%', $tabla_sed.grupo, '%')");
+      //Elimino los participantes que no cruzaron con el horario
+      $db->query("DELETE FROM $tabla_mat WHERE id_sede IS NULL OR id_sede = 0");
+      //Creo actas de conteo
+      $db->query("INSERT IGNORE INTO cob_actamuestreo (id_periodo, id_carga, recorrido, id_contrato, id_modalidad, modalidad_nombre, id_sede, sede_nombre, sede_barrio, sede_comuna, sede_direccion, sede_telefono, id_oferente, oferente_nombre) SELECT $cob_periodo->id_periodo, $carga->id_carga, $recorrido, $id_contrato_metro, $id_modalidad_metro, '$modalidad_nombre_metro', id_sede, sede_nombre, sede_barrio, sede_comuna, sede_direccion, sede_telefono, $id_oferente_metro, '$oferente_nombre_metro' FROM $tabla_mat");
+    	$db->query("INSERT IGNORE INTO cob_actamuestreo_persona (id_actamuestreo, id_periodo, recorrido, id_sede, grupo, numDocumento, primerNombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, tipoParticipante, tipoEncuentro, fechaEncuentro, horaEncuentro) SELECT (SELECT id_actamuestreo FROM cob_actamuestreo WHERE cob_actamuestreo.id_sede = $tabla_mat.id_sede AND cob_actamuestreo.id_contrato = $tabla_mat.id_contrato AND cob_actamuestreo.id_periodo = $cob_periodo->id_periodo AND cob_actamuestreo.recorrido = $recorrido), $cob_periodo->id_periodo, $recorrido, id_sede, grupo, numDocumento, primerNombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, tipoParticipante, tipoEncuentro, fechaEncuentro, horaEncuentro FROM $tabla_mat");
     	$db->query("DROP TABLE $tabla_mat");
+      $db->query("DROP TABLE $tabla_sed");
     	return TRUE;
     }
-    
+
     //Verificar este proceso
     public function generarActasFacturacion($cob_periodo, $recorrido_anterior) {
     	$recorrido = $recorrido_anterior + 1;
@@ -241,7 +206,7 @@ class CobActamuestreo extends \Phalcon\Mvc\Model
     	$db->query("DROP TABLE $tabla_mat");
     	return TRUE;
     }
-    
+
     public function cerrarPeriodo($id_periodo) {
     	$rows = CobActaconteoPersona::find(["id_periodo = $id_periodo AND (asistencia = 1 OR asistencia = 7)"]);
     	if(count($rows) > 0){
@@ -257,7 +222,7 @@ class CobActamuestreo extends \Phalcon\Mvc\Model
     	$db->query("DROP TABLE $tabla_mat");
     	return TRUE;
     }
-    
+
     public function generarActa($id_actamuestreo){
     	$acta = CobActamuestreo::findFirstByid_actamuestreo($id_actamuestreo);
     	if(!$acta || $acta == NULL){
@@ -299,7 +264,7 @@ class CobActamuestreo extends \Phalcon\Mvc\Model
     		<div class='clear'></div>
     	</div>";
     	$datos_acta = array();
-    	$datos_acta['datos'] = $acta; 
+    	$datos_acta['datos'] = $acta;
     	$html = "";
     	$html .= "<div id='imprimir'>"; // <acta>
     	//Página Prestador
@@ -348,7 +313,7 @@ class CobActamuestreo extends \Phalcon\Mvc\Model
   		/*
   		 * Si el acta está en la modalidad Entorno Comunitario, Entorno Familiar o Jardines Infantiles
   		 * se imprimen las actas con la casilla de fecha de visita, de lo contrario la fecha se omite
-  		 */ 
+  		 */
   		$fecha_lista = "";
   		$fecha_encabezado = "";
   		$fecha_encabezado2 = "";
@@ -382,10 +347,10 @@ class CobActamuestreo extends \Phalcon\Mvc\Model
   		$html .= "<div class='clear'></div></div>" . $pie_pagina;
   		$html .= "<div class='paginacion'>PÁGINA $p</div>";
   		$html .= "<div class='clear'></div>"; // </acta>
-    	$datos_acta['html'] = $html; 
+    	$datos_acta['html'] = $html;
     	return $datos_acta;
     }
-    
+
     /**
      * Returns a human representation of 'estado'
      *
@@ -414,7 +379,7 @@ class CobActamuestreo extends \Phalcon\Mvc\Model
     			break;
     	}
     }
-    
+
     /**
      * Returns a human representation of 'id_actamuestreo'
      *
@@ -424,7 +389,7 @@ class CobActamuestreo extends \Phalcon\Mvc\Model
     {
     	return "AMU-03-". date("Y") . sprintf('%05d', $this->id_actamuestreo);
     }
-    
+
     /**
      * Returns a human representation of 'id_actamuestreo'
      *
@@ -434,7 +399,7 @@ class CobActamuestreo extends \Phalcon\Mvc\Model
     {
     	return $this->id_actamuestreo;
     }
-    
+
     /**
      * Contar beneficiarios
      *
@@ -444,7 +409,7 @@ class CobActamuestreo extends \Phalcon\Mvc\Model
     {
     	return count($this->CobActamuestreoPersona);
     }
-    
+
     /**
      * Returns a human representation of 'cicloVital'
      *
@@ -478,7 +443,7 @@ class CobActamuestreo extends \Phalcon\Mvc\Model
     			break;
     	}
     }
-    
+
     /**
      * Returns a human representation of 'url'
      *

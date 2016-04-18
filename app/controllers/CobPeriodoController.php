@@ -1,10 +1,10 @@
 <?php
- 
+
 use Phalcon\Mvc\Model\Criteria;
 use Phalcon\Paginator\Adapter\Model as Paginator;
 
 class CobPeriodoController extends ControllerBase
-{    
+{
 	public $user;
     public function initialize()
     {
@@ -34,9 +34,9 @@ class CobPeriodoController extends ControllerBase
      */
     public function nuevoAction()
     {
-		
+
     }
-    
+
     /**
      * Ver
      *
@@ -54,21 +54,22 @@ class CobPeriodoController extends ControllerBase
     				"id_periodo = $id_periodo",
     				"group" => "recorrido"
     		));
+        $this->view->pick("cob_periodo/vermetro");
     	} else {
     		$recorridos = CobActaconteo::find(array(
     				"id_periodo = $id_periodo",
     				"group" => "recorrido"
     		));
+        $this->view->fecha_cierre = $cob_periodo->fechaCierre;
+      	$this->view->id_facturacion = $cob_periodo->id_carga_facturacion;
     	}
+      $this->view->crear_recorrido = count($recorridos) + 1;
+      $this->view->recorridos = $recorridos;
     	$this->view->id_periodo = $cob_periodo->id_periodo;
     	$this->view->fecha_periodo = $cob_periodo->getFechaDetail();
-    	$this->view->fecha_cierre = $cob_periodo->fechaCierre;
-    	$this->view->id_facturacion = $cob_periodo->id_carga_facturacion;
-    	$this->view->recorridos = $recorridos;
-    	$this->view->crear_recorrido = count($recorridos) + 1;
     	$this->view->nivel = $this->user['nivel'];
     }
-    
+
     /**
      * Recorrido
      *
@@ -111,7 +112,7 @@ class CobPeriodoController extends ControllerBase
     	$this->view->actas = $actas_recorrido;
     	$this->view->nivel = $this->user['nivel'];
     }
-    
+
     /**
      * Recorrido
      *
@@ -124,7 +125,7 @@ class CobPeriodoController extends ControllerBase
     	if (!$cob_periodo) {
     		$this->flash->error("El periodo no fue encontrado");
     		return $this->response->redirect("cob_periodo/");
-    	}    	
+    	}
     	if($cob_periodo->tipo == 2){
     		$actas_recorrido = CobActamuestreo::find(array(
     				"id_periodo = $id_periodo AND recorrido = $recorrido",
@@ -135,7 +136,7 @@ class CobPeriodoController extends ControllerBase
     				"id_periodo = $id_periodo AND recorrido = $recorrido",
     				"group" => "id_actaconteo"
     		));
-    	}    	
+    	}
     	if (!$recorrido) {
     		$this->flash->error("El recorrido no fue encontrado");
     		return $this->response->redirect("cob_periodo/");
@@ -151,7 +152,7 @@ class CobPeriodoController extends ControllerBase
     	$this->view->actas = $actas_recorrido;
     	$this->view->nivel = $this->user['nivel'];
     }
-    
+
     /**
      * Recorrido
      *
@@ -186,21 +187,21 @@ class CobPeriodoController extends ControllerBase
     	->addJs('js/jquery.tablesorter.min.js')
     	->addJs('js/jquery.tablesorter.widgets.js')
     	->addJs('js/rutear.js');
-    	
+
     	$this->view->id_periodo = $cob_periodo->id_periodo;
     	$this->view->recorrido = $recorrido;
     	$this->view->fecha_periodo = $cob_periodo->id_periodo;
     	$this->view->actas = $actas;
     	$this->view->interventores = IbcUsuario::find(['id_usuario_cargo = 3', 'order' => 'usuario asc']);
     }
-    
+
     /**
      * Guarda el cob_periodo editado
      *
      */
     public function ruteoguardarAction($id_periodo, $recorrido)
     {
-    
+
     	if (!$this->request->isPost()) {
     		 return $this->response->redirect("ibc_usuario/");
     	}
@@ -262,14 +263,14 @@ class CobPeriodoController extends ControllerBase
     	$this->flash->success("El ruteo fue actualizado exitosamente");
     	return $this->response->redirect("cob_periodo/rutear/$id_periodo/$recorrido");
     }
-    
+
     /**
      * Rutea desde otro recorrido
      *
      */
     public function ruteodesdeotroguardarAction($id_periodo, $recorrido)
     {
-    
+
     	if (!$this->request->isPost()) {
     		return $this->response->redirect("rutear/$id_periodo/$recorrido");
     	}
@@ -289,8 +290,8 @@ class CobPeriodoController extends ControllerBase
     		));
     		$tabla_acta = "cob_actaconteo";
     	}
-    	
-    	
+
+
     	if (!$cob_periodo) {
     		$this->flash->error("El periodo no fue encontrado");
     		return $this->response->redirect("cob_periodo/");
@@ -309,7 +310,7 @@ class CobPeriodoController extends ControllerBase
     	$this->flash->success("El ruteo fue actualizado exitosamente");
     	return $this->response->redirect("cob_periodo/rutear/$id_periodo/$recorrido");
     }
-    
+
     /**
      * nuevorecorrido
      *
@@ -340,7 +341,7 @@ class CobPeriodoController extends ControllerBase
     	$this->view->recorrido = count($recorridos) + 1;
     	$this->view->cargas = BcCarga::find(['order' => 'fecha DESC']);
     }
-        
+
     /**
      * nuevorecorrido1
      *
@@ -354,11 +355,21 @@ class CobPeriodoController extends ControllerBase
     		return $this->response->redirect("cob_periodo/");
     	}
     	$this->view->id_periodo = $cob_periodo->id_periodo;
-    	$this->view->fecha_corte = $this->conversiones->fecha(3, $cob_periodo->fecha);
-    	$recorridos = CobActaconteo::find(array(
-        	"id_periodo = $id_periodo",
-    		"group" => "recorrido"
-    	));
+      if($cob_periodo->tipo == 2) {
+    		$recorridos = CobActamuestreo::find(array(
+    				"id_periodo = $id_periodo",
+    				"group" => "recorrido"
+    		));
+        $this->view->pick("cob_periodo/nuevorecorrido1metro");
+    	} else {
+    		$recorridos = CobActaconteo::find(array(
+    				"id_periodo = $id_periodo",
+    				"group" => "recorrido"
+    		));
+        $this->view->fecha_corte = $this->conversiones->fecha(3, $cob_periodo->fecha);
+        $modalidades = BcModalidad::find();
+      	$this->view->modalidades = $modalidades;
+    	}
     	if (count($recorridos) == 0){
     		$this->view->recorridos = array("1" => "1");
     	} else if ($count($recorridos) > 1) {
@@ -366,8 +377,6 @@ class CobPeriodoController extends ControllerBase
     	} else {
     		$this->view->recorridos = $recorridos;
     	}
-    	$modalidades = BcModalidad::find();
-    	$this->view->modalidades = $modalidades;
     	$this->view->cargas = BcCarga::find(['order' => 'fecha DESC']);
     }
 
@@ -394,7 +403,7 @@ class CobPeriodoController extends ControllerBase
             $this->tag->setDefault("fecha", $this->conversiones->fecha(2, $cob_periodo->fecha));
         }
     }
-    
+
     /**
      * Creación de un nuevo cob_periodo
      */
@@ -406,7 +415,7 @@ class CobPeriodoController extends ControllerBase
     	$cob_periodo = new CobPeriodo();
     	$cob_periodo->fecha = $this->conversiones->fecha(1, $this->request->getPost("fecha"));
     	$cob_periodo->tipo = $this->request->getPost("tipo");
-    
+
     	if (!$cob_periodo->save()) {
     		foreach ($cob_periodo->getMessages() as $message) {
     			$this->flash->error($message);
@@ -427,24 +436,35 @@ class CobPeriodoController extends ControllerBase
         $cob_periodo = CobPeriodo::findFirstByid_periodo($id_periodo);
         if (!$cob_periodo) {
         	$this->flash->error("El periodo no existe");
-        
+
         	return $this->response->redirect("cob_periodo/");
         }
         $id_carga = $this->request->getPost("carga");
-        $facturacion = $this->request->getPost("facturacion");
-        $modalidades = implode(",", $this->request->getPost("modalidad"));
         $carga = BcCarga::findFirstByid_carga($id_carga);
         if (!$carga) {
         	$this->flash->error("La carga no existe");
         	return $this->response->redirect("cob_periodo/nuevorecorrido1/$id_periodo");
         }
-        $actas = CobActaconteo::generarActasR1($cob_periodo, $carga, $modalidades, $facturacion);
-        if($actas){
-        	$this->flash->success("Se generaron exitosamente las actas");
-        }
+        if($cob_periodo->tipo == 2) {
+          $actas = CobActamuestreo::generarActasRcarga($cob_periodo, $carga, 0);
+          if($actas){
+            $this->flash->success("Se generaron exitosamente las actas");
+          } else {
+            $this->flash->error("Ocurrió un error al realizar la carga, por favor contacte al equipo de desarrollo");
+          }
+      	} else {
+          $facturacion = $this->request->getPost("facturacion");
+          $modalidades = implode(",", $this->request->getPost("modalidad"));
+          $actas = CobActaconteo::generarActasR1($cob_periodo, $carga, $modalidades, $facturacion);
+          if($actas){
+          	$this->flash->success("Se generaron exitosamente las actas");
+          } else {
+            $this->flash->error("Ocurrió un error al realizar la carga, por favor contacte al equipo de desarrollo");
+          }
+      	}
         return $this->response->redirect("cob_periodo/ver/$id_periodo");
     }
-    
+
     /**
      * Generar un nuevo recorrido
      */
@@ -458,23 +478,38 @@ class CobPeriodoController extends ControllerBase
     		return $this->response->redirect("cob_periodo/");
     	}
     	$id_carga = $this->request->getPost("carga");
-    	$facturacion = $this->request->getPost("facturacion");
-    	$carga = BcCarga::findFirstByid_carga($id_carga);
+      $carga = BcCarga::findFirstByid_carga($id_carga);
     	if (!$carga) {
     		$this->flash->error("La carga no existe");
     		return $this->response->redirect("cob_periodo/nuevorecorrido/$id_periodo");
     	}
-    	$recorridos = CobActaconteo::find(array(
-    			"id_periodo = $id_periodo",
-    			"group" => "recorrido"
-    	));
-    	$actas = CobActaconteo::generarActasRcarga($cob_periodo, $carga, $facturacion, count($recorridos));
-    	if($actas){
-    		$this->flash->success("Se generaron exitosamente las actas");
-    	}
+      if($cob_periodo->tipo == 2) {
+        $recorridos = CobActamuestreo::find(array(
+            "id_periodo = $id_periodo",
+            "group" => "recorrido"
+        ));
+        $actas = CobActamuestreo::generarActasRcarga($cob_periodo, $carga, count($recorridos));
+        if($actas){
+          $this->flash->success("Se generaron exitosamente las actas");
+        } else {
+          $this->flash->error("Ocurrió un error al realizar la carga, por favor contacte al equipo de desarrollo");
+        }
+      } else {
+        $facturacion = $this->request->getPost("facturacion");
+        $recorridos = CobActaconteo::find(array(
+      			"id_periodo = $id_periodo",
+      			"group" => "recorrido"
+      	));
+      	$actas = CobActaconteo::generarActasRcarga($cob_periodo, $carga, $facturacion, count($recorridos));
+      	if($actas){
+      		$this->flash->success("Se generaron exitosamente las actas");
+      	} else {
+          $this->flash->error("Ocurrió un error al realizar la carga, por favor contacte al equipo de desarrollo");
+        }
+      }
     	return $this->response->redirect("cob_periodo/ver/$id_periodo");
     }
-    
+
     /**
      * elegirfacturacion
      */
@@ -482,7 +517,7 @@ class CobPeriodoController extends ControllerBase
     	$cob_periodo = CobPeriodo::findFirstByid_periodo($id_periodo);
     	if (!$cob_periodo) {
     		$this->flash->error("El periodo no existe");
-    
+
     		return $this->response->redirect("cob_periodo/");
     	}
     	$cargas = BcCarga::find(['order' => 'fecha DESC']);
@@ -493,7 +528,7 @@ class CobPeriodoController extends ControllerBase
     	$this->view->cargas = $cargas;
     	$this->view->id_periodo = $id_periodo;
     }
-    
+
     /**
      * elegirfacturacionguardar
      */
@@ -518,8 +553,8 @@ class CobPeriodoController extends ControllerBase
     	}
     	return $this->response->redirect("cob_periodo/ver/$id_periodo");
     }
-    
- 
+
+
     /**
      * Guarda el cob_periodo editado
      *
@@ -541,7 +576,7 @@ class CobPeriodoController extends ControllerBase
 
         $cob_periodo->fecha = $this->conversiones->fecha(1, $this->request->getPost("fecha"));
         $cob_periodo->tipo = $this->request->getPost("tipo");
-        
+
 
         if (!$cob_periodo->save()) {
 
@@ -579,7 +614,7 @@ class CobPeriodoController extends ControllerBase
         $this->flash->success("El periodo fue eliminado correctamente");
         return $this->response->redirect("cob_periodo/");
     }
-    
+
     /**
      * Cerrar periodo
      */

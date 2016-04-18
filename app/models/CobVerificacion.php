@@ -42,6 +42,8 @@ class CobVerificacion extends \Phalcon\Mvc\Model
     		return 'Telefónica';
     	} else if($this->tipo == 4) {
     		return 'Talento Humano';
+    	} else if($this->tipo == 5) {
+    		return 'Focalización';
     	}
     }
 

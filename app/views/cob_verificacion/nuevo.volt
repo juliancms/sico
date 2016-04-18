@@ -11,6 +11,7 @@
 					<option value="2">Equipo de Cómputo</option>
 					<option value="3">Telefónica</option>
           <option value="4">Talento Humano</option>
+          <option value="5">Focalización</option>
 			</select>
         </div>
     </div>
