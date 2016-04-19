@@ -45,18 +45,19 @@ $("#asignar_contador").click (
 		function(){
 			var contador = $("#contador").val();
 			var contador_nombre = $("#contador option:selected").text();
+			console.log(actas_checkeadas);
 			for ( var i in actas_checkeadas ) {
     				if(contador == "NULL" || contador == ""){
-        				$("#"+actas_checkeadas[ i ]).parent().parent().find(".interventor span").html("Inhabilitar");
-        			} else {
-            			$("#"+actas_checkeadas[ i ]).parent().parent().find(".interventor span").html(contador_nombre);
-            			}
-    				 $("#"+actas_checkeadas[ i ]).parent().parent().find(".contador_asignado").val(contador);
-    				 $("#"+actas_checkeadas[ i ]).parent().parent().find(".contador_asignado").removeAttr('disabled');
-    				 $("#"+actas_checkeadas[ i ]).parent().parent().addClass("warning");
-    				 $("#"+actas_checkeadas[ i ]).parent().parent().find(".id_acta").removeAttr('disabled');
-    				 $("#"+actas_checkeadas[ i ]).parent().parent().find(".no_asignado").addClass('asignando');
-    				 $("#"+actas_checkeadas[ i ]).parent().parent().find(".asignado").addClass('asignando');
+        				$("#ruteo #"+actas_checkeadas[i]).parent().parent().find(".interventor span").html("Inhabilitar");
+        		} else {
+            			$("#ruteo #"+actas_checkeadas[i]).parent().parent().find(".interventor span").html(contador_nombre);
+            }
+    				 $("#ruteo #"+actas_checkeadas[i]).parent().parent().find(".contador_asignado").val(contador);
+    				 $("#ruteo #"+actas_checkeadas[i]).parent().parent().find(".contador_asignado").removeAttr('disabled');
+    				 $("#ruteo #"+actas_checkeadas[i]).parent().parent().addClass("warning");
+    				 $("#ruteo #"+actas_checkeadas[i]).parent().parent().find(".id_acta").removeAttr('disabled');
+    				 $("#ruteo #"+actas_checkeadas[i]).parent().parent().find(".no_asignado").addClass('asignando');
+    				 $("#ruteo #"+actas_checkeadas[i]).parent().parent().find(".asignado").addClass('asignando');
 			}
 			$(".quitar_select").removeAttr("disabled");
 			$(".guardar_ruteo").removeAttr("disabled");
