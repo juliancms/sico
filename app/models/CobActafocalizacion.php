@@ -265,7 +265,7 @@ class CobActafocalizacion extends \Phalcon\Mvc\Model
      */
     public function getIdDetail()
     {
-    	return "ATH-03-". date("Y") . sprintf('%05d', $this->id_actafocalizacion);
+    	return "AFC-03-". date("Y") . sprintf('%05d', $this->id_actafocalizacion);
     }
 
     /**
