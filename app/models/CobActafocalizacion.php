@@ -120,7 +120,7 @@ class CobActafocalizacion extends \Phalcon\Mvc\Model
     	}
     	$acta_id = "AFC-03-". date("Y") . sprintf('%05d', $acta->id_actafocalizacion);
     	$encabezado = "<div class='seccion encabezado'>
-    	<div class='fila center'><div>ACTA DE VERIFICACIÓN FÍSICA DE LA ATENCIÓN DEL 100% DEL TALENTO HUMANO REPORTADO EN EL SIST. INFORMACIÓN DELFI<br>INTERVENTORÍA BUEN COMIENZO</div></div>
+    	<div class='fila center'><div>ACTA DE VERIFICACIÓN FÍSICA DE FOCALIZACIÓN DE LOS BENEFICIARIOS REPORTADOS EN EL SISTEMA DE INFORMACIÓN DE BUEN COMIENZO<br>INTERVENTORÍA BUEN COMIENZO</div></div>
     	<div class='fila col3 center'><div>Código: F-ITBC-GC-001</div><div></div><div></div></div>
     	<div class='fila col3e'>
     	<div>ACTA: <span style='font-weight: normal;'>$acta_id</span></div>
