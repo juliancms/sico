@@ -51,7 +51,12 @@ class CobVerificacionController extends ControllerBase
     		$this->flash->error("La verificacion no fue encontrada");
     		return $this->response->redirect("cob_periodo/");
     	}
-      if($cob_verificacion->tipo == 4) {
+			if($cob_verificacion->tipo == 5) {
+    		$actas = CobActafocalizacion::find(array(
+    				"id_verificacion = $id_verificacion"
+    		));
+    	}
+      else if($cob_verificacion->tipo == 4) {
     		$actas = CobActath::find(array(
     				"id_verificacion = $id_verificacion"
     		));
@@ -147,8 +152,12 @@ class CobVerificacionController extends ControllerBase
     		$actas = CobActaverificaciontelefonica::cargarBeneficiarios($carga, $modalidades, $cob_verificacion->id_verificacion);
     		if($actas){
     			$this->flash->success("La verificación fue creada exitosamente.");
-    		}
-
+				}
+    	} else if ($tipo == 5){
+					$actas = CobActafocalizacion::cargarBeneficiarios($carga, $cob_verificacion->id_verificacion);
+					if($actas){
+						$this->flash->success("La verificación fue creada exitosamente.");
+					}
     	}
     	return $this->response->redirect("cob_verificacion/");
     }

@@ -89,7 +89,13 @@ class SecurityPlugin extends Plugin
     		'nuevo' => array(
     				'nivelPermiso' => '1'
     		),
+        'nuevoindividual' => array(
+    				'nivelPermiso' => '1'
+    		),
     		'crear' => array(
+    				'nivelPermiso' => '1'
+    		),
+        'crearindividual' => array(
     				'nivelPermiso' => '1'
     		),
     		'eliminar' => array(
@@ -403,6 +409,23 @@ class SecurityPlugin extends Plugin
     				'nivelPermiso' => '3'
     		),
         'adicionales_listado' => array(
+    				'nivelPermiso' => '3'
+    		),
+    		'guardarbeneficiarios' => array(
+    				'nivelPermiso' => '3'
+    		)
+    	),
+      'cob_actafocalizacion' => array(
+    		'ver' => array(
+    				'nivelPermiso' => '3'
+    		),
+    		'datos' => array(
+    				'nivelPermiso' => '3'
+    		),
+    		'guardardatos' => array(
+    				'nivelPermiso' => '3'
+    		),
+    		'beneficiarios' => array(
     				'nivelPermiso' => '3'
     		),
     		'guardarbeneficiarios' => array(
