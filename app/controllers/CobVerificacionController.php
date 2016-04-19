@@ -416,8 +416,6 @@ class CobVerificacionController extends ControllerBase
     		));
     		$tabla_acta = "cob_actaconteo";
     	}
-
-
     	if (!$cob_periodo) {
     		$this->flash->error("El periodo no fue encontrado");
     		return $this->response->redirect("cob_periodo/");
@@ -425,6 +423,11 @@ class CobVerificacionController extends ControllerBase
     	if (!$actas) {
     		$this->flash->error("El recorrido no fue encontrado");
     		return $this->response->redirect("cob_periodo/");
+    	}
+			$cob_verificacion = CobVerificacion::findFirstByid_verificacion($id_verificacion);
+    	if (!$cob_verificacion) {
+    		$this->flash->error("La verificación no fue encontrada");
+    		return $this->response->redirect("cob_verificacion/");
     	}
 			if($cob_verificacion->tipo == 5){
 				$tabla = "cob_actafocalizacion";
