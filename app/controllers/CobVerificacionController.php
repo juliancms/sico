@@ -426,12 +426,23 @@ class CobVerificacionController extends ControllerBase
     		$this->flash->error("El recorrido no fue encontrado");
     		return $this->response->redirect("cob_periodo/");
     	}
+			if($cob_verificacion->tipo == 5){
+				$tabla = "cob_actafocalizacion";
+			} else if($cob_verificacion->tipo == 4){
+				$tabla = "cob_actath";
+			} else if($cob_verificacion->tipo == 3){
+				$tabla = "cob_actaverificaciontelefonica";
+			} else  if($cob_verificacion->tipo == 2){
+				$tabla = "cob_actaverificacioncomputo";
+			} else if($cob_verificacion->tipo == 1) {
+				$tabla = "cob_actaverificaciondocumentacion";
+			}
     	$db = $this->getDI()->getDb();
     	foreach($actas as $row){
     		$id_usuario = $row->id_usuario;
     		$id_contrato = $row->id_contrato;
     		$id_sede = $row->id_sede;
-    		$query = $db->execute("UPDATE cob_actaverificaciondocumentacion SET id_usuario = $id_usuario WHERE id_verificacion = $id_verificacion AND id_contrato = $id_contrato AND id_sede = $id_sede");
+    		$query = $db->execute("UPDATE $tabla SET id_usuario = $id_usuario WHERE id_verificacion = $id_verificacion AND id_contrato = $id_contrato AND id_sede = $id_sede");
     	}
     	$this->flash->success("El ruteo fue actualizado exitosamente");
     	return $this->response->redirect("cob_verificacion/rutear/$id_verificacion");
