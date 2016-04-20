@@ -8,7 +8,7 @@ $(".eliminar_guardado").click (
 $('#pegar_listado').on('input',function(e){
 	var data = $(this).val();
 	var rows = data.split("\n");
-	if(rows.length == 500){
+	if(rows.length > 500){
 		$(".alerta_lote").html("<div class='alert alert-danger'><i class='glyphicon glyphicon-warning-sign'></i> Sólamente puedes guardar un máximo de 500 niños.</div>");
 		$("#pegar_listado").val("");
 		$(".alerta_lote").fadeOut();
@@ -72,7 +72,7 @@ function reasignar_keys(){
 }
 function agregar_item(valor) {
 	var n_filas = $( ".numDocumento[disabled!='disabled']" ).size();
-	if(n_filas !== 500){
+	if(n_filas < 500){
 		$('#listado_participantes_tabla tbody tr:hidden:first').find("input").removeAttr("disabled");
 		$('#listado_participantes_tabla tbody tr:hidden:first').removeAttr("style");
 		$( '#permiso_general_form' ).parsley( 'destroy' );

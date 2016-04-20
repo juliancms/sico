@@ -55,12 +55,16 @@ class BcPermisoController extends ControllerBase
     	$this->assets
     	->addJs('js/parsley.min.js')
     	->addJs('js/parsley.extend.js')
-    	->addJs('js/permisos_lista.js');
+    	->addJs('js/permisos_lista.js')
+			->addCss('css/tooltipster.css')
+			->addJs('js/jquery.tooltipster.min.js')
+			->addJs('js/permiso_general_individual.js');
+			$agregar_participantes = 0;
     	$fecha_limite = strtotime(date('Y-m-d'). ' +1 days');
     	$texto_aprobar = "";
 			$id_sede_contrato = $permiso[0]->id_sede_contrato;
 			$permisos = BcPermiso::find(array("id_permiso <> $id_permiso AND id_sede_contrato = $id_sede_contrato", "order" => "fecha ASC"));
-			$listado_beneficiarios = BcPermisoParticipante::find(array("id_permiso = $id_permiso", "order" => "nombreCompleto ASC"));
+			$listado_beneficiarios = BcPermisoParticipante::find(array("id_permiso = $id_permiso", "order" => "id_permiso_participante ASC"));
     	switch ($this->user['id_componente']) {
     		case 3:
     			$oferente = IbcUsuario::findFirstByid_usuario($this->id_usuario);
@@ -73,6 +77,9 @@ class BcPermisoController extends ControllerBase
 	    		if(strtotime($permiso[0]->fecha) > $fecha_limite && $permiso[0]->estado < 3){
 	    			$this->view->accion_permiso = "<a style='margin-left: 3px;' href='#eliminar_elemento' data-toggle = 'modal' class='btn btn-danger regresar eliminar_fila' data-id = '". $permiso[0]->id_permiso ."'><i class='glyphicon glyphicon-remove'></i> Anular Permiso</a>";
 	    		}
+					if($permiso[0]->fecha > date('Y-m-d')){
+	 				 $agregar_participantes = 1;
+	 			 	}
     			break;
     		case 1:
     			if($this->user['nivel'] > 2){
@@ -83,9 +90,9 @@ class BcPermisoController extends ControllerBase
     				$this->view->accion_permiso = "<a style='margin-left: 3px;' href='/sico/bc_permiso/aprobar/".$permiso[0]->id_permiso."' class='btn btn-success regresar'><i class='glyphicon glyphicon-ok'></i> Pre Aprobar Permiso</a><a style='margin-left: 3px;' href='#eliminar_elemento' data-toggle = 'modal' class='btn btn-danger regresar eliminar_fila' data-id = '". $permiso[0]->id_permiso ."' id='/sico/bc_permiso/eliminar/".$permiso[0]->id_permiso."'><i class='glyphicon glyphicon-remove'></i> Anular Permiso</a>";
     			} else if($permiso[0]->estado == 1){
     				$this->view->accion_permiso = "<a style='margin-left: 3px;' href='#eliminar_elemento' data-toggle = 'modal' class='btn btn-danger regresar eliminar_fila' data-id = '". $permiso[0]->id_permiso ."'><i class='glyphicon glyphicon-remove'></i> Anular Permiso</a>";
-    			} else if($permiso[0]->estado == 3){
-    				$this->view->accion_permiso = "<a style='margin-left: 3px;' href='/sico/bc_permiso/aprobar/".$permiso[0]->id_permiso."' class='btn btn-success regresar'><i class='glyphicon glyphicon-ok'></i> Pre Aprobar Permiso</a><a style='margin-left: 3px;' href='#eliminar_elemento' data-toggle = 'modal' class='btn btn-danger regresar eliminar_fila' data-id = '". $permiso[0]->id_permiso ."' id='/sico/bc_permiso/eliminar/".$permiso[0]->id_permiso."'><i class='glyphicon glyphicon-remove'></i> Anular Permiso</a>";
-    			}
+    			} else if($permiso[0]->fecha > date('Y-m-d')){
+	 				 $agregar_participantes = 1;
+	 			 	}
     			break;
     		case 2:
     			if($permiso[0]->estado == 1){
@@ -96,6 +103,9 @@ class BcPermisoController extends ControllerBase
 						$this->view->accion_permiso = "<a style='margin-left: 3px;' href='#eliminar_elemento' data-toggle = 'modal' class='btn btn-danger regresar eliminar_fila' data-id = '". $permiso[0]->id_permiso ."'><i class='glyphicon glyphicon-remove'></i> Anular Permiso</a>";
 					}
     			$texto_aprobar = $this->elements->texto_aprobar();
+					if($permiso[0]->fecha > date('Y-m-d')){
+	 				 $agregar_participantes = 1;
+	 			 	}
     			break;
     		case 4:
 					$permisos = BcPermiso::find(array("id_permiso <> $id_permiso AND id_sede_contrato = $id_sede_contrato AND estado = 2", "order" => "fecha ASC"));
@@ -117,6 +127,7 @@ class BcPermisoController extends ControllerBase
     	$this->view->permiso = $permiso[0];
     	$this->view->pick("bc_permiso/permiso_" . $this->elements->getCategoriaEnlace($permiso[0]->categoria));
     	$this->view->texto_aprobar = $texto_aprobar;
+			$this->view->agregar_participantes = $agregar_participantes;
     }
 
     /**
@@ -979,6 +990,42 @@ class BcPermisoController extends ControllerBase
     	$this->flash->success("El permiso con ID <strong>$id_permiso</strong> fue aprobado exitosamente");
         return $this->response->redirect('bc_permiso');
     }
+
+		/**
+		 *
+		 * Agregar participantes
+		 *
+		 */
+		 public function agregar_participantesAction($id_permiso){
+			 if (!$this->request->isPost()) {
+     		return $this->response->redirect('bc_permiso');
+     	 }
+			 $permiso = BcPermiso::findFirst(array("id_permiso = $id_permiso"));
+			 if (!$permiso) {
+             $this->flash->error("El permiso con ID <strong>$id_permiso</strong> no fue encontrado o no tiene privilegios para agregarle participantes");
+             return $this->response->redirect("bc_permiso/");
+			 }
+			 if($permiso->fecha <= date('Y-m-d')){
+				 $this->flash->error("Solo se pueden agregar participantes hasta un día anterior del día del permiso.");
+				 return $this->response->redirect("bc_permiso/permiso/$id_permiso");
+			 }
+			 $elementos = array(
+					 'numDocumento' => $this->request->getPost("numDocumento"),
+					 'nombreCompleto' => $this->request->getPost("nombreCompleto"),
+					 'id_permiso' => $permiso->id_permiso
+			 );
+			 $db = $this->getDI()->getDb();
+			 $sql = $this->conversiones->multipleinsert("bc_permiso_participante", $elementos);
+			 $query = $db->query($sql);
+			 if (!$query) {
+				 foreach ($query->getMessages() as $message) {
+					 $this->flash->error($message);
+				 }
+				 return $this->response->redirect("bc_permiso/permiso/$id_permiso");
+			 }
+			 $this->flash->success("Se agregaron exitosamente los participantes para el permiso con ID <strong>$id_permiso</strong>.");
+			 return $this->response->redirect("bc_permiso/permiso/$id_permiso");
+		 }
 
     /**
      * Anular permiso

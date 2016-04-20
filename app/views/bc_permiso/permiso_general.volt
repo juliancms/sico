@@ -19,7 +19,6 @@
 			<th>Persona Contacto del Escenario</th>
 			<th>Teléfonos de la Persona de Contacto</th>
 			<th>Email de la Persona de Contacto</th>
-			<th>Listado de Niños Participantes</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -36,7 +35,6 @@
 			<td>{{ permiso.BcPermisoGeneral.personaContactoEvento }}</td>
 			<td>{{ permiso.BcPermisoGeneral.telefonoContactoEvento }}</td>
 			<td>{{ permiso.BcPermisoGeneral.emailContactoEvento }}</td>
-			<td><a target="_blank" href="/sico/files/permisos/{{ permiso.BcPermisoGeneral.listadoNinios }}">Clic para ver Archivo</a></td>
 		</tr>
 		<?php if($permiso->BcPermisoGeneral->requiereTransporte == 1){ ?>
 		<tr>
