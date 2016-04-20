@@ -96,8 +96,8 @@
 		{% if (agregar_participantes == 0) %}
 		<div class="error_nopersonas"></div>
 		<a class="btn btn-success pull-left" id="agregar_item_adicional"><i class="glyphicon glyphicon-plus"></i> Agregar Ítem</a>
-		<a class="btn btn-success pull-left" id="limpiar_formulario"><i class="glyphicon glyphicon-refresh"></i> Limpiar Formulario</a>
-		<a class="btn btn-primary submit_listado"><i class="glyphicon glyphicon-save"></i> Guardar Listado</a>
+		<a style ="margin-left: 3px" class="btn btn-success pull-left" id="limpiar_formulario"><i class="glyphicon glyphicon-refresh"></i> Limpiar Formulario</a>
+		<a style ="margin-left: 3px" class="btn btn-primary submit_listado"><i class="glyphicon glyphicon-save"></i> Guardar Listado</a>
 	</form>
 	{% endif %}
 	</div>
