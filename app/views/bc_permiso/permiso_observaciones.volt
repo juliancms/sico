@@ -58,7 +58,7 @@
 		{% if (listado_beneficiarios is empty) %}
 		<div class="alert alert-warning"><i class="glyphicon glyphicon-warning-sign"></i> Este permiso no cuenta con participantes, por favor ingrésalos a continuación:</div>
 		{% endif %}
-		{% if (agregar_participantes == 0) %}
+		{% if (agregar_participantes > 0) %}
 		{{ form("bc_permiso/agregar_participantes/"~permiso.id_permiso, "id":"permiso_general_form", "method":"post", "parsley-validate" : "") }}
 		<p>Puede copiar los beneficiarios directamente desde un archivo en Excel, seleccionando los datos de las columnas 'Nombre completo' y 'Nuip' en ese mismo orden como se muestra en <a id="paso1">esta imagen</a> y pegándolos en el cuadro siguiente como se puede <a id="paso2">ver aquí</a>.</p>
 		{{ text_area("pegar_listado", "rows" : 2, "placeholder" : "Pegue aquí el listado de beneficiarios", "class" : "form-control", "style" : "margin-bottom: 5px;") }}
@@ -81,7 +81,7 @@
 								<td></td>
 		        </tr>
 		    {% endfor %}
-				{% if (agregar_participantes == 0) %}
+				{% if (agregar_participantes > 0) %}
 				<?php for ($i = 1; $i <= 500; $i++) { ?>
 					<tr style="display: none;" class='limpiar'>
 						<td><span class="number"><?php echo $i; ?></span></td>
@@ -93,7 +93,7 @@
 				{% endif %}
 		    </tbody>
 		</table>
-		{% if (agregar_participantes == 0) %}
+		{% if (agregar_participantes > 0) %}
 		<div class="error_nopersonas"></div>
 		<a class="btn btn-success pull-left" id="agregar_item_adicional"><i class="glyphicon glyphicon-plus"></i> Agregar Ítem</a>
 		<a style ="margin-left: 3px" class="btn btn-success pull-left" id="limpiar_formulario"><i class="glyphicon glyphicon-refresh"></i> Limpiar Formulario</a>
