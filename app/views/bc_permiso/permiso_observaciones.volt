@@ -1,7 +1,7 @@
 <ul style="margin-bottom: 5px;" class="nav nav-tabs" role="tablist">
 	<li role="presentation" class="active"><a href="#historico" id="historico-tab" role="tab" data-toggle="tab" aria-controls="historico" aria-expanded="true">Histórico de Eventos</a></li>
 	{% if (not(permisos is empty)) %}<li role="presentation" class=""><a href="#otrospermisos" id="otrospermisos-tab" role="tab" data-toggle="tab" aria-controls="otrospermisos" aria-expanded="false">Otros Permisos</a></li>{% endif %}
-	{% if (not(listado_beneficiarios is empty)) %}<li role="presentation" class=""><a href="#listadoparticipantes" id="listadoparticipantes-tab" role="tab" data-toggle="tab" aria-controls="listadoparticipantes" aria-expanded="false">Listado de Participantes</a></li>{% endif %}
+	{% if (permiso.categoria > 1 and permiso.categoria < 5) %}<li role="presentation" class=""><a href="#listadoparticipantes" id="listadoparticipantes-tab" role="tab" data-toggle="tab" aria-controls="listadoparticipantes" aria-expanded="false">Listado de Participantes</a></li>{% endif %}
 </ul>
 <div class="tab-content">
 	<div role="tabpanel" class="tab-pane fade active in" id="historico" aria-labelledby="historico-tab">

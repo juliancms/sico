@@ -79,7 +79,7 @@ class BcPermisoController extends ControllerBase
 	    		}
 					if($permiso[0]->fecha > date('Y-m-d')){
 	 				 $agregar_participantes = 1;
-	 			 	}
+				 	}
     			break;
     		case 1:
     			if($this->user['nivel'] > 2){
@@ -90,7 +90,8 @@ class BcPermisoController extends ControllerBase
     				$this->view->accion_permiso = "<a style='margin-left: 3px;' href='/sico/bc_permiso/aprobar/".$permiso[0]->id_permiso."' class='btn btn-success regresar'><i class='glyphicon glyphicon-ok'></i> Pre Aprobar Permiso</a><a style='margin-left: 3px;' href='#eliminar_elemento' data-toggle = 'modal' class='btn btn-danger regresar eliminar_fila' data-id = '". $permiso[0]->id_permiso ."' id='/sico/bc_permiso/eliminar/".$permiso[0]->id_permiso."'><i class='glyphicon glyphicon-remove'></i> Anular Permiso</a>";
     			} else if($permiso[0]->estado == 1){
     				$this->view->accion_permiso = "<a style='margin-left: 3px;' href='#eliminar_elemento' data-toggle = 'modal' class='btn btn-danger regresar eliminar_fila' data-id = '". $permiso[0]->id_permiso ."'><i class='glyphicon glyphicon-remove'></i> Anular Permiso</a>";
-    			} else if($permiso[0]->fecha > date('Y-m-d')){
+    			}
+					if($permiso[0]->fecha > date('Y-m-d')){
 	 				 $agregar_participantes = 1;
 	 			 	}
     			break;
