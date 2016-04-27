@@ -167,7 +167,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
 	    	$db->query("DELETE FROM $tabla_pp WHERE otrosBeneficios NOT LIKE '%ID%'");
 	    	$db->query("UPDATE $tabla_pp SET id_sede = SUBSTRING_INDEX(otrosBeneficios,'ID',-1) WHERE 1");
 	    	$db->query("UPDATE $tabla_pp, bc_sede_contrato SET $tabla_pp.id_sede_contrato = bc_sede_contrato.id_sede_contrato, $tabla_pp.sede_nombre = bc_sede_contrato.sede_nombre, $tabla_pp.sede_barrio = bc_sede_contrato.sede_barrio, $tabla_pp.sede_direccion = bc_sede_contrato.sede_direccion, $tabla_pp.sede_telefono = bc_sede_contrato.sede_telefono WHERE $tabla_pp.id_sede = bc_sede_contrato.id_sede AND bc_sede_contrato.id_contrato = $id_contrato_mundomejor");
-        $db->query("DELETE FROM $tabla_mat WHERE id_modalidad = 8");
+        $db->query("DELETE FROM $tabla_mat WHERE id_modalidad = 8 AND id_contrato = $id_contrato_mundomejor");
 	    	$db->query("INSERT IGNORE INTO $tabla_mat (id_contrato, id_sede_contrato, id_modalidad, modalidad_nombre, id_sede, sede_nombre, sede_barrio, sede_direccion, sede_telefono, id_oferente, oferente_nombre, id_persona, numDocumento, primerNombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, peso, estatura, fechaControl) SELECT $id_contrato_mundomejor, id_sede_contrato, $id_modalidad_mundomejor, '$modalidad_nombre_mundomejor', id_sede, sede_nombre, sede_barrio, sede_direccion, sede_telefono, $id_oferente_mundomejor, '$oferente_nombre_mundomejor', id_persona, numDocumento, primerNombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, peso, estatura, fechaControl FROM $tabla_pp");
         }
         //Fin generar actas PP
@@ -237,7 +237,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
 	    	$db->query("DELETE FROM $tabla_pp WHERE otrosBeneficios NOT LIKE '%ID%'");
 	    	$db->query("UPDATE $tabla_pp SET id_sede = SUBSTRING_INDEX(otrosBeneficios,'ID',-1) WHERE 1");
 	    	$db->query("UPDATE $tabla_pp, bc_sede_contrato SET $tabla_pp.id_sede_contrato = bc_sede_contrato.id_sede_contrato, $tabla_pp.sede_nombre = bc_sede_contrato.sede_nombre, $tabla_pp.sede_barrio = bc_sede_contrato.sede_barrio, $tabla_pp.sede_direccion = bc_sede_contrato.sede_direccion, $tabla_pp.sede_telefono = bc_sede_contrato.sede_telefono WHERE $tabla_pp.id_sede = bc_sede_contrato.id_sede AND bc_sede_contrato.id_contrato = $id_contrato_mundomejor");
-        $db->query("DELETE FROM $tabla_mat WHERE id_modalidad = 8");
+        $db->query("DELETE FROM $tabla_mat WHERE id_modalidad = 8 AND id_contrato = $id_contrato_mundomejor");
 	    	$db->query("INSERT IGNORE INTO $tabla_mat (id_contrato, id_sede_contrato, id_modalidad, modalidad_nombre, id_sede, sede_nombre, sede_barrio, sede_direccion, sede_telefono, id_oferente, oferente_nombre, id_persona, numDocumento, primerNombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, peso, estatura, fechaControl) SELECT $id_contrato_mundomejor, id_sede_contrato, $id_modalidad_mundomejor, '$modalidad_nombre_mundomejor', id_sede, sede_nombre, sede_barrio, sede_direccion, sede_telefono, $id_oferente_mundomejor, '$oferente_nombre_mundomejor', id_persona, numDocumento, primerNombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, peso, estatura, fechaControl FROM $tabla_pp");
         }
         //Fin generar actas PP
@@ -315,7 +315,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     		$db->query("DELETE FROM $tabla_pp WHERE otrosBeneficios NOT LIKE '%ID%'");
     		$db->query("UPDATE $tabla_pp SET id_sede = SUBSTRING_INDEX(otrosBeneficios,'ID',-1) WHERE 1");
     		$db->query("UPDATE $tabla_pp, bc_sede_contrato SET $tabla_pp.id_sede_contrato = bc_sede_contrato.id_sede_contrato, $tabla_pp.sede_nombre = bc_sede_contrato.sede_nombre, $tabla_pp.sede_barrio = bc_sede_contrato.sede_barrio, $tabla_pp.sede_direccion = bc_sede_contrato.sede_direccion, $tabla_pp.sede_telefono = bc_sede_contrato.sede_telefono WHERE $tabla_pp.id_sede = bc_sede_contrato.id_sede AND bc_sede_contrato.id_contrato = $id_contrato_mundomejor");
-        $db->query("DELETE FROM $tabla_mat WHERE id_modalidad = 8");
+        $db->query("DELETE FROM $tabla_mat WHERE id_modalidad = 8 AND id_contrato = $id_contrato_mundomejor");
     		$db->query("INSERT IGNORE INTO $tabla_mat (id_contrato, id_sede_contrato, id_modalidad, modalidad_nombre, id_sede, sede_nombre, sede_barrio, sede_direccion, sede_telefono, id_oferente, oferente_nombre, id_persona, numDocumento, primerNombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, peso, estatura, fechaControl) SELECT $id_contrato_mundomejor, id_sede_contrato, $id_modalidad_mundomejor, '$modalidad_nombre_mundomejor', id_sede, sede_nombre, sede_barrio, sede_direccion, sede_telefono, $id_oferente_mundomejor, '$oferente_nombre_mundomejor', id_persona, numDocumento, primerNombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, peso, estatura, fechaControl FROM $tabla_pp");
     	//Fin generar actas PP
     		$db->query("DELETE FROM $tabla_mat WHERE id_oferente = 0");
