@@ -1,13 +1,13 @@
 <?php
 
-class CobActaverificaciontelefonicaDatos extends \Phalcon\Mvc\Model
+class CobActatelefonicaDatos extends \Phalcon\Mvc\Model
 {
 
     /**
      *
      * @var integer
      */
-    public $id_actaverificaciontelefonica;
+    public $id_actatelefonica;
 
     /**
      *

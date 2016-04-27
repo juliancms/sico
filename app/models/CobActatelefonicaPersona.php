@@ -1,19 +1,19 @@
 <?php
 
-class CobActaverificaciontelefonicaPersona extends \Phalcon\Mvc\Model
+class CobActatelefonicaPersona extends \Phalcon\Mvc\Model
 {
 
     /**
      *
      * @var integer
      */
-    public $id_actaverificaciontelefonica_persona;
+    public $id_actatelefonica_persona;
 
     /**
      *
      * @var integer
      */
-    public $id_actaverificaciontelefonica;
+    public $id_actatelefonica;
     
     /**
      *
@@ -90,7 +90,7 @@ class CobActaverificaciontelefonicaPersona extends \Phalcon\Mvc\Model
     //Virtual Foreign Key para poder acceder a la fecha de corte del acta
     public function initialize()
     {
-    	$this->belongsTo('id_actaverificaciontelefonica', 'CobActaverificaciontelefonica', 'id_actaverificaciontelefonica', array(
+    	$this->belongsTo('id_actatelefonica', 'CobActatelefonica', 'id_actatelefonica', array(
     			'reusable' => true
     	));
     }

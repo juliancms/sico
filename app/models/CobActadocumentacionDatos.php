@@ -1,13 +1,13 @@
 <?php
 
-class CobActaverificacioncomputoDatos extends \Phalcon\Mvc\Model
+class CobActadocumentacionDatos extends \Phalcon\Mvc\Model
 {
 
     /**
      *
      * @var integer
      */
-    public $id_actaverificacioncomputo;
+    public $id_actadocumentacion;
 
     /**
      *
@@ -44,17 +44,5 @@ class CobActaverificacioncomputoDatos extends \Phalcon\Mvc\Model
      * @var string
      */
     public $horaFin;
-    
-    /**
-     *
-     * @var integer
-     */
-    public $cantidadEquipos;
-    
-    /**
-     *
-     * @var integer
-     */
-    public $servicioInternet;
 
 }

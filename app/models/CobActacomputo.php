@@ -1,14 +1,14 @@
 <?php
 use Phalcon\DI\FactoryDefault;
-class CobActaverificacioncomputo extends \Phalcon\Mvc\Model
+class CobActacomputo extends \Phalcon\Mvc\Model
 {
 
     /**
      *
      * @var integer
      */
-    public $id_actaverificacioncomputo;	
-    
+    public $id_actacomputo;
+
     /**
      *
      * @var integer
@@ -20,25 +20,25 @@ class CobActaverificacioncomputo extends \Phalcon\Mvc\Model
      * @var integer
      */
     public $id_carga;
-    
+
     /**
      *
      * @var integer
      */
     public $id_sede_contrato;
-    
+
     /**
      *
      * @var integer
      */
     public $id_contrato;
-    
+
     /**
      *
      * @var integer
      */
     public $id_modalidad;
-    
+
     /**
      *
      * @var string
@@ -92,26 +92,26 @@ class CobActaverificacioncomputo extends \Phalcon\Mvc\Model
      * @var string
      */
     public $oferente_nombre;
-    
+
     /**
      *
      * @var integer
      */
     public $id_usuario;
-    
+
     /**
      *
      * @var integer
      */
     public $estado;
-    
+
     //Virtual Foreign Key para poder acceder a la fecha de corte del acta
     public function initialize()
     {
     	$this->belongsTo('id_verificacion', 'CobVerificacion', 'id_verificacion', array(
     			'reusable' => true
     	));
-    	$this->belongsTo('id_actaverificacioncomputo', 'CobActaverificacioncomputoDatos', 'id_actaverificacioncomputo', array(
+    	$this->belongsTo('id_actacomputo', 'CobActacomputoDatos', 'id_actacomputo', array(
     			'reusable' => true
     	));
     	$this->belongsTo('id_usuario', 'IbcUsuario', 'id_usuario', array(
@@ -121,13 +121,13 @@ class CobActaverificacioncomputo extends \Phalcon\Mvc\Model
     			'reusable' => true
     	));
     }
-    
-    public function generarActa($id_actaverificacioncomputo){
-    	$acta = CobActaverificacioncomputo::findFirstByid_actaverificacioncomputo($id_actaverificacioncomputo);
+
+    public function generarActa($id_actacomputo){
+    	$acta = CobActacomputo::findFirstByid_actacomputo($id_actacomputo);
     	if(!$acta || $acta == NULL){
     		return FALSE;
     	}
-    	$acta_id = "AVE-03-". date("Y") . sprintf('%05d', $acta->id_actaverificacioncomputo);
+    	$acta_id = "AVE-03-". date("Y") . sprintf('%05d', $acta->id_actacomputo);
     	$encabezado = "<div class='seccion encabezado'>
     	<div class='fila center'><div>ACTA DE VERIFICACIÓN FÍSICA DE EQUIPOS DE CÓMPUTO DE ACUERDO A LAS CÉD EN EL SIBC<br>INTERVENTORÍA BUEN COMIENZO</div></div>
     	<div class='fila col3 center'><div>Código: F-ITBC-GC-001</div><div></div><div></div></div>
@@ -186,7 +186,7 @@ class CobActaverificacioncomputo extends \Phalcon\Mvc\Model
     	$datos_acta['html'] = $html;
         return $datos_acta;
     }
-    
+
     public function cargarBeneficiarios($carga, $modalidades, $id_verificacion)
     {
     	$db = $this->getDI()->getDb();
@@ -197,10 +197,10 @@ class CobActaverificacioncomputo extends \Phalcon\Mvc\Model
     	$db->query("CREATE TEMPORARY TABLE $tabla_mat (id_sede_contrato BIGINT, id_contrato BIGINT, id_modalidad INT, modalidad_nombre VARCHAR(50), id_sede INT, sede_nombre VARCHAR(80), sede_barrio VARCHAR(80), sede_direccion VARCHAR(80), sede_telefono VARCHAR(80), id_oferente INT, oferente_nombre VARCHAR(100)) CHARACTER SET utf8 COLLATE utf8_bin");
     	$db->query("LOAD DATA INFILE '$archivo_mat' IGNORE INTO TABLE $tabla_mat FIELDS TERMINATED BY ';' LINES TERMINATED BY '\n' IGNORE 1 LINES (@ID_MATRICULA, @FECHA_INICIO_ATENCION, @FECHA_RETIRO, @MOTIVO_RETIRO, @FECHA_REGISTRO_MATRICULA, @ID_PRESTADOR, @PRESTADOR_SERVICIO, @NUMERO_CONTRATO, @ID_MODALIDAD_ORIGEN, @NOMBRE_MODALIDAD, @ID_SEDE, @NOMBRE_SEDE, @ID_BARRIO_SEDE, @NOMBRE_BARRIO_SEDE, @DIRECCION_SEDE, @TELEFONO_SEDE, @ID_SEDE_CONTRATO, @COORDINADOR_MODALIDAD, @ID_GRUPO, @NOMBRE_GRUPO, @AGENTE_EDUCATIVO, @ID_PERSONA, @TIPO_DOCUMENTO, @NUMERO_DOCUMENTO, @PRIMER_NOMBRE, @SEGUNDO_NOMBRE, @PRIMER_APELLIDO, @SEGUNDO_APELLIDO, @FECHA_NACIMIENTO, @GENERO, @ZONA_BENEFICIARIO, @DIRECCION_BENEFICIARIO, @ID_BARRIO_BENEFICIARIO, @NOMBRE_BARRIO_BENEFICIARIO, @TELEFONO_BENEFICIARIO, @CELULAR_BENEFICIARIO, @PUNTAJE_SISBEN, @NUMERO_FICHA, @VICTIMA_CA, @ESQUEMA_VACUNACION, @TIPO_DISCAPACIDAD, @CAPACIDAD_EXCEPCIONAL, @AFILIACION_SGSSS, @ENTIDAD_SALUD, @ASISTE_CXD, @NOMBRE_ETNIA, @OTROS_BENEFICIOS, @RADICADO, @AUTORIZADO, @FECHA_RADICADO, @CICLO_VITAL_MADRE, @EDAD_GESTACIONAL, @PESO, @ESTATURA, @FECHA_CONTROL, @OBSERVACION, @FECHA_DIGITACION_SEG, @FECHA_MODIFICACION_SEG, @USUARIO_REGISTRO_SEG, @TIPO_BENEFICIARIO, @FECHA_REGISTRO_BENEFICIARIO, @ID_CIERRE_GRUPO, @EN_EDUCATIVO, @FECHA_CIERRE_GRUPO, @CODIGO_HCB, @NOMBRE_HCB, @DOCUMENTO_MCB, @PRIMER_NOMBRE_MCB, @SEGUNDO_NOMBRE_MCB, @PRIMER_APELLIDO_MCB, @SEGUNDO_APELLIDO_MCB, @DIRECCION_HCB, @BARRIO_VEREDA_HCB, @COMUNA_CORREGIMIENTO_HCB, @ZONA_HCB, @CENTRO_ZONAL_HCB, @NOMBRE_ASOCIACION, @CUARTOUPA_JI) SET id_sede_contrato = @ID_SEDE_CONTRATO, id_contrato = @NUMERO_CONTRATO, id_modalidad = @ID_MODALIDAD_ORIGEN, modalidad_nombre = @NOMBRE_MODALIDAD, id_sede = @ID_SEDE, sede_nombre = REPLACE(@NOMBRE_SEDE, '\"',\"\"), sede_barrio = @NOMBRE_BARRIO_SEDE, sede_direccion = @DIRECCION_SEDE, sede_telefono = @TELEFONO_SEDE, id_oferente = @ID_PRESTADOR, oferente_nombre = REPLACE(@PRESTADOR_SERVICIO, '\"',\"\")");
     	$db->query("DELETE FROM $tabla_mat WHERE id_modalidad NOT IN ($modalidades)");
-    	$db->query("INSERT IGNORE INTO cob_actaverificacioncomputo (id_verificacion, id_carga, id_sede_contrato, id_contrato, id_modalidad, modalidad_nombre, id_sede, sede_nombre, sede_barrio, sede_direccion, sede_telefono, id_oferente, oferente_nombre) SELECT $id_verificacion, $carga->id_carga, id_sede_contrato, id_contrato, id_modalidad, modalidad_nombre, id_sede, sede_nombre, sede_barrio, sede_direccion, sede_telefono, id_oferente, oferente_nombre FROM $tabla_mat");
+    	$db->query("INSERT IGNORE INTO cob_actacomputo (id_verificacion, id_carga, id_sede_contrato, id_contrato, id_modalidad, modalidad_nombre, id_sede, sede_nombre, sede_barrio, sede_direccion, sede_telefono, id_oferente, oferente_nombre) SELECT $id_verificacion, $carga->id_carga, id_sede_contrato, id_contrato, id_modalidad, modalidad_nombre, id_sede, sede_nombre, sede_barrio, sede_direccion, sede_telefono, id_oferente, oferente_nombre FROM $tabla_mat");
     	$db->query("DROP TABLE $tabla_mat");
     }
-    
+
     /**
      * Returns a human representation of 'estado'
      *
@@ -229,7 +229,7 @@ class CobActaverificacioncomputo extends \Phalcon\Mvc\Model
     			break;
     	}
     }
-    
+
     /**
      * Returns a human representation of 'url'
      *
@@ -237,29 +237,29 @@ class CobActaverificacioncomputo extends \Phalcon\Mvc\Model
      */
     public function getUrlDetail()
     {
-    	return "cob_actaverificacioncomputo/ver/$this->id_actaverificacioncomputo";
+    	return "cob_actacomputo/ver/$this->id_actacomputo";
     }
-    
+
     /**
-     * Returns a human representation of 'id_actaverificacioncomputo'
+     * Returns a human representation of 'id_actacomputo'
      *
      * @return string
      */
     public function getIdDetail()
     {
-    	return "AVE-03-". date("Y") . sprintf('%05d', $this->id_actaverificacioncomputo);
+    	return "AVE-03-". date("Y") . sprintf('%05d', $this->id_actacomputo);
     }
-    
+
     /**
-     * Returns a human representation of 'id_actaverificacioncomputo'
+     * Returns a human representation of 'id_actacomputo'
      *
      * @return string
      */
     public function getId()
     {
-    	return $this->id_actaverificacioncomputo;
+    	return $this->id_actacomputo;
     }
-    
+
     /**
      * Contar beneficiarios
      *

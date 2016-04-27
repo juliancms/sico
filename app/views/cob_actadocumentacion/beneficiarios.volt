@@ -1,6 +1,6 @@
 {{ content() }}
 {{ elements.getActaverificacionmenu(acta) }}
-{{ form("cob_actaverificaciondocumentacion/guardarbeneficiarios/"~acta.id_acta, "method":"post", "parsley-validate" : "", "id" : "beneficiarios_form") }}
+{{ form("cob_actadocumentacion/guardarbeneficiarios/"~acta.id_acta, "method":"post", "parsley-validate" : "", "id" : "beneficiarios_form") }}
 <table class="table table-bordered table-hover">
     <thead>
         <tr>
@@ -21,7 +21,7 @@
 	{% set nombre = {beneficiario.primerNombre, beneficiario.segundoNombre, beneficiario.primerApellido, beneficiario.segundoApellido} %}
         <tr>
         	<td>{{ loop.index }}</td>
-        	<td><input type="hidden" name="id_actaverificaciondocumentacion_persona[]" value="{{ beneficiario.id_actaverificaciondocumentacion_persona }}">{{ beneficiario.numDocumento }}</td>
+        	<td><input type="hidden" name="id_actadocumentacion_persona[]" value="{{ beneficiario.id_actadocumentacion_persona }}">{{ beneficiario.numDocumento }}</td>
             <td>{{ nombre|join(' ') }}</td>
             <td>{{ beneficiario.grupo }}</td>
             <td<?php echo $beneficiario->getsinonareDetail($beneficiario->nombreCedulaSibc); ?>>{{ select("nombreCedulaSibc[]", sinonare, "value" : beneficiario.nombreCedulaSibc, "class" : "form-control sinonare required") }}</td>

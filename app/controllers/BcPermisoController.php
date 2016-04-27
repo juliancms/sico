@@ -1130,4 +1130,50 @@ class BcPermisoController extends ControllerBase
     	$this->flash->success("Los permisos fueron modificados exitosamente");
     	return $this->response->redirect('bc_permiso/revision');
     }
+
+		/**
+		 *
+		 * Lista de los reportes generados de acuerdo a la aprobación de permisos
+		 *
+		 */
+		 public function reportesAction($fecha){
+			 	if(!$fecha){
+ 				$fecha = date("Y-m-d");
+ 				}
+				$permisos = BcPermiso::find(array("fecha = '$fecha'", "order" => "id_oferente ASC"));
+				if (count($permisos) == 0) {
+	    		$this->flash->notice("No se aprobaron permisos para este día");
+	    		$permisos = null;
+	    	}
+				$this->assets
+	    	->addJs('js/parsley.min.js')
+	    	->addJs('js/parsley.extend.js')
+	    	->addJs('js/picnet.table.filter.min.js')
+	    	->addJs('js/permisos_lista.js');
+				$this->view->titulo = $this->conversiones->fecha(4, $fecha);
+	    	$this->view->permisos = $permisos;
+		 }
+		 
+		 /**
+ 		 *
+ 		 * Lista de los reportes generados de acuerdo a la aprobación de permisos
+ 		 *
+ 		 */
+ 		 public function reporte_generalAction($fecha){
+ 			 	if(!$fecha){
+  				$fecha = date("Y-m-d");
+  				}
+ 				$permisos = BcPermiso::find(array("fecha = '$fecha'", "order" => "id_oferente ASC"));
+ 				if (count($permisos) == 0) {
+ 	    		$this->flash->notice("No se aprobaron permisos para este día");
+ 	    		$permisos = null;
+ 	    	}
+ 				$this->assets
+ 	    	->addJs('js/parsley.min.js')
+ 	    	->addJs('js/parsley.extend.js')
+ 	    	->addJs('js/picnet.table.filter.min.js')
+ 	    	->addJs('js/permisos_lista.js');
+ 				$this->view->titulo = $this->conversiones->fecha(4, $fecha);
+ 	    	$this->view->permisos = $permisos;
+ 		 }
 }

@@ -62,16 +62,16 @@ class CobVerificacionController extends ControllerBase
     		));
     	}
     	else if($cob_verificacion->tipo == 3) {
-    		$actas = CobActaverificaciontelefonica::find(array(
+    		$actas = CobActatelefonica::find(array(
     				"id_verificacion = $id_verificacion"
     		));
     	}
     	else if($cob_verificacion->tipo == 2) {
-    		$actas = CobActaverificacioncomputo::find(array(
+    		$actas = CobActacomputo::find(array(
     				"id_verificacion = $id_verificacion"
     		));
     	} else if($cob_verificacion->tipo == 1) {
-    		$actas = CobActaverificaciondocumentacion::find(array(
+    		$actas = CobActadocumentacion::find(array(
     				"id_verificacion = $id_verificacion"
     		));
     	}
@@ -138,18 +138,18 @@ class CobVerificacionController extends ControllerBase
     		return $this->response->redirect("cob_verificacion/nuevo");
     	}
     	if($tipo == 1){
-    		$actas = CobActaverificaciondocumentacion::cargarBeneficiarios($carga, $modalidades, $cob_verificacion->id_verificacion);
+    		$actas = CobActadocumentacion::cargarBeneficiarios($carga, $modalidades, $cob_verificacion->id_verificacion);
     		if($actas){
     			$this->flash->success("La verificación fue creada exitosamente.");
     		}
     	} else if ($tipo == 2){
-    		$actas = CobActaverificacioncomputo::cargarBeneficiarios($carga, $modalidades, $cob_verificacion->id_verificacion);
+    		$actas = CobActacomputo::cargarBeneficiarios($carga, $modalidades, $cob_verificacion->id_verificacion);
     		if($actas){
     			$this->flash->success("La verificación fue creada exitosamente.");
     		}
 
     	} else if ($tipo == 3){
-    		$actas = CobActaverificaciontelefonica::cargarBeneficiarios($carga, $modalidades, $cob_verificacion->id_verificacion);
+    		$actas = CobActatelefonica::cargarBeneficiarios($carga, $modalidades, $cob_verificacion->id_verificacion);
     		if($actas){
     			$this->flash->success("La verificación fue creada exitosamente.");
 				}
@@ -243,15 +243,15 @@ class CobVerificacionController extends ControllerBase
     				"id_verificacion = $id_verificacion"
     		));
 			} else if($cob_verificacion->tipo == 3) {
-    		$actas = CobActaverificaciontelefonica::find(array(
+    		$actas = CobActatelefonica::find(array(
     				"id_verificacion = $id_verificacion"
     		));
     	} else if($cob_verificacion->tipo == 2) {
-    		$actas = CobActaverificacioncomputo::find(array(
+    		$actas = CobActacomputo::find(array(
     				"id_verificacion = $id_verificacion"
     		));
     	} else if($cob_verificacion->tipo == 1) {
-    		$actas = CobActaverificaciondocumentacion::find(array(
+    		$actas = CobActadocumentacion::find(array(
     				"id_verificacion = $id_verificacion"
     		));
     	}
@@ -322,7 +322,7 @@ class CobVerificacionController extends ControllerBase
     		);
     		$sql = $this->conversiones->multipleupdate("cob_actath", $elementos, "id_actath");
     	} else if($cob_verificacion->tipo == 3){
-    		$actas = CobActaverificaciontelefonica::find(array(
+    		$actas = CobActatelefonica::find(array(
     				"id_verificacion = $id_verificacion"
     		));
     		$db = $this->getDI()->getDb();
@@ -334,13 +334,13 @@ class CobVerificacionController extends ControllerBase
     				$estado[] = 1;
     		}
     		$elementos = array(
-    				'id_actaverificaciontelefonica' => $this->request->getPost("id_acta"),
+    				'id_actatelefonica' => $this->request->getPost("id_acta"),
     				'estado' => $estado,
     				'id_usuario' => $this->request->getPost("contador_asignado")
     		);
-    		$sql = $this->conversiones->multipleupdate("cob_actaverificaciontelefonica", $elementos, "id_actaverificaciontelefonica");
+    		$sql = $this->conversiones->multipleupdate("cob_actatelefonica", $elementos, "id_actatelefonica");
     	} else  if($cob_verificacion->tipo == 2){
-    		$actas = CobActaverificacioncomputo::find(array(
+    		$actas = CobActacomputo::find(array(
     				"id_verificacion = $id_verificacion"
     		));
     		$db = $this->getDI()->getDb();
@@ -352,13 +352,13 @@ class CobVerificacionController extends ControllerBase
     				$estado[] = 1;
     		}
     		$elementos = array(
-    				'id_actaverificacioncomputo' => $this->request->getPost("id_acta"),
+    				'id_actacomputo' => $this->request->getPost("id_acta"),
     				'estado' => $estado,
     				'id_usuario' => $this->request->getPost("contador_asignado")
     		);
-    		$sql = $this->conversiones->multipleupdate("cob_actaverificacioncomputo", $elementos, "id_actaverificacioncomputo");
+    		$sql = $this->conversiones->multipleupdate("cob_actacomputo", $elementos, "id_actacomputo");
     	} else if($cob_verificacion->tipo == 1) {
-    		$actas = CobActaverificaciondocumentacion::find(array(
+    		$actas = CobActadocumentacion::find(array(
     				"id_verificacion = $id_verificacion"
     		));
     		$db = $this->getDI()->getDb();
@@ -370,11 +370,11 @@ class CobVerificacionController extends ControllerBase
     				$estado[] = 1;
     		}
     		$elementos = array(
-    				'id_actaverificaciondocumentacion' => $this->request->getPost("id_acta"),
+    				'id_actadocumentacion' => $this->request->getPost("id_acta"),
     				'estado' => $estado,
     				'id_usuario' => $this->request->getPost("contador_asignado")
     		);
-    		$sql = $this->conversiones->multipleupdate("cob_actaverificaciondocumentacion", $elementos, "id_actaverificaciondocumentacion");
+    		$sql = $this->conversiones->multipleupdate("cob_actadocumentacion", $elementos, "id_actadocumentacion");
     	}
     	if (!$actas) {
     		$this->flash->error("No se encontraron actas");
@@ -434,11 +434,11 @@ class CobVerificacionController extends ControllerBase
 			} else if($cob_verificacion->tipo == 4){
 				$tabla = "cob_actath";
 			} else if($cob_verificacion->tipo == 3){
-				$tabla = "cob_actaverificaciontelefonica";
+				$tabla = "cob_actatelefonica";
 			} else  if($cob_verificacion->tipo == 2){
-				$tabla = "cob_actaverificacioncomputo";
+				$tabla = "cob_actacomputo";
 			} else if($cob_verificacion->tipo == 1) {
-				$tabla = "cob_actaverificaciondocumentacion";
+				$tabla = "cob_actadocumentacion";
 			}
     	$db = $this->getDI()->getDb();
     	foreach($actas as $row){
@@ -473,15 +473,15 @@ class CobVerificacionController extends ControllerBase
     				"id_verificacion = $id_verificacion"
     		));
     	} else if($cob_verificacion->tipo == 3){
-    		$actas = CobActaverificaciontelefonica::find(array(
+    		$actas = CobActatelefonica::find(array(
     				"id_verificacion = $id_verificacion"
     		));
     	} else if($cob_verificacion->tipo == 2){
-    		$actas = CobActaverificacioncomputo::find(array(
+    		$actas = CobActacomputo::find(array(
     				"id_verificacion = $id_verificacion"
     		));
     	} else if($cob_verificacion->tipo == 1) {
-    		$actas = CobActaverificaciondocumentacion::find(array(
+    		$actas = CobActadocumentacion::find(array(
     				"id_verificacion = $id_verificacion"
     		));
     	}

@@ -2,7 +2,7 @@
  
 use Phalcon\Mvc\Model\Criteria;
 
-class CobActaverificacioncomputoController extends ControllerBase
+class CobActatelefonicaController extends ControllerBase
 {    
 	public $user;
 	
@@ -18,20 +18,9 @@ class CobActaverificacioncomputoController extends ControllerBase
      *
      * @param int $id_periodo
      */
-    public function verAction($id_actaverificacioncomputo)
+    public function verAction($id_actatelefonica)
     {
-    	$this->assets
-    	->addCss('css/acta-impresion.css');
-    	$acta = CobActaverificacioncomputo::generarActa($id_actaverificacioncomputo);
-    	if (!$acta) {
-    		$this->flash->error("El acta no fue encontrada");
-    		return $this->response->redirect("cob_verificacion/");
-    	}
-    	$acta['datos']->id_acta = $id_actaverificacioncomputo;
-    	$this->view->nivel = $this->user['nivel'];
-    	$this->view->acta_html = $acta['html'];
-    	$this->view->acta_datos = $acta['datos'];
-    	$this->view->acta = $acta['datos'];
+    	return $this->response->redirect("cob_actatelefonica/beneficiarios/$id_actatelefonica");
     }
 
     /**
@@ -39,30 +28,26 @@ class CobActaverificacioncomputoController extends ControllerBase
      *
      * @param int $id_actaconteo
      */
-    public function datosAction($id_actaverificacioncomputo)
+    public function datosAction($id_actatelefonica)
     {
         if (!$this->request->isPost()) {
 
-            $acta = CobActaverificacioncomputo::findFirstByid_actaverificacioncomputo($id_actaverificacioncomputo);
+            $acta = CobActatelefonica::findFirstByid_actatelefonica($id_actatelefonica);
             if (!$acta) {
                 $this->flash->error("El acta no fue encontrada");
 
                 return $this->response->redirect("cob_verificacion/");
-            }$this->assets
+            }
+            $this->assets
             ->addJs('js/parsley.min.js')
             ->addJs('js/parsley.extend.js');
-            $acta->id_acta = $id_actaverificacioncomputo;
-            if($acta->CobActaverificacioncomputoDatos){
-            	$this->tag->setDefault("fecha", $this->conversiones->fecha(2, $acta->CobActaverificacioncomputoDatos->fecha));
-            	$this->tag->setDefault("horaInicio", $acta->CobActaverificacioncomputoDatos->horaInicio);
-            	$this->tag->setDefault("horaFin", $acta->CobActaverificacioncomputoDatos->horaFin);
-            	$this->tag->setDefault("nombreEncargado", $acta->CobActaverificacioncomputoDatos->nombreEncargado);
-            	$this->tag->setDefault("observacionEncargado", $acta->CobActaverificacioncomputoDatos->observacionEncargado);
-            	$this->tag->setDefault("observacionUsuario", $acta->CobActaverificacioncomputoDatos->observacionUsuario);
-            	$this->tag->setDefault("cantidadEquipos", $acta->CobActaverificacioncomputoDatos->cantidadEquipos);
-            	$this->tag->setDefault("servicioInternet", $acta->CobActaverificacioncomputoDatos->servicioInternet);
+            $acta->id_acta = $id_actatelefonica;
+            if($acta->CobActatelefonicaDatos){
+            	$this->tag->setDefault("fechaInicio", $this->conversiones->fecha(2, $acta->CobActatelefonicaDatos->fechaInicio));
+            	$this->tag->setDefault("fechaFin", $this->conversiones->fecha(2, $acta->CobActatelefonicaDatos->fechaFin));
+            	$this->tag->setDefault("observacionUsuario", $acta->CobActatelefonicaDatos->observacionUsuario);
+            	
             }
-            $this->view->sino = $this->elements->getSelect("sino");
             $this->view->acta = $acta;
             $this->actaCerrada($acta, $this->user['nivel']);
         }
@@ -72,57 +57,125 @@ class CobActaverificacioncomputoController extends ControllerBase
      * Guardar Datos
      *  
      */
-    public function guardardatosAction($id_actaverificacioncomputo)
+    public function guardardatosAction($id_actatelefonica)
     {
     	if (!$this->request->isPost()) {
             return $this->response->redirect("cob_verificacion/");
         }
-        $acta = CobActaverificacioncomputo::findFirstByid_actaverificacioncomputo($id_actaverificacioncomputo);
+        $acta = CobActatelefonica::findFirstByid_actatelefonica($id_actatelefonica);
         if (!$acta) {
-            $this->flash->error("El acta $id_actaverificacioncomputo no existe ");
+            $this->flash->error("El acta $id_actatelefonica no existe ");
             return $this->response->redirect("cob_verificacion/");
         }
         $this->guardarActaCerrada($acta, $this->user['nivel']);
-        $dato = new CobActaverificacioncomputoDatos();
-        $dato->id_actaverificacioncomputo = $id_actaverificacioncomputo;
-        $dato->fecha = $this->conversiones->fecha(1, $this->request->getPost("fecha"));
-        $dato->horaInicio = $this->request->getPost("horaInicio");
-        $dato->horaFin = $this->request->getPost("horaFin");
-        $dato->nombreEncargado = $this->request->getPost("nombreEncargado");
-        $dato->observacionEncargado = $this->request->getPost("observacionEncargado");
+        $dato = new CobActatelefonicaDatos();
+        $dato->id_actatelefonica = $id_actatelefonica;
+        $dato->fechaInicio = $this->conversiones->fecha(1, $this->request->getPost("fechaInicio"));
+        $dato->fechaFin = $this->conversiones->fecha(1, $this->request->getPost("fechaFin"));
         $dato->observacionUsuario = $this->request->getPost("observacionUsuario");
-        $dato->cantidadEquipos = $this->request->getPost("cantidadEquipos");
-        $dato->servicioInternet = $this->request->getPost("servicioInternet");
         if (!$dato->save()) {
             foreach ($dato->getMessages() as $message) {
                 $this->flash->error($message);
             }
-            return $this->response->redirect("cob_actaverificacioncomputo/datos/$id_actaverificacioncomputo");
+            return $this->response->redirect("cob_actatelefonica/datos/$id_actatelefonica");
         }
         $this->flash->success("Los Datos Generales fueron actualizados exitosamente");
-        return $this->response->redirect("cob_actaverificacioncomputo/datos/$id_actaverificacioncomputo");
+        return $this->response->redirect("cob_actatelefonica/datos/$id_actatelefonica");
     }
-
+    
+    /**
+     * Guardar Beneficiarios
+     *
+     */
+    public function guardarbeneficiariosAction($id_actatelefonica)
+    {
+    	if (!$this->request->isPost()) {
+    		return $this->response->redirect("cob_verificacion/");
+    	}
+    	$db = $this->getDI()->getDb();
+    	$acta = CobActatelefonica::findFirstByid_actatelefonica($id_actatelefonica);
+    	if (!$acta) {
+    		$this->flash->error("El acta $id_actatelefonica no existe");
+    		return $this->response->redirect("cob_verificacion/");
+    	}
+    	$this->guardarActaCerrada($acta, $this->user['nivel']);
+    	$i = 0;
+    	$elementos = array(
+    			'id_actatelefonica_persona' => $this->request->getPost("id_actatelefonica_persona"),
+    			'asistencia' => $this->request->getPost("asistencia"),
+    			'telefonoContacto' => $this->request->getPost("telefonoContacto"),
+    			'personaContesta' => $this->request->getPost("personaContesta"),
+    			'parentesco' => $this->request->getPost("parentesco"),
+    			'observacion' => $this->request->getPost("observacion")
+    	);
+    	$sql = $this->conversiones->multipleupdate("cob_actatelefonica_persona", $elementos, "id_actatelefonica_persona");
+    	$query = $db->query($sql);
+    	if (!$query) {
+    		foreach ($query->getMessages() as $message) {
+    			$this->flash->error($message);
+    		}
+    		return $this->response->redirect("cob_cob_actatelefonica/beneficiarios/$id_actatelefonica");
+    	}
+    	$acta->estado = 1;
+    	$acta->save();
+    	$this->flash->success("Los beneficiarios fueron actualizados exitosamente");
+    	return $this->response->redirect("cob_actatelefonica/beneficiarios/$id_actatelefonica");
+    }
+    
+    /**
+     * Beneficiarios
+     *
+     * @param int $id_actaconteo
+     */
+    public function beneficiariosAction($id_actatelefonica) {
+    	if (!$this->request->isPost()) {
+    		$acta = CobActatelefonica::findFirstByid_actatelefonica($id_actatelefonica);
+    		if (!$acta) {
+    			$this->flash->error("El acta no fue encontrada");
+    			return $this->response->redirect("cob_periodo/");
+    		}
+    		$this->assets
+    		->addJs('js/parsley.min.js')
+    		->addJs('js/parsley.extend.js')
+    		->addJs('js/beneficiarios-verificacion.js')
+    		->addJs('js/beneficiarios.js');
+    		$this->view->nombre = array();
+    		$this->view->acta = $acta;
+    		$this->view->beneficiarios = $acta->getCobActatelefonicaPersona(['order' => 'grupo, primerNombre asc']);
+    		$acta->id_acta = $id_actatelefonica;
+    		$this->view->acta = $acta;
+    		$this->view->asistencia = $this->elements->getSelect("asistenciatelefonica");
+    		$this->view->sinonare = $this->elements->getSelect("sinonare");
+    		$this->actaCerrada($acta, $this->user['nivel']);
+    	}
+    }
+    
     /**
      * Cierra un acta
      *
      * @param int $id_actaconteo
      */
-    public function cerrarAction($id_actaverificacioncomputo)
+    public function cerrarAction($id_actatelefonica)
     {
     	if (!$this->request->isPost()) {
-    		return $this->response->redirect("cob_actaverificacioncomputo/ver/$id_actaverificacioncomputo");
+    		return $this->response->redirect("cob_actatelefonica/ver/$id_actatelefonica");
     	}
-        $acta = CobActaverificacioncomputo::findFirstByid_actaverificacioncomputo($id_actaverificacioncomputo);
+        $acta = CobActatelefonica::findFirstByid_actatelefonica($id_actatelefonica);
         if (!$acta) {
             $this->flash->error("El acta no fue encontrada");
             return $this->response->redirect("cob_verificacion/");
         }
         $uri = $this->request->getPost("uri");
         $error = 0;
-        if(!($acta->CobActaverificacioncomputoDatos->fecha)){
+        if(!($acta->CobActatelefonicaDatos->fechaInicio)){
         	$this->flash->notice("<i class='glyphicon glyphicon-exclamation-sign'></i> El acta no puede ser cerrada debido a que:");
         	$this->flash->error("No han sido digitados los datos del acta.");
+        	$error = 1;
+        }
+        if($acta->CobActatelefonicaPersona[0]->asistencia == 0){
+        	if($error == 0)
+        		$this->flash->notice("<i class='glyphicon glyphicon-exclamation-sign'></i> El acta no puede ser cerrada debido a que:");
+        	$this->flash->error("No han sido digitados los beneficiarios del acta.");
         	$error = 1;
         }
         if($error > 0){
@@ -151,12 +204,12 @@ class CobActaverificacioncomputoController extends ControllerBase
      *
      * @param int $id_actaconteo
      */
-    public function abrirAction($id_actaverificacioncomputo)
+    public function abrirAction($id_actatelefonica)
     {
     	if (!$this->request->isPost()) {
-    		return $this->response->redirect("cob_actaverificacioncomputo/ver/$id_actaverificacioncomputo");
+    		return $this->response->redirect("cob_actatelefonica/ver/$id_actatelefonica");
     	}
-    	$acta = CobActaverificacioncomputo::findFirstByid_actaverificacioncomputo($id_actaverificacioncomputo);
+    	$acta = CobActatelefonica::findFirstByid_actatelefonica($id_actatelefonica);
     	if (!$acta) {
     		$this->flash->error("El acta no fue encontrada");
     		return $this->response->redirect("cob_verificacion/");

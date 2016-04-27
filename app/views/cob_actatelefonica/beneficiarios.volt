@@ -1,6 +1,6 @@
 {{ content() }}
 {{ elements.getActaverificacionmenu(acta) }}
-{{ form("cob_actaverificaciontelefonica/guardarbeneficiarios/"~acta.id_acta, "method":"post", "parsley-validate" : "", "id" : "beneficiarios_form") }}
+{{ form("cob_actatelefonica/guardarbeneficiarios/"~acta.id_acta, "method":"post", "parsley-validate" : "", "id" : "beneficiarios_form") }}
 <table class="table table-bordered table-hover">
     <thead>
         <tr>
@@ -21,7 +21,7 @@
 	{% set nombre = {beneficiario.primerNombre, beneficiario.segundoNombre, beneficiario.primerApellido, beneficiario.segundoApellido} %}
         <tr>
         	<td>{{ loop.index }}</td>
-        	<td><input type="hidden" name="id_actaverificaciontelefonica_persona[]" value="{{ beneficiario.id_actaverificaciontelefonica_persona }}">{{ beneficiario.numDocumento }}</td>
+        	<td><input type="hidden" name="id_actatelefonica_persona[]" value="{{ beneficiario.id_actatelefonica_persona }}">{{ beneficiario.numDocumento }}</td>
             <td>{{ nombre|join(' ') }}</td>
             <td>{{ beneficiario.grupo }}</td>
             <td>{{ beneficiario.beneficiarioTelefono }}</td>

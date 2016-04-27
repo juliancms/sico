@@ -1,6 +1,6 @@
 {{ content() }}
-{{ elements.getActacomputomenu(acta) }}
-{{ form("cob_actaverificacioncomputo/guardardatos/"~acta.id_acta, "method":"post", "class":"form-container form-horizontal", "parsley-validate" : "", "enctype" : "multipart/form-data") }}
+{{ elements.getActaverificacionmenu(acta) }}
+{{ form("cob_actadocumentacion/guardardatos/"~acta.id_acta, "method":"post", "class":"form-container form-horizontal", "parsley-validate" : "", "enctype" : "multipart/form-data") }}
     <div class="form-group">
         <label class="col-sm-2 control-label" for="fecha">* Fecha Interventoría</label>
         <div class="col-sm-10">
@@ -35,18 +35,6 @@
         <label class="col-sm-2 control-label" for="observacionEncargado">Observación Encargado Sede</label>
         <div class="col-sm-10">
                 {{ text_area("observacionEncargado", "rows" : "4", "class" : "form-control") }}
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label" for="cantidadEquipos">Cantidad de Equipos de Cómputo</label>
-        <div class="col-sm-10">
-                {{ text_field("cantidadEquipos", "parsley-min" : "0", "class" : "form-control required number") }}
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label" for="servicioInternet">Servicio de Internet</label>
-        <div class="col-sm-10">
-                {{ select("servicioInternet", sino, "class" : "form-control required") }}
         </div>
     </div>
 <div class="form-group">

@@ -1,6 +1,6 @@
 {{ content() }}
 {{ elements.getActaverificacionmenu(acta) }}
-{{ form("cob_actaverificaciontelefonica/guardardatos/"~acta.id_acta, "method":"post", "class":"form-container form-horizontal", "parsley-validate" : "", "enctype" : "multipart/form-data") }}
+{{ form("cob_actatelefonica/guardardatos/"~acta.id_acta, "method":"post", "class":"form-container form-horizontal", "parsley-validate" : "", "enctype" : "multipart/form-data") }}
     <div class="form-group">
         <label class="col-sm-2 control-label" for="fechaInicio">* Fecha Inicio</label>
         <div class="col-sm-10">
