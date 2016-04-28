@@ -34,11 +34,6 @@ class Elements extends Component
 				'caption' => 'Capturas Adicionales',
 				'action' => 'adicionalescapturas',
 				'icon' => 'glyphicon-upload'
-		),
-		'empleados' => array(
-				'caption' => 'Empleados',
-				'action' => 'empleados',
-				'icon' => 'glyphicon-briefcase'
 		)
 	);
 
@@ -401,7 +396,6 @@ class Elements extends Component
     	if($acta->recorrido > 1){
     		unset($this->_actaMenu['adicionales']);
     		unset($this->_actaMenu['adicionalescapturas']);
-    		unset($this->_actaMenu['empleados']);
     	}
     	foreach ($this->_actaMenu as $menu) {
     		$action = $menu['action'];
@@ -660,16 +654,6 @@ class Elements extends Component
     			'6' => '6',
     			'7' => '7',
     			'8' => '8');
-    			break;
-    		case "asistenciaempleados":
-    			return array (
-    			'1' => '1',
-    			'6' => '6');
-    			break;
-    		case "cargoempleados":
-    			return array (
-    			'1' => 'Auxiliar Educativo',
-    			'2' => 'Docente');
     			break;
     		case "datos_valla":
     			return array (

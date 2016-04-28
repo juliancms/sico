@@ -260,52 +260,6 @@ class CobActaconteoController extends ControllerBase
     }
 
     /**
-     * Guardar Empleados
-     *
-     */
-    public function guardarempleadosAction($id_actaconteo)
-    {
-    	if (!$this->request->isPost()) {
-    		return $this->response->redirect("cob_periodo/");
-    	}
-    	$db = $this->getDI()->getDb();
-    	$acta = CobActaconteo::findFirstByid_actaconteo($id_actaconteo);
-    	if (!$acta) {
-    		$this->flash->error("El acta $id_actaconteo no existe");
-    		return $this->response->redirect("cob_periodo/");
-    	}
-    	$this->guardarActaCerrada($acta, $this->user['nivel']);
-    	if($this->request->getPost("numDocumento")){
-    		$elementos = array(
-    				'numDocumento' => $this->request->getPost("numDocumento"),
-    				'nombre' => $this->request->getPost("nombre"),
-    				'cargo' => $this->request->getPost("cargo"),
-    				'asistencia' => $this->request->getPost("asistencia"),
-    				'dotacion' => $this->request->getPost("dotacion"),
-    				'id_actaconteo' => $id_actaconteo,
-    				'id_periodo' => $acta->id_periodo,
-    				'id_contrato' => $acta->id_contrato,
-    				'id_sede' => $acta->id_sede
-    		);
-    		$fechas = $this->request->getPost("fecha");
-    		if(count($fechas) > 0) {
-    			$fechas = $this->conversiones->array_fechas(1, $fechas);
-    			$elementos['fecha'] = $fechas;
-    		}
-    		$sql = $this->conversiones->multipleinsert("cob_actaconteo_empleado", $elementos);
-    		$query = $db->query($sql);
-    		if (!$query) {
-    			foreach ($query->getMessages() as $message) {
-    				$this->flash->error($message);
-    			}
-    			return $this->response->redirect("cob_actaconteo/empleados/$id_actaconteo");
-    		}
-    	}
-    	$this->flash->success("Los empleados fueron actualizados exitosamente");
-    	return $this->response->redirect("cob_actaconteo/empleados/$id_actaconteo");
-    }
-
-    /**
      * Guardar Adicionales
      *
      */
@@ -396,41 +350,6 @@ class CobActaconteoController extends ControllerBase
     		$this->view->acta = $acta;
     		$this->view->id_actaconteo = $id_actaconteo;
     		$this->view->asistencia = $this->elements->getSelect("asistencia");
-    		$this->view->acta = $acta;
-    		$this->actaCerrada($acta, $this->user['nivel']);
-    	}
-    }
-
-    /**
-     * Empleados
-     *
-     * @param int $id_actaconteo
-     */
-    public function empleadosAction($id_actaconteo) {
-    	if (!$this->request->isPost()) {
-    		$acta = CobActaconteo::findFirstByid_actaconteo($id_actaconteo);
-    		if (!$acta) {
-    			$this->flash->error("El acta no fue encontrada");
-    			return $this->response->redirect("cob_periodo/");
-    		}
-    		$this->assets
-    		->addJs('js/parsley.min.js')
-    		->addJs('js/parsley.extend.js')
-    		->addJs('js/jquery.autoNumeric.js')
-    		->addJs('js/empleados.js');
-    		$empleados = $acta->getCobActaconteoEmpleado(['order' => 'id_actaconteo_empleado asc']);
-    		if(count($empleados) == 0){
-    			$id_periodo_anterior = CobActaconteoEmpleado::maximum(array("column" => "id_periodo", "conditions" => "id_periodo < '$acta->id_periodo' AND id_contrato = '$acta->id_contrato'"));
-    			if($id_periodo_anterior){
-    				$empleados = CobActaconteoEmpleado::find("id_contrato = $acta->id_contrato AND id_sede = $acta->id_sede AND id_periodo = $id_periodo_anterior");
-    			}
-    		}
-    		$this->view->empleados = $empleados;
-    		$this->view->acta = $acta;
-    		$this->view->id_actaconteo = $id_actaconteo;
-    		$this->view->dotacion = $this->elements->getSelect("dotacion");
-    		$this->view->asistenciaempleados = $this->elements->getSelect("asistenciaempleados");
-    		$this->view->cargoempleados = $this->elements->getSelect("cargoempleados");
     		$this->view->acta = $acta;
     		$this->actaCerrada($acta, $this->user['nivel']);
     	}
