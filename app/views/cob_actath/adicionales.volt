@@ -65,7 +65,7 @@
 					<td>{{ select("cargo[]", "value" : adicional.cargo, "disabled" : "disabled", cargo, "class" : "form-control cargo required") }}</td>
 					<td>{{ select("tipoContrato[]", "value" : adicional.tipoContrato, "disabled" : "disabled", tipoContrato, "class" : "form-control tipoContrato required") }}</td>
 					<td>{{ text_field("baseSalario[]", "parsley-type" : "digits", "value" : adicional.baseSalario, "disabled" : "disabled", "placeholder" : "Base Salario", "class" : "form-control required") }}</td>
-					<td>{{ text_field("porcentajeDedicacion[]", "parsley-rangelength" : "[1,100]", "value" : dedicacion, "disabled" : "disabled", "placeholder" : "Porcentaje de Dedicación", "class" : "form-control required") }}</td>
+					<td>{{ text_field("porcentajeDedicacion[]", "parsley-range" : "[1,100]", "value" : dedicacion, "disabled" : "disabled", "placeholder" : "Porcentaje de Dedicación", "class" : "form-control required") }}</td>
 					<td>{{ text_field("fechaIngreso[]", "value" : fechaIngreso, "disabled" : "disabled", "type" : "date", "class" : "form-control tipo-fecha fecha required", "placeholder" : "dd/mm/aaaa", "parsley-type" : "dateIso", "data-date-format" : "dd/mm/yyyy") }}</td>
 					<td>{{ text_field("fechaRetiro[]", "value" : fechaRetiro, "disabled" : "disabled", "type" : "date", "class" : "form-control tipo-fecha fecha", "placeholder" : "dd/mm/aaaa", "parsley-type" : "dateIso", "data-date-format" : "dd/mm/yyyy") }}</td>
 					<td>{{ select("asistencia[]", "value" : adicional.asistencia, "disabled" : "disabled", asistencia, "class" : "form-control asistencia required") }}</td>
@@ -85,7 +85,7 @@
 					<td>{{ select("cargo[]", "disabled" : "disabled", cargo, "class" : "form-control cargo required") }}</td>
           <td>{{ select("tipoContrato[]", "disabled" : "disabled", tipoContrato, "class" : "form-control tipoContrato required") }}</td>
 					<td>{{ text_field("baseSalario[]", "parsley-type" : "digits", "disabled" : "disabled", "placeholder" : "Base Salario", "class" : "form-control required") }}</td>
-					<td>{{ text_field("porcentajeDedicacion[]", "parsley-rangelength" : "[1,100]", "disabled" : "disabled", "placeholder" : "Porcentaje Dedicación", "class" : "form-control required") }}</td>
+					<td>{{ text_field("porcentajeDedicacion[]", "parsley-range" : "[1,100]", "disabled" : "disabled", "placeholder" : "Porcentaje Dedicación", "class" : "form-control required") }}</td>
 					<td>{{ text_field("fechaIngreso[]", "disabled" : "disabled", "type" : "date", "class" : "form-control tipo-fecha fecha required", "placeholder" : "dd/mm/aaaa", "parsley-type" : "dateIso", "data-date-format" : "dd/mm/yyyy") }}</td>
 					<td>{{ text_field("fechaRetiro[]", "disabled" : "disabled", "type" : "date", "class" : "form-control tipo-fecha fecha", "placeholder" : "dd/mm/aaaa", "parsley-type" : "dateIso", "data-date-format" : "dd/mm/yyyy") }}</td>
 					<td>{{ select("asistencia[]", "disabled" : "disabled", asistencia, "class" : "form-control asistencia required") }}</td>
