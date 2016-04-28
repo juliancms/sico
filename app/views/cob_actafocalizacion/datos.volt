@@ -1,6 +1,6 @@
 {{ content() }}
-{{ elements.getActathmenu(acta) }}
-{{ form("cob_actath/guardardatos/"~acta.id_acta, "method":"post", "class":"form-container form-horizontal", "parsley-validate" : "", "enctype" : "multipart/form-data") }}
+{{ elements.getActaverificacionmenu(acta) }}
+{{ form("cob_actafocalizacion/guardardatos/"~acta.id_acta, "method":"post", "class":"form-container form-horizontal", "parsley-validate" : "", "enctype" : "multipart/form-data") }}
     <div class="form-group">
         <label class="col-sm-2 control-label" for="fecha">* Fecha Interventoría</label>
         <div class="col-sm-10">

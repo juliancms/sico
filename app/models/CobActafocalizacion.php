@@ -100,7 +100,7 @@ class CobActafocalizacion extends \Phalcon\Mvc\Model
     	$this->belongsTo('id_verificacion', 'CobVerificacion', 'id_verificacion', array(
     			'reusable' => true
     	));
-    	$this->belongsTo('id_actafocalizacion', 'CobactafocalizacionDatos', 'id_actafocalizacion', array(
+    	$this->belongsTo('id_actafocalizacion', 'CobActafocalizacionDatos', 'id_actafocalizacion', array(
     			'reusable' => true
     	));
     	$this->belongsTo('id_usuario', 'IbcUsuario', 'id_usuario', array(
@@ -177,7 +177,7 @@ class CobActafocalizacion extends \Phalcon\Mvc\Model
         $j = 1;
       			$encabezado_talentohumano = "<div class='seccion'>
       			<div class='fila center bold'><div style='border:none; width: 100%'>4. LISTADO DE BENEFICIARIOS REPORTADOS EN EL SISTEMA DE INFORMACIÓN DE BUEN COMIENZO</div></div>
-      			<div class='fila colb2 encabezadodoc'><div style='width: 20px;'>#</div><div style='width: 60px;'>4.1 DOCUMENTO</div><div style='width: 100px'>4.2 NOMBRE COMPLETO</div><div style='width: 80px'>4.3 SOLICITUD ENCUESTA SISBEN</div><div style='width: 80px'>4.4 PUNTAJE SISBEN V3</div><div style='width: 90px'>4.5 SISBEN V3 CORRESP. A MEDELLIN</div><div style='width: 65px'>4.6 CONTINUIDAD AÑO 2015</div><div style='width: 60px'>4.7  OFICIO DE AUTORIZACIÓN</div><div style='width: 85px;'>4.8 OBSERVACIONES</div></div>";
+      			<div class='fila colb2 encabezadodoc'><div style='width: 20px;'>#</div><div style='width: 60px;'>4.1 DOCUMENTO</div><div style='width: 100px'>4.2 NOMBRE COMPLETO</div><div style='width: 80px'>4.3 SOLICITUD ENCUESTA SISBEN</div><div style='width: 80px'>4.4 PUNTAJE SISBEN V3</div><div style='width: 90px'>4.5 CIUDAD SISBEN V3</div><div style='width: 65px'>4.6 CONTINUIDAD AÑO 2015</div><div style='width: 60px'>4.7  OFICIO DE AUTORIZACIÓN</div><div style='width: 85px;'>4.8 OBSERVACIONES</div></div>";
       			$html .= $encabezado;
       			$html .= $encabezado_talentohumano;
       			foreach($acta->getCobactafocalizacionPersona(['order' => 'primerNombre asc']) as $row){

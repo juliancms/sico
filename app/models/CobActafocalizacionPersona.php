@@ -104,16 +104,13 @@ class CobActafocalizacionPersona extends \Phalcon\Mvc\Model
      *
      * @return string
      */
-    public function getsinonareDetail($value)
+    public function getsinonaDetail($value)
     {
     	switch ($value) {
     		case 2:
     			return " class='danger'";
     			break;
     		case 3:
-    			return " class='warning'";
-    			break;
-    		case 4:
     			return " class='warning'";
     			break;
     		default:
