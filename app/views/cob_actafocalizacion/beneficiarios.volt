@@ -24,9 +24,9 @@
             <td>{{ nombre|join(' ') }}</td>
             <td<?php echo $beneficiario->getsinonaDetail($beneficiario->encuestaSisben); ?>>{{ select("encuestaSisben[]", sinona, "value" : beneficiario.encuestaSisben, "class" : "form-control sinona required") }}</td>
             <td>{{ text_field("puntajeSisben[]", "parsley-range" : "[0,100]", "value" : beneficiario.puntajeSisben, "placeholder" : "Puntaje SISBEN V.3", "class" : "form-control") }}</td>
-            <td>{{ text_field("ciudadSisben[]", "value" : beneficiario.ciudadSisben, "class" : "form-control required") }}</td>
+            <td>{{ text_field("ciudadSisben[]", "value" : beneficiario.ciudadSisben, "class" : "form-control") }}</td>
             <td<?php echo $beneficiario->getsinonaDetail($beneficiario->continuidad2015); ?>>{{ select("continuidad2015[]", sinona, "value" : beneficiario.continuidad2015, "class" : "form-control sinona required") }}</td>
-            <td>{{ text_field("oficioAutorizacion[]", "value" : beneficiario.oficioAutorizacion, "class" : "form-control") }}</td>
+            <td<?php echo $beneficiario->getsinonaDetail($beneficiario->oficioAutorizacion); ?>>{{ select("oficioAutorizacion[]", sinona, "value" : beneficiario.oficioAutorizacion, "class" : "form-control sinona required") }}</td>
             <td>{{ text_field("observacion[]", "value" : beneficiario.observacion, "class" : "form-control") }}</td>
         </tr>
     {% endfor %}
