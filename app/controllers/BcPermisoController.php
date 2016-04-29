@@ -939,6 +939,7 @@ class BcPermisoController extends ControllerBase
     	} else if($this->user['id_componente'] == 2) {
     		if($permiso->estado == 1 || $permiso->estado == 4){
     			$permiso->estado = 2;
+					$permiso->fechaAprobacion = date("Y-m-d");
     			$permiso_observacion->estado = 2;
     		} else {
     			$this->flash->notice("El permiso con ID <strong>$id_permiso</strong> no puede ser aprobado porque no ha sido Revisado por Interventoría, ya fue aprobado, o fue anulado por alguien diferente a usted, por favor revíselo he inténtelo nuevamente.");
@@ -981,6 +982,7 @@ class BcPermisoController extends ControllerBase
     	} else if($this->user['id_componente'] == 2) {
     		$permiso->estado = 2;
     		$permiso_observacion->estado = 2;
+				$permiso->fechaAprobacion = date("Y-m-d");
     	}
     	$permiso->save();
     	$permiso_observacion->id_permiso = $id_permiso;
@@ -1069,6 +1071,7 @@ class BcPermisoController extends ControllerBase
         	return $this->response->redirect("bc_permiso/");
         }
         $permiso->estado = $estado;
+				$permiso->fechaAprobacion = NULL;
         if (!$permiso->save()) {
         	foreach ($permiso->getMessages() as $message) {
         		$this->flash->error($message);
@@ -1136,13 +1139,10 @@ class BcPermisoController extends ControllerBase
 		 * Lista de los reportes generados de acuerdo a la aprobación de permisos
 		 *
 		 */
-		 public function reportesAction($fecha){
-			 	if(!$fecha){
- 				$fecha = date("Y-m-d");
- 				}
-				$permisos = BcPermiso::find(array("fecha = '$fecha'", "order" => "id_oferente ASC"));
+		 public function reportesAction(){
+				$permisos = BcPermiso::find(array("fechaAprobacion IS NOT NULL AND fechaAprobacion != '0000-00-00' AND (categoria > 1 AND categoria < 5)", "group" => "fechaAprobacion", "order" => "fechaAprobacion ASC"));
 				if (count($permisos) == 0) {
-	    		$this->flash->notice("No se aprobaron permisos para este día");
+	    		$this->flash->notice("Hasta el momento no se han aprobado permisos");
 	    		$permisos = null;
 	    	}
 				$this->assets
@@ -1150,30 +1150,25 @@ class BcPermisoController extends ControllerBase
 	    	->addJs('js/parsley.extend.js')
 	    	->addJs('js/picnet.table.filter.min.js')
 	    	->addJs('js/permisos_lista.js');
-				$this->view->titulo = $this->conversiones->fecha(4, $fecha);
 	    	$this->view->permisos = $permisos;
 		 }
-		 
+
 		 /**
  		 *
- 		 * Lista de los reportes generados de acuerdo a la aprobación de permisos
+ 		 * Reporte de permisos aprobados para una fecha determinada
  		 *
  		 */
- 		 public function reporte_generalAction($fecha){
+ 		 public function reporteAction($fecha){
  			 	if(!$fecha){
   				$fecha = date("Y-m-d");
-  				}
- 				$permisos = BcPermiso::find(array("fecha = '$fecha'", "order" => "id_oferente ASC"));
+  			}
+ 				$permisos = BcPermiso::find(array("estado = 2 AND (categoria > 1 AND categoria < 5) AND fechaAprobacion = '$fecha'", "order" => "id_oferente ASC"));
  				if (count($permisos) == 0) {
  	    		$this->flash->notice("No se aprobaron permisos para este día");
  	    		$permisos = null;
  	    	}
- 				$this->assets
- 	    	->addJs('js/parsley.min.js')
- 	    	->addJs('js/parsley.extend.js')
- 	    	->addJs('js/picnet.table.filter.min.js')
- 	    	->addJs('js/permisos_lista.js');
  				$this->view->titulo = $this->conversiones->fecha(4, $fecha);
  	    	$this->view->permisos = $permisos;
+				$this->view->fecha = $fecha;
  		 }
 }

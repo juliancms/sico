@@ -467,6 +467,12 @@ class SecurityPlugin extends Plugin
     		),
     		'revision' => array(
     				'nivelPermiso' => '2'
+    		),
+        'reportes' => array(
+    				'nivelPermiso' => '2'
+    		),
+        'reporte' => array(
+    				'nivelPermiso' => '2'
     		)
     	),
 

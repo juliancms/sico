@@ -1,7 +1,8 @@
 
 {{ content() }}
 <h1>Revisión de Permisos</h1>
-<a href='/sico/bc_permiso/mes' class='btn btn-primary regresar'><i class='glyphicon glyphicon-chevron-left'></i> Lista de Permisos</a><br>
+<a href='/sico/bc_permiso/mes' class='btn btn-primary regresar'><i class='glyphicon glyphicon-chevron-left'></i> Lista de Permisos</a>
+<a style="margin-left: 3px;" href='/sico/bc_permiso/reportes' class='btn btn-primary'><i class='glyphicon glyphicon-list-alt'></i> Reporte Permisos</a><br>
 <br>
 {% if (not(permisos is empty)) %}
 <!-- Modal -->

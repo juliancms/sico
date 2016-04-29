@@ -22,6 +22,7 @@
 </div>
 <div class="form-inline" style="padding-top: 5px">
 {{ link_to("bc_permiso/revision", '<i class="glyphicon glyphicon-list-alt"></i> Revisar Total No Aprobados', "class": "btn btn-primary menu-tab-first") }}
+{{ link_to("bc_permiso/reportes", '<i class="glyphicon glyphicon-list-alt"></i> Reportes', "class": "btn btn-primary menu-tab-first", "style":"margin-left: 4px;") }}
 {{ link_to("bc_permiso/nuevo", '<i class="glyphicon glyphicon-plus"></i> Nuevo Permiso', "class": "btn btn-primary menu-tab-first", "style":"margin-left: 4px;") }}
 </div>
 {% if (not(permisos is empty)) %}

@@ -8,13 +8,13 @@ class BcPermiso extends \Phalcon\Mvc\Model
      * @var integer
      */
     public $id_permiso;
-    
+
     /**
      *
      * @var integer
      */
     public $id_oferente;
-    
+
     /**
      *
      * @var string
@@ -26,6 +26,12 @@ class BcPermiso extends \Phalcon\Mvc\Model
      * @var integer
      */
     public $id_sede_contrato;
+
+    /**
+     *
+     * @var integer
+     */
+    public $id_sede;
 
 
     /**
@@ -51,13 +57,31 @@ class BcPermiso extends \Phalcon\Mvc\Model
      * @var string
      */
     public $titulo;
-    
+
     /**
      *
      * @var string
      */
     public $observaciones;
-    
+
+    /**
+     *
+     * @var string
+     */
+    public $fechahora;
+
+    /**
+     *
+     * @var string
+     */
+    public $fechaAprobacion;
+
+    /**
+     *
+     * @var integer
+     */
+    public $estado;
+
     //Virtual Foreign Key para poder acceder a la fecha de corte del acta
     public function initialize()
     {
@@ -71,8 +95,9 @@ class BcPermiso extends \Phalcon\Mvc\Model
     			'reusable' => true
     	));
     	$this->hasMany("id_permiso", "BcPermisoObservacion", "id_permiso");
+      $this->hasMany("id_permiso", "BcPermisoParticipante", "id_permiso");
     }
-    
+
     /**
      * Convierte en texto la categoría de los permisos
      *
@@ -98,7 +123,7 @@ class BcPermiso extends \Phalcon\Mvc\Model
     			break;
     	}
     }
-    
+
     /**
      * Convierte en texto la categoría de los permisos
      *
@@ -127,7 +152,7 @@ class BcPermiso extends \Phalcon\Mvc\Model
     			break;
     	}
     }
-    
+
     /**
      * Coloca estilo visual a los estados
      *
@@ -157,4 +182,13 @@ class BcPermiso extends \Phalcon\Mvc\Model
     	}
     }
 
+    /**
+     * Contar participantes
+     *
+     * @return string
+     */
+    public function countParticipantes()
+    {
+    	return BcPermisoParticipante::count("id_permiso = $this->id_permiso");
+    }
 }
