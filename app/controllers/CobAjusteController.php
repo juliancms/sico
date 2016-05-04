@@ -1,10 +1,10 @@
 <?php
- 
+
 use Phalcon\Mvc\Model\Criteria;
 use Phalcon\Paginator\Adapter\Model as Paginator;
 
 class CobAjusteController extends ControllerBase
-{    
+{
 	public $user;
     public function initialize()
     {
@@ -29,7 +29,7 @@ class CobAjusteController extends ControllerBase
         $this->view->cob_ajuste_reporte = $cob_ajuste_reporte;
         $this->view->cob_ajuste_noasignados = $cob_ajuste_noasignados;
     }
-    
+
     /**
      * reporte action
      */
@@ -38,7 +38,7 @@ class CobAjusteController extends ControllerBase
     	$cob_ajuste = CobAjuste::find(["(ajusteDentroPeriodo IS NULL OR ajusteDentroPeriodo = 0) AND fecha_ajuste_reportado = '$fecha'"]);
     	if (!$cob_ajuste) {
     		$this->flash->error("No se encontraron ajustes");
-    	
+
     		return $this->response->redirect("cob_ajuste/");
     	}
     	$this->assets
@@ -48,7 +48,7 @@ class CobAjusteController extends ControllerBase
     	$this->view->h1 = "Ajustes Fuera del Periodo <small>Fecha Reporte ".$this->conversiones->fecha(3, $fecha)."</small>";
     	$this->view->pick('cob_ajuste/lista');
     }
-    
+
     /**
      * noasignados action
      */
@@ -57,7 +57,7 @@ class CobAjusteController extends ControllerBase
     	$cob_ajuste = CobAjuste::find(["(ajusteDentroPeriodo IS NULL OR ajusteDentroPeriodo = 0) AND (fecha_ajuste_reportado IS NULL OR fecha_ajuste_reportado = '0000-00-00')"]);
     	if (!$cob_ajuste) {
     		$this->flash->error("No se encontraron ajustes");
-    		 
+
     		return $this->response->redirect("cob_ajuste/");
     	}
     	$this->assets
@@ -67,7 +67,7 @@ class CobAjusteController extends ControllerBase
     	$this->view->h1 = "Ajustes No Asignados";
     	$this->view->pick('cob_ajuste/lista');
     }
-    
+
     /**
      * periodo action
      */
@@ -76,7 +76,7 @@ class CobAjusteController extends ControllerBase
     	$cob_ajuste = CobAjuste::find(["ajusteDentroPeriodo = 1 AND id_periodo = '$id_periodo'"]);
     	if (!$cob_ajuste) {
     		$this->flash->error("No se encontraron ajustes");
-    		 
+
     		return $this->response->redirect("cob_ajuste/");
     	}
     	$this->assets
@@ -86,7 +86,7 @@ class CobAjusteController extends ControllerBase
     	$this->view->h1 = "Ajustes Dentro del Periodo <small>".$cob_ajuste[0]->CobPeriodo->getFechaDetail()." - ".$cob_ajuste[0]->CobPeriodo->getTipoperiodoDetail()."</small>";
     	$this->view->pick('cob_ajuste/lista');
     }
-    
+
     /**
      * Formulario para buscar
      */
@@ -98,7 +98,7 @@ class CobAjusteController extends ControllerBase
     	->addJs('js/parsley.extend.js');
     	$this->view->periodos = CobPeriodo::find(['order' => 'fecha DESC']);
     }
-    
+
     /**
      * Formulario para agregar fecha de reporte a los ajustes
      */
@@ -111,7 +111,7 @@ class CobAjusteController extends ControllerBase
     	$this->view->ajustes = CobAjuste::find(["(id_ajuste_reportado IS NULL OR id_ajuste_reportado = 0) AND (ajusteDentroPeriodo = 0 OR ajusteDentroPeriodo IS NULL) AND (certificar = 3 OR certificar = 4)", 'order' => 'datetime DESC']);
     	$this->view->fechas = CobAjusteReportado::find(["estado = 1", 'order' => 'fecha DESC']);
     }
-    
+
     /**
      * Formulario para agregar ajustes a un periodo antes de la fecha de facturación
      */
@@ -134,7 +134,7 @@ class CobAjusteController extends ControllerBase
     	}
     	$this->view->ajustes = $cob_ajuste;
     }
-    
+
     /**
      * Lista de periodos
      */
@@ -144,15 +144,15 @@ class CobAjusteController extends ControllerBase
     	$this->assets
     	->addJs('js/parsley.min.js')
     	->addJs('js/parsley.extend.js');
-    	
-    	$cob_ajuste = CobAjuste::find(["(fecha_ajuste_reportado IS NULL OR fecha_ajuste_reportado = '0000-00-00') AND (ajusteDentroPeriodo = 0 OR ajusteDentroPeriodo IS NULL) AND (certificar = 3 OR certificar = 4)", 'order' => 'datetime DESC', 'group' => 'fecha_ajuste_reportado']);
+
+    	$cob_ajuste = CobAjuste::find(["(fecha_ajuste_reportado IS NULL OR fecha_ajuste_reportado = '0000-00-00') AND (ajusteDentroPeriodo = 0 OR ajusteDentroPeriodo IS NULL) AND (certificar = 3 OR certificar = 4)", 'order' => 'datetime DESC', 'group' => 'id_periodo']);
     	if (count($cob_ajuste) == 0) {
     		$this->flash->error("No existen ajustes disponibles para ser asignados");
     		return $this->response->redirect("cob_ajuste/index");
     	}
     	$this->view->ajustes = $cob_ajuste;
     }
-    
+
     /**
      * Formulario para agregar fecha de reporte
      */
@@ -160,7 +160,7 @@ class CobAjusteController extends ControllerBase
     {
     	$this->view->fechas = CobAjusteReportado::find(['order' => 'fecha DESC']);
     }
-    
+
     /**
      * Guarda el fecha de reporte
      *
@@ -173,7 +173,7 @@ class CobAjusteController extends ControllerBase
     	$cob_ajuste_reporte = new CobAjusteReportado();
     	$cob_ajuste_reporte->fecha = $this->conversiones->fecha(1, $this->request->getPost("fecha"));
     	$cob_ajuste_reporte->estado = 1;
-    
+
     	if (!$cob_ajuste_reporte->save()) {
     		foreach ($cob_ajuste_reporte->getMessages() as $message) {
     			$this->flash->error($message);
@@ -183,7 +183,7 @@ class CobAjusteController extends ControllerBase
     	$this->flash->success("La fecha de reporte fue creada exitosamente.");
     	return $this->response->redirect("cob_ajuste/nuevafechareporte");
     }
-    
+
     /**
      * Elimina una fecha de reporte
      *
@@ -194,7 +194,7 @@ class CobAjusteController extends ControllerBase
     	$cob_ajuste_reportado = CobAjusteReportado::findFirstByid_ajuste_reportado($id_ajuste_reportado);
     	if (!$cob_ajuste_reportado) {
     		$this->flash->error("La fecha no fue encontrada");
-    
+
     		return $this->response->redirect("cob_ajuste/nuevafechareporte");
     	}
     	if (!$cob_ajuste_reportado->delete()) {
@@ -206,7 +206,7 @@ class CobAjusteController extends ControllerBase
     	$this->flash->success("La fecha fue eliminada correctamente");
     	return $this->response->redirect("cob_ajuste/nuevafechareporte");
     }
-    
+
     /**
      * Deshabilita una fecha de reporte
      *
@@ -217,12 +217,12 @@ class CobAjusteController extends ControllerBase
     	$cob_ajuste_reportado = CobAjusteReportado::findFirstByid_ajuste_reportado($id_ajuste_reportado);
     	if (!$cob_ajuste_reportado) {
     		$this->flash->error("La fecha no fue encontrada");
-    
+
     		return $this->response->redirect("cob_ajuste/nuevafechareporte");
     	}
     	$cob_ajuste_reportado->estado = 2;
     	if (!$cob_ajuste_reportado->save()) {
-    	
+
     		foreach ($cob_ajuste_reportado->getMessages() as $message) {
     			$this->flash->error($message);
     		}
@@ -231,7 +231,7 @@ class CobAjusteController extends ControllerBase
     	$this->flash->success("La fecha fue deshabilitada correctamente");
     	return $this->response->redirect("cob_ajuste/nuevafechareporte");
     }
-    
+
     /**
      * Habilita una fecha de reporte
      *
@@ -242,12 +242,12 @@ class CobAjusteController extends ControllerBase
     	$cob_ajuste_reportado = CobAjusteReportado::findFirstByid_ajuste_reportado($id_ajuste_reportado);
     	if (!$cob_ajuste_reportado) {
     		$this->flash->error("La fecha no fue encontrada");
-    
+
     		return $this->response->redirect("cob_ajuste/nuevafechareporte");
     	}
     	$cob_ajuste_reportado->estado = 1;
     	if (!$cob_ajuste_reportado->save()) {
-    		 
+
     		foreach ($cob_ajuste_reportado->getMessages() as $message) {
     			$this->flash->error($message);
     		}
@@ -256,7 +256,7 @@ class CobAjusteController extends ControllerBase
     	$this->flash->success("La fecha fue habilitada correctamente");
     	return $this->response->redirect("cob_ajuste/nuevafechareporte");
     }
-    
+
     /**
      * Reportes de los ajustes
      */
@@ -264,7 +264,7 @@ class CobAjusteController extends ControllerBase
     {
     	$this->view->fechas = CobAjuste::find(["id_ajuste_reportado IS NOT NULL", 'order' => 'id_ajuste_reportado DESC', 'group' => 'id_periodo, id_ajuste_reportado']);
     }
-    
+
     /**
      * Reportes sedes de los ajustes
      */
@@ -286,7 +286,7 @@ class CobAjusteController extends ControllerBase
     		$this->view->setTemplateAfter('../cob_ajuste/rpt_sedes_jardines');
     	}
     }
-    
+
     /**
      * Reportes contratos de los ajustes
      */
@@ -308,7 +308,7 @@ class CobAjusteController extends ControllerBase
     		$this->view->setTemplateAfter('../cob_ajuste/rpt_contratos_jardines');
     	}
     }
-    
+
     /**
      * Reportes contratos de los ajustes
      */
@@ -338,7 +338,7 @@ class CobAjusteController extends ControllerBase
     	if (!$cob_periodo) {
     		$this->flash->error("El periodo no existe ");
     		return $this->response->redirect("cob_ajuste/buscar");
-    	}  	
+    	}
     	$id_contrato = $this->request->getPost("id_contrato");
     	$numDocumento = $this->request->getPost("numDocumento");
     	$beneficiario = CobActaconteoPersonaFacturacion::findFirst(array("id_periodo = $id_periodo AND id_contrato = $id_contrato AND numDocumento = $numDocumento"));
@@ -357,7 +357,7 @@ class CobAjusteController extends ControllerBase
     	$this->view->periodo = $this->conversiones->fecha(5, $cob_periodo->fecha);
     	$this->view->beneficiario = $beneficiario;
     }
-    
+
     /**
      * Guardar asignación de ajustes a fecha
      */
@@ -391,7 +391,7 @@ class CobAjusteController extends ControllerBase
     	$this->flash->success("Las fechas de reporte han sido actualizadas correctamente");
     	return $this->response->redirect("cob_ajuste");
     }
-    
+
     /**
      * Guardar asignación de ajustes a periodo
      */
@@ -432,7 +432,7 @@ class CobAjusteController extends ControllerBase
     	$this->flash->success("Los ajustes han sido asignados al periodo correctamente");
     	return $this->response->redirect("cob_ajuste");
     }
-    
+
     /**
      * Guardar ajuste
      */
@@ -462,7 +462,7 @@ class CobAjusteController extends ControllerBase
     	$ajuste->datetime = date('Y-m-d H:i:s');
     	$ajuste->observacion = $this->request->getPost("observacion");
     	$ajuste->radicado = $this->request->getPost("radicado");
-    	$ajuste->id_usuario = $this->user['id_usuario'];	
+    	$ajuste->id_usuario = $this->user['id_usuario'];
     	if (!$ajuste->save()) {
     		foreach ($ajuste->getMessages() as $message) {
     			$this->flash->error($message);
@@ -486,7 +486,7 @@ class CobAjusteController extends ControllerBase
     	$this->flash->success("El ajuste fue realizado exitosamente.");
     	return $this->response->redirect("cob_ajuste/buscar");
     }
-    
+
     /**
      * Elimina un ajuste
      *
@@ -536,7 +536,7 @@ class CobAjusteController extends ControllerBase
     		$this->flash->error("Usted no tiene permisos para eliminar ajustes.");
     		return $this->response->redirect("cob_ajuste/");
     	}
-    	
+
     }
 
 }
