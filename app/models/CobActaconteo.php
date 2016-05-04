@@ -154,7 +154,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
         //Inicio generar actas PP
         if($cob_periodo->tipo == 1){
         	//Actualizar si cambia contrato de Mundo Mejor
-	    	$id_contrato_mundomejor = 4600058508;
+	    	$id_contrato_mundomejor = 4600064497;
 	    	$id_oferente_mundomejor = 9;
 	    	$oferente_nombre_mundomejor = "MUNDO MEJOR - FUNDACION";
 	    	$id_modalidad_mundomejor = 8;
@@ -224,7 +224,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     	//Inicio generar actas PP
         if($cob_periodo->tipo == 1){
         	//Actualizar si cambia contrato de Mundo Mejor
-	    	$id_contrato_mundomejor = 4600058508;
+	    	$id_contrato_mundomejor = 4600064497;
 	    	$id_oferente_mundomejor = 9;
 	    	$oferente_nombre_mundomejor = "MUNDO MEJOR - FUNDACION";
 	    	$id_modalidad_mundomejor = 8;
@@ -302,7 +302,7 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     	}
     	//Inicio generar actas PP
     		//Actualizar si cambia contrato de Mundo Mejor
-    		$id_contrato_mundomejor = 4600058508;
+    		$id_contrato_mundomejor = 4600064497;
     		$id_oferente_mundomejor = 9;
     		$oferente_nombre_mundomejor = "MUNDO MEJOR - FUNDACION";
     		$id_modalidad_mundomejor = 8;

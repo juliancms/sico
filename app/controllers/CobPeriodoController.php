@@ -372,7 +372,7 @@ class CobPeriodoController extends ControllerBase
     	}
     	if (count($recorridos) == 0){
     		$this->view->recorridos = array("1" => "1");
-    	} else if ($count($recorridos) > 1) {
+    	} else if (count($recorridos) > 1) {
     		$this->view->recorridos = $recorridos;
     	} else {
     		$this->view->recorridos = $recorridos;
