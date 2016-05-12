@@ -159,7 +159,7 @@ class CobActath extends \Phalcon\Mvc\Model
 	    	<div class='fila'><div>1.5 RETIRADO DESPUES DEL DÍA DE CORTE DE PERIODO</div></div>
 	    	<div class='fila'><div>1.6 AUSENTE QUE NO PRESENTA EXCUSA EL DÍA DEL REPORTE</div></div>
 	    	<div class='fila'><div>1.7 CON EXCUSA MÉDICA MAYOR O IGUAL A 15 DIAS</div></div>
-	    	<div class='fila'><div>1.8 CON EXCUSA MÉDICA MENOR A 15 DIAS</div></div>
+	    	<div class='fila'><div>1.8 AUSENTE EN LA SEDE POR REUNIÓN</div></div>
     		<div class='clear'></div>
     	</div>";
     	$datos_acta = array();
