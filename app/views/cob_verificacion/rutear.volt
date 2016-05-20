@@ -14,7 +14,6 @@
 			  <span class="input-group-addon">Buscar</span>
 			  <input class='form-control search_input' type='text' placeholder='Escribe el término a buscar'>
 			</div>
-			{{ form("cob_verificacion/ruteodesdeotroguardar/"~id_verificacion, "method":"post", "name":"ruteodesdeotro") }}
 	      	<table class="table table-bordered table-hover">
 				<thead>
 					<tr>
@@ -33,10 +32,22 @@
 						<td>Recorrido {{ periodo.recorrido }}</td>
 					</tr>
 					{% endfor %}
+					{% for verificacion in verificaciones %}
+					<tr>
+						<td><a class="btn btn-link periodo_select" rel="tooltip" title="Rutear"><i class="glyphicon glyphicon-plus"></i></a></td>
+						<td><span class="id_periodo" id="{{ periodo.id_periodo }}"></span><span class="recorrido" id="{{ periodo.recorrido }}"></span>{{ periodo.CobPeriodo.getFechaDetail() }}</td>
+						<td>Verificacion {{ verificacion.CobVerificacion.getTipo() }}</td>
+						<td></td>
+					</tr>
+					{% endfor %}
 				</tbody>
 			</table>
+			{{ form("cob_verificacion/ruteodesdeotroguardar/"~id_verificacion, "method":"post", "name":"ruteodesdeotro") }}
 			<input type="hidden" name="id_periodo_actualizar" class="ruteo_id_periodo">
 			<input type="hidden" name="recorrido_actualizar" class="ruteo_recorrido">
+			</form>
+			{{ form("cob_verificacion/ruteodesdeotroverificacionguardar/"~id_verificacion, "method":"post", "name":"ruteodesdeotroverificacion") }}
+			<input type="hidden" name="id_verificacion_actualizar" class="ruteo_id_verificacion">
 			</form>
 	      </div>
 	    </div><!-- /.modal-content -->
@@ -57,7 +68,7 @@
             <th>Barrio</th>
             <th>Dirección</th>
             <th>Beneficiarios</th>
-            
+
          </tr>
     </thead>
     <tbody>
@@ -80,7 +91,7 @@
             <td>{{ acta.sede_barrio }}</td>
             <td>{{ acta.sede_direccion }}</td>
             <td>{{ acta.countBeneficiarios() }}</td>
-                      
+
         </tr>
     {% endfor %}
     </tbody>
@@ -102,7 +113,7 @@
             <span class="input-group-btn">
             	<span class="btn btn-default disabled" id="asignar_contador">Asignar</span>
            	</span>
-           	
+
 			</div>
 	      </div>
 	      <div class="col-lg-3" style="padding-top: 7px;">

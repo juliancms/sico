@@ -7,6 +7,11 @@ $('.periodo_select').click(function() {
 	$(".ruteo_recorrido").val(recorrido);
 	document.ruteodesdeotro.submit();
 });
+$('.verificacion_select').click(function() {
+	var id_verificacion = $(this).parent().parent().find(".id_verificacion").attr('id');
+	$(".ruteo_id_verificacion").val(id_verificacion);
+	document.ruteodesdeotroverificacion.submit();
+});
 $(".acta_check").click (
 	function(){
 		actas_checkeadas.push($(this).val());

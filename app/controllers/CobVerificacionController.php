@@ -234,26 +234,32 @@ class CobVerificacionController extends ControllerBase
     		$this->flash->error("La verificación no fue encontrada");
     		return $this->response->redirect("cob_periodo/");
     	}
+			$this->view->periodos = CobActaconteo::find(['group' => 'id_periodo, recorrido']);
 			if($cob_verificacion->tipo == 5) {
     		$actas = CobActafocalizacion::find(array(
     				"id_verificacion = $id_verificacion"
     		));
+				$this->view->verificaciones = CobActafocalizacion::find(['group' => 'id_verificacion']);
 			} else if($cob_verificacion->tipo == 4) {
     		$actas = CobActath::find(array(
     				"id_verificacion = $id_verificacion"
     		));
+				$this->view->verificaciones = CobActath::find(['group' => 'id_verificacion']);
 			} else if($cob_verificacion->tipo == 3) {
     		$actas = CobActatelefonica::find(array(
     				"id_verificacion = $id_verificacion"
     		));
+				$this->view->verificaciones = CobActatelefonica::find(['group' => 'id_verificacion']);
     	} else if($cob_verificacion->tipo == 2) {
     		$actas = CobActacomputo::find(array(
     				"id_verificacion = $id_verificacion"
     		));
+				$this->view->verificaciones = CobActacomputo::find(['group' => 'id_verificacion']);
     	} else if($cob_verificacion->tipo == 1) {
     		$actas = CobActadocumentacion::find(array(
     				"id_verificacion = $id_verificacion"
     		));
+				$this->view->verificaciones = CobActadocumentacion::find(['group' => 'id_verificacion']);
     	}
     	if (!$actas) {
     		$this->flash->error("No se encontraron actas");
@@ -401,6 +407,7 @@ class CobVerificacionController extends ControllerBase
     	if (!$this->request->isPost()) {
     		return $this->response->redirect("cob_verificacion/rutear/$id_verificacion");
     	}
+			$id_verificacion_actualizar = $this->request->getPost("id_periodo_actualizar");
     	$id_periodo_actualizar = $this->request->getPost("id_periodo_actualizar");
     	$recorrido_actualizar = $this->request->getPost("recorrido_actualizar");
     	$cob_periodo = CobPeriodo::findFirstByid_periodo($id_periodo_actualizar);
@@ -440,6 +447,62 @@ class CobVerificacionController extends ControllerBase
 			} else if($cob_verificacion->tipo == 1) {
 				$tabla = "cob_actadocumentacion";
 			}
+    	$db = $this->getDI()->getDb();
+    	foreach($actas as $row){
+    		$id_usuario = $row->id_usuario;
+    		$id_contrato = $row->id_contrato;
+    		$id_sede = $row->id_sede;
+    		$query = $db->execute("UPDATE $tabla SET id_usuario = $id_usuario WHERE id_verificacion = $id_verificacion AND id_contrato = $id_contrato AND id_sede = $id_sede");
+    	}
+    	$this->flash->success("El ruteo fue actualizado exitosamente");
+    	return $this->response->redirect("cob_verificacion/rutear/$id_verificacion");
+    }
+		/**
+     * Rutea desde otro recorrido
+     *
+     */
+    public function ruteodesdeotroverificacionguardarAction($id_verificacion)
+    {
+
+    	if (!$this->request->isPost()) {
+    		return $this->response->redirect("cob_verificacion/rutear/$id_verificacion");
+    	}
+			$id_verificacion_actualizar = $this->request->getPost("id_periodo_actualizar");
+    	$cob_verificacion = CobVerificacion::findFirstByid_periodo($id_verificacion_actualizar);
+			if($cob_verificacion->tipo == 5) {
+    		$actas = CobActafocalizacion::find(array(
+    				"id_verificacion = $id_verificacion"
+    		));
+				$tabla = "cob_actafocalizacion";
+			} else if($cob_verificacion->tipo == 4) {
+    		$actas = CobActath::find(array(
+    				"id_verificacion = $id_verificacion"
+    		));
+				$tabla = "cob_actath";
+			} else if($cob_verificacion->tipo == 3) {
+    		$actas = CobActatelefonica::find(array(
+    				"id_verificacion = $id_verificacion"
+    		));
+				$tabla = "cob_actatelefonica";
+    	} else if($cob_verificacion->tipo == 2) {
+    		$actas = CobActacomputo::find(array(
+    				"id_verificacion = $id_verificacion"
+    		));
+				$tabla = "cob_actacomputo";
+    	} else if($cob_verificacion->tipo == 1) {
+    		$actas = CobActadocumentacion::find(array(
+    				"id_verificacion = $id_verificacion"
+    		));
+				$tabla = "cob_actadocumentacion";
+    	}
+    	if (!$cob_verificacion) {
+    		$this->flash->error("La verificacion no fue encontrada");
+    		return $this->response->redirect("cob_periodo/");
+    	}
+    	if (!$actas) {
+    		$this->flash->error("No se encontraron actas asignadas");
+    		return $this->response->redirect("cob_periodo/");
+    	}
     	$db = $this->getDI()->getDb();
     	foreach($actas as $row){
     		$id_usuario = $row->id_usuario;
