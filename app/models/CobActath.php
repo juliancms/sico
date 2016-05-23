@@ -146,6 +146,10 @@ class CobActath extends \Phalcon\Mvc\Model
     	<div class='clear'></div>
     	</div>";
     	$pie_pagina = "<div id='pie_pagina'>
+	    	<div style='width: 100%; text-align: center; float: left;'>________________________________________________<br>FIRMA PERSONA ENCARGADA DE INTERVENTORÍA<br></div>
+    		<div class='clear'></div>
+    	</div>";
+      $pie_pagina2 = "<div id='pie_pagina'>
     	<div class='pull-left' style='padding-left: 60px; width: 300px; text-align: center; float: left;'>________________________________________________<br>FIRMA PERSONA ENCARGADA DE LA SEDE</div>
 	    	<div class='pull-right' style='padding-right: 60px; width: 300px; text-align: center; float: left;'>________________________________________________<br>FIRMA PERSONA ENCARGADA DE INTERVENTORÍA<br></div>
     		<div class='clear'></div>
@@ -201,7 +205,7 @@ class CobActath extends \Phalcon\Mvc\Model
       			$html .= $encabezado_talentohumano;
       			foreach($acta->getCobActathPersona(['tipoPersona = 0', 'order' => 'id_sede asc']) as $row){
       			$nombre_completo = array($row->primerNombre, $row->segundoNombre, $row->primerApellido, $row->segundoApellido);
-      			$nombre_completo = implode(" ", $nombre_completo);
+      			$nombre_completo = strtoupper(implode(" ", $nombre_completo));
       			$i = ($i<10) ? "0" .$i : $i;
       			if($j == 7){
       			$j = 1;
@@ -232,6 +236,48 @@ class CobActath extends \Phalcon\Mvc\Model
             $p++;
           	$html .= "<div class='clear'></div></div>" . $pie_pagina;
             $html .= "<div class='paginacion'>PÁGINA $p</div>";
+            //Inicio Hojas para el prestador
+            $i = 1;
+            $j = 1;
+            $encabezado_talentohumano = "<div class='seccion'>
+      			<div class='fila center bold'><div style='border:none; width: 100%'>4. LISTADO DE TALENTO HUMANO REPORTADO EN EL SIST. DE INFORMACIÓN DELFI</div></div>
+      			<div class='fila colb2 encabezadodoc'><div style='width: 20px;'>#</div><div style='width: 100px;'>4.1 DOCUMENTO</div><div style='width: 250px'>4.2 NOMBRE COMPLETO</div><div style='width: 100px;'>4.10 ASISTENCIA</div><div style='width: 60px'>4.12 FIRMA</div></div>";
+      			$html .= $encabezado;
+      			$html .= $encabezado_talentohumano;
+      			foreach($acta->getCobActathPersona(['tipoPersona = 0', 'order' => 'id_sede asc']) as $row){
+      			$nombre_completo = array($row->primerNombre, $row->segundoNombre, $row->primerApellido, $row->segundoApellido);
+      			$nombre_completo = strtoupper(implode(" ", $nombre_completo));
+      			$i = ($i<10) ? "0" .$i : $i;
+      			if($j == 7){
+      			$j = 1;
+      					$p++;
+      					$html .= "<div class='clear'></div></div>" . $pie_pagina2;
+      					$html .= "<div class='paginacion'>PÁGINA $p</div>";
+  				      $html .= $encabezado;
+      					$html .= $encabezado_talentohumano;
+      			}
+      					$html .="<div class='fila colb2'><div style='width: 20px;'>$i</div><div style='width: 100px;'>$row->numDocumento</div><div style='width: 250px'>$nombre_completo</div><div style='width: 100px;'></div><div style='width: 60px'></div></div>";
+      					$i++;
+      					$j++;
+      			}
+      			$p++;
+      			$html .= "<div class='clear'></div></div>" . $pie_pagina2;
+            $html .= "<div class='paginacion'>PÁGINA $p</div>";
+            $i = 1;
+            $j = 1;
+            $encabezado_talentohumano_adicional = "<div class='seccion'>
+            <div class='fila center bold'><div style='border:none; width: 100%'>4. LISTADO DE TALENTO HUMANO ADICIONAL AL REPORTADO EN EL SIST. DE INFORMACIÓN DELFI</div></div>
+            <div class='fila colb2 encabezadodoc'><div style='width: 20px;'>#</div><div style='width: 100px;'>4.1 DOCUMENTO</div><div style='width: 250px'>4.2 NOMBRE COMPLETO</div><div style='width: 100px;'>4.10 ASISTENCIA</div><div style='width: 60px'>4.12 FIRMA</div></div>";
+            $html .= $encabezado;
+            $html .= $encabezado_talentohumano_adicional;
+            $i = ($i<10) ? "0" .$i : $i;
+            for($i = 1; $i <= 6; $i++){
+  					$html .="<div class='fila colb2'><div style='width: 20px;'>$i</div><div style='width: 100px;'></div><div style='width: 250px'></div><div style='width: 100px;'></div><div style='width: 60px'></div></div>";
+            }
+            $p++;
+          	$html .= "<div class='clear'></div></div>" . $pie_pagina2;
+            $html .= "<div class='paginacion'>PÁGINA $p</div>";
+            ////Fin Hojas para el prestador
           	$html .= "<div class='clear'></div>"; // </acta>
         	  $datos_acta['html'] = $html;
             return $datos_acta;
