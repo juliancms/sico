@@ -14,7 +14,7 @@ class CobPeriodo extends \Phalcon\Mvc\Model
      * @var string
      */
     public $fecha;
-    
+
     public function initialize()
     {
     	$this->hasMany('id_periodo', 'CobActaconteo', 'id_periodo', array(
@@ -26,7 +26,7 @@ class CobPeriodo extends \Phalcon\Mvc\Model
     			'reusable' => true
     	));
     }
-    
+
     /**
      * Returns a human representation of 'fecha'
      *
@@ -37,7 +37,7 @@ class CobPeriodo extends \Phalcon\Mvc\Model
     	$conversiones = $this->getDI()->getConversiones();
     	return $conversiones->fecha(5, $this->fecha);
     }
-    
+
     /**
      * Returns a human representation of 'fecha'
      *
@@ -48,7 +48,7 @@ class CobPeriodo extends \Phalcon\Mvc\Model
     	$conversiones = $this->getDI()->getConversiones();
     	return $conversiones->fecha(8, $this->fecha);
     }
-    
+
     /**
      * Returns a human representation of 'fecha'
      *
@@ -59,7 +59,7 @@ class CobPeriodo extends \Phalcon\Mvc\Model
     	$conversiones = $this->getDI()->getConversiones();
     	return $conversiones->fecha(3, $this->fechacierre);
     }
-    
+
     /**
      * Returns a human representation of 'fecha'
      *
@@ -70,7 +70,7 @@ class CobPeriodo extends \Phalcon\Mvc\Model
     	$conversiones = $this->getDI()->getConversiones();
     	return $conversiones->fecha(7, $this->fecha);
     }
-    
+
     /**
      * Returns a human representation of 'fecha'
      *
@@ -88,9 +88,11 @@ class CobPeriodo extends \Phalcon\Mvc\Model
     		return "Entorno Comunitario Itinerante";
     	} else if($this->tipo == 5) {
     		return "Jardines Infantiles";
+    	} else if($this->tipo == 6) {
+    		return "Alistamiento";
     	}
     }
-    
+
     /**
      * Returns a human representation of 'fecha'
      *
@@ -106,7 +108,7 @@ class CobPeriodo extends \Phalcon\Mvc\Model
     		return "Modalidades Generales";
     	}
     }
-    
+
     /**
      * Returns a human representation of 'fecha'
      *
@@ -122,5 +124,5 @@ class CobPeriodo extends \Phalcon\Mvc\Model
     		return 1;
     	}
     }
-    
+
 }
