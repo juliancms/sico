@@ -12,6 +12,7 @@
 					<option value="3">Telefónica</option>
           <option value="4">Talento Humano</option>
           <option value="5">Focalización</option>
+          <option value="6">Inconsistencias Cuéntame</option>
 			</select>
         </div>
     </div>

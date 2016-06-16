@@ -694,7 +694,16 @@ class BcPermisoController extends ControllerBase
     		$this->flash->notice("No se encontró la sede, por favor inténtelo nuevamente o contacte con el administrador");
     		return $this->response->redirect("/bc_permiso/nuevo");
     	}
+			if(!$this->request->getPost("nombreCompleto") || !$this->request->getPost("numDocumento")){
+    		$this->flash->error("Ocurrió un error al agregar el listado de participantes, el permiso no fue creado, por favor inténtelo nuevamente.");
+    		return $this->response->redirect("/bc_permiso/nuevo");
+    	}
     	$tipo_permiso = $this->request->getPost("tipo_permiso");
+			/* $tipo_permiso
+			* 0: No repetir
+			* 1: Repetir Semanalmente
+			* 2: Repetir Quincenalmente
+			*/
     	if($tipo_permiso == 0){
     		$bc_permiso = new BcPermiso();
     		$bc_permiso->fechahora = date('Y-m-d H:i:s');
