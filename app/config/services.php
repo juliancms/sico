@@ -78,6 +78,20 @@ $di->set('db', function() use ($config) {
 	));
 });
 
+/**
+ * Componente de base de datos basado para conectar a delfi
+ */
+$di->set('db_delfi', function() use ($config) {
+	$dbclass = 'Phalcon\Db\Adapter\Pdo\\' . $config->database->adapter;
+	return new $dbclass(array(
+		"host"     => $config->database->host,
+		"username" => $config->database->username,
+		"password" => $config->database->password,
+		"dbname"   => "bddelfi_2016",
+		"charset"  => $config->database->charset
+	));
+});
+
 $di->set('modelsManager', function() {
 	return new Phalcon\Mvc\Model\Manager();
 });

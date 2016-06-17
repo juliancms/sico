@@ -35,6 +35,7 @@ class CobVerificacionController extends ControllerBase
     public function nuevoAction()
     {
     	$modalidades = BcModalidad::find();
+			$this->view->meses = MatrizEjecucionRh::find(['group' => 'id_mes', 'order' => 'id_mes DESC']);
     	$this->view->modalidades = $modalidades;
     	$this->view->cargas = BcCarga::find(['order' => 'fecha DESC']);
     }
@@ -153,7 +154,13 @@ class CobVerificacionController extends ControllerBase
     		if($actas){
     			$this->flash->success("La verificación fue creada exitosamente.");
 				}
-    	} else if ($tipo == 5){
+    	} else if($tipo == 4){
+				$id_mes = $this->request->getPost("id_mes");
+				$actas = MatrizEjecucionRh::cargarBeneficiarios($cob_verificacion->id_verificacion, $id_mes);
+				if($actas){
+					$this->flash->success("La verificación fue creada exitosamente.");
+				}
+			}	else if ($tipo == 5){
 					$actas = CobActafocalizacion::cargarBeneficiarios($carga, $cob_verificacion->id_verificacion);
 					if($actas){
 						$this->flash->success("La verificación fue creada exitosamente.");

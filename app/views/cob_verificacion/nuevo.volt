@@ -32,10 +32,10 @@
         <label class="col-sm-2 control-label" for="carga">Carga</label>
         <div class="col-sm-10">
         	<select id="carga" name="carga" class="form-control">
-			{% for carga in cargas %}
-					<option value="{{ carga.id_carga }}">{{ carga.mes }} {{ carga.fecha }} {{ carga.nombreMat }}</option>
-        	{% endfor  %}
-			</select>
+  			    {% for carga in cargas %}
+  					<option value="{{ carga.id_carga }}">{{ carga.mes }} {{ carga.fecha }} {{ carga.nombreMat }}</option>
+          	{% endfor  %}
+			     </select>
         </div>
     </div>
     <div class="form-group">
@@ -46,6 +46,16 @@
         			<input type="checkbox" name="modalidad[]" value="{{ modalidad.id_modalidad }}" autocomplete="off" checked> {{ modalidad.nombre }}
         			</label>
         		{% endfor  %}
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label" for="id_mes">Meses</label>
+        <div class="col-sm-10">
+        	<select id="id_mes" name="id_mes" class="form-control">
+  			    {% for mes in meses %}
+  					<option value="{{ mes.id_mes }}">{{ mes.id_mes }}</option>
+          	{% endfor  %}
+			     </select>
         </div>
     </div>
 <div class="form-group">
