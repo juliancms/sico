@@ -56,20 +56,20 @@
 		 ?>
     	<tr>
         	<td><span class="number">{{ loop.index }}</span></td>
-        	<td>{{ text_field("num_documento[]", "value" : adicional.numDocumento, "disabled" : "disabled", "placeholder" : "Número de documento", "class" : "num_documento form-control required") }}<div class="error_documento"></div></td>
-        	<td>{{ text_field("primerNombre[]", "value" : adicional.primerNombre, "disabled" : "disabled", "placeholder" : "Primer nombre", "class" : "form-control required") }}</td>
-        	<td>{{ text_field("segundoNombre[]", "value" : adicional.segundoNombre, "disabled" : "disabled", "placeholder" : "Segundo nombre", "class" : "form-control") }}</td>
-        	<td>{{ text_field("primerApellido[]", "value" : adicional.primerApellido, "disabled" : "disabled", "placeholder" : "Primer apellido", "class" : "form-control required") }}</td>
-        	<td>{{ text_field("segundoApellido[]", "value" : adicional.segundoApellido, "disabled" : "disabled", "placeholder" : "Segundo apellido", "class" : "form-control") }}</td>
-          <td>{{ text_field("formacionAcademica[]", "value" : adicional.formacionAcademica, "disabled" : "disabled", "placeholder" : "Formación Académica", "class" : "form-control required") }}</td>
-					<td>{{ select("cargo[]", "value" : adicional.cargo, "disabled" : "disabled", cargo, "class" : "form-control cargo required") }}</td>
-					<td>{{ select("tipoContrato[]", "value" : adicional.tipoContrato, "disabled" : "disabled", tipoContrato, "class" : "form-control tipoContrato required") }}</td>
-					<td>{{ text_field("baseSalario[]", "parsley-type" : "digits", "value" : adicional.baseSalario, "disabled" : "disabled", "placeholder" : "Base Salario", "class" : "form-control required") }}</td>
-					<td>{{ text_field("porcentajeDedicacion[]", "parsley-range" : "[1,100]", "value" : dedicacion, "disabled" : "disabled", "placeholder" : "Porcentaje de Dedicación", "class" : "form-control required") }}</td>
-					<td>{{ text_field("fechaIngreso[]", "value" : fechaIngreso, "disabled" : "disabled", "type" : "date", "class" : "form-control tipo-fecha fecha required", "placeholder" : "dd/mm/aaaa", "parsley-type" : "dateIso", "data-date-format" : "dd/mm/yyyy") }}</td>
-					<td>{{ text_field("fechaRetiro[]", "value" : fechaRetiro, "disabled" : "disabled", "type" : "date", "class" : "form-control tipo-fecha fecha", "placeholder" : "dd/mm/aaaa", "parsley-type" : "dateIso", "data-date-format" : "dd/mm/yyyy") }}</td>
-					<td>{{ select("asistencia[]", "value" : adicional.asistencia, "disabled" : "disabled", asistencia, "class" : "form-control asistencia required") }}</td>
-          <td>{{ text_area("observacion[]", "value" : adicional.observacion, "disabled" : "disabled", "rows" : "3", "class" : "form-control") }}</td>
+        	<td><div class='texto'>{{ adicional.numDocumento }}</div>{{ text_field("num_documento[]", "value" : adicional.numDocumento, "disabled" : "disabled", "placeholder" : "Número de documento", "class" : "num_documento form-control required hide") }}<div class="error_documento"></div></td>
+        	<td><div class='texto'>{{ adicional.primerNombre }}</div>{{ text_field("primerNombre[]", "value" : adicional.primerNombre, "disabled" : "disabled", "placeholder" : "Primer nombre", "class" : "form-control required hide") }}</td>
+        	<td><div class='texto'>{{ adicional.segundoNombre }}</div>{{ text_field("segundoNombre[]", "value" : adicional.segundoNombre, "disabled" : "disabled", "placeholder" : "Segundo nombre", "class" : "form-control hide") }}</td>
+        	<td><div class='texto'>{{ adicional.primerApellido }}</div>{{ text_field("primerApellido[]", "value" : adicional.primerApellido, "disabled" : "disabled", "placeholder" : "Primer apellido", "class" : "form-control required hide") }}</td>
+        	<td><div class='texto'>{{ adicional.segundoApellido }}</div>{{ text_field("segundoApellido[]", "value" : adicional.segundoApellido, "disabled" : "disabled", "placeholder" : "Segundo apellido", "class" : "form-control hide") }}</td>
+          <td><div class='texto'>{{ adicional.formacionAcademica }}</div>{{ text_field("formacionAcademica[]", "value" : adicional.formacionAcademica, "disabled" : "disabled", "placeholder" : "Formación Académica", "class" : "form-control required hide") }}</td>
+					<td><div class='texto'>{{ adicional.cargo }}</div>{{ select("cargo[]", "value" : adicional.cargo, "disabled" : "disabled", cargo, "class" : "form-control cargo required hide") }}</td>
+					<td><div class='texto'>{{ adicional.tipoContrato }}</div>{{ select("tipoContrato[]", "value" : adicional.tipoContrato, "disabled" : "disabled", tipoContrato, "class" : "form-control tipoContrato required hide") }}</td>
+					<td><div class='texto'>{{ adicional.baseSalario }}</div>{{ text_field("baseSalario[]", "parsley-type" : "digits", "value" : adicional.baseSalario, "disabled" : "disabled", "placeholder" : "Base Salario", "class" : "form-control required hide") }}</td>
+					<td><div class='texto'>{{ dedicacion }}</div>{{ text_field("porcentajeDedicacion[]", "parsley-range" : "[1,100]", "value" : dedicacion, "disabled" : "disabled", "placeholder" : "Porcentaje de Dedicación", "class" : "form-control required hide") }}</td>
+					<td><div class='texto'>{{ fechaIngreso }}</div>{{ text_field("fechaIngreso[]", "value" : fechaIngreso, "disabled" : "disabled", "type" : "date", "class" : "form-control tipo-fecha fecha required hide", "placeholder" : "dd/mm/aaaa", "parsley-type" : "dateIso", "data-date-format" : "dd/mm/yyyy") }}</td>
+					<td><div class='texto'>{{ fechaRetiro }}</div>{{ text_field("fechaRetiro[]", "value" : fechaRetiro, "disabled" : "disabled", "type" : "date", "class" : "form-control tipo-fecha fecha hide", "placeholder" : "dd/mm/aaaa", "parsley-type" : "dateIso", "data-date-format" : "dd/mm/yyyy") }}</td>
+					<td><div class='texto'>{{ adicional.asistencia }}</div>{{ select("asistencia[]", "value" : adicional.asistencia, "disabled" : "disabled", asistencia, "class" : "form-control asistencia required hide") }}</td>
+          <td><div class='texto'>{{ adicional.observacion }}</div>{{ text_area("observacion[]", "value" : adicional.observacion, "disabled" : "disabled", "rows" : "3", "class" : "form-control hide") }}</td>
           <td style="text-align:center;"><a id='{{ adicional.id_actath_persona }}' class='btn btn-default eliminar_guardado'><i class='glyphicon glyphicon-remove'></i></a><br><a class='btn btn-default editar_guardado'><i class='glyphicon glyphicon-edit'></i></a></td>
         </tr>
     {% endfor %}

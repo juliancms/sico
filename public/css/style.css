@@ -63,20 +63,20 @@ footer p { padding-top: 10px; font-size: 13px; olor:  }
   padding-bottom: 15px;
   border-radius: 6px;
  }
-  
+
  .menu-tab {
   margin-bottom: 5px;
   margin-left: 3px;
  }
- 
+
  .menu-tab-first {
   margin-bottom: 5px;
  }
- 
+
   .no-imprimir .menu-tab, .regresar {
   float: left;
  }
- 
+
  .fileinput-button {
   position: relative;
   overflow: hidden;
@@ -146,5 +146,5 @@ footer p { padding-top: 10px; font-size: 13px; olor:  }
 	opacity: 1 !important;
 }
 .fila_eliminar {
-	font-weight: bold; 
+	font-weight: bold;
 }

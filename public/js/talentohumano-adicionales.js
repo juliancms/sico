@@ -51,9 +51,13 @@ $(".editar_guardado").click(
     	if(adicionales_eliminar.length > 0){
     	$("#eliminar_adicionales").val(adicionales_eliminar+","+id);
     	} else { $("#eliminar_adicionales").val(id); }
+			$(this).parent().parent().find(".texto").addClass("hide");
     	$(this).parent().parent().find("input").removeAttr("disabled");
+			$(this).parent().parent().find("input").removeClass("hide");
     	$(this).parent().parent().find("textarea").removeAttr("disabled");
+			$(this).parent().parent().find("textarea").removeClass("hide");
     	$(this).parent().parent().find("select").removeAttr("disabled");
+			$(this).parent().parent().find("select").removeClass("hide");
     	$( '#adicionales_form' ).parsley( 'destroy' );
     	$( '#adicionales_form' ).parsley();
     	reasignar_keys();
