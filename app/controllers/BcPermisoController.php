@@ -699,6 +699,7 @@ class BcPermisoController extends ControllerBase
     		return $this->response->redirect("/bc_permiso/nuevo");
     	}
     	$tipo_permiso = $this->request->getPost("tipo_permiso");
+			$requiereTransporte = $this->request->getPost("requiereTransporte");
 			/* $tipo_permiso
 			* 0: No repetir
 			* 1: Repetir Semanalmente
@@ -729,13 +730,16 @@ class BcPermisoController extends ControllerBase
 				$bc_permiso_general->personaContactoEvento = $this->request->getPost("personaContactoEvento");
 				$bc_permiso_general->telefonoContactoEvento = $this->request->getPost("telefonoContactoEvento");
 				$bc_permiso_general->emailContactoEvento = $this->request->getPost("emailContactoEvento");
-				$bc_permiso_general->requiereTransporte = $this->request->getPost("requiereTransporte");
+				$bc_permiso_general->requiereTransporte = $requiereTransporte;
 				if (!$bc_permiso_general->save()) {
 					foreach ($bc_permiso->getMessages() as $message) {
 						$this->flash->error($message);
 					}
 					$bc_permiso->delete();
 					return $this->response->redirect("bc_permiso/nuevo");
+				}
+				if($requiereTransporte == 1){
+					$this->agregarTransporte($bc_permiso, $bc_permiso_general);
 				}
 				$elementos = array(
 						'numDocumento' => $this->request->getPost("numDocumento"),
@@ -821,7 +825,7 @@ class BcPermisoController extends ControllerBase
 		    	$bc_permiso_general->personaContactoEvento = $this->request->getPost("personaContactoEvento");
 		    	$bc_permiso_general->telefonoContactoEvento = $this->request->getPost("telefonoContactoEvento");
 		    	$bc_permiso_general->emailContactoEvento = $this->request->getPost("emailContactoEvento");
-		    	$bc_permiso_general->requiereTransporte = $this->request->getPost("requiereTransporte");
+		    	$bc_permiso_general->requiereTransporte = $requiereTransporte;
 		    	if (!$bc_permiso_general->save()) {
 		    		foreach ($bc_permiso->getMessages() as $message) {
 		    			$this->flash->error($message);
@@ -829,6 +833,9 @@ class BcPermisoController extends ControllerBase
 		    		$bc_permiso->delete();
 		    		return $this->response->redirect("bc_permiso/nuevo");
 		    	}
+					if($requiereTransporte == 1){
+						$this->agregarTransporte($bc_permiso, $bc_permiso_general);
+					}
     			if($i == 0){
     				$id_permiso_vinculado = $bc_permiso->id_permiso;
     			} else {
@@ -857,15 +864,18 @@ class BcPermisoController extends ControllerBase
     		}
     		$mensaje_success = "Los permisos fueron creados exitosamente";
     	}
+    	$this->flash->success($mensaje_success);
+    	return $this->response->redirect("bc_permiso/");
+    }
 
-    	if($this->request->getPost("requiereTransporte") == 1){
+		public function agregarTransporte($bc_permiso, $bc_permiso_general){
     		$bc_permiso_general_transporte = new BcPermisoGeneralTransporte();
     		$bc_permiso_general_transporte->id_permiso = $bc_permiso->id_permiso;
     		$bc_permiso_general_transporte->runtConductor = $this->request->getPost("runtConductor");
     		$bc_permiso_general_transporte->runtVehiculo = $this->request->getPost("runtVehiculo");
     		$bc_permiso_general_transporte->polizaResponsabilidadCivil = $this->request->getPost("polizaResponsabilidadCivil");
     		$bc_permiso_general_transporte->tarjetaOperacionVehiculo = $this->request->getPost("tarjetaOperacionVehiculo");
-    		if (!$bc_permiso_general_transporte->save()) {
+				if (!$bc_permiso_general_transporte->save()) {
     			foreach ($bc_permiso->getMessages() as $message) {
     				$this->flash->error($message);
     			}
@@ -873,10 +883,7 @@ class BcPermisoController extends ControllerBase
     			$bc_permiso_general->delete();
     			return $this->response->redirect("bc_permiso/nuevo");
     		}
-    	}
-    	$this->flash->success($mensaje_success);
-    	return $this->response->redirect("bc_permiso/");
-    }
+		}
 
     /**
      * Subir adicional
