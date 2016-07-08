@@ -149,6 +149,21 @@ class Elements extends Component
     		)
     );
 
+		private $_headerMenuBCReportes = array(
+    		'ibc_mensaje' => array(
+    				'caption' => 'Comunicaciones',
+    				'action' => 'anuncios'
+    		),
+    		'ibc_archivo_digital' => array(
+    				'caption' => 'Archivo Digital',
+    				'action' => 'index'
+    		),
+    		'bc_reporte' => array(
+    				'caption' => 'Reportes',
+    				'action' => 'oferente_contratos'
+    		)
+    );
+
     private $_headerMenuPermisosBC = array(
     		'ibc_mensaje' => array(
     				'caption' => 'Comunicaciones',
@@ -214,9 +229,10 @@ class Elements extends Component
             echo '<ul class="nav navbar-nav navbar-left">';
             if($user['id_usuario_cargo'] == 6){
             	$menu = $this->_headerMenuOferente;
-
             } else if($user['id_usuario_cargo'] == 8){
             	$menu = $this->_headerMenuPermisosBC;
+            } else if($user['id_usuario_cargo'] == 9){
+            	$menu = $this->_headerMenuBCReportes;
             } else if($user['id_usuario_cargo'] == 7){
             	$menu = $this->_headerMenuComponente;
             } else {

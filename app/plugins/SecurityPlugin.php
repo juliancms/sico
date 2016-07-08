@@ -294,7 +294,7 @@ class SecurityPlugin extends Plugin
     				'nivelPermiso' => '4'
     		),
     		'oferentes_contratos' => array(
-    				'nivelPermiso' => '1'
+    				'nivelPermiso' => '2'
     		),
     		'oferente_periodos' => array(
     				'nivelPermiso' => '4'
@@ -311,11 +311,11 @@ class SecurityPlugin extends Plugin
     		'beneficiarios_contratoajustes' => array(
     				'nivelPermiso' => '4'
     		),'contratos_liquidacion' => array(
-    				'nivelPermiso' => '1'
+    				'nivelPermiso' => '2'
     		),'contrato_liquidacion' => array(
-    				'nivelPermiso' => '1'
+    				'nivelPermiso' => '2'
     		),'buscar_contratoliquidacion' => array(
-    				'nivelPermiso' => '1'
+    				'nivelPermiso' => '2'
     		)
     	),
     	'cob_verificacion' => array(

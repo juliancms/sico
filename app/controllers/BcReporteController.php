@@ -1,10 +1,10 @@
 <?php
- 
+
 use Phalcon\Mvc\Model\Criteria;
 use Phalcon\Paginator\Adapter\Model as Paginator;
 
 class BcReporteController extends ControllerBase
-{    
+{
 	public $user;
     public function initialize()
     {
@@ -51,12 +51,12 @@ class BcReporteController extends ControllerBase
     		$this->view->setTemplateAfter('../bc_reporte/cob_contratos_comunitario');
     	} else if($tipo == 4) {
     		$this->view->setTemplateAfter('../bc_reporte/cob_contratos_itinerante');
-    	} else if($tipo == 5) {   		
+    	} else if($tipo == 5) {
     		$this->view->setTemplateAfter('../bc_reporte/cob_contratos_jardines');
     	}
-    	
+
     }
-    
+
     /**
      * Reporte general de Cobertura de Sedes
      */
@@ -79,7 +79,7 @@ class BcReporteController extends ControllerBase
     		$this->view->setTemplateAfter('../bc_reporte/cob_sedes_jardines');
     	}
     }
-    
+
     /**
      * Reporte general de Cobertura de Sedes (niño a niño R1 y R2)
      */
@@ -108,7 +108,7 @@ class BcReporteController extends ControllerBase
     	$this->view->beneficiarios = $reporte_contrato;
     	$this->view->contrato = $reporte_contrato[0];
     }
-    
+
     /**
      * Reporte general de Cobertura de Sedes (niño a niño Final)
      */
@@ -137,7 +137,7 @@ class BcReporteController extends ControllerBase
     	$this->view->beneficiarios = $reporte_contrato;
     	$this->view->contrato = $reporte_contrato[0];
     }
-    
+
     /**
      * Reporte general de Cobertura de Sedes (niño a niño Facturación)
      */
@@ -166,7 +166,7 @@ class BcReporteController extends ControllerBase
     	$this->view->beneficiarios = $reporte_contrato;
     	$this->view->contrato = $reporte_contrato[0];
     }
-    
+
     /**
      * Reporte general de Cobertura de Sedes (niño a niño Facturación)
      */
@@ -194,7 +194,7 @@ class BcReporteController extends ControllerBase
     	$this->view->ajustes = $reporte_contrato;
     	$this->view->contrato = $reporte_contrato[0]->CobActaconteo;
     }
-      
+
     /**
      * Reporte index oferente
      */
@@ -212,7 +212,7 @@ class BcReporteController extends ControllerBase
     	}
     	$this->view->contratos = $contratos;
     }
-    
+
     /**
      * Reporte index oferentes
      */
@@ -225,13 +225,13 @@ class BcReporteController extends ControllerBase
     	}
     	$this->view->contratos = $contratos;
     }
-    
+
     /**
      * Reporte index oferente
      */
     public function oferente_periodosAction($id_contrato)
     {
-    	if($this->user['nivel'] > 1){
+    	if($this->user['nivel'] > 2){
     		$oferente = IbcUsuarioOferente::findFirstByid_usuario($this->id_usuario);
     		if(!$oferente){
     			$this->flash->error("Este usuario no fue encontrado en la base de datos de prestadores.");
@@ -248,7 +248,7 @@ class BcReporteController extends ControllerBase
     	$this->view->contrato = $periodos[0];
     	$this->view->periodos = $periodos;
     }
-    
+
     /**
      * Reporte de liquidación para un contrato
      */
@@ -269,7 +269,7 @@ class BcReporteController extends ControllerBase
     public function contratos_liquidacionAction()
     {
     }
-    
+
     /**
      * Reporte de liquidación para un contrato
      */
