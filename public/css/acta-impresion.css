@@ -6,7 +6,7 @@
 	font-weight: bold;
 }
 #imprimir {
-  font-size: 9px;	
+  font-size: 9px;
 }
 #imprimir .fila {
 	width: 100%;
@@ -40,6 +40,10 @@
 	border-right: 1px solid #000000;
 	font-size: 7px;
 	height: 18px;
+}
+
+#imprimir .encabezado .col3e span {
+	font-size: 8px;
 }
 
 #imprimir .encabezadodoc div {
@@ -107,19 +111,19 @@
 	height: 270px;
 }
 
-@media print { 
+@media print {
     #imprimir { display: block; visibility: visible; margin-right: 0.8cm; margin-left: 0.8cm; }
     .navbar, .no-imprimir, footer, hr { display: none; visibility: hidden; }
     #imprimir .encabezado { page-break-before: always; }
-    @page  
-    { 
-        /* this affects the margin in the printer settings */ 
+    @page
+    {
+        /* this affects the margin in the printer settings */
         margin-left: 0;
         margin-bottom: 40px;
         margin-right: 0;
         margin-top: 40px;
         padding: 0;
-    } 
+    }
 }
 
 /* Estilo del impreso */
