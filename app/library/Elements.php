@@ -675,7 +675,14 @@ class Elements extends Component
     			return array (
     			'1' => '1. Si cuenta con valla, según manual del Programa Buen Comienzo',
     			'2' => '2. No cuenta con valla, según manual del Programa Buen Comienzo',
-    			'3' => '3. No cuenta con ningún tipo de valla de identificación');
+    			'3' => '3. No cuenta con ningún tipo de valla de identificación',
+					'4' => '4. No Aplica');
+    			break;
+				case "estadoVisita":
+    			return array (
+    			'1' => '1. Atendido',
+    			'2' => '2. Visita Fallida',
+    			'3' => '3. No se evidenció el hogar');
     			break;
     		case "dotacion":
     			return array (

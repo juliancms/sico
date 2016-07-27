@@ -105,6 +105,14 @@
                 {{ text_area("observacionEncargado", "rows" : "4", "class" : "form-control") }}
         </div>
     </div>
+		{% if acta.id_modalidad == 12 %}
+		<div class="form-group">
+				<label class="col-sm-2 control-label" for="estadoVisita">* Estado de la visita</label>
+				<div class="col-sm-10">
+								{{ select("estadoVisita", estadoVisita, "class" : "form-control required") }}
+				</div>
+		</div>
+    {% endif %}
 <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
           {{ submit_button("Guardar", "class" : "btn btn-default") }}

@@ -85,7 +85,8 @@ class CobActaconteoController extends ControllerBase
             ->addJs('js/parsley.extend.js');
             $this->view->id_actaconteo = $id_actaconteo;
             $this->view->valla_sede = $this->elements->getSelect("datos_valla");
-            $this->view->sino = $this->elements->getSelect("sino");
+            $this->view->sino = $this->elements->getSelect("sinona");
+						$this->view->estadoVisita = $this->elements->getSelect("estadoVisita");
             if($acta->CobActaconteoDatos){
             	$this->tag->setDefault("fecha", $this->conversiones->fecha(2, $acta->CobActaconteoDatos->fecha));
             	$this->tag->setDefault("horaInicio", $acta->CobActaconteoDatos->horaInicio);
@@ -97,6 +98,7 @@ class CobActaconteoController extends ControllerBase
             	$this->tag->setDefault("mosaicoDigital", $acta->CobActaconteoDatos->mosaicoDigital);
             	$this->tag->setDefault("observacionEncargado", $acta->CobActaconteoDatos->observacionEncargado);
             	$this->tag->setDefault("observacionUsuario", $acta->CobActaconteoDatos->observacionUsuario);
+							$this->tag->setDefault("estadoVisita", $acta->CobActaconteoDatos->estadoVisita);
             }
             $this->view->acta = $acta;
             $this->actaCerrada($acta, $this->user['nivel']);
@@ -131,6 +133,10 @@ class CobActaconteoController extends ControllerBase
         $dato->mosaicoDigital = $this->request->getPost("mosaicoDigital");
         $dato->observacionEncargado = $this->request->getPost("observacionEncargado");
         $dato->observacionUsuario = $this->request->getPost("observacionUsuario");
+				//Si es Entorno Comunitario Itinerante se guarda Estado de la Visita
+				if($acta->id_modalidad == 12){
+					$dato->estadoVisita = $this->request->getPost("estadoVisita");
+				}
         if (!$dato->save()) {
             foreach ($dato->getMessages() as $message) {
                 $this->flash->error($message);
