@@ -308,6 +308,29 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     	$db->query("DROP TABLE $tabla_mat");
     	return TRUE;
     }
+
+    public function generarActasItinerante($cob_periodo, $recorrido_anterior) {
+    	$recorrido = $recorrido_anterior + 1;
+    	$carga = BcCarga::findFirstByid_carga($cob_periodo->id_periodo);
+    	$db = $this->getDI()->getDb();
+    	$timestamp = new DateTime();
+    	$tabla_mat_actas = "actas" . $timestamp->getTimestamp();
+      $tabla_mat_personas = "personas" . $timestamp->getTimestamp();
+    	$db->query("CREATE TEMPORARY TABLE $tabla_mat_actas (id_actaconteo INT, id_sede_contrato BIGINT, id_contrato BIGINT, id_modalidad INT, modalidad_nombre VARCHAR(50), id_sede INT, sede_nombre VARCHAR(80), sede_barrio VARCHAR(80), sede_direccion VARCHAR(80), sede_telefono VARCHAR(80), id_oferente INT, oferente_nombre VARCHAR(100)) CHARACTER SET utf8 COLLATE utf8_bin");
+      $db->query("CREATE TEMPORARY TABLE $tabla_mat_personas (id_actaconteo INT, id_contrato BIGINT, id_sede INT, id_persona INT, numDocumento VARCHAR(100), primerNombre VARCHAR(20), segundoNombre VARCHAR(20), primerApellido VARCHAR(20), segundoApellido VARCHAR(20), id_grupo BIGINT, grupo VARCHAR(80), fechaNacimiento DATE) CHARACTER SET utf8 COLLATE utf8_bin");
+      $db->query("INSERT IGNORE INTO $tabla_mat_actas (id_actaconteo) SELECT id_actaconteo FROM cob_actaconteo_datos WHERE cob_actaconteo_datos.estadoVisita = 2");
+      $db->query("DELETE FROM $tabla_mat_actas WHERE $tabla_mat_actas.id_actaconteo NOT IN (SELECT cob_actaconteo.id_actaconteo FROM cob_actaconteo WHERE cob_actaconteo.id_periodo = $cob_periodo->id_periodo AND cob_actaconteo.recorrido = $recorrido_anterior)");
+      $db->query("UPDATE $tabla_mat_actas, cob_actaconteo SET $tabla_mat_actas.id_sede_contrato = cob_actaconteo.id_sede_contrato, $tabla_mat_actas.id_contrato = cob_actaconteo.id_contrato, $tabla_mat_actas.id_modalidad = cob_actaconteo.id_modalidad, $tabla_mat_actas.modalidad_nombre = cob_actaconteo.modalidad_nombre, $tabla_mat_actas.id_sede = cob_actaconteo.id_sede, $tabla_mat_actas.sede_nombre = cob_actaconteo.sede_nombre, $tabla_mat_actas.sede_direccion = cob_actaconteo.sede_direccion, $tabla_mat_actas.sede_barrio = cob_actaconteo.sede_barrio, $tabla_mat_actas.sede_telefono = cob_actaconteo.sede_telefono, $tabla_mat_actas.id_oferente = cob_actaconteo.id_oferente, $tabla_mat_actas.oferente_nombre = cob_actaconteo.oferente_nombre WHERE $tabla_mat_actas.id_actaconteo = cob_actaconteo.id_actaconteo");
+      $db->query("INSERT IGNORE INTO $tabla_mat_personas (id_actaconteo, id_contrato, id_persona, numDocumento, primerNombre, segundoNombre, primerApellido, segundoApellido, id_grupo, grupo, fechaNacimiento) SELECT id_actaconteo, id_contrato, id_persona, numDocumento, primerNombre, segundoNombre, primerApellido, segundoApellido, id_grupo, grupo, fechaNacimiento FROM cob_actaconteo_persona WHERE cob_actaconteo_persona.id_actaconteo IN (SELECT id_actaconteo FROM $tabla_mat_actas WHERE 1)");
+      $db->query("UPDATE $tabla_mat_personas, $tabla_mat_actas SET $tabla_mat_personas.id_sede = $tabla_mat_actas.id_sede WHERE $tabla_mat_personas.id_actaconteo = $tabla_mat_actas.id_actaconteo");
+      $db->query("INSERT IGNORE INTO cob_actaconteo (id_periodo, id_carga, recorrido, id_sede_contrato, id_contrato, id_modalidad, modalidad_nombre, id_sede, sede_nombre, sede_barrio, sede_direccion, sede_telefono, id_oferente, oferente_nombre) SELECT $cob_periodo->id_periodo, $carga->id_carga, $recorrido, id_sede_contrato, id_contrato, id_modalidad, modalidad_nombre, id_sede, sede_nombre, sede_barrio, sede_direccion, sede_telefono, id_oferente, oferente_nombre FROM $tabla_mat_actas");
+      $db->query("UPDATE $tabla_mat_personas, cob_actaconteo SET $tabla_mat_personas.id_actaconteo = cob_actaconteo.id_actaconteo WHERE cob_actaconteo.id_periodo = $cob_periodo->id_periodo AND cob_actaconteo.recorrido = $recorrido AND $tabla_mat_personas.id_contrato = cob_actaconteo.id_contrato AND $tabla_mat_personas.id_sede = cob_actaconteo.id_sede");
+      $db->query("INSERT IGNORE INTO cob_actaconteo_persona (id_actaconteo, id_periodo, recorrido, id_contrato, id_persona, numDocumento, primerNombre, segundoNombre, primerApellido, segundoApellido, id_grupo, grupo, fechaNacimiento) SELECT id_actaconteo, $cob_periodo->id_periodo, $recorrido, id_contrato, id_persona, numDocumento, primerNombre, segundoNombre, primerApellido, segundoApellido, id_grupo, grupo, fechaNacimiento FROM $tabla_mat_personas");
+    	$db->query("DROP TABLE $tabla_mat_personas");
+      $db->query("DROP TABLE $tabla_mat_actas");
+    	return TRUE;
+    }
+
     //Esta función se utiliza cuando por error no fue seleccionada como BD de facturación un recorrido
     public function generarFacturacion($cob_periodo, $carga) {
     	$db = $this->getDI()->getDb();
@@ -559,9 +582,18 @@ class CobActaconteo extends \Phalcon\Mvc\Model
   			$html .= "<div class='clear'></div></div>" . $pie_pagina;
   			$html .= "<div class='paginacion'>PÁGINA $p</div>";
   		}
-      if($acta->id_modalidad == 12){
-        
-      }
+      // if($acta->id_modalidad == 12){
+      //   $html .= $encabezado;
+  		// 	$html .= "<div class='seccion' id='listado_beneficiarios'>
+  		// 	<div class='fila center bold horiziontal'><div style='border:none; width: 100%'>6. SEGUIMIENTO DE ENCUENTROS EDUCATIVOS - MODALIDAD ENTORNO COMUNITARIO ITINERANTE PROGRAMA BUEN COMIENZO</div></div>
+  		// 	<div class='fila colb'><div style='width: 20px;'>#</div><div style='width: 50px;'>FECHA 1</div><div style='width: 50px'>6.2 HORA INICIO</div><div style='width: 50px'>6.3 HORA FIN</div><div style='width: 70px'>6.4 NOMBRE COMPLETO DEL OPERADOR</div><div style='width: 70px'>6.4 DOCUMENTO DEL OPERADOR</div><div style='width: 70px'>6.4 CARGO DEL OPERADOR</div><div style='width: 70px'>6.5 TEMA ABORDADO EN EL ENCUENTRO</div><div style='width: 70px'>6.6 NECESIDADES, EXPECTATIVAS E INTERESES INDENTIFICADOS EN LAS MADRES COMUNITARIAS, NIÑOS Y NIÑAS</div><div style='width: 70px'>6.5 NIÑOS PARTICIPANTES</div><div style='width: 70px'>6.5 FIRMA OPERADOR BUEN COMIENZO</div><div style='width: 70px'>6.5 FIRMA MADRE COMUNITARIA</div></div>";
+  		// 	for($i = 1; $i <= 30; $i++){
+  		// 		$html .="<div class='fila colb'><div style='width: 20px;'>$i</div><div style='width: 50px;'></div><div style='width: 50px'></div><div style='width: 50px;'></div><div style='width: 70px'></div><div style='width: 70px'></div><div style='width: 70px'></div><div style='width: 70px'></div><div style='width: 70px'></div><div style='width: 70px'></div><div style='width: 70px'></div><div style='width: 70px'></div></div>";
+  		// 	}
+  		// 	$p++;
+  		// 	$html .= "<div class='clear'></div></div>" . $pie_pagina;
+  		// 	$html .= "<div class='paginacion'>PÁGINA $p</div>";
+      // }
   		$html .= "<div class='clear'></div>"; // </acta>
     	$datos_acta['html'] = $html;
     	return $datos_acta;

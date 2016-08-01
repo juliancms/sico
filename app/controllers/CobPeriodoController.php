@@ -327,9 +327,17 @@ class CobPeriodoController extends ControllerBase
     			"id_periodo = $id_periodo",
     			"group" => "recorrido"
     	));
+			$recorrido_anterior = count($recorridos);
+			//Si el periodo es Itinerante se genera el nuevo recorrido
+			if($cob_periodo->tipo == 4){
+				$actas = CobActaconteo::generarActasItinerante($cob_periodo, $recorrido_anterior);
+    		if($actas){
+    			$this->flash->success("Se generaron exitosamente las actas");
+    		}
+    		return $this->response->redirect("cob_periodo/ver/$id_periodo");
+			}
     	$facturacion = CobActaconteoPersonaFacturacion::findFirstByid_periodo($id_periodo);
     	if($facturacion){
-    		$recorrido_anterior = count($recorridos);
     		$actas = CobActaconteo::generarActasFacturacion($cob_periodo, $recorrido_anterior);
     		if($actas){
     			$this->flash->success("Se generaron exitosamente las actas");
