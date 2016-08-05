@@ -409,7 +409,7 @@ class Elements extends Component
     	echo "</div>";
     	echo "<a href='/sico/cob_periodo/recorrido/$acta->id_periodo/$acta->recorrido' class='btn btn-primary regresar'><i class='glyphicon glyphicon-chevron-left'></i> Regresar</a>";
     	//Si no es el recorrido 1 quita el menú de adicionales
-    	if($acta->recorrido > 1){
+    	if($acta->recorrido > 1 && $acta->id_modalidad != 12){
     		unset($this->_actaMenu['adicionales']);
     		unset($this->_actaMenu['adicionalescapturas']);
     	}
@@ -463,10 +463,6 @@ class Elements extends Component
     	echo "</tr></tbody></table>";
     	echo "</div>";
     	echo "<a href='/sico/cob_periodo/recorrido/$acta->id_periodo/$acta->recorrido' class='btn btn-primary regresar'><i class='glyphicon glyphicon-chevron-left'></i> Regresar</a>";
-    	//Si no es el recorrido 1 quita el menú de adicionales
-    	if($acta->recorrido > 1){
-    	unset($this->_actaMenu['adicionales']);
-    	}
     	foreach ($this->_actametroMenu as $menu) {
         	$action = $menu['action'];
         	$caption = $menu['caption'];
