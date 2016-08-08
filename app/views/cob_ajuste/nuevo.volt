@@ -16,7 +16,8 @@
             <th>Contrato</th>
             <th>Sede</th>
             <th class='danger'>Periodo</th>
-            <th>Estado</th>
+            <th>Estado Facturación</th>
+						<th>Estado Liquidación</th>
          </tr>
     </thead>
     <tbody>
@@ -28,6 +29,7 @@
     	<td>{{ acta.sede_nombre }}</td>
     	<td class='danger'>{{ periodo }}</td>
     	<td>{{ beneficiario.getEstadoDetail() }}</td>
+			<td>{{ beneficiario.getEstadoLiquidacionDetail() }}</td>
     </tr>
     </tbody>
 </table>
