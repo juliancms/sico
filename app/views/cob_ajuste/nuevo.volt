@@ -5,7 +5,7 @@
 <table class="table table-bordered table-hover">
 	<thead>
         <tr>
-            <th colspan="7" style="text-align: center; background-color: #F8F8F8;">Información del beneficiario</th>
+            <th colspan="8" style="text-align: center; background-color: #F8F8F8;">Información del beneficiario</th>
         </tr>
     </thead>
     <thead>
