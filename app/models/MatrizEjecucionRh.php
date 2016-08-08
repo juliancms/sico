@@ -89,7 +89,7 @@ class MatrizEjecucionRh extends \Phalcon\Mvc\Model
       $cargo_arr[] = $row->PersonalContratado->Cargo->nombre_cargo;
       $tipoContrato_arr[] = $row->PersonalContratado->Cargo->codigo_tipo_contrato;
       $baseSalario_arr[] = $row->PersonalContratado->Cargo->base_salario_honorarios;
-      $porcentajeDedicacion_arr[] = $row->porcentaje_dedicacion;
+      $porcentajeDedicacion_arr[] = $row->PersonalContratado->porcentaje_dedicacion;
       $fechaIngreso_arr[] = $row->PersonalContratado->fecha_ingreso;
     }
     $elementos = array(
