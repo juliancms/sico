@@ -390,7 +390,7 @@ class CobActaconteoPersonaFacturacion extends \Phalcon\Mvc\Model
      */
     public function getEstadoLiquidacionDetail()
     {
-    	switch ($this->certificacionFacturacion) {
+    	switch ($this->certificacionLiquidacion) {
     		case 0:
     			return "Pendiente de Certificación";
     			break;
