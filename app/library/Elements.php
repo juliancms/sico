@@ -695,6 +695,13 @@ class Elements extends Component
     			'7' => '7. Incapacitado',
     			'8' => '8. No cuenta con número telefónico');
     			break;
+				case "cargoitinerante":
+    			return array (
+    			'1' => '1. Pedagogo',
+    			'2' => '2. Psicosocial',
+    			'3' => '3. Educador Físico',
+    			'4' => '4. Nutricionista');
+    			break;
     		case "meses":
     			return array("Enero" => "Enero", "Febrero" => "Febrero", "Marzo" => "Marzo", "Abril" => "Abril", "Mayo" => "Mayo", "Junio" => "Junio", "Julio" => "Julio", "Agosto" => "Agosto", "Septiembre" => "Septiembre", "Octubre" => "Octubre", "Noviembre" => "Noviembre", "Diciembre" => "Diciembre");
     			break;

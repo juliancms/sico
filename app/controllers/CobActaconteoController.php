@@ -353,7 +353,6 @@ class CobActaconteoController extends ControllerBase
     		}
     		$this->view->adicionales = $acta->getCobActaconteoPersona(['tipoPersona = 1', 'order' => 'grupo asc']);
     		$this->view->listado_ninos = implode(",", $array_ninos);
-    		$this->view->acta = $acta;
     		$this->view->id_actaconteo = $id_actaconteo;
     		$this->view->asistencia = $this->elements->getSelect("asistencia");
     		$this->view->acta = $acta;
@@ -591,4 +590,85 @@ class CobActaconteoController extends ControllerBase
     	}
     }
 
+		/**
+     * Seguimiento a los profesionales de Buen Comienzo modalidad ECI
+     *
+     * @param int $id_actaconteo
+     */
+    public function seguimientoitineranteAction($id_actaconteo) {
+    		$acta = CobActaconteo::findFirstByid_actaconteo($id_actaconteo);
+    		if (!$acta) {
+    			$this->flash->error("El acta no fue encontrada");
+    			return $this->response->redirect("cob_periodo/");
+    		}
+				$this->view->seguimiento = CobActaconteoEmpleadoitinerante::find(["id_actaconteo = $id_actaconteo", 'order' => 'id_actaconteo_empleadoitinerante asc']);
+    		$this->assets
+    		->addJs('js/parsley.min.js')
+    		->addJs('js/parsley.extend.js')
+				->addJs('js/jquery.timepicker.min.js')
+				->addJs('js/bootstrap-datepicker.min.js')
+				->addJs('js/bootstrap-datepicker.es.min.js')
+				->addJs('js/jquery.datepair.min.js')
+				->addCss('css/jquery.timepicker.css')
+				->addCss('css/bootstrap-datepicker.min.css')
+				->addJs('js/seguimientoitinerante.js');
+				$this->view->cargo = $this->elements->getSelect("cargoitinerante");
+    		$this->view->acta = $acta;
+    		$this->view->id_actaconteo = $id_actaconteo;
+    		$this->actaCerrada($acta, $this->user['nivel']);
+    }
+
+		/**
+     * Guardar seguimientoitinerante
+     *
+     */
+    public function guardarseguimientoitineranteAction($id_actaconteo)
+    {
+    	if (!$this->request->isPost()) {
+    		return $this->response->redirect("cob_periodo/");
+    	}
+    	$db = $this->getDI()->getDb();
+    	$acta = CobActaconteo::findFirstByid_actaconteo($id_actaconteo);
+    	if (!$acta) {
+    		$this->flash->error("El acta $id_actaconteo no existe");
+    		return $this->response->redirect("cob_periodo/");
+    	}
+			$this->guardarActaCerrada($acta, $this->user['nivel']);
+    	$eliminar_empleados = $this->request->getPost("eliminar_empleados");
+    	if($eliminar_empleados){
+	    	$sql = $this->conversiones->multipledelete("cob_actaconteo_empleadoitinerante", "id_actaconteo_empleadoitinerante", $eliminar_empleados);
+	    	$query = $db->query($sql);
+    	}
+			if($this->request->getPost("numDocumento")){
+				$elementos = array(
+						'horaInicio' => $this->request->getPost("horaInicio"),
+						'horaFin' => $this->request->getPost("horaFin"),
+						'nombre' => $this->request->getPost("nombre"),
+						'numDocumento' => $this->request->getPost("numDocumento"),
+						'cargo' => $this->request->getPost("cargo"),
+						'temaEncuentro' => $this->request->getPost("temaEncuentro"),
+						'necesidades' => $this->request->getPost("necesidades"),
+						'participantes' => $this->request->getPost("participantes"),
+						'id_actaconteo' => $id_actaconteo
+
+	    	);
+    		$fechas = $this->request->getPost("fecha");
+    		if(count($fechas) > 0) {
+    			$fechas = $this->conversiones->array_fechas(1, $fechas);
+    			$elementos['fecha'] = $fechas;
+    		}
+    		$sql = $this->conversiones->multipleinsert("cob_actaconteo_empleadoitinerante", $elementos);
+    		$query = $db->query($sql);
+    		if (!$query) {
+    			foreach ($query->getMessages() as $message) {
+    				$this->flash->error($message);
+    			}
+    			return $this->response->redirect("cob_actaconteo/seguimientoitinerante/$id_actaconteo");
+    		}
+				$this->flash->success("Los empleados fueron guardados exitosamente");
+	    	return $this->response->redirect("cob_actaconteo/seguimientoitinerante/$id_actaconteo");
+    	}
+			$this->flash->success("Los empleados fueron eliminados exitosamente");
+			return $this->response->redirect("cob_actaconteo/seguimientoitinerante/$id_actaconteo");
+    }
 }

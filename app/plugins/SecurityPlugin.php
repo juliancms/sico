@@ -204,6 +204,9 @@ class SecurityPlugin extends Plugin
     		),
     		'totalcertificar' => array(
     				'nivelPermiso' => '1'
+    		),
+        'seguimientoitinerante' => array(
+    				'nivelPermiso' => '3'
     		)
 
     	),'cob_actamuestreo' => array(
