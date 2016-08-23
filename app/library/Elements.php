@@ -413,6 +413,10 @@ class Elements extends Component
     		unset($this->_actaMenu['adicionales']);
     		unset($this->_actaMenu['adicionalescapturas']);
     	}
+			//Si es acta modalidad ECI coloca el menú de seguimiento empleados
+			if( $acta->id_modalidad == 12){
+    		$this->_actaMenu['seguimiento'] = array('caption' => 'Seguimiento Empleados', 'action' => 'seguimientoitinerante', 'icon' => 'glyphicon-th-list');
+    	}
     	foreach ($this->_actaMenu as $menu) {
     		$action = $menu['action'];
     		$caption = $menu['caption'];
