@@ -155,15 +155,20 @@ class CobVerificacionController extends ControllerBase
     			$this->flash->success("La verificación fue creada exitosamente.");
 				}
     	} else if($tipo == 4){
-				$id_mes = $this->request->getPost("id_mes");
-				$actas = MatrizEjecucionRh::cargarBeneficiarios($cob_verificacion->id_verificacion, $id_mes);
-				if($actas){
-					$this->flash->success("La verificación fue creada exitosamente.");
-				}
+					$id_mes = $this->request->getPost("id_mes");
+					$actas = MatrizEjecucionRh::cargarBeneficiarios($cob_verificacion->id_verificacion, $id_mes);
+					if($actas){
+						$this->flash->success("La verificación fue creada exitosamente.");
+					}
 			}	else if ($tipo == 5){
 					$actas = CobActafocalizacion::cargarBeneficiarios($carga, $cob_verificacion->id_verificacion);
 					if($actas){
 						$this->flash->success("La verificación fue creada exitosamente.");
+					}
+			} else if ($tipo == 6){
+					$actas = PersonalContratado::cargarBeneficiarios($cob_verificacion->id_verificacion, $id_mes);
+					if($actas){
+					$this->flash->success("La verificación fue creada exitosamente.");
 					}
     	}
     	return $this->response->redirect("cob_verificacion/");

@@ -129,5 +129,6 @@ class MatrizEjecucionRh extends \Phalcon\Mvc\Model
     }
     $db->query("UPDATE cob_actath, cob_actaconteo SET cob_actath.id_sede_contrato = cob_actaconteo.id_sede_contrato, cob_actath.id_modalidad = cob_actaconteo.id_modalidad, cob_actath.modalidad_nombre = cob_actaconteo.modalidad_nombre, cob_actath.sede_nombre = cob_actaconteo.sede_nombre, cob_actath.sede_barrio = cob_actaconteo.sede_barrio, cob_actath.sede_direccion = cob_actaconteo.sede_direccion, cob_actath.sede_telefono = cob_actaconteo.sede_telefono, cob_actath.id_oferente = cob_actaconteo.id_oferente, cob_actath.oferente_nombre = cob_actaconteo.oferente_nombre WHERE cob_actath.id_contrato = cob_actaconteo.id_contrato AND cob_actath.id_sede = cob_actaconteo.id_sede AND cob_actath.id_verificacion = $id_verificacion AND cob_actaconteo.id_periodo = (SELECT MAX(id_periodo) FROM cob_periodo WHERE tipo = 1)");
     $db->query("UPDATE cob_actath_persona, cob_actath SET cob_actath_persona.id_actath = cob_actath.id_actath WHERE cob_actath_persona.id_contrato = cob_actath.id_contrato AND cob_actath_persona.id_sede = cob_actath.id_sede AND cob_actath_persona.id_verificacion = $id_verificacion AND cob_actath.id_verificacion = $id_verificacion");
+    return TRUE;
   }
 }

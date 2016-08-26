@@ -41,11 +41,11 @@ class CobVerificacion extends \Phalcon\Mvc\Model
     	} else if($this->tipo == 3) {
     		return 'Telefónica';
     	} else if($this->tipo == 4) {
-    		return 'Talento Humano';
+    		return 'Talento Humano General';
     	} else if($this->tipo == 5) {
     		return 'Focalización';
     	} else if($this->tipo == 6) {
-    		return 'Inconsistencias Cuéntame';
+    		return 'Talento Humano Jardines';
     	}
     }
 

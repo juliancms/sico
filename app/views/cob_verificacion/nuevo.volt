@@ -10,9 +10,9 @@
 					<option value="1">Revisión de Carpetas</option>
 					<option value="2">Equipo de Cómputo</option>
 					<option value="3">Telefónica</option>
-          <option value="4">Talento Humano</option>
+          <option value="4">Talento Humano General</option>
           <option value="5">Focalización</option>
-          <option value="6">Inconsistencias Cuéntame</option>
+          <option value="6">Talento Humano Jardines</option>
 			</select>
         </div>
     </div>
