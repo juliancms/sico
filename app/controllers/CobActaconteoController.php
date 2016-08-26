@@ -424,11 +424,11 @@ class CobActaconteoController extends ControllerBase
     }
 
     /**
-     * Elimina un acta
+     * Deshabilita un acta
      *
      * @param int $id_actaconteo
      */
-    public function eliminarAction($id_actaconteo)
+    public function deshabilitarAction($id_actaconteo)
     {
 
         $acta = CobActaconteo::findFirstByid_actaconteo($id_actaconteo);
@@ -436,14 +436,20 @@ class CobActaconteoController extends ControllerBase
             $this->flash->error("El acta no fue encontrada");
             return $this->response->redirect("cob_actaconteo/");
         }
-        if (!$acta->delete()) {
-            foreach ($acta->getMessages() as $message) {
-                $this->flash->error($message);
-            }
-            return $this->response->redirect("cob_periodo/");
-        }
-        $this->flash->success("El acta fue eliminada correctamente");
-        return $this->response->redirect("cob_actaconteo/");
+        if ($acta->estado < 3) {
+            $acta->estado = 5;
+						if (!$acta->save()) {
+	        		foreach ($acta->getMessages() as $message) {
+	        			$this->flash->error($message);
+	        		}
+	        		return $this->response->redirect("cob_actaconteo/");
+	        	}
+						$this->flash->success("El acta fue desactivada correctamente");
+		        return $this->response->redirect("cob_actaconteo/");
+        } else {
+					$this->flash->error("El acta no puede ser deshabilitada porque ya fue consolidada");
+				}
+
     }
 
     /**
