@@ -166,6 +166,7 @@ class CobVerificacionController extends ControllerBase
 						$this->flash->success("La verificación fue creada exitosamente.");
 					}
 			} else if ($tipo == 6){
+					$id_mes = $this->request->getPost("id_mes");
 					$actas = PersonalContratado::cargarBeneficiarios($cob_verificacion->id_verificacion, $id_mes);
 					if($actas){
 					$this->flash->success("La verificación fue creada exitosamente.");
