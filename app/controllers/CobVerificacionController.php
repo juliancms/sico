@@ -62,6 +62,11 @@ class CobVerificacionController extends ControllerBase
     				"id_verificacion = $id_verificacion"
     		));
     	}
+			else if($cob_verificacion->tipo == 6) {
+    		$actas = CobActath::find(array(
+    				"id_verificacion = $id_verificacion"
+    		));
+    	}
     	else if($cob_verificacion->tipo == 3) {
     		$actas = CobActatelefonica::find(array(
     				"id_verificacion = $id_verificacion"
