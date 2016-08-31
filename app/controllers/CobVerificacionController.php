@@ -57,12 +57,7 @@ class CobVerificacionController extends ControllerBase
     				"id_verificacion = $id_verificacion"
     		));
     	}
-      else if($cob_verificacion->tipo == 4) {
-    		$actas = CobActath::find(array(
-    				"id_verificacion = $id_verificacion"
-    		));
-    	}
-			else if($cob_verificacion->tipo == 6) {
+      else if($cob_verificacion->tipo == 4 || $cob_verificacion->tipo == 6) {
     		$actas = CobActath::find(array(
     				"id_verificacion = $id_verificacion"
     		));
@@ -258,12 +253,7 @@ class CobVerificacionController extends ControllerBase
     				"id_verificacion = $id_verificacion"
     		));
 				$this->view->verificaciones = CobActafocalizacion::find(['group' => 'id_verificacion']);
-			} else if($cob_verificacion->tipo == 4) {
-    		$actas = CobActath::find(array(
-    				"id_verificacion = $id_verificacion"
-    		));
-				$this->view->verificaciones = CobActath::find(['group' => 'id_verificacion']);
-			} else if($cob_verificacion->tipo == 6) {
+			} else if($cob_verificacion->tipo == 4 || $cob_verificacion->tipo == 6) {
     		$actas = CobActath::find(array(
     				"id_verificacion = $id_verificacion"
     		));
@@ -332,7 +322,7 @@ class CobVerificacionController extends ControllerBase
     				'id_usuario' => $this->request->getPost("contador_asignado")
     		);
     		$sql = $this->conversiones->multipleupdate("cob_actafocalizacion", $elementos, "id_actafocalizacion");
-    	} else if($cob_verificacion->tipo == 4){
+    	} else if($cob_verificacion->tipo == 4 || $cob_verificacion->tipo == 6){
     		$actas = CobActath::find(array(
     				"id_verificacion = $id_verificacion"
     		));
@@ -461,7 +451,7 @@ class CobVerificacionController extends ControllerBase
     	}
 			if($cob_verificacion->tipo == 5){
 				$tabla = "cob_actafocalizacion";
-			} else if($cob_verificacion->tipo == 4){
+			} else if($cob_verificacion->tipo == 4 || $cob_verificacion->tipo == 6){
 				$tabla = "cob_actath";
 			} else if($cob_verificacion->tipo == 3){
 				$tabla = "cob_actatelefonica";
@@ -497,7 +487,7 @@ class CobVerificacionController extends ControllerBase
     				"id_verificacion = $id_verificacion"
     		));
 				$tabla = "cob_actafocalizacion";
-			} else if($cob_verificacion->tipo == 4) {
+			} else if($cob_verificacion->tipo == 4 || $cob_verificacion->tipo == 6) {
     		$actas = CobActath::find(array(
     				"id_verificacion = $id_verificacion"
     		));
@@ -554,7 +544,7 @@ class CobVerificacionController extends ControllerBase
     		$actas = CobActafocalizacion::find(array(
     				"id_verificacion = $id_verificacion"
     		));
-    	} else if($cob_verificacion->tipo == 4){
+    	} else if($cob_verificacion->tipo == 4 || $cob_verificacion->tipo == 6){
     		$actas = CobActath::find(array(
     				"id_verificacion = $id_verificacion"
     		));
