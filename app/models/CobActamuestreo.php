@@ -278,6 +278,8 @@ class CobActamuestreo extends \Phalcon\Mvc\Model
     	</div>";
     	$html .= $pie_pagina;
     	$html .= "<div class='paginacion'>PÁGINA DEL PRESTADOR</div>";
+      //Página en blanco para impresión a doble cara
+      $html .= "<div class='seccion encabezado' style='border: none'></div>";
     	//Página 1
     	$html .= $encabezado;
     	$html .= $totalizacion_asistencia;
