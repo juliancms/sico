@@ -488,6 +488,8 @@ class CobActaconteo extends \Phalcon\Mvc\Model
     		$aiepi = "<br>SE ENCONTRARON ____ BENEFICIARIOS ATENDIDOS POR ____ DOCENTES Y ____ AUXILIARES DOCENTES.<br>SE PRESENTARON FORMATOS AIEPI DE LOS NIÑOS AUSENTES PARA SER REVISADOS POR LA INTERVENTORIA: <u>SÍ</u> - <u>NO</u><br>FIRMA RESPONSABLE DE LA SEDE ________________________________________";
     	} else if ($acta->id_modalidad == 3){
     		$aiepi = "<br>____/____/________ ASISTEN ____ GRUPOS, ATENDIDOS POR ____ DOCENTES<br>____/____/________ ASISTEN ____ GRUPOS, ATENDIDOS POR ____ DOCENTES<br>____/____/________ ASISTEN ____ GRUPOS, ATENDIDOS POR ____ DOCENTES<br>____/____/________ ASISTEN ____ GRUPOS, ATENDIDOS POR ____ DOCENTES<br>SE PRESENTARON FORMATOS AIEPI DE LOS NIÑOS AUSENTES PARA SER REVISADOS POR LA INTERVENTORIA: <u>SÍ</u> - <u>NO</u><br>FIRMA RESPONSABLE DE LA SEDE ________________________________________";
+    	} else if ($acta->id_modalidad == 12){
+    		$aiepi = "<br>SE ACORDÓ PREVIAMENTE VISITA CON LA MADRE COMUNITARIA: <u>SÍ</u> - <u>NO</u><br>SE ENTREGA FORMATO DE PLANILLA DE SEGUIMIENTO PARA VISITA DE PROFESIONALES: <u>SÍ</u> - <u>NO</u><br>SE RECIBE PLANILLA DE SEGUIMIENTO DE VISITA DE PROFESIONALES: <u>SÍ</u> - <u>NO</u><br>";
     	}
     	$html .= $encabezado;
     	$html .= $totalizacion_asistencia;
