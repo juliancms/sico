@@ -1,6 +1,6 @@
 {{ content() }}
 {{ elements.getActamenu(acta) }}
-{{ form("cob_actaconteo/guardarseguimientoitinerante/"~id_actaconteo, "method":"post", "parsley-validate" : "", "id" : "seguimientoitinerante_form", "enctype" : "multipart/form-data" ) }}
+{{ form("bc_hcb/guardarempleado/", "method":"post", "parsley-validate" : "", "id" : "seguimientoitinerante_form", "enctype" : "multipart/form-data" ) }}
 <table class="table table-bordered table-hover" id="{{ id_actaconteo }}">
     <thead>
         <tr>
