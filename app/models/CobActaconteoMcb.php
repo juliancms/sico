@@ -43,4 +43,15 @@ class CobActaconteoMcb extends \Phalcon\Mvc\Model
      * @var string
      */
     public $segundoApellido;
+
+    /**
+     * Retorna el nombre completo
+     *
+     * @return string
+     */
+    public function getNombrecompleto()
+    {
+      $nombre_completo = array($this->primerNombre, $this->segundoNombre, $this->primerApellido, $this->segundoApellido);
+      return implode(" ", $nombre_completo);
+    }
 }

@@ -81,4 +81,11 @@ class BcSedeContrato extends \Phalcon\Mvc\Model
      */
     public $estado;
 
+    public function initialize()
+    {
+      $this->belongsTo('id_sede_contrato', 'CobActaconteo', 'id_sede_contrato', array(
+    			'reusable' => true
+    	));
+    }
+
 }

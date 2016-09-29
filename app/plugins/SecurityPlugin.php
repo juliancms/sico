@@ -478,6 +478,35 @@ class SecurityPlugin extends Plugin
     				'nivelPermiso' => '2'
     		)
     	),
+    	'bc_hcb' => array(
+    		'index' => array(
+    				'nivelPermiso' => '4'
+    		),
+    		'nuevoempleado' => array(
+    				'nivelPermiso' => '4'
+    		),
+    		'ver' => array(
+    				'nivelPermiso' => '4'
+    		),
+    		'empleados' => array(
+    				'nivelPermiso' => '4'
+    		),
+    		'editarempleado' => array(
+    				'nivelPermiso' => '4'
+    		),
+    		'cronograma' => array(
+    				'nivelPermiso' => '4'
+    		),
+        'guardarcronograma' => array(
+    				'nivelPermiso' => '4'
+    		),
+    		'rutear' => array(
+    				'nivelPermiso' => '2'
+    		),
+    		'gdocumental' => array(
+    				'nivelPermiso' => '2'
+    		)
+    	),
 
     );
 

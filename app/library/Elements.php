@@ -214,6 +214,25 @@ class Elements extends Component
     		)
     );
 
+		private $_cronogramahcbMenu = array(
+				'index' => array(
+						'caption' => 'Periodos',
+						'action' => 'index',
+						'icon' => 'glyphicon-list'
+				),
+				'nuevoempleado' => array(
+						'caption' => 'Agregar Empleado',
+						'action' => 'nuevoempleado',
+						'icon' => 'glyphicon-list-plus'
+				),
+				'empleados' => array(
+						'caption' => 'Modificar/Ver Empleados',
+						'action' => 'empleados',
+						'icon' => 'glyphicon-edit'
+				),
+
+		);
+
     /**
      * Builds header menu with left and right items
      *
@@ -639,6 +658,29 @@ class Elements extends Component
 	    	echo "<form class='menu-tab' action='/sico/$controllerName/abrir/$acta->id_acta' method='post'><input type='hidden' name='uri' value='$uri'><input type='submit' class='btn btn-info' value='Abrir Acta'></form>";
 	    	}
 	    	echo "</div><div class='clear'></clear>";
+	    }
+
+			/**
+	     * Construye el menú superior de las actas
+	     *
+	     * @return string
+	     */
+	    public function getcronogramahcbMenu()
+	    {
+	    	$user = $this->session->get('auth');
+	    	$actionName = $this->view->getActionName();
+	    	$controllerName = $this->view->getControllerName();
+	    	foreach ($this->_cronogramahcbMenu as $menu) {
+	    		$action = $menu['action'];
+	    		$caption = $menu['caption'];
+	    		$icon = $menu['icon'];
+	    		if($actionName == $menu['action']){
+			    	echo "<a class='btn btn-primary menu-tab disabled'><i class='glyphicon $icon'></i> $caption</a>";
+			    } else {
+			    	echo "<a href='/sico/$controllerName/$action/$acta->id_acta' class='btn btn-primary menu-tab'><i class='glyphicon $icon'></i> $caption</a>";
+			    }
+	    	}
+	    	echo "<div class='clear'></clear>";
 	    }
 
     public function errorFecha($error, $limite){
