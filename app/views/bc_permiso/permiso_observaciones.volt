@@ -5,7 +5,7 @@
 </ul>
 <div class="tab-content">
 	<div role="tabpanel" class="tab-pane fade active in" id="historico" aria-labelledby="historico-tab">
-		<?
+		<?php
 		if(count($permiso->getBcPermisoObservacion()) > 0) {
 		foreach($permiso->BcPermisoObservacion as $row) { ?>
 			<div class="observacion">
