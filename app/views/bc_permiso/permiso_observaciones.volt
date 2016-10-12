@@ -73,6 +73,7 @@
 		         </tr>
 		    </thead>
 		    <tbody>
+				{% if (listado_beneficiarios is not empty) %}
 		    {% for beneficiario in listado_beneficiarios %}
 		        <tr>
 								<td><span class="number">{{ loop.index }}</span></td>
@@ -81,6 +82,7 @@
 								<td></td>
 		        </tr>
 		    {% endfor %}
+				{% endif %}
 				{% if (agregar_participantes > 0) %}
 				<?php for ($i = 1; $i <= 500; $i++) { ?>
 					<tr style="display: none;" class='limpiar'>
