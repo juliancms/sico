@@ -1,4 +1,5 @@
 <?php
+use Phalcon\DI\FactoryDefault;
 
 class BcHcbperiodoEmpleado extends \Phalcon\Mvc\Model
 {
@@ -35,12 +36,10 @@ class BcHcbperiodoEmpleado extends \Phalcon\Mvc\Model
       $this->belongsTo('id_hcbempleado', 'BcHcbempleado', 'id_hcbempleado', array(
     			'reusable' => true
     	));
-      $this->belongsTo('id_contratosede', 'BcSedeContrato', 'id_contratosede', array(
+      $this->belongsTo('id_sede_contrato', 'BcSedeContrato', 'id_sede_contrato', array(
     			'reusable' => true
     	));
-      $this->hasMany('id_hcbperiodo_empleado', 'BcHcbperiodoEmpleadoFecha', 'id_hcbperiodo_empleado', array(
-  				'reusable' => true
-  		));
+      $this->hasMany('id_hcbperiodo_empleado', 'BcHcbperiodoEmpleadoFecha', 'id_hcbperiodo_empleado');
     }
 
     /**

@@ -99,6 +99,10 @@ class Conversiones extends Component
     			$date = date_create($fecha);
     			return date_format($date, 'G:iA');
     			break;
+				case "2":
+    			$date = date_create($fecha);
+    			return date_format($date, 'd/m/Y G:iA');
+    			break;
     		default:
     			return "";
     	}

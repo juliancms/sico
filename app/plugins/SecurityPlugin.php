@@ -500,11 +500,11 @@ class SecurityPlugin extends Plugin
         'guardarcronograma' => array(
     				'nivelPermiso' => '4'
     		),
-    		'rutear' => array(
-    				'nivelPermiso' => '2'
+    		'nuevo_periodo' => array(
+    				'nivelPermiso' => '1'
     		),
-    		'gdocumental' => array(
-    				'nivelPermiso' => '2'
+    		'novedades' => array(
+    				'nivelPermiso' => '4'
     		)
     	),
 

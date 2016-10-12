@@ -123,6 +123,10 @@ class Elements extends Component
     		'bc_permiso' => array(
     				'caption' => 'Permisos',
     				'action' => 'index'
+    		),
+    		'bc_hcb' => array(
+    				'caption' => 'Cronograma Itinerante',
+    				'action' => 'index'
     		)
     );
 
@@ -145,6 +149,10 @@ class Elements extends Component
     		),
     		'bc_permiso' => array(
     				'caption' => 'Permisos',
+    				'action' => 'index'
+    		),
+    		'bc_hcb' => array(
+    				'caption' => 'Cronograma Itinerante',
     				'action' => 'index'
     		)
     );
@@ -230,6 +238,20 @@ class Elements extends Component
 						'action' => 'empleados',
 						'icon' => 'glyphicon-edit'
 				),
+
+		);
+
+		private $_cronogramahcbMenuIbc = array(
+				'index' => array(
+						'caption' => 'Periodos',
+						'action' => 'index',
+						'icon' => 'glyphicon-list'
+				),
+				'empleados' => array(
+						'caption' => 'Ver Empleados',
+						'action' => 'empleados',
+						'icon' => 'glyphicon-edit'
+				)
 
 		);
 
@@ -677,7 +699,33 @@ class Elements extends Component
 	    		if($actionName == $menu['action']){
 			    	echo "<a class='btn btn-primary menu-tab disabled'><i class='glyphicon $icon'></i> $caption</a>";
 			    } else {
-			    	echo "<a href='/sico/$controllerName/$action/$acta->id_acta' class='btn btn-primary menu-tab'><i class='glyphicon $icon'></i> $caption</a>";
+			    	echo "<a href='/sico/$controllerName/$action' class='btn btn-primary menu-tab'><i class='glyphicon $icon'></i> $caption</a>";
+			    }
+	    	}
+	    	echo "<div class='clear'></clear>";
+	    }
+
+			/**
+	     * Construye el menú superior de las actas
+	     *
+	     * @return string
+	     */
+	    public function getcronogramahcbMenuIbc()
+	    {
+	    	$actionName = $this->view->getActionName();
+	    	$controllerName = $this->view->getControllerName();
+				$user = $this->session->get('auth');
+				if($user['nivel'] <= 1){
+          $this->_cronogramahcbMenuIbc ['nuevo_periodo'] = array ('caption' => 'Nuevo periodo', 'action' => 'nuevo_periodo', 'icon' => 'glyphicon-plus');
+				}
+	    	foreach ($this->_cronogramahcbMenuIbc as $menu) {
+	    		$action = $menu['action'];
+	    		$caption = $menu['caption'];
+	    		$icon = $menu['icon'];
+	    		if($actionName == $menu['action']){
+			    	echo "<a class='btn btn-primary menu-tab disabled'><i class='glyphicon $icon'></i> $caption</a>";
+			    } else {
+			    	echo "<a href='/sico/$controllerName/$action' class='btn btn-primary menu-tab'><i class='glyphicon $icon'></i> $caption</a>";
 			    }
 	    	}
 	    	echo "<div class='clear'></clear>";
@@ -750,6 +798,9 @@ class Elements extends Component
     			break;
     		case "meses":
     			return array("Enero" => "Enero", "Febrero" => "Febrero", "Marzo" => "Marzo", "Abril" => "Abril", "Mayo" => "Mayo", "Junio" => "Junio", "Julio" => "Julio", "Agosto" => "Agosto", "Septiembre" => "Septiembre", "Octubre" => "Octubre", "Noviembre" => "Noviembre", "Diciembre" => "Diciembre");
+    			break;
+				case "meses2":
+    			return array("1" => "Enero", "2" => "Febrero", "3" => "Marzo", "4" => "Abril", "5" => "Mayo", "6" => "Junio", "7" => "Julio", "8" => "Agosto", "9" => "Septiembre", "10" => "Octubre", "11" => "Noviembre", "12" => "Diciembre");
     			break;
     		case "sino":
     			return array("1" => "Sí", "2" => "No");

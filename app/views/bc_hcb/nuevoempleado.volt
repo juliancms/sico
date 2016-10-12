@@ -15,9 +15,9 @@
     </div>
 </div>
 <div class="form-group">
-    <label class="col-sm-2 control-label" for="segundoNombre">* Segundo Nombre</label>
+    <label class="col-sm-2 control-label" for="segundoNombre">Segundo Nombre</label>
     <div class="col-sm-10">
-            {{ text_field("segundoNombre", "class" : "form-control required") }}
+            {{ text_field("segundoNombre", "class" : "form-control") }}
     </div>
 </div>
 <div class="form-group">
@@ -27,9 +27,9 @@
     </div>
 </div>
 <div class="form-group">
-    <label class="col-sm-2 control-label" for="segundoApellido">* Segundo Apellido</label>
+    <label class="col-sm-2 control-label" for="segundoApellido">Segundo Apellido</label>
     <div class="col-sm-10">
-            {{ text_field("segundoApellido", "class" : "form-control required") }}
+            {{ text_field("segundoApellido", "class" : "form-control") }}
     </div>
 </div>
 <div class="form-group">
