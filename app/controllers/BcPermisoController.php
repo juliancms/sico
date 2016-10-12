@@ -61,7 +61,7 @@ class BcPermisoController extends ControllerBase
 			->addJs('js/permiso_general_individual.js');
 			$agregar_participantes = 0;
     	$fecha_limite = strtotime(date('Y-m-d'). ' +1 days');
-    	$texto_aprobar = "";
+    	$texto_aprobar = array("aprobar_salida" => "", "aprobar_jornada" => "");;
 			$id_sede_contrato = $permiso[0]->id_sede_contrato;
 			$permisos = BcPermiso::find(array("id_permiso <> $id_permiso AND id_sede_contrato = $id_sede_contrato", "order" => "fecha ASC"));
 			$listado_beneficiarios = BcPermisoParticipante::find(array("id_permiso = $id_permiso", "order" => "id_permiso_participante ASC"));
@@ -141,7 +141,7 @@ class BcPermisoController extends ControllerBase
     	->addJs('js/parsley.extend.js')
     	->addJs('js/picnet.table.filter.min.js')
     	->addJs('js/permisos_lista.js');
-    	$texto_aprobar = "";
+    	$texto_aprobar = array("aprobar_salida" => "", "aprobar_jornada" => "");
     	if($this->user['id_componente'] == 1){
     		$permisos = BcPermiso::find(array("estado = 0", "order" => "id_permiso ASC"));
     		$this->assets->addJs('js/permisos_revision_interventor.js');
@@ -182,7 +182,7 @@ class BcPermisoController extends ControllerBase
     	$dia_anterior = date("Y-m-d", strtotime($fecha. ' - 1 day'));
     	$dia_siguiente = date("Y-m-d", strtotime($fecha. ' + 1 day'));
     	$permisos = BcPermiso::find(array("fecha = '$fecha'", "order" => "fecha ASC"));
-			$texto_aprobar = "";
+			$texto_aprobar = array("aprobar_salida" => "", "aprobar_jornada" => "");;
     	switch ($this->user['id_componente']) {
     		case 3:
     			$oferente = IbcUsuario::findFirstByid_usuario($this->id_usuario);
@@ -339,7 +339,7 @@ class BcPermisoController extends ControllerBase
     	$mes_siguiente = sprintf("%02d", $mes_siguiente);
     	$mes_anterior = intval($mes_actual) - 1;
     	$mes_anterior = sprintf("%02d",$mes_anterior);
-			$texto_aprobar = "";
+			$texto_aprobar = array("aprobar_salida" => "", "aprobar_jornada" => "");;
     	$permisos = BcPermiso::find(array("MONTH(fecha) = $mes_actual", "order" => "fecha ASC"));
     	switch ($this->user['id_componente']) {
     		case 3:
@@ -405,7 +405,7 @@ class BcPermisoController extends ControllerBase
     	$fecha_actual = date("Y-01-01");
     	$date = new DateTime($fecha_actual);
     	$permisos = BcPermiso::find(array("order" => "fecha ASC"));
-			$texto_aprobar = "";
+			$texto_aprobar = array("aprobar_salida" => "", "aprobar_jornada" => "");;
     	switch ($this->user['id_componente']) {
     		case 3:
     			$oferente = IbcUsuario::findFirstByid_usuario($this->id_usuario);
