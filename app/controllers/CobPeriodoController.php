@@ -107,6 +107,7 @@ class CobPeriodoController extends ControllerBase
     	$this->view->id_periodo = $cob_periodo->id_periodo;
     	$this->view->id_usuario = $this->id_usuario;
     	$this->view->recorrido = $recorrido;
+			$this->view->cob_periodo = $cob_periodo;
     	$this->view->titulo = $titulo;
     	$this->view->fecha_periodo = $cob_periodo->id_periodo;
     	$this->view->actas = $actas_recorrido;
@@ -610,15 +611,25 @@ class CobPeriodoController extends ControllerBase
         $cob_periodo = CobPeriodo::findFirstByid_periodo($id_periodo);
         if (!$cob_periodo) {
             $this->flash->error("El periodo no fue encontrado");
-
             return $this->response->redirect("cob_periodo/");
         }
-        if (!$cob_periodo->delete()) {
-            foreach ($cob_periodo->getMessages() as $message) {
-                $this->flash->error($message);
-            }
-           	return $this->response->redirect("cob_periodo/ver/$id_periodo");
-        }
+				if($cob_periodo->fechaCierre != NULL){
+					$this->flash->error("El periodo no puede ser eliminado porque ya fue cerrado; si desea eliminarlo debe de eliminar todos los registros de las tablas con el id_periodo, para un periodo normal serían las tablas cob_periodo, cob_actaconteo, cob_actaconteo_persona, cob_actaconteo_persona_facturacion, cob_periodo_contratosedecupos. Se recomienda hacer un backup de la Base de Datos antes de eliminar vía base de datos.");
+					return $this->response->redirect("cob_periodo/");
+				}
+				$db = $this->getDI()->getDb();
+				$db->query("DELETE FROM cob_periodo WHERE id_periodo = $id_periodo");
+				// Si es Entorno Familiar
+				if($cob_periodo->tipo == 2) {
+					$db->query("DELETE FROM cob_actamuestreo WHERE id_periodo = $id_periodo");
+					$db->query("DELETE FROM cob_actamuestreo_persona WHERE id_periodo = $id_periodo");
+				} else {
+					//Para el resto de periodos se eliminan las tablas de actas
+					$db->query("DELETE FROM cob_actaconteo WHERE id_periodo = $id_periodo");
+					$db->query("DELETE FROM cob_actaconteo_persona WHERE id_periodo = $id_periodo");
+					$db->query("DELETE FROM cob_actaconteo_persona_facturacion WHERE id_periodo = $id_periodo");
+					$db->query("DELETE FROM cob_periodo_contratosedecupos WHERE id_periodo = $id_periodo");
+				}
         $this->flash->success("El periodo fue eliminado correctamente");
         return $this->response->redirect("cob_periodo/");
     }

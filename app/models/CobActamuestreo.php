@@ -123,9 +123,7 @@ class CobActamuestreo extends \Phalcon\Mvc\Model
 				'reusable' => true
 		));
 		$this->hasMany('id_actamuestreo', 'CobActamuestreoPersona', 'id_actamuestreo', array(
-				'foreignKey' => array(
-						'message' => 'El acta no puede ser eliminada porque existen beneficiarios asociados a ésta'
-				)
+				'reusable' => true
 		));
 	}
 

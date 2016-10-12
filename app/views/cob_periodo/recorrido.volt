@@ -41,14 +41,14 @@
     {% for acta in actas %}
     	{% if (nivel <= 1 or (acta.id_usuario == id_usuario or acta.IbcUsuario.id_usuario_lider == id_usuario)) %}
         <tr>
-        	<td>{{ loop.index }}</td>
+        	<td>{{ loop.index }}{% if (cob_periodo.tipo == 2) %}{% if (nivel <= 1) %}{% endif %}<a href="#eliminar_elemento" rel="tooltip" title="Eliminar" class="eliminar_fila" data-toggle = "modal" id="{{ url("cob_actamuestreo/eliminar/"~acta.id_actamuestreo) }}"><i class="glyphicon glyphicon-trash"></i></a>{% endif %}</td>
             <td>{{ link_to(acta.getUrlDetail(), acta.getIdDetail()) }}</td>
             <td>{{ acta.id_contrato }}</td>
             <td>{{ acta.oferente_nombre }}</td>
             <td>{{ acta.id_sede }} - {{ acta.sede_nombre }}</td>
             <td>{{ acta.modalidad_nombre }}</td>
             <td>{{ acta.IbcUsuario.usuario }}</td>
-            <td>{{ acta.getEstadoDetail() }}</td>            
+            <td>{{ acta.getEstadoDetail() }}</td>
         </tr>
         {% endif %}
     {% endfor %}

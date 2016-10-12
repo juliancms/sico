@@ -1,11 +1,11 @@
 <?php
- 
+
 use Phalcon\Mvc\Model\Criteria;
 
 class CobActamuestreoController extends ControllerBase
-{    
+{
 	public $user;
-	
+
     public function initialize()
     {
         $this->tag->setTitle("Acta de Muestreo");
@@ -23,7 +23,7 @@ class CobActamuestreoController extends ControllerBase
     				"action" => "index"
     	));
     }
-    
+
     /**
      * Ver
      *
@@ -59,7 +59,7 @@ class CobActamuestreoController extends ControllerBase
 
                 return $this->response->redirect("cob_periodo/");
             }
-            $asiste1 = $acta->getCobActamuestreoPersona(['asistencia = 1']);            
+            $asiste1 = $acta->getCobActamuestreoPersona(['asistencia = 1']);
             $asiste4 = $acta->getCobActamuestreoPersona(['asistencia = 4']);
             $asiste6 = $acta->getCobActamuestreoPersona(['asistencia = 6']);
             $asiste7 = $acta->getCobActamuestreoPersona(['asistencia = 7']);
@@ -93,10 +93,10 @@ class CobActamuestreoController extends ControllerBase
             $this->actaCerrada($acta, $this->user['nivel']);
         }
     }
-    
+
     /**
      * Guardar Datos
-     *  
+     *
      */
     public function guardardatosAction($id_actamuestreo)
     {
@@ -131,7 +131,7 @@ class CobActamuestreoController extends ControllerBase
         $this->flash->success("Los Datos Generales fueron actualizados exitosamente");
         return $this->response->redirect("cob_actamuestreo/datos/$id_actamuestreo");
     }
-    
+
     /**
      * Guardar Beneficiarios
      *
@@ -168,7 +168,7 @@ class CobActamuestreoController extends ControllerBase
     	$this->flash->success("Los beneficiarios fueron actualizados exitosamente");
     	return $this->response->redirect("cob_actamuestreo/beneficiarios/$id_actamuestreo");
     }
-    
+
     /**
      * Beneficiarios
      *
@@ -180,7 +180,7 @@ class CobActamuestreoController extends ControllerBase
     		if (!$acta) {
     			$this->flash->error("El acta no fue encontrada");
     			return $this->response->redirect("cob_periodo/");
-    		}    		
+    		}
     		$this->assets
     		->addJs('js/parsley.min.js')
     		->addJs('js/parsley.extend.js')
@@ -197,7 +197,7 @@ class CobActamuestreoController extends ControllerBase
     		$this->actaCerrada($acta, $this->user['nivel']);
     	}
     }
-    
+
     /**
      * Elimina un acta
      *
@@ -211,16 +211,22 @@ class CobActamuestreoController extends ControllerBase
             $this->flash->error("El acta no fue encontrada");
             return $this->response->redirect("cob_actamuestreo/");
         }
+        $recorrido = $acta->recorrido;
+        $periodo = $acta->id_periodo;
         if (!$acta->delete()) {
             foreach ($acta->getMessages() as $message) {
                 $this->flash->error($message);
             }
             return $this->response->redirect("cob_periodo/");
         }
+        $db = $this->getDI()->getDb();
+        $db->query("DELETE FROM cob_actamuestreo WHERE id_actamuestreo = $id_actamuestreo");
+        $db->query("DELETE FROM cob_actamuestreo_datos WHERE id_actamuestreo = $id_actamuestreo");
+        $db->query("DELETE FROM cob_actamuestreo_persona WHERE id_actamuestreo = $id_actamuestreo");
         $this->flash->success("El acta fue eliminada correctamente");
-        return $this->response->redirect("cob_actamuestreo/");
+        return $this->response->redirect("cob_periodo/recorrido/$periodo/$recorrido");
     }
-    
+
     /**
      * Cierra un acta
      *
@@ -267,7 +273,7 @@ class CobActamuestreoController extends ControllerBase
         		return $this->response->redirect($uri);
         	}
         	$this->flash->success("El acta fue cerrada exitosamente");
-        	return $this->response->redirect($uri);        
+        	return $this->response->redirect($uri);
         }
     }
     /**
@@ -301,7 +307,7 @@ class CobActamuestreoController extends ControllerBase
     	$this->flash->success("El acta fue abierta exitosamente para el interventor");
     	return $this->response->redirect($uri);
     }
-    
+
     /**
      * Duplicar una acta
      */
@@ -327,7 +333,7 @@ class CobActamuestreoController extends ControllerBase
     	}
     	return $this->response->redirect("cob_actamuestreo/ver/$id_actamuestreo");
     }
-        
+
 	private function actaCerrada($acta, $nivel){
     	if($acta->estado > 3){
     		$estado = $acta->getEstadoDetail();

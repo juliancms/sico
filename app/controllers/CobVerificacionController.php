@@ -225,12 +225,29 @@ class CobVerificacionController extends ControllerBase
 
             return $this->response->redirect("cob_verificacion/");
         }
-        if (!$cob_verificacion->delete()) {
-            foreach ($cob_verificacion->getMessages() as $message) {
-                $this->flash->error($message);
-            }
-           	return $this->response->redirect("cob_verificacion/ver/$id_verificacion");
-        }
+				$db = $this->getDI()->getDb();
+				$db->query("DELETE FROM cob_verificacion WHERE id_verificacion = $id_verificacion");
+
+				if($tipo == 1){
+					$db->query("DELETE FROM cob_actadocumentacion WHERE id_verificacion = $id_verificacion");
+					$db->query("DELETE FROM cob_actadocumentacion_persona WHERE id_verificacion = $id_verificacion");
+	    	} else if ($tipo == 2){
+					$db->query("DELETE FROM cob_actacomputo WHERE id_verificacion = $id_verificacion");
+	    	} else if ($tipo == 3){
+					$db->query("DELETE FROM cob_actatelefonica WHERE id_verificacion = $id_verificacion");
+					$db->query("DELETE FROM cob_actatelefonica_persona WHERE id_verificacion = $id_verificacion");
+	    	} else if($tipo == 4){
+					$db->query("DELETE FROM cob_actath WHERE id_verificacion = $id_verificacion");
+					$db->query("DELETE FROM cob_actath_persona WHERE id_verificacion = $id_verificacion");
+					$db->query("DELETE FROM cob_actath_persona_listado WHERE id_verificacion = $id_verificacion");
+				}	else if ($tipo == 5){
+					$db->query("DELETE FROM cob_actafocalizacion WHERE id_verificacion = $id_verificacion");
+					$db->query("DELETE FROM cob_actafocalizacion_persona WHERE id_verificacion = $id_verificacion");
+				} else if ($tipo == 6){
+					$db->query("DELETE FROM cob_actath WHERE id_verificacion = $id_verificacion");
+					$db->query("DELETE FROM cob_actath_persona WHERE id_verificacion = $id_verificacion");
+					$db->query("DELETE FROM cob_actath_persona_listado WHERE id_verificacion = $id_verificacion");
+	    	}
         $this->flash->success("La verificacion fue eliminada correctamente");
         return $this->response->redirect("cob_verificacion/");
     }
