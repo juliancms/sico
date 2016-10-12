@@ -5,7 +5,9 @@
 </ul>
 <div class="tab-content">
 	<div role="tabpanel" class="tab-pane fade active in" id="historico" aria-labelledby="historico-tab">
-		<? foreach($permiso->BcPermisoObservacion as $row){ ?>
+		<?
+		if(count($permiso->getBcPermisoObservacion()) > 0) {
+		foreach($permiso->BcPermisoObservacion as $row) { ?>
 			<div class="observacion">
 		   		<div class="header">
 				  <div class="foto">
@@ -18,7 +20,7 @@
 				</div>
 		   		<div class="contenido">{{ row.observacion }}</div>
 		   	</div>
-		<?php } ?>
+		<?php } } ?>
 	</div>
 	{% if (not(permisos is empty)) %}
 	<div role="tabpanel" class="tab-pane fade" id="otrospermisos" aria-labelledby="otrospermisos-tab">
