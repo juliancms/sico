@@ -31,7 +31,7 @@
             <td>{{ link_to("bc_hcb/cronograma/"~periodo.id_hcbperiodo~"/"~sede.id_sede_contrato, sede.id_contrato) }}</td>
             {% if (nivel <= 2 ) %}<td>{{ link_to("bc_hcb/cronograma/"~periodo.id_hcbperiodo~"/"~sede.id_sede_contrato, sede.oferente_nombre) }}{{ sede.oferente_nombre }}</td>{% endif %}
             <td>{{ link_to("bc_hcb/cronograma/"~periodo.id_hcbperiodo~"/"~sede.id_sede_contrato, sede.sede_nombre) }}</td>
-            <td>{{ link_to("bc_hcb/cronograma/"~periodo.id_hcbperiodo~"/"~sede.id_sede_contrato, sede.CobActaconteo.CobActaconteoMcb.getNombrecompleto()) }}</td>
+            <td>{% if (sede.getCobActaconteo()) %}{{ link_to("bc_hcb/cronograma/"~periodo.id_hcbperiodo~"/"~sede.id_sede_contrato, sede.CobActaconteo.CobActaconteoMcb.getNombrecompleto()) }}{% endif %}</td>
         </tr>
     {% endfor %}
     </tbody>
