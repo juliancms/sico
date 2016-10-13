@@ -42,9 +42,6 @@ $(".empleadocheck").change(function() {
 		 }
 });
 
-var options1 = { clearFiltersControls: [$('#cleanfilters')] };
-$('.empleados_lista').tableFilter(options1);
-
 $(".cancelar_fecha").click (
     function(){
     	var nombre = $(this).attr("data-nombre_cancelar");

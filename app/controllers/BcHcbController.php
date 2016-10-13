@@ -318,6 +318,33 @@ class BcHcbController extends ControllerBase
 					$this->flash->error("Antes de crear el cronograma debe de agregar empleados.");
 					return $this->response->redirect("bc_hcb/nuevoempleado");
 				}
+				if(strtotime(date('Y').'-'.$id_hcbperiodo.'-01') < strtotime(date('Y-m-d'))){
+					 $this->view->activar_formulario = 0;
+					 $this->assets
+ 					->addJs('js/parsley.min.js')
+ 					->addJs('js/parsley.extend.js')
+ 					->addCss('css/tooltipster.css')
+ 					->addJs('js/jquery.tooltipster.min.js')
+ 					->addJs('js/picnet.table.filter.min.js')
+ 					->addJs('js/cronogramahcb_c.js');
+
+				} else {
+					$this->view->activar_formulario = 1;
+					$this->assets
+					->addJs('js/parsley.min.js')
+					->addJs('js/parsley.extend.js')
+					->addJs('js/jquery.autoNumeric.js')
+					->addJs('js/jquery.timepicker.min.js')
+					->addJs('js/bootstrap-datepicker.min.js')
+					->addJs('js/bootstrap-datepicker.es.min.js')
+					->addJs('js/jquery.datepair.min.js')
+					->addCss('css/jquery.timepicker.css')
+					->addCss('css/bootstrap-datepicker.min.css')
+					->addCss('css/tooltipster.css')
+					->addJs('js/jquery.tooltipster.min.js')
+					->addJs('js/picnet.table.filter.min.js')
+					->addJs('js/cronogramahcb.js');
+				}
 				$this->view->empleados_id = $empleados_agregados;
 				$this->view->empleados = $empleados;
 				$fecha_inicio = date('d/m/Y', strtotime(date('Y').'-'.$id_hcbperiodo.'-01'));
@@ -325,27 +352,12 @@ class BcHcbController extends ControllerBase
 				$fecha_fin = date('d/m/Y', strtotime(date('Y').'-'.$next_month.'-01, -1 day'));
 				$this->view->fecha_inicio = $fecha_inicio;
 				$this->view->fecha_fin = $fecha_fin;
-				$this->assets
-				->addJs('js/parsley.min.js')
-				->addJs('js/parsley.extend.js')
-				->addJs('js/jquery.autoNumeric.js')
-				->addJs('js/jquery.timepicker.min.js')
-				->addJs('js/bootstrap-datepicker.min.js')
-				->addJs('js/bootstrap-datepicker.es.min.js')
-				->addJs('js/jquery.datepair.min.js')
-				->addCss('css/jquery.timepicker.css')
-				->addCss('css/bootstrap-datepicker.min.css')
-				->addCss('css/tooltipster.css')
-				->addJs('js/jquery.tooltipster.min.js')
-				->addJs('js/picnet.table.filter.min.js')
-				->addJs('js/cronogramahcb.js');
+
 				$this->view->pick('bc_hcb/cronograma_bc');
 			} else {
 				$this->assets
 				->addCss('css/tooltipster.css')
-				->addJs('js/jquery.tooltipster.min.js')
-				->addJs('js/picnet.table.filter.min.js')
-				->addJs('js/cronogramahcb.js');
+				->addJs('js/jquery.tooltipster.min.js');
 				$this->view->pick('bc_hcb/cronograma_ibc');
 			}
 			$this->view->id_componente = $id_componente;
@@ -371,6 +383,10 @@ class BcHcbController extends ControllerBase
 				$this->flash->error("El periodo no fue encontrado");
     		return $this->response->redirect("bc_hcb/");
 			}
+			if(strtotime(date('Y').'-'.$id_hcbperiodo.'-01') < strtotime(date('Y-m-d'))){
+				$this->flash->error("El cronograma no puede ser guardado mediante formulario porque ya venció el plazo para agregarlo");
+    		return $this->response->redirect("bc_hcb/cronograma/$id_hcbperiodo/$id_sede_contrato");
+			}
     	$BcHcbperiodo = BcHcbperiodo::findFirstByid_hcbperiodo($id_hcbperiodo);
     	if (!$BcHcbperiodo) {
     		$this->flash->error("El periodo no fue encontrado");
@@ -393,7 +409,7 @@ class BcHcbController extends ControllerBase
 			$fechamaniana = $this->request->getPost("fechamaniana");
 			$fechatarde = $this->request->getPost("fechatarde");
 			$ids_hcbempleado = $this->request->getPost("id_hcbempleado");
-			if(strtotime(date('d/m/Y', strtotime(date('Y').'-'.$id_hcbperiodo.'-01'))) < strtotime(date('d/m/Y'))){
+			if(strtotime(date('Y').'-'.$id_hcbperiodo.'-01') < strtotime(date('Y-m-d'))){
 				$estado = 2;
 			} else {
 				$estado = 0;
@@ -463,6 +479,10 @@ class BcHcbController extends ControllerBase
 				$this->flash->error("No fue encontrado un empleado para esa fecha");
     		return $this->response->redirect("bc_hcb/");
 			}
+			if($empleadofecha->estado == 1){
+				$this->flash->error("Esta visita ya fue cancelada, por lo tanto no puede ser cancelada nuevamente.");
+				return $this->response->redirect("bc_hcb/cronograma/$empleadofecha->id_hcbperiodo/$empleadofecha->id_sede_contrato");
+			}
 			$empleadofecha->estado = 1;
 			$empleadofecha->fechahoraCancelacion = date('Y-m-d H:i:s');
     	$empleadofecha->observacionCancelacion = $this->request->getPost("observacion");
@@ -518,7 +538,7 @@ class BcHcbController extends ControllerBase
 			$empleadofecha->jornada = $this->request->getPost("jornada");
 			$empleadofecha->fechahoraCreacion = date('Y-m-d H:i:s');
 
-			if(strtotime(date('d/m/Y', strtotime(date('Y').'-'.$id_hcbperiodo.'-01'))) < strtotime(date('d/m/Y'))){
+			if(strtotime(date('Y').'-'.$id_hcbperiodo.'-01') < strtotime(date('Y-m-d'))){
 				$empleadofecha->estado = 2;
 			} else {
 				$empleadofecha->estado = 0;
@@ -561,7 +581,7 @@ class BcHcbController extends ControllerBase
 					} else {
 						$html .= date('d', strtotime($fecha_actual));
 					}
-					$html .= "</p>". $this->empleados_dia($empleados_periodo, $fecha_actual)."</td>";
+					$html .= "</p>". $this->empleados_dia($empleados_periodo, $fecha_actual, $id_componente)."</td>";
 					$fecha_actual = date('Y-m-d', strtotime($fecha_actual.' + 1 days'));
 				} else if(date('N', strtotime($fecha_actual)) == 5){ // Si es viernes
 					$html .= "<td><p style='text-align:center; font-weight: bold;'>";
@@ -570,7 +590,7 @@ class BcHcbController extends ControllerBase
 					} else {
 						$html .= date('d', strtotime($fecha_actual));
 					}
-					$html .= "</p>". $this->empleados_dia($empleados_periodo, $fecha_actual)."</td></tr>";
+					$html .= "</p>". $this->empleados_dia($empleados_periodo, $fecha_actual, $id_componente)."</td></tr>";
 					$fecha_actual = date('Y-m-d', strtotime($fecha_actual.' next Monday'));
 				} else { // Para martes, miércoles y jueves
 					$html .= "<td><p style='text-align:center; font-weight: bold;'>";
@@ -579,7 +599,7 @@ class BcHcbController extends ControllerBase
 					} else {
 						$html .= date('d', strtotime($fecha_actual));
 					}
-					$html .= "</p>". $this->empleados_dia($empleados_periodo, $fecha_actual)."</td>";
+					$html .= "</p>". $this->empleados_dia($empleados_periodo, $fecha_actual, $id_componente)."</td>";
 					$fecha_actual = date('Y-m-d', strtotime($fecha_actual.' + 1 days'));
 				}
 			}
@@ -588,7 +608,7 @@ class BcHcbController extends ControllerBase
 			}
 			return $html;
 		}
-		private function empleados_dia($empleados_periodo, $fecha){
+		private function empleados_dia($empleados_periodo, $fecha, $id_componente){
 			$empleados_dia = "";
 			$cancelado = "";
 			foreach($empleados_periodo as $empleado_dia){

@@ -6,7 +6,6 @@
   <li>{{ link_to("bc_hcb/ver/"~periodo.id_hcbperiodo, mes) }}</li>
   <li class="active">{{ sede.sede_nombre }}</li>
 </ol>
-<h3>Seleccione los empleados para asignar fechas del mes</h3>
 <!-- Modal -->
 <div class="modal fade" id="cancelar_fecha" tabindex="-1" role="dialog" aria-labelledby="cancelarFecha" aria-hidden="true">
   <div class="modal-dialog">
@@ -90,6 +89,8 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+{% if (activar_formulario == 1 ) %}
+<h3>Seleccione los empleados para asignar fechas del mes</h3>
 {{ form("bc_hcb/guardarcronograma/"~periodo.id_hcbperiodo~"/"~sede.id_sede_contrato, "method":"post", "parsley-validate" : "", "id" : "cronogramahcb_form", "class" : "form-container form-horizontal", "enctype" : "multipart/form-data" ) }}
 <table class="table table-bordered table-hover empleados_lista">
     <thead>
@@ -134,6 +135,8 @@
 <input type="hidden" name="fecha_inicio" id="fecha_inicio" value="{{ fecha_inicio }}">
 <input type="hidden" name="fecha_fin" id="fecha_fin" value="{{ fecha_fin }}">
 </form>
+{% endif %}
+<h3>Para cancelar una visita haga clic en la X al final del nombre del empleado y para crear una visita haga clic en el día al cual desea asignar un empleado</h3>
 <br>
 <p>
 M: Jornada Mañana<br>
