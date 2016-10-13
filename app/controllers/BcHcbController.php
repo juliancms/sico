@@ -598,7 +598,11 @@ class BcHcbController extends ControllerBase
 							if($row->estado == 1) {
 								$cancelado = ". Cancelado: ".$this->conversiones->hora(2, $row->fechahoraCancelacion) . ". Observación Cancelación: " . $row->observacionCancelacion;
 							}
-							$empleados_dia .= "<span rel='tooltip' title='Nombre: ".$row->BcHcbperiodoEmpleado->BcHcbempleado->getNombrecompleto().". Creado: ".$this->conversiones->hora(2, $row->fechahoraCreacion). $cancelado . "' class='label label-".$row->labelEstado()."'>".$row->BcHcbperiodoEmpleado->BcHcbempleado->primerNombre." - ". $row->getJornada() ." <a style='color: white;' class='glyphicon glyphicon-remove cancelar_fecha' data-fecha_cancelar='".$this->conversiones->fecha(4, $fecha)."' data-nombre_cancelar='".$row->BcHcbperiodoEmpleado->BcHcbempleado->getNombrecompleto()."' data-id='".$row->id_hcbperiodo_empleado_fecha."' href='#cancelar_fecha' data-toggle='modal'></a></span> ";
+							$empleados_dia .= "<span rel='tooltip' title='Nombre: ".$row->BcHcbperiodoEmpleado->BcHcbempleado->getNombrecompleto().". Creado: ".$this->conversiones->hora(2, $row->fechahoraCreacion). $cancelado . "' class='label label-".$row->labelEstado()."'>".$row->BcHcbperiodoEmpleado->BcHcbempleado->primerNombre." - ". $row->getJornada();
+							if($id_componente == 3){
+								$empleados_dia .= " <a style='color: white;' class='glyphicon glyphicon-remove cancelar_fecha' data-fecha_cancelar='".$this->conversiones->fecha(4, $fecha)."' data-nombre_cancelar='".$row->BcHcbperiodoEmpleado->BcHcbempleado->getNombrecompleto()."' data-id='".$row->id_hcbperiodo_empleado_fecha."' href='#cancelar_fecha' data-toggle='modal'></a>";
+							}
+							$empleados_dia .= "</span> ";
 						}
 					}
 				}

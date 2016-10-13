@@ -14,10 +14,10 @@
           <th>No. Contrato</th>
           <th>Sede</th>
           <th>Empleado</th>
-          <th>Estado</th>
           <th>Fecha Visita</th>
           <th>Creado</th>
           <th>Cancelado</th>
+          <th>Estado</th>
          </tr>
     </thead>
     <thead>
